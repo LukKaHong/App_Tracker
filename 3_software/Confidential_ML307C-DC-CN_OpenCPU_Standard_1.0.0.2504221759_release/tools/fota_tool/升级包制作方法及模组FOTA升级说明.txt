@@ -1,0 +1,19 @@
+===========================升级包制作方法===============================
+烧录用的压缩包解压后可以看见里面的system.img和user_app.bin，主要用这两个文件制作差分包，以下的system_old.img等类似文件均是用这两个文件修改了文件名。
+
+1. 全量差分升级：
+    1.将system_old.img、system_new.img、user_app_old.bin和user_app_new.bin放入tools\fota_tool中；
+    2.命令行终端在tools\fota_tool目录下输入指令生成差分包system_patch.bin：adiff.exe -p system_old.img system_new.img system_patch.bin -a1 user_app user_app_old.bin user_app_new.bin -l fsall -s 20000
+    注意：全量差分升级过程中会产生备份文件，指令最后的-s 20000用于指定备份文件预留空间大小，20000为16进制即为128K，
+          需要确保写入或者升级时(差分包+备份文件预留空间大小)应该小于文件系统剩余空间，可根据文件系统剩余空间调整该参数（注意为16进制），最小只支持 -s 20000，建议不修改直接使用-s 20000
+
+2. app整包升级：
+    1.将config_app中1_Image_Flash_Entry_Address设置为user_app的Start地址（烧录工具选取烧录包后可在主界面看见，一般SDK中已设置正确值）
+    2.将新版本的user_app.bin(目标版本)放入fota_tool/a目录
+    3.命令行终端在tools\fota_tool目录下输入指令生成差分包system_patch.bin：FBFMake_CF_V1.6-150.exe -o system_patch.bin -f config_app -a a -b a
+    4.注意：保证OS的system.img一致，仅user_app.bin不同，且app整包大小应该小于文件系统剩余空间，app整包升级不需要考虑备份文件大小
+
+3. 最小系统升级
+    adiff.exe system_old.img  system_new.img  system_patch.bin -a1 user_app user_app.bin -m
+
+

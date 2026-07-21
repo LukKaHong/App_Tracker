@@ -1,0 +1,75 @@
+
+out\image\ML307C_APP.elf:     file format elf32-littlearm
+out\image\ML307C_APP.elf
+architecture: armv7, flags 0x00000112:
+EXEC_P, HAS_SYMS, D_PAGED
+start address 0x802d7078
+
+Program Header:
+    LOAD off    0x00000000 vaddr 0x802d0000 paddr 0x802d0000 align 2**16
+         filesz 0x00007080 memsz 0x00007080 flags rwx
+private flags = 5000200: [Version5 EABI] [soft-float ABI]
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .image_header 00000074  802d7000  802d7000  00007000  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000008  802d7078  802d7078  00007078  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .rodata       00000000  802d7080  802d7080  00007080  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  3 .sramtext     00000000  7e1d2000  7e1d2000  00007080  2**0
+                  CONTENTS
+  4 .data         00000000  7e1d2000  7e1d2000  00007080  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  5 .bss          00000000  7e1d2000  7e1d2000  00000000  2**0
+                  ALLOC
+  6 .comment      00000076  00000000  00000000  00007080  2**0
+                  CONTENTS, READONLY
+  7 .ARM.attributes 0000002f  00000000  00000000  000070f6  2**0
+                  CONTENTS, READONLY
+  8 .stabstr      00000113  00000000  00000000  00007125  2**0
+                  CONTENTS, READONLY, DEBUGGING
+SYMBOL TABLE:
+802d7000 l    d  .image_header	00000000 .image_header
+802d7078 l    d  .text	00000000 .text
+802d7080 l    d  .rodata	00000000 .rodata
+7e1d2000 l    d  .sramtext	00000000 .sramtext
+7e1d2000 l    d  .data	00000000 .data
+7e1d2000 l    d  .bss	00000000 .bss
+00000000 l    d  .comment	00000000 .comment
+00000000 l    d  .ARM.attributes	00000000 .ARM.attributes
+00000000 l    d  .stabstr	00000000 .stabstr
+00000000 l    df *ABS*	00000000 custom_main.c
+00000000 l    df *ABS*	00000000 close.c
+7e1d2000 g       .text	00000000 __ram_start
+7e1d2000 g       .bss	00000000 __ram_end
+802d7078 g       .text	00000000 __text_vma_start
+802d7078 g     F .text	00000008 cm_opencpu_entry
+802d7080 g       .rodata	00000000 __rodata_vma_start
+7e1d2000 g       .sramtext	00000000 __sramtext_vma_end
+7e1d2000 g       .sramtext	00000000 __sramtext_vma_start
+802d7080 g       .text	00000000 __text_vma_end
+802d7080 g       *ABS*	00000000 __data_lma_start
+7e1d2000 g       .bss	00000000 __bss_vma_start
+00040000 g       *ABS*	00000000 __ram_reserve
+7e1d2000 g       .bss	00000000 end
+802d7080 g       *ABS*	00000000 __rodata_lma_start
+7e1d2000 g       .bss	00000000 __bss_vma_end
+7e1d2000 g       .data	00000000 __data_vma_end
+802d7080 g       *ABS*	00000000 __flash_end
+802d7080 g       *ABS*	00000000 __sramtext_lma_start
+802d7080 g       .rodata	00000000 __rodata_vma_end
+0007ff80 g       .text	00000000 __flash_reserve
+7e1d2000 g       *ABS*	00000000 __bss_lma_start
+802d7078 g       *ABS*	00000000 __text_lma_start
+802d7000 g       .image_header	00000000 __flash_start
+7e1d2000 g       .data	00000000 __data_vma_start
+
+
+
+Disassembly of section .text:
+
+802d7078 <cm_opencpu_entry>:
+802d7078:	e3a00000 	mov	r0, #0
+802d707c:	e12fff1e 	bx	lr
