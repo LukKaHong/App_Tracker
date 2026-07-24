@@ -20,10 +20,20 @@ target = None
 # flash_source_files：运行在flash中
 #========================================================
 ram_source_files = [
-    'custom_main/src/custom_main.c'
+    'custom_main/src/custom_main.c',
+    'custom_main/src/app_mode.c',
+    'custom_main/src/app_utils.c',
+    'custom_main/src/app_mqtt_client.c',
+    'custom_main/src/app_protocol.c',
+    'custom_main/src/app_command.c',
 ]
 
 flash_source_files = [
+    'custom_main/src/bsp.c',
+    'custom_main/src/app_storage.c',
+    'custom_main/src/app_provisioning.c',
+    'custom_main/src/app_offline_cache.c',
+    'custom_main/src/app_ota.c',
 ]
 
 
@@ -36,6 +46,8 @@ public_incs = [
 
 private_incs = [
     current_dir + '/custom_main/inc',
+    current_dir + '/../third-party/mbedtls/include',
+    current_dir + '/../third-party/cJSONFiles/cJSON',
 ]
 
 
