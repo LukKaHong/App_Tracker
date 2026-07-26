@@ -85,6 +85,28 @@ int  bsp_gps_close(void);
 /* 解析单行 NMEA 语句，写入 out_loc；非定位语句返回 0 */
 int  bsp_gps_parse_nmea(const char *line, app_location_t *out_loc);
 
+/* GPS 功耗模式（对应 ICOE 协议 CFGLPMODE） */
+typedef enum {
+    BSP_GPS_LPMODE_ULTRA_LOW = 0,  /* 超低功耗（含自适应/系统自动开关/通道控制） */
+    BSP_GPS_LPMODE_AUTO     = 1,    /* 自适应功耗模式（软件自动控制） */
+    BSP_GPS_LPMODE_HIGH     = 2,    /* 高性能模式（默认） */
+    BSP_GPS_LPMODE_FULL     = 3,    /* Full Power Mode (AE Always ON) */
+} bsp_gps_lpmode_e;
+
+/* 发送 NMEA 配置指令（自动计算校验和并追加 \r\n）
+ * body 不带 $ 和 *cs，如 "CFGLPMODE,2" */
+int  bsp_gps_send_nmea(const char *body);
+
+/* 设置 GPS 功耗模式（CFGLPMODE 指令）
+ * mode: 0=超低功耗 1=自适应 2=高性能 3=Full Power */
+int  bsp_gps_set_power_mode(bsp_gps_lpmode_e mode);
+
+/* 设置 WAKEUP 时长（CFGWT 指令）
+ * wake_s: 提前唤醒 AP 时间(秒)
+ * idle_s: 进入 IDLE 状态时间(秒) */
+int  bsp_gps_set_wakeup_time(int wake_s, int idle_s);
+
+
 #ifdef __cplusplus
 }
 #endif

@@ -249,8 +249,10 @@ static void key_event_cb(bool long_pressed)
         bsp_rgb_stop_pattern();
         bsp_buzzer_beep(1, 300, 0);
         bsp_rgb_set(BSP_RGB_OFF);
-        /* 关闭 GPS 节省功耗 */
+        /* 关闭 GPS 节省功耗：先切超低功耗再关闭 UART */
         if (g_gps_opened) {
+            bsp_gps_set_power_mode(BSP_GPS_LPMODE_ULTRA_LOW);
+            osDelay(100);
             bsp_gps_close();
             g_gps_opened = false;
         }
@@ -283,6 +285,10 @@ static void one_shot_loc_task(void *arg)
     }
     g_gps_opened = true;
 
+    /* 切到高性能模式加速定位（ICOE CFGLPMODE,2） */
+    bsp_gps_set_power_mode(BSP_GPS_LPMODE_HIGH);
+    osDelay(100);
+
     /* 等待 GPS 获取有效定位（带超时） */
     uint32_t start = (uint32_t)osKernelGetTickCount();
     /* 给 GPS 冷启动一些时间 */
@@ -301,7 +307,9 @@ static void one_shot_loc_task(void *arg)
         osDelay(500);
     }
 
-    /* 关闭 GPS（需求 1.2.4：定位完成之后关闭定位功能） */
+    /* 定位完成后切回超低功耗（需求 1.2.4：定位完成之后关闭定位功能） */
+    bsp_gps_set_power_mode(BSP_GPS_LPMODE_ULTRA_LOW);
+    osDelay(100);
     bsp_gps_close();
     g_gps_opened = false;
     APP_LOGI("one-shot: gps closed, publishing");
@@ -326,6 +334,8 @@ static void main_task(void *arg)
         APP_LOGE("gps open fail");
     }
     g_gps_opened = true;
+    /* 开机默认高性能模式加速首次定位 */
+    bsp_gps_set_power_mode(BSP_GPS_LPMODE_HIGH);
 
     uint32_t last_loc_tick = 0;
     uint32_t last_charge_check_tick = 0;
@@ -344,26 +354,38 @@ static void main_task(void *arg)
         uint32_t interval = app_mode_get_loc_interval_ms();
 
         /* GPS 模式切换控制（需求 1.2.4：超省电模式不进行定位）
-         * 进入超省电模式时关闭 GPS 节省功耗；
-         * 退出超省电模式时重新打开 GPS */
+         * 进入超省电模式：切超低功耗 → 关闭 UART（双重省电）
+         * 退出超省电模式：打开 UART → 切高性能/自适应
+         * 寻狗/正常模式：高性能（快速定位）
+         * 省电模式：自适应（软件自动控制功耗） */
         if (mode != last_mode) {
             if (mode == APP_MODE_SUPER_SAVE && last_mode != APP_MODE_SUPER_SAVE) {
-                /* 进入超省电：关闭 GPS（单次定位任务会按需打开/关闭） */
+                /* 进入超省电：切超低功耗 → 关闭 UART */
                 if (g_gps_opened && !g_one_shot_loc) {
+                    bsp_gps_set_power_mode(BSP_GPS_LPMODE_ULTRA_LOW);
+                    osDelay(100);
                     bsp_gps_close();
                     g_gps_opened = false;
-                    APP_LOGI("enter SUPER_SAVE, gps closed");
+                    APP_LOGI("enter SUPER_SAVE, gps lpmode=0 + closed");
                 }
             } else if (mode != APP_MODE_SUPER_SAVE && last_mode == APP_MODE_SUPER_SAVE) {
-                /* 退出超省电：重新打开 GPS */
+                /* 退出超省电：打开 UART → 根据新模式设功耗 */
                 if (!g_gps_opened) {
                     if (bsp_gps_open(gps_rx_cb) == 0) {
                         g_gps_opened = true;
-                        APP_LOGI("exit SUPER_SAVE, gps opened");
+                        bsp_gps_lpmode_e lpm = (mode == APP_MODE_SAVE_POWER) ?
+                            BSP_GPS_LPMODE_AUTO : BSP_GPS_LPMODE_HIGH;
+                        bsp_gps_set_power_mode(lpm);
+                        APP_LOGI("exit SUPER_SAVE, gps opened, lpmode=%d", lpm);
                     } else {
                         APP_LOGE("exit SUPER_SAVE, gps open fail");
                     }
                 }
+            } else {
+                /* 非超省电模式之间切换：仅调整功耗模式 */
+                bsp_gps_lpmode_e lpm = (mode == APP_MODE_SAVE_POWER) ?
+                    BSP_GPS_LPMODE_AUTO : BSP_GPS_LPMODE_HIGH;
+                bsp_gps_set_power_mode(lpm);
             }
             last_mode = mode;
         }

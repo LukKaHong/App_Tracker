@@ -511,6 +511,36 @@ int bsp_gps_close(void)
     return cm_uart_close(s_gps_dev);
 }
 
+/* 发送 NMEA 配置指令（自动计算校验和并追加 \r\n）
+ * body 不带 $ 和 *cs，如 "CFGLPMODE,2" */
+int bsp_gps_send_nmea(const char *body)
+{
+    if (!body) return -1;
+    char buf[80];
+    unsigned char cs = 0;
+    const char *p;
+    for (p = body; *p; p++) cs ^= (unsigned char)*p;
+    int n = snprintf(buf, sizeof(buf), "$%s*%02X\r\n", body, cs);
+    if (n <= 0 || n >= (int)sizeof(buf)) return -1;
+    return cm_uart_write(s_gps_dev, buf, n, 1000);
+}
+
+/* 设置 GPS 功耗模式（CFGLPMODE 指令） */
+int bsp_gps_set_power_mode(bsp_gps_lpmode_e mode)
+{
+    char body[24];
+    snprintf(body, sizeof(body), "CFGLPMODE,%d", (int)mode);
+    return bsp_gps_send_nmea(body);
+}
+
+/* 设置 WAKEUP 时长（CFGWT 指令） */
+int bsp_gps_set_wakeup_time(int wake_s, int idle_s)
+{
+    char body[32];
+    snprintf(body, sizeof(body), "CFGWT,%d,%d", wake_s, idle_s);
+    return bsp_gps_send_nmea(body);
+}
+
 /* NMEA 0183 校验：$ 与 * 之间字节按位异或 */
 static int nmea_checksum_ok(const char *line)
 {
@@ -565,25 +595,44 @@ int bsp_gps_parse_nmea(const char *line, app_location_t *out_loc)
     if (!line || !out_loc) return 0;
     if (!nmea_checksum_ok(line)) return 0;
 
-    if (strncmp(line, "$GPGGA", 6) == 0 || strncmp(line, "$GNGGA", 6) == 0) {
-        /* $GPGGA,time,lat,N,lon,E,fix,sat,hdop,alt,M,,M,,*cs */
+    /* ICOE 协议 GGA 字段：
+     * $--GGA,Time,Lat,N,Lon,E,FS,NoSV,HDOP,Msl,M,Altref,M,DiffAge,DiffStation*cs
+     *   idx:  0    1    2   3   4   5  6    7    8    9  10  11  12  13      14
+     * FS(field6): 0=无效 1=单点定位 2=差分定位（必须 > 0 才算有效定位）
+     * NoSV(field7): 参与定位的卫星数量（即需求"卫星连接数"）
+     * HDOP(field8): 水平精度因子，accuracy ≈ HDOP × 5m */
+    if (strstr(line, "GGA")) {
+        const char *fs  = nmea_field(line, 6);
+        /* FS=0 表示无定位，丢弃（避免上报无效坐标） */
+        if (!*fs || atoi(fs) == 0) return 0;
         const char *lat = nmea_field(line, 2);
         const char *ns  = nmea_field(line, 3);
         const char *lon = nmea_field(line, 4);
         const char *ew  = nmea_field(line, 5);
         const char *sat = nmea_field(line, 7);
+        const char *hdop = nmea_field(line, 8);
         const char *alt = nmea_field(line, 9);
         if (*lat && *ns && *lon && *ew) {
             out_loc->latitude  = nmea_parse_latlon(lat, *ns);
             out_loc->longitude = nmea_parse_latlon(lon, *ew);
             out_loc->satellite_cnt = atoi(sat);
             out_loc->altitude = (float)atof(alt);
+            /* accuracy 由 HDOP 估算：1σ ≈ HDOP × 5m，2σ ≈ HDOP × 10m
+             * 取 2σ 作为 accuracy 更保守 */
+            if (*hdop) {
+                out_loc->accuracy = (int)(atof(hdop) * 10.0f);
+            }
             strcpy(out_loc->source, "GPS");
             strcpy(out_loc->coord_sys, "WGS84");
             return 1;
         }
-    } else if (strncmp(line, "$GPRMC", 6) == 0 || strncmp(line, "$GNRMC", 6) == 0) {
-        /* $GPRMC,time,status,lat,N,lon,E,speed,course,date,*cs */
+    } else if (strstr(line, "RMC")) {
+        /* ICOE 协议 RMC 字段：
+         * $--RMC,Time,Valid,Lat,N,Lon,E,Speed,Course,Date,MagVar,MagVarDir,Mode*cs
+         *   idx:  0    1     2   3  4   5  6    7      8     9      10       11
+         * Valid(field2): A=有效 V=无效
+         * Speed(field7): 速度，单位 knot（1 knot = 1.852 km/h = 0.5144 m/s）
+         * Course(field8): 航向，0~359.9 度 */
         const char *status = nmea_field(line, 2);
         if (*status != 'A') return 0; /* V = 无效 */
         const char *lat = nmea_field(line, 3);
@@ -601,10 +650,14 @@ int bsp_gps_parse_nmea(const char *line, app_location_t *out_loc)
             strcpy(out_loc->coord_sys, "WGS84");
             return 1;
         }
-    } else if (strncmp(line, "$GPGSV", 6) == 0 || strncmp(line, "$GNGSV", 6) == 0) {
-        /* $GPGSV,total,msg,view,sat1,...*cs */
-        const char *view = nmea_field(line, 3);
-        out_loc->satellite_cnt = atoi(view);
+    } else if (strstr(line, "GSV")) {
+        /* ICOE 协议 GSV 字段：
+         * $--GSV,NoMsg,MsgNo,NoSv,Sv1,Elv1,Az1,Cno1,...*cs
+         *   idx:  0    1     2    3
+         * NoSv(field3): 可见卫星总数
+         * 注意：GSV 的 NoSv 是"可见卫星数"，GGA 的 NoSV 是"参与定位卫星数"。
+         * 需求"卫星连接数"更接近"参与定位的卫星数"，因此 GSV 不更新 satellite_cnt，
+         * 仅消费消息不做处理（避免覆盖 GGA 更准确的 NoSV）。 */
         return 0;
     }
     return 0;
