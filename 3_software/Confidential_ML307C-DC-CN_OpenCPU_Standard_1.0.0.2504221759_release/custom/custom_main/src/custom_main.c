@@ -11,6 +11,7 @@
 #include "cm_pm.h"
 #include "cm_rtc.h"
 #include "cm_modem_info.h"
+#include "cm_modem.h"
 #include "custom_main.h"
 #include "app_config.h"
 #include "app_log.h"
@@ -108,7 +109,8 @@ static void publish_location(bool is_offline_replay)
         app_mqtt_publish_telemetry(json, json_len);
         APP_LOGI("LOC #%lu publish ok", (unsigned long)seq);
     } else {
-        /* 离线缓存 */
+#if (APP_BUILD_VERSION == APP_BUILD_STANDARD)
+        /* 标准版：离线缓存，待恢复连接后补传 */
         app_offline_record_t rec;
         memset(&rec, 0, sizeof(rec));
         strncpy(rec.message_id, msgid, sizeof(rec.message_id) - 1);
@@ -119,6 +121,11 @@ static void publish_location(bool is_offline_replay)
         app_offline_cache_push(&rec);
         APP_LOGI("LOC #%lu cached (offline count=%d)",
                  (unsigned long)seq, app_offline_cache_count());
+#else
+        /* 送样版：不实现离线补传，未连接时直接丢弃 */
+        APP_LOGW("LOC #%lu dropped (mqtt disconnected, no cache in sample build)",
+                 (unsigned long)seq);
+#endif
     }
     free(json);
 }
@@ -141,7 +148,7 @@ static void publish_state(const char *online_status)
 }
 
 /* ===== 离线补传回调 ===== */
-static void offline_replay_cb(const app_offline_record_t *rec)
+static void __attribute__((unused)) offline_replay_cb(const app_offline_record_t *rec)
 {
     if (!rec) return;
     if (app_mqtt_is_connected()) {
@@ -157,8 +164,10 @@ static void mqtt_event_cb(app_mqtt_event_e evt, void *data)
     case APP_MQTT_EVT_CONNECTED:
         app_mqtt_subscribe_rpc();
         publish_state(APP_STATUS_ONLINE);
-        /* 连接成功后触发离线补传 */
+#if (APP_BUILD_VERSION == APP_BUILD_STANDARD)
+        /* 标准版：连接成功后触发离线补传 */
         app_offline_cache_replay(offline_replay_cb);
+#endif
         break;
     case APP_MQTT_EVT_SUBSCRIBED:
         APP_LOGI("rpc subscribed");
@@ -176,11 +185,46 @@ static void mqtt_event_cb(app_mqtt_event_e evt, void *data)
     }
 }
 
-/* ===== Provisioning 流程 ===== */
+/* ===== 等待 PS 网络注册成功（CEREG state=1/5） ===== */
+static void wait_network_ready(void)
+{
+    cm_cereg_state_t cereg = {0};
+    for (int i = 0; i < 60; i++) {  /* 最多等 60 秒 */
+        if (cm_modem_get_cereg_state(&cereg) == 0) {
+            if (cereg.state == 1 || cereg.state == 5) {
+                APP_LOGI("network ready, cereg=%d", cereg.state);
+                return;
+            }
+            if (i % 5 == 0) {
+                APP_LOGI("waiting network, cereg=%d", cereg.state);
+            }
+        }
+        osDelay(APP_MS_TO_TICK(1000));
+    }
+    APP_LOGW("network wait timeout, try mqtt anyway");
+}
+
+/* ===== Provisioning 流程 =====
+ * TODO: 联调阶段直接硬编码 MQTT 凭证，跳过 SaaS provisioning。
+ *       正式上线前需恢复 provisioning 流程（见下方注释块）。 */
 static void provisioning_and_connect(void)
 {
     app_mqtt_credential_t cred;
     memset(&cred, 0, sizeof(cred));
+
+    /* === 联调阶段：直接使用硬编码凭证 === */
+    strncpy(cred.mqtt_host, "119.23.217.155", sizeof(cred.mqtt_host) - 1);
+    cred.mqtt_port = 18883;
+    strncpy(cred.username, "4qf26fuipe8owzx3sxwy", sizeof(cred.username) - 1);
+    /* password 为空 */
+    cred.password[0] = '\0';
+    /* client_id 使用 IMEI（ThingsBoard ACCESS_TOKEN 模式） */
+    strncpy(cred.client_id, g_imei, sizeof(cred.client_id) - 1);
+    strncpy(cred.credential_type, "ACCESS_TOKEN", sizeof(cred.credential_type) - 1);
+    APP_LOGI("use hardcoded credential (debug)");
+    app_mqtt_connect(&cred);
+
+    /* === 正式流程（联调通过后恢复）===
     if (app_storage_load_credential(&cred) == 0 && cred.mqtt_host[0]) {
         APP_LOGI("use saved credential");
     } else {
@@ -193,6 +237,7 @@ static void provisioning_and_connect(void)
         app_storage_save_credential(&cred);
     }
     app_mqtt_connect(&cred);
+    */
 }
 
 /* ===== GPS 接收回调：解析并保存最新定位 ===== */
@@ -222,7 +267,7 @@ static void pm_exit_cb(uint32_t reason)
 }
 
 /* ===== 按键回调：长按 5 秒切换开关机 ===== */
-static void key_event_cb(bool long_pressed)
+static void __attribute__((unused)) key_event_cb(bool long_pressed)
 {
     if (!long_pressed) return;
 
@@ -242,7 +287,7 @@ static void key_event_cb(bool long_pressed)
         /* 关机前上报 OFFLINE */
         if (app_mqtt_is_connected()) {
             publish_state(APP_STATUS_OFFLINE);
-            osDelay(200);
+            osDelay(APP_MS_TO_TICK(200));
         }
         g_power_on = false;
         bsp_buzzer_stop();
@@ -252,7 +297,7 @@ static void key_event_cb(bool long_pressed)
         /* 关闭 GPS 节省功耗：先切超低功耗再关闭 UART */
         if (g_gps_opened) {
             bsp_gps_set_power_mode(BSP_GPS_LPMODE_ULTRA_LOW);
-            osDelay(100);
+            osDelay(APP_MS_TO_TICK(100));
             bsp_gps_close();
             g_gps_opened = false;
         }
@@ -287,29 +332,29 @@ static void one_shot_loc_task(void *arg)
 
     /* 切到高性能模式加速定位（ICOE CFGLPMODE,2） */
     bsp_gps_set_power_mode(BSP_GPS_LPMODE_HIGH);
-    osDelay(100);
+    osDelay(APP_MS_TO_TICK(100));
 
     /* 等待 GPS 获取有效定位（带超时） */
     uint32_t start = (uint32_t)osKernelGetTickCount();
     /* 给 GPS 冷启动一些时间 */
-    osDelay(APP_ONESHOT_GPS_WARMUP_MS);
+    osDelay(APP_MS_TO_TICK(APP_ONESHOT_GPS_WARMUP_MS));
     while (1) {
         uint32_t elapsed = (uint32_t)osKernelGetTickCount() - start;
-        if (elapsed >= APP_ONESHOT_TIMEOUT_MS) {
-            APP_LOGW("one-shot: timeout %dms, report last loc", elapsed);
+        if (elapsed >= APP_MS_TO_TICK(APP_ONESHOT_TIMEOUT_MS)) {
+            APP_LOGW("one-shot: timeout %dms, report last loc", elapsed * APP_TICK_MS);
             break;
         }
         /* 判断是否收到新的有效定位 */
         if (g_loc_updated_tick != tick_before_open) {
-            APP_LOGI("one-shot: location fixed after %dms", elapsed);
+            APP_LOGI("one-shot: location fixed after %dms", elapsed * APP_TICK_MS);
             break;
         }
-        osDelay(500);
+        osDelay(APP_MS_TO_TICK(500));
     }
 
     /* 定位完成后切回超低功耗（需求 1.2.4：定位完成之后关闭定位功能） */
     bsp_gps_set_power_mode(BSP_GPS_LPMODE_ULTRA_LOW);
-    osDelay(100);
+    osDelay(APP_MS_TO_TICK(100));
     bsp_gps_close();
     g_gps_opened = false;
     APP_LOGI("one-shot: gps closed, publishing");
@@ -327,7 +372,13 @@ static void main_task(void *arg)
     (void)arg;
 
     /* 等待开机 */
-    while (!g_power_on) osDelay(200);
+    while (!g_power_on) osDelay(APP_MS_TO_TICK(200));
+
+#if (APP_BUILD_VERSION == APP_BUILD_SAMPLE)
+    /* 送样版：等网络注册成功后直接连 MQTT（跳过 provisioning，使用硬编码凭证） */
+    wait_network_ready();
+    provisioning_and_connect();
+#endif
 
     /* 启动 GPS UART */
     if (bsp_gps_open(gps_rx_cb) != 0) {
@@ -338,15 +389,17 @@ static void main_task(void *arg)
     bsp_gps_set_power_mode(BSP_GPS_LPMODE_HIGH);
 
     uint32_t last_loc_tick = 0;
+#if (APP_BUILD_VERSION == APP_BUILD_STANDARD)
     uint32_t last_charge_check_tick = 0;
     bsp_charge_state_e last_charge_state = BSP_CHARGE_DISCHARGE;
     bool low_battery_announced = false;
     bool platform_cmd_active = false;  /* 平台指令触发的指示灯正在持续 */
+#endif
     app_mode_e last_mode = APP_MODE_OFF;
 
     while (1) {
         if (!g_power_on) {
-            osDelay(500);
+            osDelay(APP_MS_TO_TICK(500));
             continue;
         }
 
@@ -363,7 +416,7 @@ static void main_task(void *arg)
                 /* 进入超省电：切超低功耗 → 关闭 UART */
                 if (g_gps_opened && !g_one_shot_loc) {
                     bsp_gps_set_power_mode(BSP_GPS_LPMODE_ULTRA_LOW);
-                    osDelay(100);
+                    osDelay(APP_MS_TO_TICK(100));
                     bsp_gps_close();
                     g_gps_opened = false;
                     APP_LOGI("enter SUPER_SAVE, gps lpmode=0 + closed");
@@ -397,7 +450,8 @@ static void main_task(void *arg)
             continue;
         }
 
-        /* 电量周期采样 */
+#if (APP_BUILD_VERSION == APP_BUILD_STANDARD)
+        /* 标准版：电量周期采样 + 超低电量强制切超级省电 */
         int mv = 0, soc = 0;
         if (bsp_battery_read(&mv, &soc) == 0) {
             if (soc != g_last_soc) {
@@ -413,10 +467,10 @@ static void main_task(void *arg)
             }
         }
 
-        /* 充电状态周期检测（每 2 秒）：充电/充满/低电指示灯联动
+        /* 标准版：充电状态周期检测（每 2 秒）：充电/充满/低电指示灯联动
          * 优先级：平台指令 > 充电/充满 > 低电 */
         uint32_t now = (uint32_t)osKernelGetTickCount();
-        if ((now - last_charge_check_tick) >= 2000) {
+        if ((now - last_charge_check_tick) >= APP_MS_TO_TICK(2000)) {
             last_charge_check_tick = now;
             bsp_charge_state_e cs = bsp_charging_get_state(g_last_soc);
             g_charging_status = (int)cs;  /* 0=放电 1=充电中 2=充满 */
@@ -452,12 +506,16 @@ static void main_task(void *arg)
                 }
             }
         }
+#else
+        /* 送样版：不实现电量计算/充电检测/指示灯联动，只取信号强度 */
+        uint32_t now = (uint32_t)osKernelGetTickCount();
+#endif
 
         /* 信号强度周期采样 */
         g_last_rssi = read_signal_strength();
 
         /* 周期定位（超省电模式不主动定位） */
-        if (interval > 0 && (now - last_loc_tick) >= interval) {
+        if (interval > 0 && (now - last_loc_tick) >= APP_MS_TO_TICK(interval)) {
             last_loc_tick = now;
             publish_location(false);
         }
@@ -480,7 +538,7 @@ static void main_task(void *arg)
             last_loc_tick = now;
         }
 
-        osDelay(1000);
+        osDelay(APP_MS_TO_TICK(1000));
     }
 }
 
@@ -520,7 +578,10 @@ static void system_init(void)
     APP_LOGI("boot_id=%s", g_boot_id);
 
     bsp_init();
+#if (APP_BUILD_VERSION == APP_BUILD_STANDARD)
+    /* 标准版：注册按键回调（长按5秒开关机） */
     bsp_key_register_cb(key_event_cb);
+#endif
 }
 
 /* ====================================================================
@@ -532,6 +593,11 @@ int cm_opencpu_entry(void *param)
 
     system_init();
 
+    /* 需求 1.1：装上电池、复位后默认为开机模式-正常模式 */
+    g_power_on = true;
+    app_mode_set(APP_MODE_NORMAL);
+    APP_LOGI("pet tracker start in NORMAL mode");
+
     osThreadAttr_t task_attr = {0};
     task_attr.name = "pet_main";
     task_attr.stack_size = 12 * 1024;
@@ -540,13 +606,6 @@ int cm_opencpu_entry(void *param)
         APP_LOGE("main task create fail");
         return -1;
     }
-
-    g_power_on = false;
-    app_mode_set(APP_MODE_OFF);
-    bsp_rgb_set(BSP_RGB_OFF);
-    /* OFF 模式：解锁睡眠让模组进入深度休眠，按键 IO 中断可唤醒 */
-    cm_pm_work_unlock();
-    APP_LOGI("pet tracker start in OFF mode, long-press 5s to power on");
 
     return 0;
 }

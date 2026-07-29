@@ -51,9 +51,9 @@ static void key_check_timer_cb(void *arg)
         /* 释放沿 */
         uint32_t held = (uint32_t)osKernelGetTickCount() - s_key_press_tick;
         s_key_pressed = false;
-        if (held >= APP_KEY_LONGPRESS_MS) {
+        if (held >= APP_MS_TO_TICK(APP_KEY_LONGPRESS_MS)) {
             if (s_key_cb) s_key_cb(true);
-        } else if (held > 50) {
+        } else if (held > APP_MS_TO_TICK(50)) {
             if (s_key_cb) s_key_cb(false);
         }
     }
@@ -76,7 +76,7 @@ static int bsp_key_init(void)
         osTimerAttr_t tattr = {0};
         tattr.name = "key_t";
         s_key_timer = osTimerNew(key_check_timer_cb, osTimerPeriodic, NULL, &tattr);
-        osTimerStart(s_key_timer, 20); /* 20ms 周期去抖 */
+        osTimerStart(s_key_timer, APP_MS_TO_TICK(20)); /* 20ms 周期去抖 */
     }
     return 0;
 }
@@ -121,9 +121,9 @@ void bsp_buzzer_beep(int times, uint32_t on_ms, uint32_t off_ms)
 {
     for (int i = 0; i < times; i++) {
         bsp_buzzer_on();
-        osDelay(on_ms);
+        osDelay(APP_MS_TO_TICK(on_ms));
         bsp_buzzer_off();
-        if (i + 1 < times) osDelay(off_ms);
+        if (i + 1 < times) osDelay(APP_MS_TO_TICK(off_ms));
     }
 }
 
@@ -148,7 +148,7 @@ static void buzzer_async_cb(void *arg)
     /* 检查总时长 */
     if (s_buzz_ctx.duration_ms > 0) {
         uint32_t elapsed = (uint32_t)osKernelGetTickCount() - s_buzz_ctx.start_tick;
-        if (elapsed >= s_buzz_ctx.duration_ms) {
+        if (elapsed >= APP_MS_TO_TICK(s_buzz_ctx.duration_ms)) {
             bsp_buzzer_off();
             s_buzz_ctx.running = false;
             return;
@@ -158,10 +158,10 @@ static void buzzer_async_cb(void *arg)
     s_buzz_ctx.on_phase = !s_buzz_ctx.on_phase;
     if (s_buzz_ctx.on_phase) {
         bsp_buzzer_on();
-        osTimerStart(s_buzz_ctx.timer, s_buzz_ctx.on_ms);
+        osTimerStart(s_buzz_ctx.timer, APP_MS_TO_TICK(s_buzz_ctx.on_ms));
     } else {
         bsp_buzzer_off();
-        osTimerStart(s_buzz_ctx.timer, s_buzz_ctx.off_ms);
+        osTimerStart(s_buzz_ctx.timer, APP_MS_TO_TICK(s_buzz_ctx.off_ms));
     }
 }
 
@@ -187,7 +187,7 @@ void bsp_buzzer_beep_async(uint32_t duration_sec)
     /* 立即响一次 */
     bsp_buzzer_on();
     s_buzz_ctx.on_phase = true;
-    osTimerStart(s_buzz_ctx.timer, s_buzz_ctx.on_ms);
+    osTimerStart(s_buzz_ctx.timer, APP_MS_TO_TICK(s_buzz_ctx.on_ms));
 }
 
 void bsp_buzzer_stop(void)
@@ -251,9 +251,9 @@ void bsp_rgb_blink(bsp_rgb_color_e color, int times, uint32_t on_ms, uint32_t of
 {
     for (int i = 0; i < times; i++) {
         bsp_rgb_set(color);
-        osDelay(on_ms);
+        osDelay(APP_MS_TO_TICK(on_ms));
         bsp_rgb_set(BSP_RGB_OFF);
-        if (i + 1 < times) osDelay(off_ms);
+        if (i + 1 < times) osDelay(APP_MS_TO_TICK(off_ms));
     }
 }
 
@@ -306,13 +306,13 @@ static uint32_t rgb_pattern_get_period(bsp_rgb_pattern_e pattern, bool on_phase)
     switch (pattern) {
     case BSP_RGB_PATTERN_CHARGING:
     case BSP_RGB_PATTERN_LOW_BATTERY:
-        return on_phase ? APP_RGB_BLINK_SLOW_ON_MS : APP_RGB_BLINK_SLOW_OFF_MS;
+        return APP_MS_TO_TICK(on_phase ? APP_RGB_BLINK_SLOW_ON_MS : APP_RGB_BLINK_SLOW_OFF_MS);
     case BSP_RGB_PATTERN_PLATFORM_CMD:
-        return on_phase ? APP_RGB_BLINK_FAST_ON_MS : APP_RGB_BLINK_FAST_OFF_MS;
+        return APP_MS_TO_TICK(on_phase ? APP_RGB_BLINK_FAST_ON_MS : APP_RGB_BLINK_FAST_OFF_MS);
     case BSP_RGB_PATTERN_FULL:
-        return 1000;  /* 常亮，定时器只是用来检查总时长 */
+        return APP_MS_TO_TICK(1000);  /* 常亮，定时器只是用来检查总时长 */
     default:
-        return 1000;
+        return APP_MS_TO_TICK(1000);
     }
 }
 
@@ -323,7 +323,7 @@ static void rgb_pattern_cb(void *arg)
     /* 检查总时长 */
     if (s_rgb_ctx.duration_ms > 0) {
         uint32_t elapsed = (uint32_t)osKernelGetTickCount() - s_rgb_ctx.start_tick;
-        if (elapsed >= s_rgb_ctx.duration_ms) {
+        if (elapsed >= APP_MS_TO_TICK(s_rgb_ctx.duration_ms)) {
             bsp_rgb_set(BSP_RGB_OFF);
             s_rgb_ctx.running = false;
             s_rgb_ctx.pattern = BSP_RGB_PATTERN_NONE;

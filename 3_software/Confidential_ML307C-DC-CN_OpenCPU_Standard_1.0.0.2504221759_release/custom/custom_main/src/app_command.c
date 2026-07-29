@@ -90,22 +90,40 @@ static void dispatch(const char *method, cJSON *params, const char *command_id)
         app_mode_set(APP_MODE_NORMAL);
         app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
     } else if (strcmp(method, "SOUND") == 0) {
-        /* 持续响铃：每秒响一次，默认持续 2 分钟（需求 4） */
+        /* 持续响铃：每秒响一次，默认持续 2 分钟（需求 4）
+         * duration_seconds <= 0 视为停止指令，避免 0 传入 bsp 层被解释为"持续响直到手动停止" */
         int duration = 120;
         if (params) {
             cJSON *d = cJSON_GetObjectItem(params, "duration_seconds");
             if (d) duration = d->valueint;
         }
-        bsp_buzzer_beep_async((uint32_t)duration);
+        if (duration <= 0) {
+            bsp_buzzer_stop();
+        } else {
+            bsp_buzzer_beep_async((uint32_t)duration);
+        }
+        app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
+    } else if (strcmp(method, "SOUND_STOP") == 0) {
+        /* 需求 4：持续时间内收到停止指令，停止蜂鸣 */
+        bsp_buzzer_stop();
         app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
     } else if (strcmp(method, "LIGHT") == 0) {
-        /* RGB 绿->红->蓝 交替快闪，默认持续 5 分钟（需求 5） */
+        /* RGB 绿->红->蓝 交替快闪，默认持续 5 分钟（需求 5）
+         * duration_seconds <= 0 视为停止指令 */
         int duration = 300;
         if (params) {
             cJSON *d = cJSON_GetObjectItem(params, "duration_seconds");
             if (d) duration = d->valueint;
         }
-        bsp_rgb_set_pattern(BSP_RGB_PATTERN_PLATFORM_CMD, (uint32_t)duration);
+        if (duration <= 0) {
+            bsp_rgb_stop_pattern();
+        } else {
+            bsp_rgb_set_pattern(BSP_RGB_PATTERN_PLATFORM_CMD, (uint32_t)duration);
+        }
+        app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
+    } else if (strcmp(method, "LIGHT_STOP") == 0) {
+        /* 需求 5：持续时间内收到停止指令，停止快闪 */
+        bsp_rgb_stop_pattern();
         app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
     } else if (strcmp(method, "LOCATION_FREQUENCY") == 0) {
         /* 平台调整常规定位频率 */
@@ -122,7 +140,7 @@ static void dispatch(const char *method, cJSON *params, const char *command_id)
         app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
         bsp_buzzer_stop();
         bsp_rgb_stop_pattern();
-        osDelay(500); /* 等待 telemetry 发出 */
+        osDelay(APP_MS_TO_TICK(500)); /* 等待 telemetry 发出 */
         cm_pm_poweroff();
     } else if (strcmp(method, "OTA") == 0) {
         /* 平台下发 OTA 升级指令，params 中含 url */

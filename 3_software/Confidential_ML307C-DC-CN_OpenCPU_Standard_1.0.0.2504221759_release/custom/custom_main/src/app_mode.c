@@ -78,7 +78,7 @@ bool app_mode_find_dog_expired(void)
     mode_lock();
     if (s_cur_mode == APP_MODE_FIND_DOG) {
         uint32_t now = (uint32_t)osKernelGetTickCount();
-        if ((now - s_find_dog_start_tick) >= APP_FIND_DOG_DURATION_MS) {
+        if ((now - s_find_dog_start_tick) >= APP_MS_TO_TICK(APP_FIND_DOG_DURATION_MS)) {
             expired = true;
         }
     }

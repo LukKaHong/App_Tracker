@@ -18,6 +18,16 @@ extern "C" {
 #endif
 
 /* ===================================================================
+ * 0. 构建版本选择
+ *    APP_BUILD_SAMPLE   : 送样版（精简功能，快速送样）
+ *    APP_BUILD_STANDARD : 标准版（全功能）
+ *    切换版本只需修改此处宏定义
+ * =================================================================== */
+#define APP_BUILD_SAMPLE           1
+#define APP_BUILD_STANDARD         2
+#define APP_BUILD_VERSION          APP_BUILD_SAMPLE
+
+/* ===================================================================
  * 1. 固件与设备标识
  * =================================================================== */
 #define APP_FIRMWARE_VERSION        "1.0.0"
@@ -135,6 +145,16 @@ extern "C" {
  * =================================================================== */
 #define APP_LOG_TAG                 "[PET]"
 #define APP_LOG_ENABLED             1
+
+/* ===================================================================
+ * 12. 时间换算宏
+ *     ML307C SDK OS tick 频率 = 200Hz (1 tick = 5ms)
+ *     依据：kernel/common/inc/osa.h  OSA_TICK_FREQ_IN_MILLISEC = 5
+ *     osDelay / osTimerStart / osKernelGetTickCount 差值比较均以 tick 为单位，
+ *     所有以 ms 表示的延时/超时/比较值必须先用本宏转换为 tick。
+ * =================================================================== */
+#define APP_TICK_MS                 5u
+#define APP_MS_TO_TICK(ms)          ((uint32_t)((ms) / APP_TICK_MS))
 
 #ifdef __cplusplus
 }

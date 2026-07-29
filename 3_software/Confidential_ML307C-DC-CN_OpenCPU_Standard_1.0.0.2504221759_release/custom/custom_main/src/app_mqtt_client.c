@@ -78,16 +78,16 @@ static void mqtt_task(void *arg)
     (void)arg;
     while (s_running) {
         if (s_connected && !s_need_reconnect) {
-            osDelay(1000);
+            osDelay(APP_MS_TO_TICK(1000));
             continue;
         }
         if (!s_need_reconnect) {
-            osDelay(1000);
+            osDelay(APP_MS_TO_TICK(1000));
             continue;
         }
         s_need_reconnect = false;
         APP_LOGI("mqtt reconnect in 5s");
-        osDelay(5000);
+        osDelay(APP_MS_TO_TICK(5000));
         if (!s_running) break;
         if (s_client) {
             int st = cm_mqtt_client_get_state(s_client);
@@ -117,7 +117,7 @@ int app_mqtt_connect(const app_mqtt_credential_t *cred)
     if (!cred) return -1;
     if (s_client) {
         cm_mqtt_client_disconnect(s_client);
-        osDelay(200);
+        osDelay(APP_MS_TO_TICK(200));
         cm_mqtt_client_destroy(s_client);
         s_client = NULL;
     }
@@ -181,7 +181,7 @@ int app_mqtt_disconnect(void)
     }
     if (s_client) {
         cm_mqtt_client_disconnect(s_client);
-        osDelay(200);
+        osDelay(APP_MS_TO_TICK(200));
         cm_mqtt_client_destroy(s_client);
         s_client = NULL;
     }

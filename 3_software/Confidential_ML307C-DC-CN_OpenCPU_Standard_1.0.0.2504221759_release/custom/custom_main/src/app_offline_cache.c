@@ -135,7 +135,7 @@ void app_offline_cache_replay(app_offline_replay_cb_t cb)
         cb(&rec);
         sent++;
         if (sent % APP_OFFLINE_REPLAY_RATE == 0) {
-            osDelay(1000); /* 5 条/秒 */
+            osDelay(APP_MS_TO_TICK(1000)); /* 5 条/秒 */
         }
     }
     APP_LOGI("offline replay done, sent=%d", sent);
