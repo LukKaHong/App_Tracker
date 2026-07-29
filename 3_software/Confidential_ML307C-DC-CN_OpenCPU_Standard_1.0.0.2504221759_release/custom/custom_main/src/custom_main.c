@@ -46,6 +46,9 @@ static volatile bool g_one_shot_loc = false;
 static int g_charging_status = 0;
 /* GPS 是否已打开（用于超省电模式关闭/打开 GPS 节省功耗） */
 static volatile bool g_gps_opened = false;
+/* MQTT 连接成功标志：由回调设置，主循环检测后执行 subscribe/publish
+ * 不能在 MQTT 回调（cmmqtt-m 任务上下文）中直接调用 MQTT API，否则重入崩溃 */
+static volatile bool g_mqtt_just_connected = false;
 /* 最后一次有效 GPS 定位更新的系统 tick（用于单次定位判断定位完成） */
 static volatile uint32_t g_loc_updated_tick = 0;
 
@@ -106,7 +109,13 @@ static void publish_location(bool is_offline_replay)
     }
 
     if (app_mqtt_is_connected() && !is_offline_replay) {
-        app_mqtt_publish_telemetry(json, json_len);
+        /* 复制到静态缓冲区，publish 前先 free，避免 free 与 MQTT 异步操作并发 */
+        static char s_loc_buf[512];
+        int copy_len = json_len < (int)sizeof(s_loc_buf) ? json_len : (int)sizeof(s_loc_buf) - 1;
+        memcpy(s_loc_buf, json, copy_len);
+        s_loc_buf[copy_len] = '\0';
+        free(json);
+        app_mqtt_publish_telemetry(s_loc_buf, copy_len);
         APP_LOGI("LOC #%lu publish ok", (unsigned long)seq);
     } else {
 #if (APP_BUILD_VERSION == APP_BUILD_STANDARD)
@@ -126,24 +135,37 @@ static void publish_location(bool is_offline_replay)
         APP_LOGW("LOC #%lu dropped (mqtt disconnected, no cache in sample build)",
                  (unsigned long)seq);
 #endif
+        free(json);
     }
-    free(json);
 }
 
 /* ===== 上报状态 ===== */
+/* 用静态缓冲区手工拼 JSON，避免 malloc/free 与 cmmqtt-m 任务的异步
+ * malloc/free 并发导致堆损坏（newlib malloc 非线程安全） */
 static void publish_state(const char *online_status)
 {
-    char *json = NULL;
-    int json_len = 0;
-    if (app_protocol_build_state(g_imei, online_status, g_last_soc,
-                                  APP_FIRMWARE_VERSION, g_last_rssi,
-                                  g_charging_status,
-                                  &json, &json_len) == 0) {
-        if (app_mqtt_is_connected()) {
-            app_mqtt_publish_telemetry(json, json_len);
-            APP_LOGI("state %s published", online_status);
-        }
-        free(json);
+    static char s_json[512];
+    char ts[24];
+    app_util_format_rfc3339(cm_rtc_get_current_time(), ts, sizeof(ts));
+
+    int len = snprintf(s_json, sizeof(s_json),
+        "{\"event_type\":\"state\""
+        ",\"message_id\":\"state_%s_%s\""
+        ",\"imei\":\"%s\""
+        ",\"device_sn\":\"%s\""
+        ",\"online_status\":\"%s\""
+        ",\"event_time\":\"%s\""
+        ",\"battery_level\":%d"
+        ",\"firmware_version\":\"%s\""
+        ",\"network_type\":\"LTE\""
+        ",\"signal_strength\":%d"
+        ",\"charging_status\":%d}",
+        g_imei, ts, g_imei, g_imei, online_status, ts,
+        g_last_soc, APP_FIRMWARE_VERSION, g_last_rssi, g_charging_status);
+
+    if (app_mqtt_is_connected()) {
+        app_mqtt_publish_telemetry(s_json, len);
+        APP_LOGI("state %s published", online_status);
     }
 }
 
@@ -162,12 +184,9 @@ static void mqtt_event_cb(app_mqtt_event_e evt, void *data)
 {
     switch (evt) {
     case APP_MQTT_EVT_CONNECTED:
-        app_mqtt_subscribe_rpc();
-        publish_state(APP_STATUS_ONLINE);
-#if (APP_BUILD_VERSION == APP_BUILD_STANDARD)
-        /* 标准版：连接成功后触发离线补传 */
-        app_offline_cache_replay(offline_replay_cb);
-#endif
+        /* 不在回调中调用 MQTT API（重入会导致堆损坏崩溃），
+         * 仅设置标志，由 main_task 检测后执行 subscribe/publish */
+        g_mqtt_just_connected = true;
         break;
     case APP_MQTT_EVT_SUBSCRIBED:
         APP_LOGI("rpc subscribed");
@@ -405,6 +424,17 @@ static void main_task(void *arg)
 
         app_mode_e mode = app_mode_get();
         uint32_t interval = app_mode_get_loc_interval_ms();
+
+        /* MQTT 连接成功后执行 subscribe + publish ONLINE
+         * 不能在 MQTT 回调中调用这些 API，故在主循环中检测标志 */
+        if (g_mqtt_just_connected) {
+            g_mqtt_just_connected = false;
+            app_mqtt_subscribe_rpc();
+            publish_state(APP_STATUS_ONLINE);
+#if (APP_BUILD_VERSION == APP_BUILD_STANDARD)
+            app_offline_cache_replay(offline_replay_cb);
+#endif
+        }
 
         /* GPS 模式切换控制（需求 1.2.4：超省电模式不进行定位）
          * 进入超省电模式：切超低功耗 → 关闭 UART（双重省电）

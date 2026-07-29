@@ -1,2806 +1,731 @@
-[07-29 16:35:08:408]
-[07-29 16:35:08:408]
-[07-29 16:35:08:408][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
-[07-29 16:35:08:408][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
-[07-29 16:35:08:408][INFO: Main      ] 
-[07-29 16:35:08:408][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
-[07-29 16:35:08:408][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
-[07-29 16:35:08:408][INFO: QspiFlash ] Detecting QSPI flash devices...
-[07-29 16:35:08:408][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
-[07-29 16:35:08:408][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
-[07-29 16:35:08:408][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
-[07-29 16:35:08:408][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
-[07-29 16:35:08:408][INFO: Crypto    ] Initializing crypto library...
-[07-29 16:35:08:408][INFO: Main      ] Running in normal booting mode.
-[07-29 16:35:08:408][INFO: Main      ] Loading...
-[07-29 16:35:08:408][INFO: Bl1Main   ] Welcome to boot rom.
-[07-29 16:35:08:408][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
-[07-29 16:35:08:408][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
-[07-29 16:35:08:408][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
-[07-29 16:35:08:408][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:08:408][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
-[07-29 16:35:08:408][INFO: Bl1Main   ] BL1: OKay.
-[07-29 16:35:08:408][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
-[07-29 16:35:08:408][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
-[07-29 16:35:08:408][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:08:408][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
-[07-29 16:35:08:408][INFO: Bl1Main   ] BL1: OKay.
-[07-29 16:35:09:280][INFO: UsbArch   ] usb phy reg: 0xd42070a4 = 0x189b
-[07-29 16:35:09:393][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:09:393][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
-[07-29 16:35:09:393]
-[07-29 16:35:09:393][BOOT33]VB_VERSION_DATE   :[20241210]
-[07-29 16:35:09:681]
-[07-29 16:35:09:681] ** PC      : 0x80017000
-[07-29 16:35:09:721]Version: SDK_1.011.144 Apr 22 2025 18:01:58
+[07-29 21:27:47:381]
+[07-29 21:27:47:381]
+[07-29 21:27:47:381][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
+[07-29 21:27:47:381][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
+[07-29 21:27:47:381][INFO: Main      ] 
+[07-29 21:27:47:381][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
+[07-29 21:27:47:381][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
+[07-29 21:27:47:381][INFO: QspiFlash ] Detecting QSPI flash devices...
+[07-29 21:27:47:381][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
+[07-29 21:27:47:381][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
+[07-29 21:27:47:381][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
+[07-29 21:27:47:381][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
+[07-29 21:27:47:381][INFO: Crypto    ] Initializing crypto library...
+[07-29 21:27:47:381][INFO: Main      ] Running in normal booting mode.
+[07-29 21:27:47:381][INFO: Main      ] Loading...
+[07-29 21:27:47:381][INFO: Bl1Main   ] Welcome to boot rom.
+[07-29 21:27:47:381][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
+[07-29 21:27:47:381][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
+[07-29 21:27:47:381][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
+[07-29 21:27:47:381][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[07-29 21:27:47:381][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
+[07-29 21:27:47:381][INFO: Bl1Main   ] BL1: OKay.
+[07-29 21:27:47:381][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
+[07-29 21:27:47:381][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
+[07-29 21:27:47:381][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[07-29 21:27:47:398][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
+[07-29 21:27:47:398][INFO: Bl1Main   ] BL1: OKay.
+[07-29 21:27:48:281][INFO: UsbArch   ] usb phy reg: 0xd42070a4 = 0x189b
+[07-29 21:27:48:385][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[07-29 21:27:48:385][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
+[07-29 21:27:48:385]
+[07-29 21:27:48:385][BOOT33]VB_VERSION_DATE   :[20241210]
+[07-29 21:27:48:673]
+[07-29 21:27:48:673] ** PC      : 0x80017000
+[07-29 21:27:48:714]Version: SDK_1.011.144 Apr 22 2025 18:01:58
 
-[07-29 16:35:09:721]Ac 4, Board 2, DKB 1
+[07-29 21:27:48:714]Ac 4, Board 2, DKB 1
 
-[07-29 16:35:09:721]PSRAM fuse: 13
+[07-29 21:27:48:714]PSRAM fuse: 13
 
-[07-29 16:35:09:721]
+[07-29 21:27:48:714]
 
-[07-29 16:35:09:721]Cinit 2
+[07-29 21:27:48:714]Cinit 2
 
-[07-29 16:35:09:721]Flash type: nvm 0, factory 0, fota 0
+[07-29 21:27:48:714]Flash type: nvm 0, factory 0, fota 0
 
-[07-29 16:35:09:721]Phase1Inits
+[07-29 21:27:48:714]Phase1Inits
 
-[07-29 16:35:09:721]diag Phase1 Init
+[07-29 21:27:48:714]diag Phase1 Init
 
-[07-29 16:35:09:751]dro_efuse = 135
+[07-29 21:27:48:744]dro_efuse = 135
 
-[07-29 16:35:09:751]profile num = 2
+[07-29 21:27:48:744]profile num = 2
 
-[07-29 16:35:09:751]CRNLR_SVC_FP[0] = 0x29
+[07-29 21:27:48:744]CRNLR_SVC_FP[0] = 0x29
 
-[07-29 16:35:09:751]CRNLR_SVC_FP[1] = 0x29
+[07-29 21:27:48:744]CRNLR_SVC_FP[1] = 0x29
 
-[07-29 16:35:09:751]CRNLR_SVC_FP[2] = 0x29
+[07-29 21:27:48:744]CRNLR_SVC_FP[2] = 0x29
 
-[07-29 16:35:09:751]CRNLR_SVC_FP[3] = 0x33
+[07-29 21:27:48:744]CRNLR_SVC_FP[3] = 0x33
 
-[07-29 16:35:09:751]Bootup is silent
+[07-29 21:27:48:744]Bootup not silent
 
-[07-29 16:35:09:751][ELOOP] __cm_eloop_init 0x7e2626e0,128
+[07-29 21:27:48:744][ELOOP] __cm_eloop_init 0x7e2626e0,128
 
-[07-29 16:35:09:873][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
+[07-29 21:27:48:841][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[07-29 16:35:09:873][ELOOP] rdy_list eloop=0x7e2626e0
+[07-29 21:27:48:841][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:09:873][ELOOP] eloop millsec=4294967295 tick=4294967295
+[07-29 21:27:48:841][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[07-29 16:35:09:873]InitTask started
+[07-29 21:27:48:841]InitTask started
 
-[07-29 16:35:09:873]Chip ID: 0xb01605
+[07-29 21:27:48:841]Chip ID: 0xb01605
 
-[07-29 16:35:09:873]PS_NONCACHE_DATA_ZI rf [0x7e389300]
+[07-29 21:27:48:841]PS_NONCACHE_DATA_ZI rf [0x7e389300]
 
-[07-29 16:35:09:873]check unpressed rf/dsp size,rf [0x0000f000],dsp [0x00040800]
+[07-29 21:27:48:841]check unpressed rf/dsp size,rf [0x0000f000],dsp [0x00040800]
 
-[07-29 16:35:09:873]Crane mpu configure
+[07-29 21:27:48:841]Crane mpu configure
 
-[07-29 16:35:09:873]start file system init
+[07-29 21:27:48:841]start file system init
 
-[07-29 16:35:09:873]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d4000, reserved_end_addr=0x2d7000
+[07-29 21:27:48:841]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d4000, reserved_end_addr=0x2d7000
 
-[07-29 16:35:09:873]
+[07-29 21:27:48:841]
 
-[07-29 16:35:09:873]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
+[07-29 21:27:48:841]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
 
-[07-29 16:35:09:873]qspi_nor_set_flash_block_protect:write status register finished.
+[07-29 21:27:48:841]qspi_nor_set_flash_block_protect:write status register finished.
 
-[07-29 16:35:09:873]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
+[07-29 21:27:48:841]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
 
-[07-29 16:35:09:873]flash_protect_area_type=12
+[07-29 21:27:48:841]flash_protect_area_type=12
 
-[07-29 16:35:09:873]
+[07-29 21:27:48:841]
 
-[07-29 16:35:09:873]SPI Nor/NAND flash init success
+[07-29 21:27:48:841]SPI Nor/NAND flash init success
 
-[07-29 16:35:09:873]
+[07-29 21:27:48:841]
 
-[07-29 16:35:09:873]FDI_Transport_Fsys_Register: 0, C:/
+[07-29 21:27:48:841]FDI_Transport_Fsys_Register: 0, C:/
 
-[07-29 16:35:09:873]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
+[07-29 21:27:48:841]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
 
-[07-29 16:35:09:873]LfsGrpCnt 5
+[07-29 21:27:48:868]LfsGrpCnt 5
 
-[07-29 16:35:09:873]lfs root is valid
+[07-29 21:27:48:868]lfs root is valid
 
-[07-29 16:35:09:873][PTN 0] free size: 430080
+[07-29 21:27:48:868][PTN 0] free size: 430080
 
-[07-29 16:35:09:873]lfs[PTN 0] init success
+[07-29 21:27:48:868]lfs[PTN 0] init success
 
-[07-29 16:35:09:873]OnKeyPoweroff_Task
+[07-29 21:27:48:868]OnKeyPoweroff_Task
 
-[07-29 16:35:09:873]eeHandlerPhase2Init
+[07-29 21:27:48:868]eeHandlerPhase2Init
 
-[07-29 16:35:09:990][ cmlog ]netcard type = 16 cfg = 0
+[07-29 21:27:48:983][ cmlog ]netcard type = 16 cfg = 0
 
-[07-29 16:35:09:990]Usb mode 0, descriptor 7[ cmlog ]usb2com queue send err(status)
+[07-29 21:27:48:983]Usb mode 0, descr[ cmlog ]usb2com queue send err(status)
 
-[07-29 16:35:09:990]0
+[07-29 21:27:48:983]iptor 70
 
-[07-29 16:35:09:990]USIMPhase2Init 0
+[07-29 21:27:48:983]USIMPhase2Init 0
 
-[07-29 16:35:09:990]
+[07-29 21:27:48:983]
 
-[07-29 16:35:09:990]copy rf size[0x0000f000] to [0x7e000000]
+[07-29 21:27:48:983]copy rf size[0x0000f000] to [0x7e000000]
 
-[07-29 16:35:09:990]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+[07-29 21:27:48:983]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
 
-[07-29 16:35:09:990]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
+[07-29 21:27:48:983]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
 
-[07-29 16:35:10:039]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+[07-29 21:27:49:032]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
 
-[07-29 16:35:10:039]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
+[07-29 21:27:49:032]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
 
-[07-29 16:35:10:039]power_up_reason: 0x40, power_down_reason: 0x0
+[07-29 21:27:49:032]power_up_reason: 0x2, power_down_reason: 0x0
 
-[07-29 16:35:10:111]InitIPCControl: data:0x0
+[07-29 21:27:49:150]InitIPCControl: data:0x0
 
-[07-29 16:35:10:243]AT command server ready!
+[07-29 21:27:49:263]AT command server ready!
 
-[07-29 16:35:10:243]Booting done
+[07-29 21:27:49:263]Booting done
 
-[07-29 16:35:10:378]SW restart reason: Error reset (WDT)
+[07-29 21:27:49:383]SW restart reason: Normal power on
 
-[07-29 16:35:10:378][ cmlog ]dm nv read err
+[07-29 21:27:49:383][ cmlog ]dm nv read err
 
-[07-29 16:35:10:378][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
+[07-29 21:27:49:383][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
 
-[07-29 16:35:10:378][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023b9d9
+[07-29 21:27:49:383][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023b9d9
 
-[07-29 16:35:10:378][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
+[07-29 21:27:49:383][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
 
-[07-29 16:35:10:378][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x16fb8
+[07-29 21:27:49:383][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x16f18
 
-[07-29 16:35:10:378][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x16fb8
+[07-29 21:27:49:383][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x16f18
 
-[07-29 16:35:10:378][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x7d68
+[07-29 21:27:49:383][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x7d68
 
-[07-29 16:35:10:378][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x7de0,vma:0x802dede0,lma:0x802dede0,sz:0x161c
+[07-29 21:27:49:383][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x7de0,vma:0x802dede0,lma:0x802dede0,sz:0x16bc
 
-[07-29 16:35:10:378][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x165c0,vma:0x7e1df1b8,lma:0x802ed5c0,sz:0x9f8
+[07-29 21:27:49:383][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x16520,vma:0x7e1df078,lma:0x802ed520,sz:0x9f8
 
-[07-29 16:35:10:378][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf08bb0,vma:0x7e1dfbb0,lma:0x7e1dfbb0,sz:0x480
+[07-29 21:27:49:383][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf08a70,vma:0x7e1dfa70,lma:0x7e1dfa70,sz:0xc80
 
-[07-29 16:35:10:378][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x9408,vma:0x7e1d2000,lma:0x802e0408,sz:0xd1b8
+[07-29 21:27:49:383][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x94a8,vma:0x7e1d2000,lma:0x802e04a8,sz:0xd078
 
-[07-29 16:35:10:378][ cmlog ][OPENCPU]:[PET][I] offline cache init count=0
-[07-29 16:35:10:378]
+[07-29 21:27:49:383][ cmlog ][OPENCPU]:[PET][I] offline cache init count=0
+[07-29 21:27:49:383]
 
-[07-29 16:35:10:378][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
-[07-29 16:35:10:378]
+[07-29 21:27:49:383][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
+[07-29 21:27:49:383]
 
-[07-29 16:35:10:429][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
+[07-29 21:27:49:432][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
  0
 
-[07-29 16:35:10:429][ cmlog ]atp10 cmiot AT+COPS=3,0
+[07-29 21:27:49:432][ cmlog ]atp10 cmiot AT+COPS=3,0
  0
 
-[07-29 16:35:10:429][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
+[07-29 21:27:49:432][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
  0
 
-[07-29 16:35:10:429][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
+[07-29 21:27:49:432][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
 
-[07-29 16:35:10:544][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_20260729083513_a975
-[07-29 16:35:10:544]
+[07-29 21:27:49:550][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_19700101003650_1a96
+[07-29 21:27:49:550]
 
-[07-29 16:35:10:544][ cmlog ][OPENCPU]:[PET][I] mode 0 -> 2
-[07-29 16:35:10:544]
+[07-29 21:27:49:550][ cmlog ][OPENCPU]:[PET][I] mode 0 -> 2
+[07-29 21:27:49:550]
 
-[07-29 16:35:10:544][ cmlog ][OPENCPU]:[PET][I] pet tracker start in NORMAL mode
-[07-29 16:35:10:544]
+[07-29 21:27:49:550][ cmlog ][OPENCPU]:[PET][I] pet tracker start in NORMAL mode
+[07-29 21:27:49:550]
 
-[07-29 16:35:10:544][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:10:544]
+[07-29 21:27:49:550][ cmlog ]virt_at_event_queue already exist
+[07-29 21:27:49:550]
 
-[07-29 16:35:10:544][ cmlog ]cm_virt_at_mutex_acquire
+[07-29 21:27:49:550][ cmlog ]cm_virt_at_mutex_acquire
 
-[07-29 16:35:10:544][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+[07-29 21:27:49:550][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
 
-[07-29 16:35:10:544][ cmlog ]cm_virt_at_mutex_release
+[07-29 21:27:49:550][ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
 
-[07-29 16:35:10:544][CM-OC] func:cm_opencpu[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
+[07-29 21:27:49:550]+CEREG: 5,0
 
-[07-29 16:35:10:544]+CEREG: 5,0
+[07-29 21:27:49:550]]
 
-[07-29 16:35:10:544]]
+[07-29 21:27:49:550][ cmlog ]vir_at_wait_get_flag:1
+[07-29 21:27:49:550]
 
-[07-29 16:35:10:544][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:10:544]
+[07-29 21:27:49:550][ cmlog ][-4]get urcdata skip head and tail
 
-[07-29 16:35:10:544][ cmlog ][-4]get urcdata skip head and tail
+[07-29 21:27:49:550][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+[07-29 21:27:49:550]
 
-[07-29 16:35:10:544][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
-[07-29 16:35:10:544]
+[07-29 21:27:49:550][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
 
-[07-29 16:35:10:544][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
+[07-29 21:27:49:550][ cmlog ]dynamic_virt_at_callback
 
-[07-29 16:35:10:544][ cmlog ]dynamic_virt_at_callback
+[07-29 21:27:49:550][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
 
-[07-29 16:35:10:544][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+[07-29 21:27:49:550]OK
 
-[07-29 16:35:10:544]OK
+[07-29 21:27:49:550]]
 
-[07-29 16:35:10:544]]
+[07-29 21:27:49:550][ cmlog ]vir_at_wait_get_flag:0
+[07-29 21:27:49:550]
 
-[07-29 16:35:10:544][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:10:544]
+[07-29 21:27:49:550][ cmlog ][-4]get urcdata skip head and tail
 
-[07-29 16:35:10:544][ cmlog ][-4]get urcdata skip head and tail
+[07-29 21:27:49:550][ cmlog ]memory_buffer len 2, data:[OK]
+[07-29 21:27:49:550]
 
-[07-29 16:35:10:544][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:10:544]
+[07-29 21:27:49:550][ cmlog ]cm_virt_at_mutex_release
 
-[07-29 16:35:10:544][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:10:544]
+[07-29 21:27:49:550][ cmlog ]cm_virt_at_send_sync ret = 0
+[07-29 21:27:49:550]
 
-[07-29 16:35:10:544]_start line:211,ret:0
+[07-29 21:27:49:550][CM-OC] func:cm_opencpu_start line:211,ret:0
 
-[07-29 16:35:10:976][ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
+[07-29 21:27:49:933][ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
 
-[07-29 16:35:10:976]+CEREG: 0
+[07-29 21:27:49:933]+CEREG: 0
 
-[07-29 16:35:10:976]]
+[07-29 21:27:49:933]]
 
-[07-29 16:35:10:976][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:10:976]
+[07-29 21:27:49:933][ cmlog ]vir_at_wait_get_flag:0
+[07-29 21:27:49:933]
 
-[07-29 16:35:10:976][ cmlog ][-4]get urcdata skip head and tail
+[07-29 21:27:49:933][ cmlog ][-4]get urcdata skip head and tail
 
-[07-29 16:35:10:976][ cmlog ]memory_buffer len 9, data:[+CEREG: 0]
-[07-29 16:35:10:976]
+[07-29 21:27:49:933][ cmlog ]memory_buffer len 9, data:[+CEREG: 0]
+[07-29 21:27:49:933]
 
-[07-29 16:35:10:976][ cmlog ][URC]__cm_urc_consult
+[07-29 21:27:49:933][ cmlog ][URC]__cm_urc_consult
 
-[07-29 16:35:10:976][ cmlog ]cm_urc_head is null
-[07-29 16:35:10:976]
+[07-29 21:27:49:933][ cmlog ]cm_urc_head is null
+[07-29 21:27:49:933]
 
-[07-29 16:35:11:603][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:11:603]
+[07-29 21:27:50:605][ cmlog ]virt_at_event_queue already exist
+[07-29 21:27:50:605]
 
-[07-29 16:35:11:603][ cmlog ]__cm_virt_at_task already exist
-[07-29 16:35:11:603]
+[07-29 21:27:50:605][ cmlog ]__cm_virt_at_task already exist
+[07-29 21:27:50:605]
 
-[07-29 16:35:11:603][ cmlog ]cm_virt_at_mutex_acquire
+[07-29 21:27:50:605][ cmlog ]cm_virt_at_mutex_acquire
 
-[07-29 16:35:11:603][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+[07-29 21:27:50:605][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
 
-[07-29 16:35:11:603][ cmlog ]cm_virt_at_[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
+[07-29 21:27:50:605][ cmlog ]cm_virt_at_[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
 
-[07-29 16:35:11:603]+CEREG: 5,0
+[07-29 21:27:50:605]+CEREG: 5,0
 
-[07-29 16:35:11:603]]
+[07-29 21:27:50:605]]
 
-[07-29 16:35:11:603][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:11:603]
+[07-29 21:27:50:605][ cmlog ]vir_at_wait_get_flag:1
+[07-29 21:27:50:605]
 
-[07-29 16:35:11:603][ cmlog ][-4]get urcdata skip head and tail
+[07-29 21:27:50:605][ cmlog ][-4]get urcdata skip head and tail
 
-[07-29 16:35:11:603][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
-[07-29 16:35:11:603]
+[07-29 21:27:50:605][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+[07-29 21:27:50:605]
 
-[07-29 16:35:11:603][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
+[07-29 21:27:50:605][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
 
-[07-29 16:35:11:603][ cmlog ]dynamic_virt_at_callback
+[07-29 21:27:50:605][ cmlog ]dynamic_virt_at_callback
 
-[07-29 16:35:11:603][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+[07-29 21:27:50:605][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
 
-[07-29 16:35:11:603]OK
+[07-29 21:27:50:605]OK
 
-[07-29 16:35:11:603]]
+[07-29 21:27:50:605]]
 
-[07-29 16:35:11:603][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:11:603]
+[07-29 21:27:50:605][ cmlog ]vir_at_wait_get_flag:0
+[07-29 21:27:50:605]
 
-[07-29 16:35:11:603][ cmlog ][-4]get urcdata skip head and tail
+[07-29 21:27:50:605][ cmlog ][-4]get urcdata skip head and tail
 
-[07-29 16:35:11:603][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:11:603]
+[07-29 21:27:50:605][ cmlog ]memory_buffer len 2, data:[OK]
+[07-29 21:27:50:605]
 
-[07-29 16:35:11:603]mutex_release
+[07-29 21:27:50:605]mutex_release
 
-[07-29 16:35:11:603][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:11:603]
+[07-29 21:27:50:605][ cmlog ]cm_virt_at_send_sync ret = 0
+[07-29 21:27:50:605]
 
-[07-29 16:35:12:085][ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
+[07-29 21:27:51:045][ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
 
-[07-29 16:35:12:085]+CEREG: 1,"2670","0AA9FE06",7
+[07-29 21:27:51:045]+CEREG: 1,"2670","0AA9FE06",7
 
-[07-29 16:35:12:085]]
+[07-29 21:27:51:045]]
 
-[07-29 16:35:12:085][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:12:085]
+[07-29 21:27:51:045][ cmlog ]vir_at_wait_get_flag:0
+[07-29 21:27:51:045]
 
-[07-29 16:35:12:085][ cmlog ][-4]get urcdata skip head and tail
+[07-29 21:27:51:045][ cmlog ][-4]get urcdata skip head and tail
 
-[07-29 16:35:12:085][ cmlog ]memory_buffer len 29, data:[+CEREG: 1,"2670","0AA9FE06",7]
-[07-29 16:35:12:085]
+[07-29 21:27:51:045][ cmlog ]memory_buffer len 29, data:[+CEREG: 1,"2670","0AA9FE06",7]
+[07-29 21:27:51:045]
 
-[07-29 16:35:12:085][ cmlog ][URC]__cm_urc_consult
+[07-29 21:27:51:045][ cmlog ][URC]__cm_urc_consult
 
-[07-29 16:35:12:085][ cmlog ]cm_urc_head is null
-[07-29 16:35:12:085]
+[07-29 21:27:51:045][ cmlog ]cm_urc_head is null
+[07-29 21:27:51:045]
 
-[07-29 16:35:12:085][ cmlog ]__cm_daemon_thread 3 1
+[07-29 21:27:51:045][ cmlog ]__cm_daemon_thread 3 1
 
-[07-29 16:35:12:617][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:12:617]
+[07-29 21:27:51:619][ cmlog ]virt_at_event_queue already exist
+[07-29 21:27:51:619]
 
-[07-29 16:35:12:617][ cmlog ]__cm_virt_at_task already exist
-[07-29 16:35:12:617]
+[07-29 21:27:51:619][ cmlog ]__cm_virt_at_task already exist
+[07-29 21:27:51:619]
 
-[07-29 16:35:12:617][ cmlog ]cm_virt_at_mutex_acquire
+[07-29 21:27:51:619][ cmlog ]cm_virt_at_mutex_acquire
 
-[07-29 16:35:12:617][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+[07-29 21:27:51:619][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
 
-[07-29 16:35:12:617][ cmlog ]cm_virt_at_mutex_release
+[07-29 21:27:51:619][ cmlog ]cm_virt_at_mutex_release
 
-[07-29 16:35:13:378][ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
+[07-29 21:27:52:358][ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
 
-[07-29 16:35:13:378]+CEREG: 5,1,"2670","0AA9FE06",7
+[07-29 21:27:52:358]+CEREG: 5,1,"2670","0AA9FE06",7
 
-[07-29 16:35:13:378]]
+[07-29 21:27:52:358]]
 
-[07-29 16:35:13:378][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ]vir_at_wait_get_flag:1
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ cmlog ][-4]get urcdata skip head and tail
+[07-29 21:27:52:358][ cmlog ][-4]get urcdata skip head and tail
 
-[07-29 16:35:13:378][ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2670","0AA9FE06",7]
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2670","0AA9FE06",7]
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
+[07-29 21:27:52:358][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
 
-[07-29 16:35:13:378][ cmlog ]dynamic_virt_at_callback
+[07-29 21:27:52:358][ cmlog ]dynamic_virt_at_callback
 
-[07-29 16:35:13:378][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+[07-29 21:27:52:358][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
 
-[07-29 16:35:13:378]OK
+[07-29 21:27:52:358]OK
 
-[07-29 16:35:13:378]]
+[07-29 21:27:52:358]]
 
-[07-29 16:35:13:378][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ]vir_at_wait_get_flag:0
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ cmlog ][-4]get urcdata skip head and tail
+[07-29 21:27:52:358][ cmlog ][-4]get urcdata skip head and tail
 
-[07-29 16:35:13:378][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ]memory_buffer len 2, data:[OK]
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ]cm_virt_at_send_sync ret = 0
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ cmlog ][OPENCPU]:[PET][I] network ready, cereg=1
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ][OPENCPU]:[PET][I] network ready, cereg=1
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ cmlog ][OPENCPU]:[PET][I] use hardcoded credential (debug)
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ][OPENCPU]:[PET][I] use hardcoded credential (debug)
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ cmlog ][OPENCPU]:[PET][I] mqtt connect 119.23.217.155:18883
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ][OPENCPU]:[PET][I] mqtt connect 119.23.217.155:18883
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ADNS] cm_async_dns_request cid = 1 
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ADNS] cm_async_dns_request cid = 1 
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
-[07-29 16:35:13:378]
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
+[07-29 21:27:52:358]
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
-[07-29 16:35:13:378]
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
+[07-29 21:27:52:358]
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ cmlog ][OPENCPU]:[CMMQTT] client tsk start
-[07-29 16:35:13:378]
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ][OPENCPU]:[CMMQTT] client tsk start
+[07-29 21:27:52:358]
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
-[07-29 16:35:13:378]
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
+[07-29 21:27:52:358]
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ELOOP] register_event eloop 0x7e2626e0,0x802dbb9c,0x7e0ad4f0
+[07-29 21:27:52:358][ELOOP] register_event eloop 0x7e2626e0,0x802dbb9c,0x7e074e40
 
-[07-29 16:35:13:378][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x802dbb9c,0x7e0ad4f0
+[07-29 21:27:52:358][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x802dbb9c,0x7e074e40
 
-[07-29 16:35:13:378][ELOOP] post event=0x7e044be8
+[07-29 21:27:52:358][ELOOP] post event=0x7e044be8
 
-[07-29 16:35:13:378][ELOOP] rdy_list eloop=0x7e2626e0
+[07-29 21:27:52:358][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:13:378][ELOOP] unregister event=0x7e044be8
+[07-29 21:27:52:358][ELOOP] unregister event=0x7e044be8
 
-[07-29 16:35:13:378][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
+[07-29 21:27:52:358][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
 
-[07-29 16:35:13:378][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x8025fab5,0x7e2940ec
+[07-29 21:27:52:358][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x8025fab5,0x7e2940ec
 
-[07-29 16:35:13:378][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
+[07-29 21:27:52:358][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
 
-[07-29 16:35:13:378][ELOOP] eloop_event_init 0x7e044c00,0x7e2626e0,0x8025fab5,0x7e2940ec
+[07-29 21:27:52:358][ELOOP] eloop_event_init 0x7e044c00,0x7e2626e0,0x8025fab5,0x7e2940ec
 
-[07-29 16:35:13:378][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
+[07-29 21:27:52:358][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
 
-[07-29 16:35:13:378][ELOOP] eloop_event_init 0x7e044c18,0x7e2626e0,0x8025fab5,0x7e2940ec
+[07-29 21:27:52:358][ELOOP] eloop_event_init 0x7e044c18,0x7e2626e0,0x8025fab5,0x7e2940ec
 
-[07-29 16:35:13:378]asocket open ok 0 3
+[07-29 21:27:52:358]asocket open ok 0 3
 
-[07-29 16:35:13:378][ cmlog ]ipv4: 1 10.59.197.101 
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ]ipv4: 1 10.67.240.239 
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
-[07-29 16:35:13:378]
-[07-29 16:35:13:378]
+[07-29 21:27:52:358][ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
+[07-29 21:27:52:358]
+[07-29 21:27:52:358]
 
-[07-29 16:35:13:378][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
+[07-29 21:27:52:358][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[07-29 16:35:13:378][ELOOP] rdy_list eloop=0x7e2626e0
+[07-29 21:27:52:358][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:13:378][ELOOP] eloop millsec=4294967295 tick=4294967295
+[07-29 21:27:52:358][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[07-29 16:35:13:466]asocket_cb 3 2
+[07-29 21:27:52:433]asocket_cb 3 2
 
-[07-29 16:35:13:466]asocket_cb 3 4
+[07-29 21:27:52:433]asocket_cb 3 4
 
-[07-29 16:35:13:466][ELOOP] post event=0x7e044c00
+[07-29 21:27:52:433][ELOOP] post event=0x7e044c00
 
-[07-29 16:35:13:466][ELOOP] rdy_list eloop=0x7e2626e0
+[07-29 21:27:52:433][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:13:466]asocket_on_eloop 0x7e044c00,0x7e2940ec
+[07-29 21:27:52:433]asocket_on_eloop 0x7e044c00,0x7e2940ec
 
-[07-29 16:35:13:466]asocket_event 0x7e2940ec,0x7e044c00
+[07-29 21:27:52:433]asocket_event 0x7e2940ec,0x7e044c00
 
-[07-29 16:35:13:466][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
-[07-29 16:35:13:466]
-[07-29 16:35:13:466]
+[07-29 21:27:52:433][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
+[07-29 21:27:52:433]
+[07-29 21:27:52:433]
 
-[07-29 16:35:13:466][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
+[07-29 21:27:52:433][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[07-29 16:35:13:466][ELOOP] rdy_list eloop=0x7e2626e0
+[07-29 21:27:52:433][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:13:466][ELOOP] eloop millsec=4294967295 tick=4294967295
+[07-29 21:27:52:433][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[07-29 16:35:13:466][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
-[07-29 16:35:13:466]
-[07-29 16:35:13:466]
+[07-29 21:27:52:433][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
+[07-29 21:27:52:433]
+[07-29 21:27:52:433]
 
-[07-29 16:35:13:466][ cmlog ][OPENCPU]:[CMMQTT] send len:53
-[07-29 16:35:13:466]
-[07-29 16:35:13:466]
+[07-29 21:27:52:433][ cmlog ][OPENCPU]:[CMMQTT] send len:53
+[07-29 21:27:52:433]
+[07-29 21:27:52:433]
 
-[07-29 16:35:13:658]asocket_cb 3 2
+[07-29 21:27:52:563]asocket_cb 3 2
 
-[07-29 16:35:13:658]asocket_cb 3 10
+[07-29 21:27:52:563]asocket_cb 3 10
 
-[07-29 16:35:13:658][ELOOP] post event=0x7e044c00
+[07-29 21:27:52:563][ELOOP] post event=0x7e044c00
 
-[07-29 16:35:13:658][ELOOP] rdy_list eloop=0x7e2626e0
+[07-29 21:27:52:563][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:13:658]asocket_on_eloop 0x7e044c00,0x7e2940ec
+[07-29 21:27:52:563]asocket_on_eloop 0x7e044c00,0x7e2940ec
 
-[07-29 16:35:13:658]asocket_event 0x7e2940ec,0x7e044c00
+[07-29 21:27:52:563]asocket_event 0x7e2940ec,0x7e044c00
 
-[07-29 16:35:13:658][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[07-29 16:35:13:658]
-[07-29 16:35:13:658]
+[07-29 21:27:52:563][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[07-29 21:27:52:563]
+[07-29 21:27:52:563]
 
-[07-29 16:35:13:658][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
+[07-29 21:27:52:563][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[07-29 16:35:13:658][ELOOP] rdy_list eloop=0x7e2626e0
+[07-29 21:27:52:563][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:13:658][ELOOP] eloop millsec=4294967295 tick=4294967295
+[07-29 21:27:52:563][ELOOP] eloop millsec=429496729asocket_cb 3 0
 
-[07-29 16:35:13:658]asocket_cb 3 0
+[07-29 21:27:52:563][ELOOP] post event=0x7e044be8
 
-[07-29 16:35:13:658][ELOOP] post event=0x7e044be8
+[07-29 21:27:52:563]5 tick=4294967295
 
-[07-29 16:35:13:658][ELOOP] rdy_list eloop=0x7e2626e0
+[07-29 21:27:52:563][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:13:658]asocket_on_eloop 0x7e044be8,0x7e2940ec
+[07-29 21:27:52:563]asocket_on_eloop 0x7e044be8,0x7e2940ec
 
-[07-29 16:35:13:658]asocket_event 0x7e2940ec,0x7e044be8
+[07-29 21:27:52:563]asocket_event 0x7e2940ec,0x7e044be8
 
-[07-29 16:35:13:658][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[07-29 16:35:13:658]
-[07-29 16:35:13:658]
+[07-29 21:27:52:563][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[07-29 21:27:52:563]
+[07-29 21:27:52:563]
 
-[07-29 16:35:13:658][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[07-29 16:35:13:658]
+[07-29 21:27:52:563][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[07-29 21:27:52:563]
 
-[07-29 16:35:13:658][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
+[07-29 21:27:52:563][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[07-29 16:35:13:658][ELOOP] rdy_list eloop=0x7e2626e0
+[07-29 21:27:52:563][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:13:658][ELOOP] eloop millsec=4294967295 tick=4294967295
+[07-29 21:27:52:563][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[07-29 16:35:13:658][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[07-29 16:35:13:658]
-[07-29 16:35:13:658]
+[07-29 21:27:52:563][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[07-29 21:27:52:563]
+[07-29 21:27:52:563]
 
-[07-29 16:35:13:658]asocket_cb 3 1
+[07-29 21:27:52:563]asocket_cb 3 1
 
-[07-29 16:35:13:658][ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
-[07-29 16:35:13:658]
-[07-29 16:35:13:658]
+[07-29 21:27:52:563][ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
+[07-29 21:27:52:563]
+[07-29 21:27:52:563]
 
-[07-29 16:35:13:658][ cmlog ][OPENCPU]:[CMMQTT] send len:34
-[07-29 16:35:13:658]
-[07-29 16:35:13:658]
+[07-29 21:27:52:563][ cmlog ][OPENCPU]:[PET][I] mqtt connected
+[07-29 21:27:52:563]
 
-[07-29 16:35:13:658][ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
-[07-29 16:35:13:658]
-[07-29 16:35:13:658]
+[07-29 21:27:53:573][ cmlog ][OPENCPU]:[CMMQTT] send len:34
+[07-29 21:27:53:573]
+[07-29 21:27:53:573]
 
-[07-29 16:35:13:658][ cmlog ][OPENCPU]:[CMMQTT] send len:294
-[07-29 16:35:13:658]
-[07-29 16:35:13:658]
+[07-29 21:27:53:573][ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
+[07-29 21:27:53:573]
+[07-29 21:27:53:573]
 
-[07-29 16:35:13:658][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:294
-[07-29 16:35:13:658]
-[07-29 16:35:13:658]
+[07-29 21:27:53:573][ cmlog ][OPENCPU]:[CMMQTT] send len:336
+[07-29 21:27:53:573]
+[07-29 21:27:53:573]
 
-[07-29 16:35:13:658][ cmlog ][OPENCPU]:[PET][I] state ONLINE published
-[07-29 16:35:13:658]
+[07-29 21:27:53:573][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:336
+[07-29 21:27:53:573]
+[07-29 21:27:53:573]
 
-[07-29 16:35:13:658]== mcr==0x8f000c,spi_nor_eraseing[0],fota_donwloading[0],RESUME_SUSPEND_TRS[0]
+[07-29 21:27:53:573][ cmlog ][OPENCPU]:[PET][I] state ONLINE published
+[07-29 21:27:53:573]
 
-[07-29 16:35:13:658]
+[07-29 21:27:53:767]asocket_cb 3 2
 
-[07-29 16:35:13:658]EE LOG: LR: 0x7e1dc5f7, PC: 0x7e1dc610, SP: 0x7e043728
+[07-29 21:27:53:767]asocket_cb 3 10
 
-[07-29 16:35:13:658]EE LOG: DESC: DataAbort, FILE: NULL, LINE: 0
+[07-29 21:27:53:767][ELOOP] post event=0x7e044c00
 
-[07-29 16:35:13:658]EE LOG: Task: cmmqtt-m
+[07-29 21:27:53:767]asocket_cb 3 0
 
-[07-29 16:35:13:658]EE LOG: Send Plp Mem Dump CMD
+[07-29 21:27:53:767][ELOOP] post event=0x7e044be8
 
-[07-29 16:35:13:658]EE LOG: Silent Reset
+[07-29 21:27:53:767][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:13:658]FlushPsramCache start
+[07-29 21:27:53:767]asocket_on_eloop 0x7e044c00,0x7e2940ec
 
-[07-29 16:35:13:658]FlushPsramCache done
+[07-29 21:27:53:767]asocket_event 0x7e2940ec,0x7e044c00
 
-[07-29 16:35:14:026]
-[07-29 16:35:14:026]
-[07-29 16:35:14:026][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
-[07-29 16:35:14:026][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
-[07-29 16:35:14:026][INFO: Main      ] 
-[07-29 16:35:14:026][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
-[07-29 16:35:14:026][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
-[07-29 16:35:14:026][INFO: QspiFlash ] Detecting QSPI flash devices...
-[07-29 16:35:14:026][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
-[07-29 16:35:14:026][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
-[07-29 16:35:14:026][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
-[07-29 16:35:14:026][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
-[07-29 16:35:14:026][INFO: Crypto    ] Initializing crypto library...
-[07-29 16:35:14:026][INFO: Main      ] Running in normal booting mode.
-[07-29 16:35:14:026][INFO: Main      ] Loading...
-[07-29 16:35:14:026][INFO: Bl1Main   ] Welcome to boot rom.
-[07-29 16:35:14:026][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
-[07-29 16:35:14:026][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
-[07-29 16:35:14:026][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
-[07-29 16:35:14:026][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:14:026][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
-[07-29 16:35:14:026][INFO: Bl1Main   ] BL1: OKay.
-[07-29 16:35:14:026][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
-[07-29 16:35:14:026][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
-[07-29 16:35:14:026][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:14:026][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
-[07-29 16:35:14:026][INFO: Bl1Main   ] BL1: OKay.
-[07-29 16:35:14:901][INFO: UsbArch   ] usb phy reg: 0xd42070a4 = 0x189b
-[07-29 16:35:15:013][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:15:013][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
-[07-29 16:35:15:013]
-[07-29 16:35:15:013][BOOT33]VB_VERSION_DATE   :[20241210]
-[07-29 16:35:15:302]
-[07-29 16:35:15:302] ** PC      : 0x80017000
-[07-29 16:35:15:342]Version: SDK_1.011.144 Apr 22 2025 18:01:58
+[07-29 21:27:53:767][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[07-29 21:27:53:767]
+[07-29 21:27:53:767]
 
-[07-29 16:35:15:342]Ac 4, Board 2, DKB 1
+[07-29 21:27:53:767]asocket_on_eloop 0x7e044be8,0x7e2940ec
 
-[07-29 16:35:15:342]PSRAM fuse: 13
+[07-29 21:27:53:767]asocket_event 0x7e2940ec,0x7e044be8
 
-[07-29 16:35:15:342]
+[07-29 21:27:53:767][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[07-29 21:27:53:767]
+[07-29 21:27:53:767]
 
-[07-29 16:35:15:342]Cinit 2
+[07-29 21:27:53:767][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:5
+[07-29 21:27:53:767]
 
-[07-29 16:35:15:342]Flash type: nvm 0, factory 0, fota 0
+[07-29 21:27:53:767][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[07-29 16:35:15:342]Phase1Inits
+[07-29 21:27:53:767][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:15:342]diag Phase1 Init
+[07-29 21:27:53:767][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[07-29 16:35:15:372]dro_efuse = 135
+[07-29 21:27:53:767][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:15:372]profile num = 2
+[07-29 21:27:53:767][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[07-29 16:35:15:372]CRNLR_SVC_FP[0] = 0x29
+[07-29 21:27:53:767][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:15:372]CRNLR_SVC_FP[1] = 0x29
+[07-29 21:27:53:767][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[07-29 16:35:15:372]CRNLR_SVC_FP[2] = 0x29
+[07-29 21:27:53:767][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[07-29 21:27:53:767]
+[07-29 21:27:53:767]
 
-[07-29 16:35:15:372]CRNLR_SVC_FP[3] = 0x33
+[07-29 21:27:53:767]asocket_cb 3 1
 
-[07-29 16:35:15:372]Bootup is silent
+[07-29 21:27:53:767][ cmlog ][OPENCPU]:[CMMQTT] pkt type:9,len:5
+[07-29 21:27:53:767]
+[07-29 21:27:53:767]
 
-[07-29 16:35:15:372][ELOOP] __cm_eloop_init 0x7e2626e0,128
+[07-29 21:27:53:767][ cmlog ][OPENCPU]:[PET][I] rpc subscribed
+[07-29 21:27:53:767]
 
-[07-29 16:35:15:502][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
+[07-29 21:27:53:767]asocket_cb 3 2
 
-[07-29 16:35:15:502][ELOOP] rdy_list eloop=0x7e2626e0
+[07-29 21:27:53:767]asocket_cb 3 10
 
-[07-29 16:35:15:502][ELOOP] eloop millsec=4294967295 tick=4294967295
+[07-29 21:27:53:767][ELOOP] post event=0x7e044c00
 
-[07-29 16:35:15:502]InitTask started
+[07-29 21:27:53:767]asocket_cb 3 0
 
-[07-29 16:35:15:502]Chip ID: 0xb01605
+[07-29 21:27:53:767][ELOOP] post event=0x7e044be8
 
-[07-29 16:35:15:502]PS_NONCACHE_DATA_ZI rf [0x7e389300]
+[07-29 21:27:53:767][ cmlog ][OPENCPU]:[PET][I] mqtt subscribed
+[07-29 21:27:53:767]
 
-[07-29 16:35:15:502]check unpressed rf/dsp size,rf [0x0000f000],dsp [0x00040800]
+[07-29 21:27:53:767][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:15:502]Crane mpu configure
+[07-29 21:27:53:767]asocket_on_eloop 0x7e044c00,0x7e2940ec
 
-[07-29 16:35:15:502]start file system init
+[07-29 21:27:53:767]asocket_event 0x7e2940ec,0x7e044c00
 
-[07-29 16:35:15:502]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d4000, reserved_end_addr=0x2d7000
+[07-29 21:27:53:767][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[07-29 21:27:53:767]
+[07-29 21:27:53:767]
 
-[07-29 16:35:15:502]
+[07-29 21:27:53:767]asocket_on_eloop 0x7e044be8,0x7e2940ec
 
-[07-29 16:35:15:502]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
+[07-29 21:27:53:767]asocket_event 0x7e2940ec,0x7e044be8
 
-[07-29 16:35:15:502]qspi_nor_set_flash_block_protect:write status register finished.
+[07-29 21:27:53:767][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[07-29 21:27:53:767]
+[07-29 21:27:53:767]
 
-[07-29 16:35:15:502]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
+[07-29 21:27:53:767][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[07-29 21:27:53:767]
 
-[07-29 16:35:15:502]flash_protect_area_type=12
+[07-29 21:27:53:767][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[07-29 16:35:15:502]
+[07-29 21:27:53:767][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:15:502]SPI Nor/NAND flash init success
+[07-29 21:27:53:767][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[07-29 16:35:15:502]
+[07-29 21:27:53:767][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:15:502]FDI_Transport_Fsys_Register: 0, C:/
+[07-29 21:27:53:767][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[07-29 16:35:15:502]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
+[07-29 21:27:53:767][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:15:520]LfsGrpCnt 5
+[07-29 21:27:53:767][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[07-29 16:35:15:520]lfs root is valid
+[07-29 21:27:53:767][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[07-29 21:27:53:767]
+[07-29 21:27:53:767]
 
-[07-29 16:35:15:520][PTN 0] free size: 430080
+[07-29 21:27:53:767]asocket_cb 3 1
 
-[07-29 16:35:15:520]lfs[PTN 0] init success
+[07-29 21:27:53:767][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+[07-29 21:27:53:767]
+[07-29 21:27:53:767]
 
-[07-29 16:35:15:520]OnKeyPoweroff_Task
+[07-29 21:28:52:567][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:0
+[07-29 21:28:52:567]
+[07-29 21:28:52:567]
 
-[07-29 16:35:15:520]eeHandlerPhase2Init
+[07-29 21:28:52:567][ cmlog ][OPENCPU]:[CMMQTT] send len:2
+[07-29 21:28:52:567]
+[07-29 21:28:52:567]
 
-[07-29 16:35:15:610][ cmlog ]netcard type = 16 cfg = 0
+[07-29 21:28:52:567][ cmlog ][OPENCPU]:[CMMQTT] id:0,pingreq to server
+[07-29 21:28:52:567]
+[07-29 21:28:52:567]
 
-[07-29 16:35:15:610]Usb mode 0, descriptor 70
+[07-29 21:28:52:771]asocket_cb 3 2
 
-[07-29 16:35:15:610][ cmlog ]usb2com queue send err(status)
+[07-29 21:28:52:771]asocket_cb 3 10
 
-[07-29 16:35:15:610]USIMPhase2Init 0
+[07-29 21:28:52:771][ELOOP] post event=0x7e044c00
 
-[07-29 16:35:15:610]
+[07-29 21:28:52:771]asocket_cb 3 0
 
-[07-29 16:35:15:610]copy rf size[0x0000f000] to [0x7e000000]
+[07-29 21:28:52:771][ELOOP] post event=0x7e044be8
 
-[07-29 16:35:15:610]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+[07-29 21:28:52:771][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:15:610]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
+[07-29 21:28:52:771]asocket_on_eloop 0x7e044c00,0x7e2940ec
 
-[07-29 16:35:15:660]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+[07-29 21:28:52:771]asocket_event 0x7e2940ec,0x7e044c00
 
-[07-29 16:35:15:660]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
+[07-29 21:28:52:771][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[07-29 21:28:52:771]
+[07-29 21:28:52:771]
 
-[07-29 16:35:15:660]power_up_reason: 0x40, power_down_reason: 0x0
+[07-29 21:28:52:771]asocket_on_eloop 0x7e044be8,0x7e2940ec
 
-[07-29 16:35:15:732]InitIPCControl: data:0x0
+[07-29 21:28:52:771]asocket_event 0x7e2940ec,0x7e044be8
 
-[07-29 16:35:15:878]AT command server ready!
+[07-29 21:28:52:771][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[07-29 21:28:52:771]
+[07-29 21:28:52:771]
 
-[07-29 16:35:15:878]Booting done
+[07-29 21:28:52:771][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:2
+[07-29 21:28:52:771]
 
-[07-29 16:35:15:987]SW restart reason: Error reset (WDT)
+[07-29 21:28:52:771][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[07-29 16:35:15:987][ cmlog ]dm nv read err
+[07-29 21:28:52:771][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:15:987][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
+[07-29 21:28:52:771][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[07-29 16:35:15:987][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023b9d9
+[07-29 21:28:52:771][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:15:987][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
+[07-29 21:28:52:771][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[07-29 16:35:15:987][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x16fb8
+[07-29 21:28:52:771][ELOOP] rdy_list eloop=0x7e2626e0
 
-[07-29 16:35:15:987][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x16fb8
+[07-29 21:28:52:771][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[07-29 16:35:15:987][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x7d68
+[07-29 21:28:52:771][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[07-29 21:28:52:771]
+[07-29 21:28:52:771]
 
-[07-29 16:35:15:987][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x7de0,vma:0x802dede0,lma:0x802dede0,sz:0x161c
+[07-29 21:28:52:771]asocket_cb 3 1
 
-[07-29 16:35:15:987][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x165c0,vma:0x7e1df1b8,lma:0x802ed5c0,sz:0x9f8
+[07-29 21:28:52:771][ cmlog ][OPENCPU]:[CMMQTT] pkt type:13,len:2
+[07-29 21:28:52:771]
+[07-29 21:28:52:771]
 
-[07-29 16:35:16:016][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf08bb0,vma:0x7e1dfbb0,lma:0x7e1dfbb0,sz:0x480
-
-[07-29 16:35:16:016][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x9408,vma:0x7e1d2000,lma:0x802e0408,sz:0xd1b8
-
-[07-29 16:35:16:016][ cmlog ][OPENCPU]:[PET][I] offline cache init count=0
-[07-29 16:35:16:016]
-
-[07-29 16:35:16:016][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
-[07-29 16:35:16:016]
-
-[07-29 16:35:16:063][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
- 0
-
-[07-29 16:35:16:063][ cmlog ]atp10 cmiot AT+COPS=3,0
- 0
-
-[07-29 16:35:16:063][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
- 0
-
-[07-29 16:35:16:063][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
-
-[07-29 16:35:16:181][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_20260729083518_a972
-[07-29 16:35:16:181]
-
-[07-29 16:35:16:181][ cmlog ][OPENCPU]:[PET][I] mode 0 -> 2
-[07-29 16:35:16:181]
-
-[07-29 16:35:16:181][ cmlog ][OPENCPU]:[PET][I] pet tracker start in NORMAL mode
-[07-29 16:35:16:181]
-
-[07-29 16:35:16:181][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:16:181]
-
-[07-29 16:35:16:181][ cmlog ]cm_virt_at_mutex_acquire
-
-[07-29 16:35:16:181][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[07-29 16:35:16:181][ cmlog ]cm_virt_at_mutex_release
-
-[07-29 16:35:16:181][CM-OC] fun[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
-
-[07-29 16:35:16:181]+CEREG: 5,0
-
-[07-29 16:35:16:181]]
-
-[07-29 16:35:16:181][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:16:181]
-
-[07-29 16:35:16:181][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:16:181][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
-[07-29 16:35:16:181]
-
-[07-29 16:35:16:181][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[07-29 16:35:16:181][ cmlog ]dynamic_virt_at_callback
-
-[07-29 16:35:16:181][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[07-29 16:35:16:181]OK
-
-[07-29 16:35:16:181]]
-
-[07-29 16:35:16:181][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:16:181]
-
-[07-29 16:35:16:181][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:16:181][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:16:181]
-
-[07-29 16:35:16:181][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:16:181]
-
-[07-29 16:35:16:181]c:cm_opencpu_start line:211,ret:0
-
-[07-29 16:35:16:575][ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
-
-[07-29 16:35:16:575]+CEREG: 0
-
-[07-29 16:35:16:575]]
-
-[07-29 16:35:16:575][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:16:575]
-
-[07-29 16:35:16:575][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:16:575][ cmlog ]memory_buffer len 9, data:[+CEREG: 0]
-[07-29 16:35:16:575]
-
-[07-29 16:35:16:575][ cmlog ][URC]__cm_urc_consult
-
-[07-29 16:35:16:575][ cmlog ]cm_urc_head is null
-[07-29 16:35:16:575]
-
-[07-29 16:35:17:240][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:17:240]
-
-[07-29 16:35:17:240][ cmlog ]__cm_virt_at_task already exist
-[07-29 16:35:17:240]
-
-[07-29 16:35:17:240][ cmlog ]cm_virt_at_mutex_acquire
-
-[07-29 16:35:17:240][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[07-29 16:35:17:240][ cmlog ]cm_virt_at_mutex[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
-
-[07-29 16:35:17:240]+CEREG: 5,0
-
-[07-29 16:35:17:240]]
-
-[07-29 16:35:17:240][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:17:240]
-
-[07-29 16:35:17:240][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:17:240][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
-[07-29 16:35:17:240]
-
-[07-29 16:35:17:240][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[07-29 16:35:17:240][ cmlog ]dynamic_virt_at_callback
-
-[07-29 16:35:17:240][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[07-29 16:35:17:240]OK
-
-[07-29 16:35:17:240]]
-
-[07-29 16:35:17:240][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:17:240]
-
-[07-29 16:35:17:240][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:17:240][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:17:240]
-
-[07-29 16:35:17:240]_release
-
-[07-29 16:35:17:240][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:17:240]
-
-[07-29 16:35:17:625][ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
-
-[07-29 16:35:17:625]+CEREG: 1,"2670","0AA9FE06",7
-
-[07-29 16:35:17:625]]
-
-[07-29 16:35:17:625][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:17:625]
-
-[07-29 16:35:17:625][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:17:625][ cmlog ]memory_buffer len 29, data:[+CEREG: 1,"2670","0AA9FE06",7]
-[07-29 16:35:17:625]
-
-[07-29 16:35:17:625][ cmlog ][URC]__cm_urc_consult
-
-[07-29 16:35:17:625][ cmlog ]cm_urc_head is null
-[07-29 16:35:17:625]
-
-[07-29 16:35:17:625][ cmlog ]__cm_daemon_thread 3 1
-
-[07-29 16:35:18:253][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:18:253]
-
-[07-29 16:35:18:253][ cmlog ]__cm_virt_at_task already exist
-[07-29 16:35:18:253]
-
-[07-29 16:35:18:253][ cmlog ]cm_virt_at_mutex_acquire
-
-[07-29 16:35:18:253][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[07-29 16:35:18:253][ cmlog ]cm_virt_at_mutex_release
-
-[07-29 16:35:18:847][ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
-
-[07-29 16:35:18:847]+CEREG: 5,1,"2670","0AA9FE06",7
-
-[07-29 16:35:18:847]]
-
-[07-29 16:35:18:847][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:18:847]
-
-[07-29 16:35:18:847][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:18:847][ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2670","0AA9FE06",7]
-[07-29 16:35:18:847]
-
-[07-29 16:35:18:847][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[07-29 16:35:18:847][ cmlog ]dynamic_virt_at_callback
-
-[07-29 16:35:18:847][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[07-29 16:35:18:847]OK
-
-[07-29 16:35:18:847]]
-
-[07-29 16:35:18:847][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:18:847]
-
-[07-29 16:35:18:847][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:18:847][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:18:847]
-
-[07-29 16:35:18:847][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:18:847]
-
-[07-29 16:35:18:847][ cmlog ][OPENCPU]:[PET][I] network ready, cereg=1
-[07-29 16:35:18:847]
-
-[07-29 16:35:18:847][ cmlog ][OPENCPU]:[PET][I] use hardcoded credential (debug)
-[07-29 16:35:18:847]
-
-[07-29 16:35:18:847][ cmlog ][OPENCPU]:[PET][I] mqtt connect 119.23.217.155:18883
-[07-29 16:35:18:847]
-
-[07-29 16:35:18:847][ADNS] cm_async_dns_request cid = 1 
-[07-29 16:35:18:847]
-
-[07-29 16:35:18:847][ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
-[07-29 16:35:18:847]
-[07-29 16:35:18:847]
-
-[07-29 16:35:18:847][ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
-[07-29 16:35:18:847]
-[07-29 16:35:18:847]
-
-[07-29 16:35:18:847][ cmlog ][OPENCPU]:[CMMQTT] client tsk start
-[07-29 16:35:18:847]
-[07-29 16:35:18:847]
-
-[07-29 16:35:18:847][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
-[07-29 16:35:18:927]
-[07-29 16:35:18:927]
-
-[07-29 16:35:18:927][ELOOP] register_event eloop 0x7e2626e0,0x802dbb9c,0x7e0b1ba8
-
-[07-29 16:35:18:927][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x802dbb9c,0x7e0b1ba8
-
-[07-29 16:35:18:927][ELOOP] post event=0x7e044be8
-
-[07-29 16:35:18:927][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:18:927][ELOOP] unregister event=0x7e044be8
-
-[07-29 16:35:18:927][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:18:927][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:18:927][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:18:927][ELOOP] eloop_event_init 0x7e044c00,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:18:927][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:18:927][ELOOP] eloop_event_init 0x7e044c18,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:18:927]asocket open ok 0 3
-
-[07-29 16:35:18:927][ cmlog ]ipv4: 1 10.126.102.43 
-[07-29 16:35:18:927]
-
-[07-29 16:35:18:927][ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
-[07-29 16:35:18:927]
-[07-29 16:35:18:927]
-
-[07-29 16:35:18:927][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:18:927][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:18:927][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:19:038]asocket_cb 3 2
-
-[07-29 16:35:19:038]asocket_cb 3 4
-
-[07-29 16:35:19:038][ELOOP] post event=0x7e044c00
-
-[07-29 16:35:19:038][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:19:038]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[07-29 16:35:19:038]asocket_event 0x7e2940ec,0x7e044c00
-
-[07-29 16:35:19:038][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
-[07-29 16:35:19:038]
-[07-29 16:35:19:038]
-
-[07-29 16:35:19:038][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:19:038][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:19:038][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:19:038][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
-[07-29 16:35:19:038]
-[07-29 16:35:19:038]
-
-[07-29 16:35:19:038][ cmlog ][OPENCPU]:[CMMQTT] send len:53
-[07-29 16:35:19:038]
-[07-29 16:35:19:038]
-
-[07-29 16:35:19:263]asocket_cb 3 2
-
-[07-29 16:35:19:263]asocket_cb 3 10
-
-[07-29 16:35:19:263][ELOOP] post event=0x7e044c00
-
-[07-29 16:35:19:263][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:19:263]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[07-29 16:35:19:263]asocket_event 0x7e2940ec,0x7e044c00
-
-[07-29 16:35:19:263][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[07-29 16:35:19:263]
-[07-29 16:35:19:263]
-
-[07-29 16:35:19:263][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:19:263][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:19:263][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:19:263]asocket_cb 3 0
-
-[07-29 16:35:19:263][ELOOP] post event=0x7e044be8
-
-[07-29 16:35:19:263][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:19:263]asocket_on_eloop 0x7e044be8,0x7e2940ec
-
-[07-29 16:35:19:263]asocket_event 0x7e2940ec,0x7e044be8
-
-[07-29 16:35:19:263][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[07-29 16:35:19:263]
-[07-29 16:35:19:263]
-
-[07-29 16:35:19:263][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[07-29 16:35:19:263]
-
-[07-29 16:35:19:263][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:19:263][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:19:263][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:19:263][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[07-29 16:35:19:263]
-[07-29 16:35:19:263]
-
-[07-29 16:35:19:263]asocket_cb 3 1
-
-[07-29 16:35:19:263][ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
-[07-29 16:35:19:263]
-[07-29 16:35:19:263]
-
-[07-29 16:35:19:263][ cmlog ][OPENCPU]:[CMMQTT] send len:34
-[07-29 16:35:19:263]
-[07-29 16:35:19:263]
-
-[07-29 16:35:19:263][ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
-[07-29 16:35:19:263]
-[07-29 16:35:19:263]
-
-[07-29 16:35:19:263][ cmlog ][OPENCPU]:[CMMQTT] send len:317
-[07-29 16:35:19:263]
-[07-29 16:35:19:263]
-
-[07-29 16:35:19:263][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:317
-[07-29 16:35:19:263]
-[07-29 16:35:19:263]
-
-[07-29 16:35:19:263][ cmlog ][OPENCPU]:[PET][I] state ONLINE published
-[07-29 16:35:19:263]
-
-[07-29 16:35:19:263]== mcr==0x8f000c,spi_nor_eraseing[0],fota_donwloading[0],RESUME_SUSPEND_TRS[0]
-
-[07-29 16:35:19:263]
-
-[07-29 16:35:19:263]EE LOG: LR: 0x7e1dc5f7, PC: 0x7e1dc610, SP: 0x7e043728
-
-[07-29 16:35:19:263]EE LOG: DESC: DataAbort, FILE: NULL, LINE: 0
-
-[07-29 16:35:19:263]EE LOG: Task: cmmqtt-m
-
-[07-29 16:35:19:263]EE LOG: Send Plp Mem Dump CMD
-
-[07-29 16:35:19:263]EE LOG: Silent Reset
-
-[07-29 16:35:19:263]FlushPsramCache start
-
-[07-29 16:35:19:263]FlushPsramCache done
-
-[07-29 16:35:19:628]
-[07-29 16:35:19:628]
-[07-29 16:35:19:628][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
-[07-29 16:35:19:628][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
-[07-29 16:35:19:628][INFO: Main      ] 
-[07-29 16:35:19:628][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
-[07-29 16:35:19:628][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
-[07-29 16:35:19:628][INFO: QspiFlash ] Detecting QSPI flash devices...
-[07-29 16:35:19:628][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
-[07-29 16:35:19:628][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
-[07-29 16:35:19:628][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
-[07-29 16:35:19:628][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
-[07-29 16:35:19:628][INFO: Crypto    ] Initializing crypto library...
-[07-29 16:35:19:628][INFO: Main      ] Running in normal booting mode.
-[07-29 16:35:19:628][INFO: Main      ] Loading...
-[07-29 16:35:19:628][INFO: Bl1Main   ] Welcome to boot rom.
-[07-29 16:35:19:628][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
-[07-29 16:35:19:628][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
-[07-29 16:35:19:628][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
-[07-29 16:35:19:628][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:19:628][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
-[07-29 16:35:19:628][INFO: Bl1Main   ] BL1: OKay.
-[07-29 16:35:19:628][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
-[07-29 16:35:19:628][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
-[07-29 16:35:19:628][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:19:628][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
-[07-29 16:35:19:628][INFO: Bl1Main   ] BL1: OKay.
-[07-29 16:35:20:503][INFO: UsbArch   ] usb phy reg: 0xd42070a4 = 0x189b
-[07-29 16:35:20:615][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:20:615][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
-[07-29 16:35:20:615]
-[07-29 16:35:20:615][BOOT33]VB_VERSION_DATE   :[20241210]
-[07-29 16:35:20:902]
-[07-29 16:35:20:902] ** PC      : 0x80017000
-[07-29 16:35:20:945]Version: SDK_1.011.144 Apr 22 2025 18:01:58
-
-[07-29 16:35:20:945]Ac 4, Board 2, DKB 1
-
-[07-29 16:35:20:945]PSRAM fuse: 13
-
-[07-29 16:35:20:945]
-
-[07-29 16:35:20:945]Cinit 2
-
-[07-29 16:35:20:945]Flash type: nvm 0, factory 0, fota 0
-
-[07-29 16:35:20:945]Phase1Inits
-
-[07-29 16:35:20:945]diag Phase1 Init
-
-[07-29 16:35:20:973]dro_efuse = 135
-
-[07-29 16:35:20:973]profile num = 2
-
-[07-29 16:35:20:973]CRNLR_SVC_FP[0] = 0x29
-
-[07-29 16:35:20:973]CRNLR_SVC_FP[1] = 0x29
-
-[07-29 16:35:20:973]CRNLR_SVC_FP[2] = 0x29
-
-[07-29 16:35:20:973]CRNLR_SVC_FP[3] = 0x33
-
-[07-29 16:35:20:973]Bootup is silent
-
-[07-29 16:35:20:973][ELOOP] __cm_eloop_init 0x7e2626e0,128
-
-[07-29 16:35:21:096][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:21:096][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:21:096][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:21:096]InitTask started
-
-[07-29 16:35:21:096]Chip ID: 0xb01605
-
-[07-29 16:35:21:096]PS_NONCACHE_DATA_ZI rf [0x7e389300]
-
-[07-29 16:35:21:096]check unpressed rf/dsp size,rf [0x0000f000],dsp [0x00040800]
-
-[07-29 16:35:21:096]Crane mpu configure
-
-[07-29 16:35:21:096]start file system init
-
-[07-29 16:35:21:096]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d4000, reserved_end_addr=0x2d7000
-
-[07-29 16:35:21:096]
-
-[07-29 16:35:21:096]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
-
-[07-29 16:35:21:096]qspi_nor_set_flash_block_protect:write status register finished.
-
-[07-29 16:35:21:096]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
-
-[07-29 16:35:21:096]flash_protect_area_type=12
-
-[07-29 16:35:21:096]
-
-[07-29 16:35:21:096]SPI Nor/NAND flash init success
-
-[07-29 16:35:21:096]
-
-[07-29 16:35:21:096]FDI_Transport_Fsys_Register: 0, C:/
-
-[07-29 16:35:21:096]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
-
-[07-29 16:35:21:096]LfsGrpCnt 5
-
-[07-29 16:35:21:096]lfs root is valid
-
-[07-29 16:35:21:096][PTN 0] free size: 430080
-
-[07-29 16:35:21:096]lfs[PTN 0] init success
-
-[07-29 16:35:21:096]OnKeyPoweroff_Task
-
-[07-29 16:35:21:096]eeHandlerPhase2Init
-
-[07-29 16:35:21:213][ cmlog ]netcard type = 16 cfg = 0
-
-[07-29 16:35:21:213]Usb mode 0, descriptor 7[ cmlog ]usb2com queue send err(status)
-
-[07-29 16:35:21:213]0
-
-[07-29 16:35:21:213]USIMPhase2Init 0
-
-[07-29 16:35:21:213]
-
-[07-29 16:35:21:213]copy rf size[0x0000f000] to [0x7e000000]
-
-[07-29 16:35:21:213]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
-
-[07-29 16:35:21:213]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
-
-[07-29 16:35:21:261]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
-
-[07-29 16:35:21:261]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
-
-[07-29 16:35:21:261]power_up_reason: 0x40, power_down_reason: 0x0
-
-[07-29 16:35:21:334]InitIPCControl: data:0x0
-
-[07-29 16:35:21:466]AT command server ready!
-
-[07-29 16:35:21:466]Booting done
-
-[07-29 16:35:21:600]SW restart reason: Error reset (WDT)
-
-[07-29 16:35:21:600][ cmlog ]dm nv read err
-
-[07-29 16:35:21:600][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
-
-[07-29 16:35:21:600][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023b9d9
-
-[07-29 16:35:21:600][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
-
-[07-29 16:35:21:600][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x16fb8
-
-[07-29 16:35:21:600][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x16fb8
-
-[07-29 16:35:21:600][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x7d68
-
-[07-29 16:35:21:600][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x7de0,vma:0x802dede0,lma:0x802dede0,sz:0x161c
-
-[07-29 16:35:21:600][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x165c0,vma:0x7e1df1b8,lma:0x802ed5c0,sz:0x9f8
-
-[07-29 16:35:21:600][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf08bb0,vma:0x7e1dfbb0,lma:0x7e1dfbb0,sz:0x480
-
-[07-29 16:35:21:600][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x9408,vma:0x7e1d2000,lma:0x802e0408,sz:0xd1b8
-
-[07-29 16:35:21:600][ cmlog ][OPENCPU]:[PET][I] offline cache init count=0
-[07-29 16:35:21:600]
-
-[07-29 16:35:21:600][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
-[07-29 16:35:21:600]
-
-[07-29 16:35:21:653][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
- 0
-
-[07-29 16:35:21:653][ cmlog ]atp10 cmiot AT+COPS=3,0
- 0
-
-[07-29 16:35:21:653][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
- 0
-
-[07-29 16:35:21:653][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
-
-[07-29 16:35:21:767][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_20260729083523_a97f
-[07-29 16:35:21:767]
-
-[07-29 16:35:21:767][ cmlog ][OPENCPU]:[PET][I] mode 0 -> 2
-[07-29 16:35:21:767]
-
-[07-29 16:35:21:767][ cmlog ][OPENCPU]:[PET][I] pet tracker start in NORMAL mode
-[07-29 16:35:21:767]
-
-[07-29 16:35:21:767][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:21:767]
-
-[07-29 16:35:21:767][ cmlog ]cm_virt_at_mutex_acquire
-
-[07-29 16:35:21:767][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[07-29 16:35:21:767][ cmlog ]cm_virt_at_mutex_release
-
-[07-29 16:35:21:767][CM-OC] func:cm_opencp[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
-
-[07-29 16:35:21:767]+CEREG: 5,0
-
-[07-29 16:35:21:767]]
-
-[07-29 16:35:21:767][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:21:767]
-
-[07-29 16:35:21:767][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:21:767][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
-[07-29 16:35:21:767]
-
-[07-29 16:35:21:767][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[07-29 16:35:21:767][ cmlog ]dynamic_virt_at_callback
-
-[07-29 16:35:21:767][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[07-29 16:35:21:767]OK
-
-[07-29 16:35:21:767]]
-
-[07-29 16:35:21:767][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:21:767]
-
-[07-29 16:35:21:767][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:21:767][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:21:767]
-
-[07-29 16:35:21:767][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:21:767]
-
-[07-29 16:35:21:767]u_start line:211,ret:0
-
-[07-29 16:35:22:205][ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
-
-[07-29 16:35:22:205]+CEREG: 0
-
-[07-29 16:35:22:205]]
-
-[07-29 16:35:22:205][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:22:205]
-
-[07-29 16:35:22:205][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:22:205][ cmlog ]memory_buffer len 9, data:[+CEREG: 0]
-[07-29 16:35:22:205]
-
-[07-29 16:35:22:205][ cmlog ][URC]__cm_urc_consult
-
-[07-29 16:35:22:205][ cmlog ]cm_urc_head is null
-[07-29 16:35:22:205]
-
-[07-29 16:35:22:826][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:22:826]
-
-[07-29 16:35:22:826][ cmlog ]__cm_virt_at_task already exist
-[07-29 16:35:22:826]
-
-[07-29 16:35:22:826][ cmlog ]cm_virt_at_mutex_acquire
-
-[07-29 16:35:22:826][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[07-29 16:35:22:826][ cmlog ]cm_virt_at_mu[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
-
-[07-29 16:35:22:826]+CEREG: 5,0
-
-[07-29 16:35:22:826]]
-
-[07-29 16:35:22:826][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:22:826]
-
-[07-29 16:35:22:826][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:22:826][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
-[07-29 16:35:22:826]
-
-[07-29 16:35:22:826][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[07-29 16:35:22:826][ cmlog ]dynamic_virt_at_callback
-
-[07-29 16:35:22:826][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[07-29 16:35:22:826]OK
-
-[07-29 16:35:22:826]]
-
-[07-29 16:35:22:826][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:22:826]
-
-[07-29 16:35:22:826][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:22:826][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:22:826]
-
-[07-29 16:35:22:826]tex_release
-
-[07-29 16:35:22:826][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:22:826]
-
-[07-29 16:35:23:338][ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
-
-[07-29 16:35:23:338]+CEREG: 1,"2670","0AA9FE06",7
-
-[07-29 16:35:23:338]]
-
-[07-29 16:35:23:338][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:23:338]
-
-[07-29 16:35:23:338][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:23:338][ cmlog ]memory_buffer len 29, data:[+CEREG: 1,"2670","0AA9FE06",7]
-[07-29 16:35:23:338]
-
-[07-29 16:35:23:338][ cmlog ][URC]__cm_urc_consult
-
-[07-29 16:35:23:338][ cmlog ]cm_urc_head is null
-[07-29 16:35:23:338]
-
-[07-29 16:35:23:338][ cmlog ]__cm_daemon_thread 3 1
-
-[07-29 16:35:23:842][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:23:842]
-
-[07-29 16:35:23:842][ cmlog ]__cm_virt_at_task already exist
-[07-29 16:35:23:842]
-
-[07-29 16:35:23:842][ cmlog ]cm_virt_at_mutex_acquire
-
-[07-29 16:35:23:842][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[07-29 16:35:23:842][ cmlog ]cm_virt_at_mutex_release
-
-[07-29 16:35:24:644][ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
-
-[07-29 16:35:24:644]+CEREG: 5,1,"2670","0AA9FE06",7
-
-[07-29 16:35:24:644]]
-
-[07-29 16:35:24:644][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:24:644][ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2670","0AA9FE06",7]
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[07-29 16:35:24:644][ cmlog ]dynamic_virt_at_callback
-
-[07-29 16:35:24:644][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[07-29 16:35:24:644]OK
-
-[07-29 16:35:24:644]]
-
-[07-29 16:35:24:644][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:24:644][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ cmlog ][OPENCPU]:[PET][I] network ready, cereg=1
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ cmlog ][OPENCPU]:[PET][I] use hardcoded credential (debug)
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ cmlog ][OPENCPU]:[PET][I] mqtt connect 119.23.217.155:18883
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ADNS] cm_async_dns_request cid = 1 
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
-[07-29 16:35:24:644]
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
-[07-29 16:35:24:644]
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ cmlog ][OPENCPU]:[CMMQTT] client tsk start
-[07-29 16:35:24:644]
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
-[07-29 16:35:24:644]
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ELOOP] register_event eloop 0x7e2626e0,0x802dbb9c,0x7e0b22a0
-
-[07-29 16:35:24:644][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x802dbb9c,0x7e0b22a0
-
-[07-29 16:35:24:644][ELOOP] post event=0x7e044be8
-
-[07-29 16:35:24:644][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:24:644][ELOOP] unregister event=0x7e044be8
-
-[07-29 16:35:24:644][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:24:644][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:24:644][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:24:644][ELOOP] eloop_event_init 0x7e044c00,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:24:644][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:24:644][ELOOP] eloop_event_init 0x7e044c18,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:24:644]asocket open ok 0 3
-
-[07-29 16:35:24:644][ cmlog ]ipv4: 1 10.26.199.117 
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
-[07-29 16:35:24:644]
-[07-29 16:35:24:644]
-
-[07-29 16:35:24:644][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:24:644][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:24:644][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:24:721]asocket_cb 3 2
-
-[07-29 16:35:24:721]asocket_cb 3 4
-
-[07-29 16:35:24:721][ELOOP] post event=0x7e044c00
-
-[07-29 16:35:24:721][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:24:721]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[07-29 16:35:24:721]asocket_event 0x7e2940ec,0x7e044c00
-
-[07-29 16:35:24:721][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
-[07-29 16:35:24:721]
-[07-29 16:35:24:721]
-
-[07-29 16:35:24:721][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:24:721][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:24:721][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:24:721][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
-[07-29 16:35:24:721]
-[07-29 16:35:24:721]
-
-[07-29 16:35:24:721][ cmlog ][OPENCPU]:[CMMQTT] send len:53
-[07-29 16:35:24:721]
-[07-29 16:35:24:721]
-
-[07-29 16:35:24:850]asocket_cb 3 2
-
-[07-29 16:35:24:850]asocket_cb 3 10
-
-[07-29 16:35:24:850][ELOOP] post event=0x7e044c00
-
-[07-29 16:35:24:850][ELOOP] rdy_lasocket_cb 3 0
-
-[07-29 16:35:24:850][ELOOP] post event=0x7e044be8
-
-[07-29 16:35:24:850]ist eloop=0x7e2626e0
-
-[07-29 16:35:24:850]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[07-29 16:35:24:850]asocket_event 0x7e2940ec,0x7e044c00
-
-[07-29 16:35:24:850][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[07-29 16:35:24:850]
-[07-29 16:35:24:850]
-
-[07-29 16:35:24:850]asocket_on_eloop 0x7e044be8,0x7e2940ec
-
-[07-29 16:35:24:850]asocket_event 0x7e2940ec,0x7e044be8
-
-[07-29 16:35:24:850][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[07-29 16:35:24:850]
-[07-29 16:35:24:850]
-
-[07-29 16:35:24:850][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[07-29 16:35:24:850]
-
-[07-29 16:35:24:850][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:24:850][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:24:850][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:24:850][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:24:850][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:24:850][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:24:850][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:24:850][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[07-29 16:35:24:850]
-[07-29 16:35:24:850]
-
-[07-29 16:35:24:850]asocket_cb 3 1
-
-[07-29 16:35:24:850][ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
-[07-29 16:35:24:903]
-[07-29 16:35:24:903]
-
-[07-29 16:35:24:903][ cmlog ][OPENCPU]:[CMMQTT] send len:34
-[07-29 16:35:24:903]
-[07-29 16:35:24:903]
-
-[07-29 16:35:24:903][ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
-[07-29 16:35:24:903]
-[07-29 16:35:24:903]
-
-[07-29 16:35:24:903][ cmlog ][OPENCPU]:[CMMQTT] send len:294
-[07-29 16:35:24:903]
-[07-29 16:35:24:903]
-
-[07-29 16:35:24:903][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:294
-[07-29 16:35:24:903]
-[07-29 16:35:24:903]
-
-[07-29 16:35:24:903][ cmlog ][OPENCPU]:[PET][I] state ONLINE published
-[07-29 16:35:24:903]
-
-[07-29 16:35:24:903]== mcr==0x8f000c,spi_nor_eraseing[0],fota_donwloading[0],RESUME_SUSPEND_TRS[0]
-
-[07-29 16:35:24:903]
-
-[07-29 16:35:24:903]EE LOG: LR: 0x7e1dc5f7, PC: 0x7e1dc610, SP: 0x7e043728
-
-[07-29 16:35:24:903]EE LOG: DESC: DataAbort, FILE: NULL, LINE: 0
-
-[07-29 16:35:24:903]EE LOG: Task: cmmqtt-m
-
-[07-29 16:35:24:903]EE LOG: Send Plp Mem Dump CMD
-
-[07-29 16:35:24:903]EE LOG: Silent Reset
-
-[07-29 16:35:24:903]FlushPsramCache start
-
-[07-29 16:35:24:903]FlushPsramCache done
-
-[07-29 16:35:25:269]
-[07-29 16:35:25:269]
-[07-29 16:35:25:269][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
-[07-29 16:35:25:269][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
-[07-29 16:35:25:269][INFO: Main      ] 
-[07-29 16:35:25:269][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
-[07-29 16:35:25:269][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
-[07-29 16:35:25:269][INFO: QspiFlash ] Detecting QSPI flash devices...
-[07-29 16:35:25:269][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
-[07-29 16:35:25:269][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
-[07-29 16:35:25:269][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
-[07-29 16:35:25:269][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
-[07-29 16:35:25:269][INFO: Crypto    ] Initializing crypto library...
-[07-29 16:35:25:269][INFO: Main      ] Running in normal booting mode.
-[07-29 16:35:25:269][INFO: Main      ] Loading...
-[07-29 16:35:25:269][INFO: Bl1Main   ] Welcome to boot rom.
-[07-29 16:35:25:269][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
-[07-29 16:35:25:269][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
-[07-29 16:35:25:269][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
-[07-29 16:35:25:269][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:25:269][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
-[07-29 16:35:25:269][INFO: Bl1Main   ] BL1: OKay.
-[07-29 16:35:25:269][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
-[07-29 16:35:25:269][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
-[07-29 16:35:25:269][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:25:269][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
-[07-29 16:35:25:269][INFO: Bl1Main   ] BL1: OKay.
-[07-29 16:35:26:144][INFO: UsbArch   ] usb phy reg: 0xd42070a4 = 0x189b
-[07-29 16:35:26:256][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:26:256][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
-[07-29 16:35:26:256]
-[07-29 16:35:26:256][BOOT33]VB_VERSION_DATE   :[20241210]
-[07-29 16:35:26:546]
-[07-29 16:35:26:546] ** PC      : 0x80017000
-[07-29 16:35:26:585]Version: SDK_1.011.144 Apr 22 2025 18:01:58
-
-[07-29 16:35:26:585]Ac 4, Board 2, DKB 1
-
-[07-29 16:35:26:585]PSRAM fuse: 13
-
-[07-29 16:35:26:585]
-
-[07-29 16:35:26:585]Cinit 2
-
-[07-29 16:35:26:585]Flash type: nvm 0, factory 0, fota 0
-
-[07-29 16:35:26:585]Phase1Inits
-
-[07-29 16:35:26:585]diag Phase1 Init
-
-[07-29 16:35:26:616]dro_efuse = 135
-
-[07-29 16:35:26:616]profile num = 2
-
-[07-29 16:35:26:616]CRNLR_SVC_FP[0] = 0x29
-
-[07-29 16:35:26:616]CRNLR_SVC_FP[1] = 0x29
-
-[07-29 16:35:26:616]CRNLR_SVC_FP[2] = 0x29
-
-[07-29 16:35:26:616]CRNLR_SVC_FP[3] = 0x33
-
-[07-29 16:35:26:616]Bootup is silent
-
-[07-29 16:35:26:616][ELOOP] __cm_eloop_init 0x7e2626e0,128
-
-[07-29 16:35:26:739][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:26:739][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:26:739][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:26:739]InitTask started
-
-[07-29 16:35:26:739]Chip ID: 0xb01605
-
-[07-29 16:35:26:739]PS_NONCACHE_DATA_ZI rf [0x7e389300]
-
-[07-29 16:35:26:739]check unpressed rf/dsp size,rf [0x0000f000],dsp [0x00040800]
-
-[07-29 16:35:26:739]Crane mpu configure
-
-[07-29 16:35:26:739]start file system init
-
-[07-29 16:35:26:739]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d4000, reserved_end_addr=0x2d7000
-
-[07-29 16:35:26:739]
-
-[07-29 16:35:26:739]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
-
-[07-29 16:35:26:739]qspi_nor_set_flash_block_protect:write status register finished.
-
-[07-29 16:35:26:739]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
-
-[07-29 16:35:26:739]flash_protect_area_type=12
-
-[07-29 16:35:26:739]
-
-[07-29 16:35:26:739]SPI Nor/NAND flash init success
-
-[07-29 16:35:26:739]
-
-[07-29 16:35:26:739]FDI_Transport_Fsys_Register: 0, C:/
-
-[07-29 16:35:26:739]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
-
-[07-29 16:35:26:739]LfsGrpCnt 5
-
-[07-29 16:35:26:739]lfs root is valid
-
-[07-29 16:35:26:739][PTN 0] free size: 430080
-
-[07-29 16:35:26:739]lfs[PTN 0] init success
-
-[07-29 16:35:26:739]OnKeyPoweroff_Task
-
-[07-29 16:35:26:739]eeHandlerPhase2Init
-
-[07-29 16:35:26:853][ cmlog ]netcard type = 16 cfg = 0
-
-[07-29 16:35:26:853]Usb mode 0, descriptor 70
-
-[07-29 16:35:26:853][ cmlog ]usb2com queue send err(status)
-
-[07-29 16:35:26:853]USIMPhase2Init 0
-
-[07-29 16:35:26:853]
-
-[07-29 16:35:26:853]copy rf size[0x0000f000] to [0x7e000000]
-
-[07-29 16:35:26:853]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
-
-[07-29 16:35:26:853]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
-
-[07-29 16:35:26:903]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
-
-[07-29 16:35:26:903]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
-
-[07-29 16:35:26:903]power_up_reason: 0x40, power_down_reason: 0x0
-
-[07-29 16:35:26:975]InitIPCControl: data:0x0
-
-[07-29 16:35:27:112]AT command server ready!
-
-[07-29 16:35:27:112]Booting done
-
-[07-29 16:35:27:247]SW restart reason: Error reset (WDT)
-
-[07-29 16:35:27:247][ cmlog ]dm nv read err
-
-[07-29 16:35:27:247][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
-
-[07-29 16:35:27:247][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023b9d9
-
-[07-29 16:35:27:247][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
-
-[07-29 16:35:27:247][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x16fb8
-
-[07-29 16:35:27:247][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x16fb8
-
-[07-29 16:35:27:247][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x7d68
-
-[07-29 16:35:27:247][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x7de0,vma:0x802dede0,lma:0x802dede0,sz:0x161c
-
-[07-29 16:35:27:247][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x165c0,vma:0x7e1df1b8,lma:0x802ed5c0,sz:0x9f8
-
-[07-29 16:35:27:247][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf08bb0,vma:0x7e1dfbb0,lma:0x7e1dfbb0,sz:0x480
-
-[07-29 16:35:27:247][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x9408,vma:0x7e1d2000,lma:0x802e0408,sz:0xd1b8
-
-[07-29 16:35:27:247][ cmlog ][OPENCPU]:[PET][I] offline cache init count=0
-[07-29 16:35:27:247]
-
-[07-29 16:35:27:247][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
-[07-29 16:35:27:247]
-
-[07-29 16:35:27:293][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
- 0
-
-[07-29 16:35:27:293][ cmlog ]atp10 cmiot AT+COPS=3,0
- 0
-
-[07-29 16:35:27:293][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
- 0
-
-[07-29 16:35:27:293][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
-
-[07-29 16:35:27:417][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_20260729083530_a966
-[07-29 16:35:27:417]
-
-[07-29 16:35:27:417][ cmlog ][OPENCPU]:[PET][I] mode 0 -> 2
-[07-29 16:35:27:417]
-
-[07-29 16:35:27:417][ cmlog ][OPENCPU]:[PET][I] pet tracker start in NORMAL mode
-[07-29 16:35:27:417]
-
-[07-29 16:35:27:417][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:27:417]
-
-[07-29 16:35:27:417][ cmlog ]cm_virt_at_mutex_acquire
-
-[07-29 16:35:27:417][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[07-29 16:35:27:417][ cmlog ]cm_vir[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
-
-[07-29 16:35:27:417]+CEREG: 5,0
-
-[07-29 16:35:27:417]]
-
-[07-29 16:35:27:417][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:27:417]
-
-[07-29 16:35:27:417][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:27:417][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
-[07-29 16:35:27:417]
-
-[07-29 16:35:27:417][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[07-29 16:35:27:417][ cmlog ]dynamic_virt_at_callback
-
-[07-29 16:35:27:417][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[07-29 16:35:27:417]OK
-
-[07-29 16:35:27:417]]
-
-[07-29 16:35:27:417][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:27:417]
-
-[07-29 16:35:27:417][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:27:417][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:27:417]
-
-[07-29 16:35:27:417]t_at_mutex_release
-
-[07-29 16:35:27:417][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:27:417]
-
-[07-29 16:35:27:417][CM-OC] func:cm_opencpu_start line:211,ret:0
-
-[07-29 16:35:27:909][ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
-
-[07-29 16:35:27:909]+CEREG: 0
-
-[07-29 16:35:27:909]]
-
-[07-29 16:35:27:909][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:27:909]
-
-[07-29 16:35:27:909][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:27:909][ cmlog ]memory_buffer len 9, data:[+CEREG: 0]
-[07-29 16:35:27:909]
-
-[07-29 16:35:27:909][ cmlog ][URC]__cm_urc_consult
-
-[07-29 16:35:27:909][ cmlog ]cm_urc_head is null
-[07-29 16:35:27:909]
-
-[07-29 16:35:28:472][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:28:472]
-
-[07-29 16:35:28:472][ cmlog ]__cm_virt_at_task already exist
-[07-29 16:35:28:472]
-
-[07-29 16:35:28:472][ cmlog ]cm_virt_at_mutex_acquire
-
-[07-29 16:35:28:472][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[07-29 16:35:28:472][ cmlog ]cm_virt_at_[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
-
-[07-29 16:35:28:472]+CEREG: 5,0
-
-[07-29 16:35:28:472]]
-
-[07-29 16:35:28:472][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:28:472]
-
-[07-29 16:35:28:472][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:28:472][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
-[07-29 16:35:28:472]
-
-[07-29 16:35:28:472][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[07-29 16:35:28:472][ cmlog ]dynamic_virt_at_callback
-
-[07-29 16:35:28:472][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[07-29 16:35:28:472]OK
-
-[07-29 16:35:28:472]]
-
-[07-29 16:35:28:472][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:28:472]
-
-[07-29 16:35:28:472][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:28:472][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:28:472]
-
-[07-29 16:35:28:472]mutex_release
-
-[07-29 16:35:28:472][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:28:472]
-
-[07-29 16:35:28:913][ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
-
-[07-29 16:35:28:913]+CEREG: 1,"2670","0AA9FE06",7
-
-[07-29 16:35:28:913]]
-
-[07-29 16:35:28:913][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:28:913]
-
-[07-29 16:35:28:913][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:28:913][ cmlog ]memory_buffer len 29, data:[+CEREG: 1,"2670","0AA9FE06",7]
-[07-29 16:35:28:913]
-
-[07-29 16:35:28:913][ cmlog ][URC]__cm_urc_consult
-
-[07-29 16:35:28:913][ cmlog ]cm_urc_head is null
-[07-29 16:35:28:913]
-
-[07-29 16:35:28:913][ cmlog ]__cm_daemon_thread 3 1
-
-[07-29 16:35:29:485][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:29:485]
-
-[07-29 16:35:29:485][ cmlog ]__cm_virt_at_task already exist
-[07-29 16:35:29:485]
-
-[07-29 16:35:29:485][ cmlog ]cm_virt_at_mutex_acquire
-
-[07-29 16:35:29:485][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[07-29 16:35:29:485][ cmlog ]cm_virt_at_mutex_release
-
-[07-29 16:35:30:244][ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
-
-[07-29 16:35:30:244]+CEREG: 5,1,"2670","0AA9FE06",7
-
-[07-29 16:35:30:244]]
-
-[07-29 16:35:30:244][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:30:244][ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2670","0AA9FE06",7]
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[07-29 16:35:30:244][ cmlog ]dynamic_virt_at_callback
-
-[07-29 16:35:30:244][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[07-29 16:35:30:244]OK
-
-[07-29 16:35:30:244]]
-
-[07-29 16:35:30:244][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:30:244][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ cmlog ][OPENCPU]:[PET][I] network ready, cereg=1
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ cmlog ][OPENCPU]:[PET][I] use hardcoded credential (debug)
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ cmlog ][OPENCPU]:[PET][I] mqtt connect 119.23.217.155:18883
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ADNS] cm_async_dns_request cid = 1 
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
-[07-29 16:35:30:244]
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
-[07-29 16:35:30:244]
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ cmlog ][OPENCPU]:[CMMQTT] client tsk start
-[07-29 16:35:30:244]
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
-[07-29 16:35:30:244]
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ELOOP] register_event eloop 0x7e2626e0,0x802dbb9c,0x7e0b1ba8
-
-[07-29 16:35:30:244][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x802dbb9c,0x7e0b1ba8
-
-[07-29 16:35:30:244][ELOOP] post event=0x7e044be8
-
-[07-29 16:35:30:244][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:30:244][ELOOP] unregister event=0x7e044be8
-
-[07-29 16:35:30:244][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:30:244][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:30:244][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:30:244][ELOOP] eloop_event_init 0x7e044c00,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:30:244][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:30:244][ELOOP] eloop_event_init 0x7e044c18,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:30:244]asocket open ok 0 3
-
-[07-29 16:35:30:244][ cmlog ]ipv4: 1 10.125.191.56 
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
-[07-29 16:35:30:244]
-[07-29 16:35:30:244]
-
-[07-29 16:35:30:244][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:30:244][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:30:244][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:30:314]asocket_cb 3 2
-
-[07-29 16:35:30:314]asocket_cb 3 4
-
-[07-29 16:35:30:314][ELOOP] post event=0x7e044c00
-
-[07-29 16:35:30:314][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:30:314]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[07-29 16:35:30:314]asocket_event 0x7e2940ec,0x7e044c00
-
-[07-29 16:35:30:314][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
-[07-29 16:35:30:314]
-[07-29 16:35:30:314]
-
-[07-29 16:35:30:314][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:30:314][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:30:314][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:30:314][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
-[07-29 16:35:30:314]
-[07-29 16:35:30:314]
-
-[07-29 16:35:30:314][ cmlog ][OPENCPU]:[CMMQTT] send len:53
-[07-29 16:35:30:314]
-[07-29 16:35:30:314]
-
-[07-29 16:35:30:397]asocket_cb 3 2
-
-[07-29 16:35:30:397]asocket_cb 3 10
-
-[07-29 16:35:30:397][ELOOP] post event=0x7e044c00
-
-[07-29 16:35:30:397][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:30:397]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[07-29 16:35:30:397]asocket_event 0x7e2940ec,0x7e044c00
-
-[07-29 16:35:30:397][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[07-29 16:35:30:397]
-[07-29 16:35:30:397]
-
-[07-29 16:35:30:397][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:30:397][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:30:397][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:30:517]asocket_cb 3 0
-
-[07-29 16:35:30:517][ELOOP] post event=0x7e044be8
-
-[07-29 16:35:30:517][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:30:517]asocket_on_eloop 0x7e044be8,0x7e2940ec
-
-[07-29 16:35:30:517]asocket_event 0x7e2940ec,0x7e044be8
-
-[07-29 16:35:30:517][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[07-29 16:35:30:517]
-[07-29 16:35:30:517]
-
-[07-29 16:35:30:517][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[07-29 16:35:30:517]
-
-[07-29 16:35:30:517][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:30:517][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:30:517][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:30:517][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[07-29 16:35:30:517]
-[07-29 16:35:30:517]
-
-[07-29 16:35:30:517]asocket_cb 3 1
-
-[07-29 16:35:30:517][ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
-[07-29 16:35:30:517]
-[07-29 16:35:30:517]
-
-[07-29 16:35:30:517][ cmlog ][OPENCPU]:[CMMQTT] send len:34
-[07-29 16:35:30:517]
-[07-29 16:35:30:517]
-
-[07-29 16:35:30:517][ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
-[07-29 16:35:30:517]
-[07-29 16:35:30:517]
-
-[07-29 16:35:30:517][ cmlog ][OPENCPU]:[CMMQTT] send len:294
-[07-29 16:35:30:517]
-[07-29 16:35:30:517]
-
-[07-29 16:35:30:517][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:294
-[07-29 16:35:30:517]
-[07-29 16:35:30:517]
-
-[07-29 16:35:30:517][ cmlog ][OPENCPU]:[PET][I] state ONLINE published
-[07-29 16:35:30:517]
-
-[07-29 16:35:30:517]== mcr==0x8f000c,spi_nor_eraseing[0],fota_donwloading[0],RESUME_SUSPEND_TRS[0]
-
-[07-29 16:35:30:517]
-
-[07-29 16:35:30:517]EE LOG: LR: 0x7e1dc5f7, PC: 0x7e1dc610, SP: 0x7e043728
-
-[07-29 16:35:30:517]EE LOG: DESC: DataAbort, FILE: NULL, LINE: 0
-
-[07-29 16:35:30:517]EE LOG: Task: cmmqtt-m
-
-[07-29 16:35:30:517]EE LOG: Send Plp Mem Dump CMD
-
-[07-29 16:35:30:517]EE LOG: Silent Reset
-
-[07-29 16:35:30:517]FlushPsramCache start
-
-[07-29 16:35:30:517]FlushPsramCache done
-
-[07-29 16:35:30:883]
-[07-29 16:35:30:883]
-[07-29 16:35:30:883][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
-[07-29 16:35:30:883][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
-[07-29 16:35:30:883][INFO: Main      ] 
-[07-29 16:35:30:883][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
-[07-29 16:35:30:883][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
-[07-29 16:35:30:883][INFO: QspiFlash ] Detecting QSPI flash devices...
-[07-29 16:35:30:883][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
-[07-29 16:35:30:883][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
-[07-29 16:35:30:883][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
-[07-29 16:35:30:883][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
-[07-29 16:35:30:883][INFO: Crypto    ] Initializing crypto library...
-[07-29 16:35:30:883][INFO: Main      ] Running in normal booting mode.
-[07-29 16:35:30:883][INFO: Main      ] Loading...
-[07-29 16:35:30:883][INFO: Bl1Main   ] Welcome to boot rom.
-[07-29 16:35:30:883][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
-[07-29 16:35:30:883][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
-[07-29 16:35:30:883][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
-[07-29 16:35:30:883][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:30:883][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
-[07-29 16:35:30:883][INFO: Bl1Main   ] BL1: OKay.
-[07-29 16:35:30:883][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
-[07-29 16:35:30:883][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
-[07-29 16:35:30:883][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:30:883][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
-[07-29 16:35:30:883][INFO: Bl1Main   ] BL1: OKay.
-[07-29 16:35:31:759][INFO: UsbArch   ] usb phy reg: 0xd42070a4 = 0x189b
-[07-29 16:35:31:870][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[07-29 16:35:31:870][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
-[07-29 16:35:31:870]
-[07-29 16:35:31:870][BOOT33]VB_VERSION_DATE   :[20241210]
-[07-29 16:35:32:159]
-[07-29 16:35:32:159] ** PC      : 0x80017000
-[07-29 16:35:32:199]Version: SDK_1.011.144 Apr 22 2025 18:01:58
-
-[07-29 16:35:32:199]Ac 4, Board 2, DKB 1
-
-[07-29 16:35:32:199]PSRAM fuse: 13
-
-[07-29 16:35:32:199]
-
-[07-29 16:35:32:199]Cinit 2
-
-[07-29 16:35:32:199]Flash type: nvm 0, factory 0, fota 0
-
-[07-29 16:35:32:199]Phase1Inits
-
-[07-29 16:35:32:199]diag Phase1 Init
-
-[07-29 16:35:32:228]dro_efuse = 135
-
-[07-29 16:35:32:228]profile num = 2
-
-[07-29 16:35:32:228]CRNLR_SVC_FP[0] = 0x29
-
-[07-29 16:35:32:228]CRNLR_SVC_FP[1] = 0x29
-
-[07-29 16:35:32:228]CRNLR_SVC_FP[2] = 0x29
-
-[07-29 16:35:32:228]CRNLR_SVC_FP[3] = 0x33
-
-[07-29 16:35:32:228]Bootup is silent
-
-[07-29 16:35:32:228][ELOOP] __cm_eloop_init 0x7e2626e0,128
-
-[07-29 16:35:32:352][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:32:352][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:32:352][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:32:352]InitTask started
-
-[07-29 16:35:32:352]Chip ID: 0xb01605
-
-[07-29 16:35:32:352]PS_NONCACHE_DATA_ZI rf [0x7e389300]
-
-[07-29 16:35:32:352]check unpressed rf/dsp size,rf [0x0000f000],dsp [0x00040800]
-
-[07-29 16:35:32:352]Crane mpu configure
-
-[07-29 16:35:32:352]start file system init
-
-[07-29 16:35:32:352]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d4000, reserved_end_addr=0x2d7000
-
-[07-29 16:35:32:352]
-
-[07-29 16:35:32:352]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
-
-[07-29 16:35:32:352]qspi_nor_set_flash_block_protect:write status register finished.
-
-[07-29 16:35:32:352]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
-
-[07-29 16:35:32:352]flash_protect_area_type=12
-
-[07-29 16:35:32:352]
-
-[07-29 16:35:32:352]SPI Nor/NAND flash init success
-
-[07-29 16:35:32:352]
-
-[07-29 16:35:32:352]FDI_Transport_Fsys_Register: 0, C:/
-
-[07-29 16:35:32:352]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
-
-[07-29 16:35:32:352]LfsGrpCnt 5
-
-[07-29 16:35:32:352]lfs root is valid
-
-[07-29 16:35:32:352][PTN 0] free size: 430080
-
-[07-29 16:35:32:352]lfs[PTN 0] init success
-
-[07-29 16:35:32:352]OnKeyPoweroff_Task
-
-[07-29 16:35:32:352]eeHandlerPhase2Init
-
-[07-29 16:35:32:468][ cmlog ]netcard type = 16 cfg = 0
-
-[07-29 16:35:32:468]Usb mode 0, descriptor 7[ cmlog ]usb2com queue send err(status)
-
-[07-29 16:35:32:468]0
-
-[07-29 16:35:32:468]USIMPhase2Init 0
-
-[07-29 16:35:32:468]
-
-[07-29 16:35:32:468]copy rf size[0x0000f000] to [0x7e000000]
-
-[07-29 16:35:32:468]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
-
-[07-29 16:35:32:468]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
-
-[07-29 16:35:32:516]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
-
-[07-29 16:35:32:516]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
-
-[07-29 16:35:32:516]power_up_reason: 0x40, power_down_reason: 0x0
-
-[07-29 16:35:32:589]InitIPCControl: data:0x0
-
-[07-29 16:35:32:722]AT command server ready!
-
-[07-29 16:35:32:722]Booting done
-
-[07-29 16:35:32:857]SW restart reason: Error reset (WDT)
-
-[07-29 16:35:32:857][ cmlog ]dm nv read err
-
-[07-29 16:35:32:857][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
-
-[07-29 16:35:32:857][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023b9d9
-
-[07-29 16:35:32:857][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
-
-[07-29 16:35:32:857][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x16fb8
-
-[07-29 16:35:32:857][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x16fb8
-
-[07-29 16:35:32:857][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x7d68
-
-[07-29 16:35:32:857][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x7de0,vma:0x802dede0,lma:0x802dede0,sz:0x161c
-
-[07-29 16:35:32:857][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x165c0,vma:0x7e1df1b8,lma:0x802ed5c0,sz:0x9f8
-
-[07-29 16:35:32:857][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf08bb0,vma:0x7e1dfbb0,lma:0x7e1dfbb0,sz:0x480
-
-[07-29 16:35:32:857][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x9408,vma:0x7e1d2000,lma:0x802e0408,sz:0xd1b8
-
-[07-29 16:35:32:857][ cmlog ][OPENCPU]:[PET][I] offline cache init count=0
-[07-29 16:35:32:857]
-
-[07-29 16:35:32:857][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
-[07-29 16:35:32:857]
-
-[07-29 16:35:32:906][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
- 0
-
-[07-29 16:35:32:906][ cmlog ]atp10 cmiot AT+COPS=3,0
- 0
-
-[07-29 16:35:32:906][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
- 0
-
-[07-29 16:35:32:906][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
-
-[07-29 16:35:33:020][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_20260729083534_a962
-[07-29 16:35:33:020]
-
-[07-29 16:35:33:020][ cmlog ][OPENCPU]:[PET][I] mode 0 -> 2
-[07-29 16:35:33:020]
-
-[07-29 16:35:33:020][ cmlog ][OPENCPU]:[PET][I] pet tracker start in NORMAL mode
-[07-29 16:35:33:020]
-
-[07-29 16:35:33:020][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:33:020]
-
-[07-29 16:35:33:020][ cmlog ]cm_virt_at_mutex_acquire
-
-[07-29 16:35:33:020][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[07-29 16:35:33:020][ cmlog ]cm_virt_[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
-
-[07-29 16:35:33:020]+CEREG: 5,0
-
-[07-29 16:35:33:020]]
-
-[07-29 16:35:33:020][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:33:020]
-
-[07-29 16:35:33:020][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:33:020][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
-[07-29 16:35:33:020]
-
-[07-29 16:35:33:020][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[07-29 16:35:33:020][ cmlog ]dynamic_virt_at_callback
-
-[07-29 16:35:33:020][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[07-29 16:35:33:020]OK
-
-[07-29 16:35:33:020]]
-
-[07-29 16:35:33:020][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:33:020]
-
-[07-29 16:35:33:020][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:33:020][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:33:020]
-
-[07-29 16:35:33:020]at_mutex_release
-
-[07-29 16:35:33:020][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:33:020]
-
-[07-29 16:35:33:020][CM-OC] func:cm_opencpu_start line:211,ret:0
-
-[07-29 16:35:33:497][ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
-
-[07-29 16:35:33:497]+CEREG: 0
-
-[07-29 16:35:33:497]]
-
-[07-29 16:35:33:497][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:33:497]
-
-[07-29 16:35:33:497][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:33:497][ cmlog ]memory_buffer len 9, data:[+CEREG: 0]
-[07-29 16:35:33:497]
-
-[07-29 16:35:33:497][ cmlog ][URC]__cm_urc_consult
-
-[07-29 16:35:33:497][ cmlog ]cm_urc_head is null
-[07-29 16:35:33:497]
-
-[07-29 16:35:34:075][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:34:075]
-
-[07-29 16:35:34:075][ cmlog ]__cm_virt_at_task already exist
-[07-29 16:35:34:075]
-
-[07-29 16:35:34:075][ cmlog ]cm_virt_at_mutex_acquire
-
-[07-29 16:35:34:075][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[07-29 16:35:34:075][ cmlog ]cm_virt_at_mutex_release[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
-
-[07-29 16:35:34:075]+CEREG: 5,0
-
-[07-29 16:35:34:075]]
-
-[07-29 16:35:34:075][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:34:075]
-
-[07-29 16:35:34:075][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:34:075][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
-[07-29 16:35:34:075]
-
-[07-29 16:35:34:075][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[07-29 16:35:34:075][ cmlog ]dynamic_virt_at_callback
-
-[07-29 16:35:34:075][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[07-29 16:35:34:075]OK
-
-[07-29 16:35:34:075]]
-
-[07-29 16:35:34:075][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:34:075]
-
-[07-29 16:35:34:075][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:34:075][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:34:075]
-
-[07-29 16:35:34:075]
-
-[07-29 16:35:34:075][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:34:075]
-
-[07-29 16:35:34:484][ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
-
-[07-29 16:35:34:484]+CEREG: 1,"2670","0AA9FE06",7
-
-[07-29 16:35:34:484]]
-
-[07-29 16:35:34:484][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:34:484]
-
-[07-29 16:35:34:484][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:34:484][ cmlog ]memory_buffer len 29, data:[+CEREG: 1,"2670","0AA9FE06",7]
-[07-29 16:35:34:484]
-
-[07-29 16:35:34:484][ cmlog ][URC]__cm_urc_consult
-
-[07-29 16:35:34:484][ cmlog ]cm_urc_head is null
-[07-29 16:35:34:484]
-
-[07-29 16:35:34:484][ cmlog ]__cm_daemon_thread 3 1
-
-[07-29 16:35:35:089][ cmlog ]virt_at_event_queue already exist
-[07-29 16:35:35:089]
-
-[07-29 16:35:35:089][ cmlog ]__cm_virt_at_task already exist
-[07-29 16:35:35:089]
-
-[07-29 16:35:35:089][ cmlog ]cm_virt_at_mutex_acquire
-
-[07-29 16:35:35:089][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[07-29 16:35:35:089][ cmlog ]cm_virt_at_mutex_release
-
-[07-29 16:35:35:808][ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
-
-[07-29 16:35:35:808]+CEREG: 5,1,"2670","0AA9FE06",7
-
-[07-29 16:35:35:808]]
-
-[07-29 16:35:35:808][ cmlog ]vir_at_wait_get_flag:1
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:35:808][ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2670","0AA9FE06",7]
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[07-29 16:35:35:808][ cmlog ]dynamic_virt_at_callback
-
-[07-29 16:35:35:808][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[07-29 16:35:35:808]OK
-
-[07-29 16:35:35:808]]
-
-[07-29 16:35:35:808][ cmlog ]vir_at_wait_get_flag:0
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ cmlog ][-4]get urcdata skip head and tail
-
-[07-29 16:35:35:808][ cmlog ]memory_buffer len 2, data:[OK]
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ cmlog ]cm_virt_at_send_sync ret = 0
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ cmlog ][OPENCPU]:[PET][I] network ready, cereg=1
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ cmlog ][OPENCPU]:[PET][I] use hardcoded credential (debug)
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ cmlog ][OPENCPU]:[PET][I] mqtt connect 119.23.217.155:18883
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ADNS] cm_async_dns_request cid = 1 
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
-[07-29 16:35:35:808]
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
-[07-29 16:35:35:808]
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ cmlog ][OPENCPU]:[CMMQTT] client tsk start
-[07-29 16:35:35:808]
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
-[07-29 16:35:35:808]
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ELOOP] register_event eloop 0x7e2626e0,0x802dbb9c,0x7e0a80c8
-
-[07-29 16:35:35:808][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x802dbb9c,0x7e0a80c8
-
-[07-29 16:35:35:808][ELOOP] post event=0x7e044be8
-
-[07-29 16:35:35:808][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:35:808][ELOOP] unregister event=0x7e044be8
-
-[07-29 16:35:35:808][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:35:808][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:35:808][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:35:808][ELOOP] eloop_event_init 0x7e044c00,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:35:808][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:35:808][ELOOP] eloop_event_init 0x7e044c18,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[07-29 16:35:35:808]asocket open ok 0 3
-
-[07-29 16:35:35:808][ cmlog ]ipv4: 1 10.229.23.218 
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
-[07-29 16:35:35:808]
-[07-29 16:35:35:808]
-
-[07-29 16:35:35:808][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:35:808][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:35:808][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:35:891]asocket_cb 3 2
-
-[07-29 16:35:35:891]asocket_cb 3 4
-
-[07-29 16:35:35:891][ELOOP] post event=0x7e044c00
-
-[07-29 16:35:35:891][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:35:891]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[07-29 16:35:35:891]asocket_event 0x7e2940ec,0x7e044c00
-
-[07-29 16:35:35:891][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
-[07-29 16:35:35:891]
-[07-29 16:35:35:891]
-
-[07-29 16:35:35:891][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:35:891][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:35:891][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:35:891][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
-[07-29 16:35:35:891]
-[07-29 16:35:35:891]
-
-[07-29 16:35:35:891][ cmlog ][OPENCPU]:[CMMQTT] send len:53
-[07-29 16:35:35:891]
-[07-29 16:35:35:891]
-
-[07-29 16:35:35:991]asocket_cb 3 2
-
-[07-29 16:35:35:991]asocket_cb 3 10
-
-[07-29 16:35:35:991][ELOOP] post event=0x7e044c00
-
-[07-29 16:35:35:991][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:35:991]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[07-29 16:35:35:991]asocket_event 0x7e2940ec,0x7e044c00
-
-[07-29 16:35:35:991][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[07-29 16:35:35:991]
-[07-29 16:35:35:991]
-
-[07-29 16:35:35:991][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:35:991][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:35:991][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:36:117]asocket_cb 3 0
-
-[07-29 16:35:36:117][ELOOP] post event=0x7e044be8
-
-[07-29 16:35:36:117][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:36:117]asocket_on_eloop 0x7e044be8,0x7e2940ec
-
-[07-29 16:35:36:117]asocket_event 0x7e2940ec,0x7e044be8
-
-[07-29 16:35:36:117][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[07-29 16:35:36:117]
-[07-29 16:35:36:117]
-
-[07-29 16:35:36:117][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[07-29 16:35:36:117]
-
-[07-29 16:35:36:117][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[07-29 16:35:36:117][ELOOP] rdy_list eloop=0x7e2626e0
-
-[07-29 16:35:36:117][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[07-29 16:35:36:117][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[07-29 16:35:36:117]
-[07-29 16:35:36:117]
-
-[07-29 16:35:36:117]asocket_cb 3 1
-
-[07-29 16:35:36:117][ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
-[07-29 16:35:36:117]
-[07-29 16:35:36:117]
-
-[07-29 16:35:36:117][ cmlog ][OPENCPU]:[CMMQTT] send len:34
-[07-29 16:35:36:117]
-[07-29 16:35:36:117]
-
-[07-29 16:35:36:117][ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
-[07-29 16:35:36:117]
-[07-29 16:35:36:117]
-
-[07-29 16:35:36:117][ cmlog ][OPENCPU]:[CMMQTT] send len:317
-[07-29 16:35:36:117]
-[07-29 16:35:36:117]
-
-[07-29 16:35:36:117][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:317
-[07-29 16:35:36:117]
-[07-29 16:35:36:117]
-
-[07-29 16:35:36:117][ cmlog ][OPENCPU]:[PET][I] state ONLINE published
-[07-29 16:35:36:117]
-
-[07-29 16:35:36:117]== mcr==0x8f000c,spi_nor_eraseing[0],fota_donwloading[0],RESUME_SUSPEND_TRS[0]
-
-[07-29 16:35:36:117]
-
-[07-29 16:35:36:117]EE LOG: LR: 0x7e1dc5f7, PC: 0x7e1dc610, SP: 0x7e043728
-
-[07-29 16:35:36:117]EE LOG: DESC: DataAbort, FILE: NULL, LINE: 0
-
-[07-29 16:35:36:117]EE LOG: Tas

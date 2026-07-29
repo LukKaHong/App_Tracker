@@ -194,13 +194,20 @@ bool app_mqtt_is_connected(void)
     return s_connected;
 }
 
+/* cm_mqtt_client_publish 是异步接口，内部不拷贝 payload，
+ * 调用方在 publish 返回后不能立即释放 payload 内存。
+ * 用静态缓冲区拷贝一份，让调用方可以安全 free。 */
+static char s_pub_buf[1024];
+
 int app_mqtt_publish_telemetry(const char *payload, int len)
 {
     if (!s_client || !s_connected) return -1;
     if (!payload) return -2;
     if (len <= 0) len = (int)strlen(payload);
+    if (len > (int)sizeof(s_pub_buf)) return -3;
+    memcpy(s_pub_buf, payload, len);
     return cm_mqtt_client_publish(s_client, APP_MQTT_TOPIC_TELEMETRY,
-                                  payload, len, CM_MQTT_QOS_1);
+                                  s_pub_buf, len, CM_MQTT_QOS_1);
 }
 
 int app_mqtt_publish_rpc_response(const char *request_id, const char *payload, int len)
@@ -209,7 +216,9 @@ int app_mqtt_publish_rpc_response(const char *request_id, const char *payload, i
     char topic[96];
     snprintf(topic, sizeof(topic), "%s%s", APP_MQTT_TOPIC_RPC_RESP, request_id);
     if (len <= 0 && payload) len = (int)strlen(payload);
-    return cm_mqtt_client_publish(s_client, topic, payload, len, CM_MQTT_QOS_0);
+    if (len > (int)sizeof(s_pub_buf)) return -3;
+    memcpy(s_pub_buf, payload, len);
+    return cm_mqtt_client_publish(s_client, topic, s_pub_buf, len, CM_MQTT_QOS_0);
 }
 
 /* 订阅：连接成功后由调用方触发 */
