@@ -262,6 +262,7 @@ static void provisioning_and_connect(void)
 /* ===== GPS 接收回调：解析并保存最新定位 ===== */
 static void gps_rx_cb(const char *line)
 {
+    APP_LOGI("gps nmea: %s", line);
     app_location_t loc;
     memset(&loc, 0, sizeof(loc));
     if (bsp_gps_parse_nmea(line, &loc) == 1) {

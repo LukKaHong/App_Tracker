@@ -484,7 +484,7 @@ int bsp_gps_open(bsp_gps_rx_cb_t cb)
     cm_iomux_set_pin_func(APP_GPS_UART_PIN_RX, APP_GPS_UART_PIN_RX_FUNC);
 
     cm_uart_event_t evt = {0};
-    evt.event_type = CM_UART_EVENT_TYPE_RX_ARRIVED;
+    evt.event_type = CM_UART_EVENT_TYPE_RX_ARRIVED | CM_UART_EVENT_TYPE_RX_OVERFLOW;
     evt.event_param = NULL;
     evt.event_entry = (void *)gps_uart_event_cb;
     cm_uart_register_event(s_gps_dev, (void *)&evt);
@@ -496,7 +496,7 @@ int bsp_gps_open(bsp_gps_rx_cb_t cb)
     cfg.flow_ctrl = CM_UART_FLOW_CTRL_NONE;
     cfg.baudrate = APP_GPS_UART_BAUDRATE;
     cfg.is_lpuart = 0;
-    cfg.rxrb_buf_size = APP_GPS_RX_BUF_SIZE;
+    cfg.rxrb_buf_size = 0;
     if (cm_uart_open(s_gps_dev, &cfg) != 0) {
         APP_LOGE("gps uart open fail");
         return -1;
