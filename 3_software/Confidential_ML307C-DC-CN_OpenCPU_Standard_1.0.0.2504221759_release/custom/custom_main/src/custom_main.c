@@ -6,12 +6,16 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include <stdbool.h>
 #include "cm_sys.h"
 #include "cm_os.h"
 #include "cm_pm.h"
 #include "cm_rtc.h"
 #include "cm_modem_info.h"
 #include "cm_modem.h"
+#include "cm_virt_at.h"
+#include "cm_usb.h"
 #include "custom_main.h"
 #include "app_config.h"
 #include "app_log.h"
@@ -49,6 +53,11 @@ static volatile bool g_gps_opened = false;
 /* MQTT 连接成功标志：由回调设置，主循环检测后执行 subscribe/publish
  * 不能在 MQTT 回调（cmmqtt-m 任务上下文）中直接调用 MQTT API，否则重入崩溃 */
 static volatile bool g_mqtt_just_connected = false;
+/* RPC 消息暂存：回调中仅拷贝 payload + 置标志，由主循环处理（避免回调中 publish 重入） */
+static volatile bool g_rpc_pending = false;
+static char g_rpc_topic[64] = {0};
+static char g_rpc_payload[1024] = {0};
+static int  g_rpc_payload_len = 0;
 /* 最后一次有效 GPS 定位更新的系统 tick（用于单次定位判断定位完成） */
 static volatile uint32_t g_loc_updated_tick = 0;
 
@@ -192,8 +201,17 @@ static void mqtt_event_cb(app_mqtt_event_e evt, void *data)
         APP_LOGI("rpc subscribed");
         break;
     case APP_MQTT_EVT_DATA_RX: {
+        /* MQTT 回调（cmmqtt-m 任务上下文）中禁止调用 publish API（重入崩溃），
+         * 仅拷贝 payload 到静态缓冲区并置标志，由主循环处理 */
         app_mqtt_msg_t *msg = (app_mqtt_msg_t *)data;
-        if (msg) app_command_handle(msg->topic, msg->payload, msg->payload_len);
+        if (msg && msg->payload_len > 0 &&
+            msg->payload_len < (int)sizeof(g_rpc_payload) && !g_rpc_pending) {
+            strncpy(g_rpc_topic, msg->topic, sizeof(g_rpc_topic) - 1);
+            g_rpc_topic[sizeof(g_rpc_topic) - 1] = '\0';
+            memcpy(g_rpc_payload, msg->payload, msg->payload_len);
+            g_rpc_payload_len = msg->payload_len;
+            g_rpc_pending = true;
+        }
         break;
     }
     case APP_MQTT_EVT_DISCONNECTED:
@@ -262,7 +280,7 @@ static void provisioning_and_connect(void)
 /* ===== GPS 接收回调：解析并保存最新定位 ===== */
 static void gps_rx_cb(const char *line)
 {
-    APP_LOGI("gps nmea: %s", line);
+    /* 此回调运行在 UART RX 中断上下文，禁止调用 APP_LOG（内部使用互斥锁+USB 阻塞发送） */
     app_location_t loc;
     memset(&loc, 0, sizeof(loc));
     if (bsp_gps_parse_nmea(line, &loc) == 1) {
@@ -386,6 +404,75 @@ static void one_shot_loc_task(void *arg)
     APP_LOGI("one-shot: task done");
 }
 
+/* 切换debug引脚打印的log到usb打印，掉电不保存配置 */
+static void log_switch_to_usb(void)
+{
+    char operation[64] = {0};
+    snprintf(operation, sizeof(operation), "%s\r\n", "AT+MCFG=log2cat,1");
+    uint8_t rsp[128] = {0};
+    int32_t rsp_len = 0;
+
+    if (cm_virt_at_send_sync((const uint8_t *)operation, rsp, &rsp_len, 10) == 0)
+    {
+        cm_log_printf(0, "log2cat rsp=%s rsp_len=%d\n", rsp, rsp_len);
+    }
+    else
+    {
+        cm_log_printf(0, "log2cat failed\n");
+    }
+}
+
+/* ===== 应用层日志输出（通过 USB 虚拟串口 ASR Modem Device 2） ===== */
+static osMutexId_t s_log_mutex = NULL;
+static bool s_usb_log_ready = false;
+
+static void usb_recv_cb(void *data, int32_t len)
+{
+    (void)data;
+    (void)len;
+}
+
+static void usb_status_cb(int32_t evt)
+{
+    (void)evt;
+}
+
+void app_log_output(const char *level, const char *fmt, ...)
+{
+    char buf[256];
+    int len = snprintf(buf, sizeof(buf), APP_LOG_TAG "[%s] ", level);
+    if (len < 0 || len >= (int)sizeof(buf)) return;
+
+    va_list args;
+    va_start(args, fmt);
+    int n = vsnprintf(buf + len, sizeof(buf) - len, fmt, args);
+    va_end(args);
+    if (n < 0) return;
+    len += n;
+    /* 添加换行符并保证 null 终止（fallback 路径 cm_log_printf "%s" 依赖终止符） */
+    if (len + 2 < (int)sizeof(buf)) {
+        buf[len++] = '\r';
+        buf[len++] = '\n';
+        buf[len] = '\0';
+    } else {
+        len = sizeof(buf) - 3;
+        buf[len++] = '\r';
+        buf[len++] = '\n';
+        buf[len] = '\0';
+    }
+
+    if (s_usb_log_ready && s_log_mutex) {
+        /* 超时 20 ticks (100ms)，避免高优先级任务（如 cmmqtt-m）长时间阻塞 */
+        if (osMutexAcquire(s_log_mutex, 20) == 0) {
+            cm_usb2com_send_data(buf, len);
+            osMutexRelease(s_log_mutex);
+        }
+    } else {
+        /* USB 未就绪时 fallback 到 cm_log_printf（走 DBG 口） */
+        cm_log_printf(0, "%s", buf);
+    }
+}
+
 /* ===== 主业务任务 ===== */
 static void main_task(void *arg)
 {
@@ -393,6 +480,21 @@ static void main_task(void *arg)
 
     /* 等待开机 */
     while (!g_power_on) osDelay(APP_MS_TO_TICK(200));
+
+    /* 延时等待 USB 初始化完成后切换 log 到 USB */
+    osDelay(APP_MS_TO_TICK(3000));
+    log_switch_to_usb();
+    osDelay(APP_MS_TO_TICK(500));
+
+    /* 初始化 USB 虚拟串口日志输出（ASR Modem Device 2） */
+    osMutexAttr_t log_mtx_attr = {0};
+    log_mtx_attr.name = "log_mtx";
+    log_mtx_attr.attr_bits = osMutexPrioInherit;  /* 防止优先级反转 */
+    s_log_mutex = osMutexNew(&log_mtx_attr);
+    cm_usb2com_register_recv_cb(usb_recv_cb);
+    cm_usb2com_register_status_cb(usb_status_cb);
+    s_usb_log_ready = true;
+    APP_LOGI("usb log ready");
 
 #if (APP_BUILD_VERSION == APP_BUILD_SAMPLE)
     /* 送样版：等网络注册成功后直接连 MQTT（跳过 provisioning，使用硬编码凭证） */
@@ -435,6 +537,12 @@ static void main_task(void *arg)
 #if (APP_BUILD_VERSION == APP_BUILD_STANDARD)
             app_offline_cache_replay(offline_replay_cb);
 #endif
+        }
+
+        /* 处理 MQTT 回调暂存的 RPC 消息（主循环中安全调用 publish） */
+        if (g_rpc_pending) {
+            app_command_handle(g_rpc_topic, g_rpc_payload, g_rpc_payload_len);
+            g_rpc_pending = false;
         }
 
         /* GPS 模式切换控制（需求 1.2.4：超省电模式不进行定位）
@@ -567,6 +675,13 @@ static void main_task(void *arg)
                 publish_location(false);
             }
             last_loc_tick = now;
+        }
+
+        /* 周期心跳日志，确认程序正常运行 */
+        static uint32_t last_hb_tick = 0;
+        if (now - last_hb_tick >= APP_MS_TO_TICK(10000)) {
+            last_hb_tick = now;
+            APP_LOGI("alive mode=%d rssi=%d", (int)mode, g_last_rssi);
         }
 
         osDelay(APP_MS_TO_TICK(1000));

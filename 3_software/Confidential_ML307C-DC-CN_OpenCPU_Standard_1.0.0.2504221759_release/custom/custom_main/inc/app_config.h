@@ -145,6 +145,15 @@ extern "C" {
  * =================================================================== */
 #define APP_LOG_TAG                 "[PET]"
 #define APP_LOG_ENABLED             1
+/* 日志级别过滤（编译时）：NONE < ERROR < WARN < INFO < DEBUG */
+#define APP_LOG_LEVEL_NONE          0
+#define APP_LOG_LEVEL_ERROR         1
+#define APP_LOG_LEVEL_WARN          2
+#define APP_LOG_LEVEL_INFO          3
+#define APP_LOG_LEVEL_DEBUG         4
+#ifndef APP_LOG_LEVEL
+#define APP_LOG_LEVEL               APP_LOG_LEVEL_INFO   /* 默认 INFO */
+#endif
 
 /* ===================================================================
  * 12. 时间换算宏
