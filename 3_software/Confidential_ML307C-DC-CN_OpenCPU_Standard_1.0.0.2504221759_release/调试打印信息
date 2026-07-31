@@ -1,17 +1,5 @@
-[14:09:44.345]收←◆[PET][I] usb log ready
-[PET][I] network ready, cereg=1
-[PET][I] use hardcoded credential (debug)
-[PET][I] mqtt connect 119.23.217.155:18883
+[17:31:59.066]收←◆[PET][I] alive mode=2 rssi=-530 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
 
-[14:09:44.495]收←◆[PET][I] mqtt connected
+[17:32:07.386]收←◆[PET][W] LOC report without gps fix (lat=0,lon=0)
 
-[14:09:46.687]收←◆[PET][I] state ONLINE published
-
-[14:09:46.737]收←◆[PET][I] rpc subscribed
-[PET][I] mqtt subscribed
-
-[14:10:30.972]收←◆[PET][I] alive mode=2 rssi=-540
-
-[14:11:17.048]收←◆[PET][I] alive mode=2 rssi=-540
-
-[14:12:10.888]收←◆[PET][I] alive mode=2 rssi=-520
+[17:32:07.439]收←◆[PET][I] LOC #1 tx: {"event_type":"location","message_id":"loc_865229081435439_boot_19700101085948_6cb0_000001","imei":"865229081435439","device_sn":"865229081435439","event_time":"2026-07-30T09:32:09Z","longitude":0,"latitude":0,"coordinate_system":"WG

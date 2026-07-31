@@ -92,6 +92,8 @@ void app_main_trigger_one_shot_location(void)
 }
 
 /* ===== 上报一条定位 ===== */
+/* 用静态缓冲区手工拼 JSON，避免 cJSON malloc/free 与 cmmqtt-m 任务并发堆操作
+ * 导致堆元数据损坏 DataAbort 崩溃（newlib malloc 非线程安全） */
 static void publish_location(bool is_offline_replay)
 {
     app_location_t loc;
@@ -100,31 +102,55 @@ static void publish_location(bool is_offline_replay)
     if (g_loc_mutex) osMutexRelease(g_loc_mutex);
 
     if (loc.latitude == 0.0 && loc.longitude == 0.0) {
-        return; /* 无有效定位 */
+        APP_LOGW("LOC report without gps fix (lat=0,lon=0)");
     }
 
     uint32_t seq = next_seq();
-    char *json = NULL;
-    int json_len = 0;
+
+    static char s_json[512];
     char msgid[APP_MSG_ID_MAX_LEN];
     char event_time[24];
 
-    if (app_protocol_build_location(g_imei, g_boot_id, seq, &loc,
-                                     g_last_soc, g_last_rssi, is_offline_replay,
-                                     &json, &json_len,
-                                     msgid, sizeof(msgid),
-                                     event_time, sizeof(event_time)) != 0) {
+    app_util_gen_loc_message_id(g_imei, g_boot_id, seq, msgid, sizeof(msgid));
+    app_util_format_rfc3339(cm_rtc_get_current_time(), event_time, sizeof(event_time));
+
+    int len = snprintf(s_json, sizeof(s_json),
+        "{\"event_type\":\"location\""
+        ",\"message_id\":\"%s\""
+        ",\"imei\":\"%s\""
+        ",\"device_sn\":\"%s\""
+        ",\"event_time\":\"%s\""
+        ",\"longitude\":%.6f"
+        ",\"latitude\":%.6f"
+        ",\"coordinate_system\":\"%s\""
+        ",\"accuracy\":%d"
+        ",\"source\":\"%s\""
+        ",\"battery_level\":%d"
+        ",\"network_type\":\"LTE\""
+        ",\"signal_strength\":%d"
+        ",\"speed\":%.1f"
+        ",\"heading\":%.1f"
+        ",\"altitude\":%.1f"
+        ",\"boot_id\":\"%s\""
+        ",\"sequence_no\":%lu"
+        ",\"is_offline_upload\":%s}",
+        msgid, g_imei, g_imei, event_time,
+        loc.longitude, loc.latitude,
+        loc.coord_sys[0] ? loc.coord_sys : "WGS84",
+        loc.accuracy,
+        loc.source[0] ? loc.source : "GPS",
+        g_last_soc, g_last_rssi,
+        loc.speed, loc.heading, loc.altitude,
+        g_boot_id, (unsigned long)seq,
+        is_offline_replay ? "true" : "false");
+
+    if (len <= 0 || len >= (int)sizeof(s_json)) {
+        APP_LOGE("LOC #%lu json build fail/overflow", (unsigned long)seq);
         return;
     }
 
     if (app_mqtt_is_connected() && !is_offline_replay) {
-        /* 复制到静态缓冲区，publish 前先 free，避免 free 与 MQTT 异步操作并发 */
-        static char s_loc_buf[512];
-        int copy_len = json_len < (int)sizeof(s_loc_buf) ? json_len : (int)sizeof(s_loc_buf) - 1;
-        memcpy(s_loc_buf, json, copy_len);
-        s_loc_buf[copy_len] = '\0';
-        free(json);
-        app_mqtt_publish_telemetry(s_loc_buf, copy_len);
+        app_mqtt_publish_telemetry(s_json, len);
         APP_LOGI("LOC #%lu publish ok", (unsigned long)seq);
     } else {
 #if (APP_BUILD_VERSION == APP_BUILD_STANDARD)
@@ -133,18 +159,17 @@ static void publish_location(bool is_offline_replay)
         memset(&rec, 0, sizeof(rec));
         strncpy(rec.message_id, msgid, sizeof(rec.message_id) - 1);
         strncpy(rec.event_time, event_time, sizeof(rec.event_time) - 1);
-        int copy_len = json_len < (int)sizeof(rec.payload) ? json_len : (int)sizeof(rec.payload) - 1;
-        memcpy(rec.payload, json, copy_len);
+        int copy_len = len < (int)sizeof(rec.payload) ? len : (int)sizeof(rec.payload) - 1;
+        memcpy(rec.payload, s_json, copy_len);
+        rec.payload[copy_len] = '\0';
         rec.payload_len = copy_len;
         app_offline_cache_push(&rec);
         APP_LOGI("LOC #%lu cached (offline count=%d)",
                  (unsigned long)seq, app_offline_cache_count());
 #else
-        /* 送样版：不实现离线补传，未连接时直接丢弃 */
         APP_LOGW("LOC #%lu dropped (mqtt disconnected, no cache in sample build)",
                  (unsigned long)seq);
 #endif
-        free(json);
     }
 }
 
@@ -681,7 +706,15 @@ static void main_task(void *arg)
         static uint32_t last_hb_tick = 0;
         if (now - last_hb_tick >= APP_MS_TO_TICK(10000)) {
             last_hb_tick = now;
-            APP_LOGI("alive mode=%d rssi=%d", (int)mode, g_last_rssi);
+            /* 读取当前 GPS 定位状态用于心跳日志 */
+            app_location_t hb_loc;
+            if (g_loc_mutex) osMutexAcquire(g_loc_mutex, osWaitForever);
+            hb_loc = g_last_loc;
+            if (g_loc_mutex) osMutexRelease(g_loc_mutex);
+            APP_LOGI("alive mode=%d rssi=%d gps=%s sat=%d lat=%.5f lon=%.5f",
+                     (int)mode, g_last_rssi,
+                     (hb_loc.latitude != 0.0 || hb_loc.longitude != 0.0) ? "FIX" : "NOFIX",
+                     hb_loc.satellite_cnt, hb_loc.latitude, hb_loc.longitude);
         }
 
         osDelay(APP_MS_TO_TICK(1000));
