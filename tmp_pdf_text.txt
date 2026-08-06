@@ -1,8 +1,0 @@
-﻿python : Traceback (most recent call last):
-所在位置 行:1 字符: 1
-+ python d:\Work\git_repo\App_Tracker\tmp_pdf_extract.py 2>&1 | Out-Fil ...
-+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: (Traceback (most recent call last) 
-   ::String) [], RemoteException
-    + FullyQualifiedErrorId : NativeCommandError
- 

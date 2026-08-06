@@ -466,6 +466,7 @@ static void gps_uart_event_cb(void *param, uint32_t evt)
             if (c == '\n') {
                 if (s_gps_line_pos > 0) {
                     s_gps_line[s_gps_line_pos] = '\0';
+                    APP_LOGI("gps rx: %s", s_gps_line);
                     if (s_gps_cb) s_gps_cb(s_gps_line);
                     s_gps_line_pos = 0;
                 }
