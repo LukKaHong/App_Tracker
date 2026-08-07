@@ -71,32 +71,31 @@ typedef struct {
     int     payload_len;
 } app_offline_record_t;
 
-/* ===== JSON 构造与解析 API ===== */
-struct cJSON;
-typedef struct cJSON cJSON;
+/* ===== JSON 构造与解析 API =====
+ * 注意：所有 API 使用调用方提供的静态/栈缓冲区，不使用 cJSON malloc/free，
+ * 避免与 cmmqtt-m 任务并发堆操作导致堆损坏（newlib malloc 非线程安全） */
 
-int app_protocol_build_location(const char *imei, const char *boot_id,
-                                 uint32_t seq, const app_location_t *loc,
-                                 int battery_level, int signal_strength,
-                                 bool is_offline,
-                                 char **out_json, int *out_len,
-                                 char *out_msgid, size_t msgid_len,
-                                 char *out_event_time, size_t et_len);
+/* RPC 解析结果：包含 method、command_id 及常用 params 字段 */
+typedef struct {
+    char method[32];
+    char command_id[64];
+    int  duration_seconds;   /* SOUND/LIGHT 持续时长，默认 -1 表示未提供 */
+    int  interval_seconds;   /* LOCATION_FREQUENCY 间隔，默认 -1 表示未提供 */
+    char url[256];           /* OTA 升级 URL，空字符串表示未提供 */
+} app_rpc_parsed_t;
 
-int app_protocol_build_state(const char *imei, const char *online_status,
-                              int battery_level, const char *firmware_version,
-                              int signal_strength, int charging_status,
-                              char **out_json, int *out_len);
-
+/* 组装命令结果 JSON 到 out_buf（不使用 malloc）
+ * 返回 0 成功，<0 失败；*out_len 为生成的 JSON 长度 */
 int app_protocol_build_command_result(const char *imei, const char *command_id,
                                        const char *status,
                                        const char *failure_code,
                                        const char *failed_reason,
-                                       char **out_json, int *out_len);
+                                       char *out_buf, size_t buf_size, int *out_len);
 
+/* 解析 RPC payload（不使用 cJSON malloc/free）
+ * 返回 0 成功，<0 失败；结果写入 out->method / out->command_id 等 */
 int app_protocol_parse_rpc(const char *payload, int payload_len,
-                            char **out_method, char *out_command_id, size_t cmd_id_len,
-                            cJSON **out_params);
+                            app_rpc_parsed_t *out);
 
 int app_protocol_extract_request_id(const char *topic, char *out, size_t out_len);
 

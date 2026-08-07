@@ -66,21 +66,14 @@ void bsp_rgb_stop_pattern(void);
 /* 读取电池电压 (mV) 并换算 SOC (0~100) */
 int  bsp_battery_read(int *voltage_mv, int *soc);
 
-/* ========== 充电状态 ========== */
-typedef enum {
-    BSP_CHARGE_DISCHARGE = 0,   /* 未充电（电池放电） */
-    BSP_CHARGE_CHARGING,       /* 充电中 */
-    BSP_CHARGE_FULL,           /* 充满 */
-} bsp_charge_state_e;
-
-/* 获取充电状态：根据充电 IO + 当前 SOC 判断 */
-bsp_charge_state_e bsp_charging_get_state(int soc);
-
 /* ========== GPS UART (CC1161W, NMEA 0183) ========== */
 /* 初始化 GPS UART，注册接收回调 */
 typedef void (*bsp_gps_rx_cb_t)(const char *line);
 int  bsp_gps_open(bsp_gps_rx_cb_t cb);
 int  bsp_gps_close(void);
+
+/* 设置 GPS 芯片 UART 波特率（CFGPRT 指令），与主控 UART 波特率对齐 */
+int  bsp_gps_set_uart_baudrate(uint32_t baud);
 
 /* 解析单行 NMEA 语句，写入 out_loc；非定位语句返回 0 */
 int  bsp_gps_parse_nmea(const char *line, app_location_t *out_loc);

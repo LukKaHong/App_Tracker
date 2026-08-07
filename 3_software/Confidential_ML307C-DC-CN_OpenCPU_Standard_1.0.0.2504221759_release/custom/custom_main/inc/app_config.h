@@ -18,16 +18,6 @@ extern "C" {
 #endif
 
 /* ===================================================================
- * 0. 构建版本选择
- *    APP_BUILD_SAMPLE   : 送样版（精简功能，快速送样）
- *    APP_BUILD_STANDARD : 标准版（全功能）
- *    切换版本只需修改此处宏定义
- * =================================================================== */
-#define APP_BUILD_SAMPLE           1
-#define APP_BUILD_STANDARD         2
-#define APP_BUILD_VERSION          APP_BUILD_SAMPLE
-
-/* ===================================================================
  * 1. 固件与设备标识
  * =================================================================== */
 #define APP_FIRMWARE_VERSION        "1.0.0"
@@ -75,7 +65,8 @@ extern "C" {
  *    使用 UART_DEV_1 (PIN_28=RX, PIN_29=TX, FUNCTION1)
  * =================================================================== */
 #define APP_GPS_UART_DEV            CM_UART_DEV_1
-#define APP_GPS_UART_BAUDRATE       CM_UART_BAUDRATE_9600
+#define APP_GPS_UART_BAUDRATE       CM_UART_BAUDRATE_115200
+#define APP_GPS_UART_BAUDRATE_RATE  115200    /* 数值，用于 CFGPRT 命令 */
 #define APP_GPS_UART_PIN_RX          CM_IOMUX_PIN_28      /* UART1_RX  */
 #define APP_GPS_UART_PIN_TX          CM_IOMUX_PIN_29      /* UART1_TX  */
 #define APP_GPS_UART_PIN_TX_FUNC    CM_IOMUX_FUNC_FUNCTION1
@@ -84,55 +75,51 @@ extern "C" {
 
 /* ===================================================================
  * 6. 按键 - 中断方式 + 低功耗唤醒
- *    TODO: 待硬件确定后修改
+ *    Pin76 / GPIO0（默认 GPIO 第一功能，无需切 FUNCTION）
+ *    注：Pin76 功能1为 SMART_BAT，需确认未启用智能电池功能
  * =================================================================== */
-#define APP_KEY_GPIO                CM_GPIO_NUM_7       /* TODO */
-#define APP_KEY_IOMUX_PIN           CM_IOMUX_PIN_15     /* TODO */
-#define APP_KEY_ACTIVE_LEVEL        CM_GPIO_LEVEL_LOW   /* 低电平表示按下（TODO 视电路而定） */
+#define APP_KEY_GPIO                CM_GPIO_NUM_0
+#define APP_KEY_IOMUX_PIN           CM_IOMUX_PIN_76
+#define APP_KEY_ACTIVE_LEVEL        CM_GPIO_LEVEL_LOW   /* 低电平表示按下 */
 #define APP_KEY_INTERRUPT_MODE      CM_GPIO_IT_EDGE_BOTH
 
 /* ===================================================================
  * 7. 蜂鸣器 - GPIO 驱动（也可改为 PWM）
- *    TODO: 驱动方式与 IO 待硬件确定后修改
+ *    Pin33 默认 PCM_OUT，复用功能1 = GPIO19
  * =================================================================== */
-#define APP_BUZZER_GPIO             CM_GPIO_NUM_8       /* TODO */
-#define APP_BUZZER_IOMUX_PIN        CM_IOMUX_PIN_16     /* TODO */
-#define APP_BUZZER_ACTIVE_LEVEL     CM_GPIO_LEVEL_HIGH  /* 高电平响（TODO 视电路而定） */
+#define APP_BUZZER_GPIO             CM_GPIO_NUM_19
+#define APP_BUZZER_IOMUX_PIN        CM_IOMUX_PIN_33
+#define APP_BUZZER_ACTIVE_LEVEL     CM_GPIO_LEVEL_HIGH  /* 高电平响 */
 #define APP_BUZZER_BEEP_INTERVAL_MS 1000               /* 1 秒响一次 */
 
 /* ===================================================================
  * 8. RGB 指示灯 - 3 路 GPIO（如使用 PWM 可改为 PWM 设备）
- *    TODO: 待硬件确定后修改
+ *    Pin30/31/32 默认 PCM_CLK/SYNC/IN，复用功能1 = GPIO16/17/18
  * =================================================================== */
-#define APP_RGB_R_GPIO              CM_GPIO_NUM_9       /* TODO */
-#define APP_RGB_R_IOMUX_PIN         CM_IOMUX_PIN_17     /* TODO */
-#define APP_RGB_G_GPIO              CM_GPIO_NUM_10      /* TODO */
-#define APP_RGB_G_IOMUX_PIN         CM_IOMUX_PIN_20     /* TODO */
-#define APP_RGB_B_GPIO              CM_GPIO_NUM_11      /* TODO */
-#define APP_RGB_B_IOMUX_PIN         CM_IOMUX_PIN_21     /* TODO */
+#define APP_RGB_R_GPIO              CM_GPIO_NUM_16
+#define APP_RGB_R_IOMUX_PIN         CM_IOMUX_PIN_30
+#define APP_RGB_G_GPIO              CM_GPIO_NUM_17
+#define APP_RGB_G_IOMUX_PIN         CM_IOMUX_PIN_31
+#define APP_RGB_B_GPIO              CM_GPIO_NUM_18
+#define APP_RGB_B_IOMUX_PIN         CM_IOMUX_PIN_32
 #define APP_RGB_ACTIVE_LEVEL        CM_GPIO_LEVEL_HIGH  /* TODO 视电路而定，共阳/共阴决定 */
 
 /* ===================================================================
  * 9. 电池电量 ADC
- *    TODO: 实际通道与分压比待硬件确定后修改
+ *    Pin9 / ADC0（默认 ADC 功能，量程 0~1.2V）
+ *    分压比 4：4.2V ÷ 4 = 1.05V < 1.2V，留余量
  * =================================================================== */
-#define APP_BATTERY_ADC_DEV         CM_ADC_0            /* TODO */
-#define APP_BATTERY_ADC_IOMUX_PIN   CM_IOMUX_PIN_22     /* TODO */
-#define APP_BATTERY_DIV_RATIO       2                   /* TODO: ADC 量程 / 电池量程，分压系数 */
+#define APP_BATTERY_ADC_DEV         CM_ADC_0
+#define APP_BATTERY_ADC_IOMUX_PIN   CM_IOMUX_PIN_9
+#define APP_BATTERY_DIV_RATIO       4                   /* 4:1 分压，4.2V→1.05V < ADC 1.2V 量程 */
 #define APP_BATTERY_FULL_MV         4200                /* 满电电压 mV */
 #define APP_BATTERY_EMPTY_MV        3300                /* 关机电压 mV */
 #define APP_BATTERY_SAMPLE_MS       (30 * 1000)         /* 30 秒采样一次 */
 
 /* ===================================================================
- * 10. 充电状态检测 IO（需求5指示灯必需）
- *     TODO: 待硬件确定后修改
- *     简化方案：用 1 个 GPIO 检测"充电中"（USB 插入），
- *     充满状态由 SOC >= 100 判断
+ * 10. 充电状态检测 IO
+ *     当前未实现充电检测功能，硬件确定后补充
  * =================================================================== */
-#define APP_CHARGE_STATE_GPIO       CM_GPIO_NUM_12       /* TODO */
-#define APP_CHARGE_STATE_IOMUX_PIN  CM_IOMUX_PIN_23      /* TODO */
-#define APP_CHARGE_ACTIVE_LEVEL     CM_GPIO_LEVEL_HIGH   /* TODO: 充电中为高电平 */
-
 #define APP_RGB_BLINK_FAST_ON_MS    100
 #define APP_RGB_BLINK_FAST_OFF_MS   100
 #define APP_RGB_BLINK_SLOW_ON_MS    500

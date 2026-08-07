@@ -27,12 +27,11 @@ static bsp_key_event_cb_t s_key_cb = NULL;
 static osTimerId_t        s_key_timer = NULL;
 static uint32_t           s_key_press_tick = 0;
 static bool               s_key_pressed = false;
-static volatile bool      s_key_irq_flag = false;
 
 static void key_irq_handler(void)
 {
-    /* 中断上下文，仅置位标志，由 main task 处理去抖 */
-    s_key_irq_flag = true;
+    /* 中断上下文，仅作为 GPIO 中断注册入口；
+     * 实际去抖与事件派发由 key_check_timer_cb 周期轮询 GPIO 电平完成 */
 }
 
 static void key_check_timer_cb(void *arg)
@@ -61,7 +60,8 @@ static void key_check_timer_cb(void *arg)
 
 static int bsp_key_init(void)
 {
-    cm_iomux_set_pin_func(APP_KEY_IOMUX_PIN, CM_IOMUX_FUNC_FUNCTION1); /* GPIO 功能 */
+    /* Pin76/GPIO0 默认即 GPIO 功能，无需 cm_iomux_set_pin_func
+     * 注意：Pin76 的 FUNCTION1 是 SMART_BAT，调用反而会切错 */
     cm_gpio_cfg_t cfg = {0};
     cfg.direction = CM_GPIO_DIRECTION_INPUT;
     cfg.pull = (APP_KEY_ACTIVE_LEVEL == CM_GPIO_LEVEL_LOW) ? CM_GPIO_PULL_UP : CM_GPIO_PULL_DOWN;
@@ -413,38 +413,6 @@ int bsp_battery_read(int *voltage_mv, int *soc)
 }
 
 /* ====================================================================
- * 充电状态
- * ==================================================================== */
-static int bsp_charge_init(void)
-{
-    cm_iomux_set_pin_func(APP_CHARGE_STATE_IOMUX_PIN, CM_IOMUX_FUNC_FUNCTION1);
-    cm_gpio_cfg_t cfg = {0};
-    cfg.direction = CM_GPIO_DIRECTION_INPUT;
-    cfg.pull = (APP_CHARGE_ACTIVE_LEVEL == CM_GPIO_LEVEL_HIGH) ? CM_GPIO_PULL_DOWN : CM_GPIO_PULL_UP;
-    if (cm_gpio_init(APP_CHARGE_STATE_GPIO, &cfg) != 0) {
-        APP_LOGE("charge gpio init fail");
-        return -1;
-    }
-    return 0;
-}
-
-bsp_charge_state_e bsp_charging_get_state(int soc)
-{
-    cm_gpio_level_e level = CM_GPIO_LEVEL_LOW;
-    if (cm_gpio_get_level(APP_CHARGE_STATE_GPIO, &level) != 0) {
-        return BSP_CHARGE_DISCHARGE;
-    }
-    if (level != APP_CHARGE_ACTIVE_LEVEL) {
-        return BSP_CHARGE_DISCHARGE;
-    }
-    /* 充电中：插入电源 */
-    if (soc >= 100) {
-        return BSP_CHARGE_FULL;
-    }
-    return BSP_CHARGE_CHARGING;
-}
-
-/* ====================================================================
  * GPS UART (NMEA 0183)
  * ==================================================================== */
 static cm_uart_dev_e   s_gps_dev = APP_GPS_UART_DEV;
@@ -466,7 +434,8 @@ static void gps_uart_event_cb(void *param, uint32_t evt)
             if (c == '\n') {
                 if (s_gps_line_pos > 0) {
                     s_gps_line[s_gps_line_pos] = '\0';
-                    APP_LOGI("gps rx: %s", s_gps_line);
+                    /* 中断/回调上下文：禁止 APP_LOGI（可能阻塞/重入）
+                     * 由 s_gps_cb 上层负责日志输出 */
                     if (s_gps_cb) s_gps_cb(s_gps_line);
                     s_gps_line_pos = 0;
                 }
@@ -531,6 +500,16 @@ int bsp_gps_set_power_mode(bsp_gps_lpmode_e mode)
 {
     char body[24];
     snprintf(body, sizeof(body), "CFGLPMODE,%d", (int)mode);
+    return bsp_gps_send_nmea(body);
+}
+
+/* 设置 GPS 芯片 UART 波特率（CFGPRT 指令，ICOE 协议 1.4.2.1）
+ * portID=1 (UART0), addr=0, inPro=1 (ICOE), outPro=3 (ICOE+NMEA)
+ * 修改后芯片以新波特率输出，主控侧需保持一致 */
+int bsp_gps_set_uart_baudrate(uint32_t baud)
+{
+    char body[40];
+    snprintf(body, sizeof(body), "CFGPRT,1,0,%u,1,3", (unsigned)baud);
     return bsp_gps_send_nmea(body);
 }
 
@@ -674,7 +653,6 @@ int bsp_init(void)
     ret |= bsp_buzzer_init();
     ret |= bsp_rgb_init();
     ret |= bsp_battery_init();
-    ret |= bsp_charge_init();
     if (ret != 0) {
         APP_LOGW("bsp_init partial fail:%d", ret);
     }

@@ -20,6 +20,9 @@ static app_mqtt_event_cb_t  s_user_cb = NULL;
 static bool                 s_running = false;
 static bool                 s_connected = false;
 static volatile bool        s_need_reconnect = false;
+/* 保存最近一次连接凭证，用于断线后主动重连（SDK 内部重连失败时兜底） */
+static app_mqtt_credential_t s_saved_cred;
+static bool                 s_has_cred = false;
 
 #define EVT_CONNECTED    (1u << 0)
 #define EVT_DISCONNECTED (1u << 1)
@@ -34,8 +37,14 @@ static int cb_connack(cm_mqtt_client_t *client, int session, cm_mqtt_conn_state_
         if (s_user_cb) s_user_cb(APP_MQTT_EVT_CONNECTED, NULL);
         APP_LOGI("mqtt connected");
     } else {
+        /* 非成功状态：客户端断开/服务器拒绝/ping 超时/网络异常等
+         * 通知上层断线，并触发主动重连兜底（SDK 内部重连可能放弃） */
+        bool was_connected = s_connected;
         s_connected = false;
-        APP_LOGW("mqtt connack fail:%d", conn_res);
+        APP_LOGW("mqtt connack fail:%d (was_connected=%d)", conn_res, was_connected);
+        if (was_connected && s_user_cb) {
+            s_user_cb(APP_MQTT_EVT_DISCONNECTED, NULL);
+        }
         s_need_reconnect = true;
     }
     return 0;
@@ -72,29 +81,51 @@ static int cb_timeout(cm_mqtt_client_t *client, unsigned short msgid)
     return 0;
 }
 
-/* ====== 内部任务：监听断开并重连 ====== */
+/* ====== 内部任务：监听断开并重连 ======
+ * SDK 内部已开启自动重连（CM_MQTT_OPT_RECONN_MODE=1），
+ * 但仍可能出现 SDK 放弃重连或状态不同步的情况。
+ * 本任务做两件事：
+ *   1) 周期轮询 cm_mqtt_client_get_state，捕获未触发 connack_cb 的断线
+ *   2) s_need_reconnect 置位时，5 秒后主动调用 cm_mqtt_client_connect 兜底 */
 static void mqtt_task(void *arg)
 {
     (void)arg;
     while (s_running) {
-        if (s_connected && !s_need_reconnect) {
-            osDelay(APP_MS_TO_TICK(1000));
-            continue;
+        osDelay(APP_MS_TO_TICK(1000));
+        if (!s_running || !s_client) continue;
+
+        /* 状态轮询：检测未触发回调的断线（如异常网络中断） */
+        int st = cm_mqtt_client_get_state(s_client);
+        if (st == CM_MQTT_STATE_DISCONNECTED) {
+            if (s_connected) {
+                s_connected = false;
+                APP_LOGW("mqtt state poll detected disconnect");
+                if (s_user_cb) s_user_cb(APP_MQTT_EVT_DISCONNECTED, NULL);
+            }
+            s_need_reconnect = true;
         }
-        if (!s_need_reconnect) {
-            osDelay(APP_MS_TO_TICK(1000));
-            continue;
-        }
+
+        if (!s_need_reconnect) continue;
         s_need_reconnect = false;
+
         APP_LOGI("mqtt reconnect in 5s");
         osDelay(APP_MS_TO_TICK(5000));
         if (!s_running) break;
-        if (s_client) {
-            int st = cm_mqtt_client_get_state(s_client);
-            if (st == CM_MQTT_STATE_DISCONNECTED ||
-                st == CM_MQTT_STATE_CONNECTING ||
-                st == CM_MQTT_STATE_RECONNECTING) {
-                /* 客户端内部已有重连机制，这里仅触发应用层状态恢复 */
+
+        /* 主动重连兜底：SDK 内部重连可能已放弃，这里调用 connect 复位状态 */
+        if (s_client && s_has_cred) {
+            int cur = cm_mqtt_client_get_state(s_client);
+            if (cur == CM_MQTT_STATE_DISCONNECTED) {
+                cm_mqtt_connect_options_t opt = {0};
+                opt.hostport = s_saved_cred.mqtt_port;
+                opt.hostname = s_saved_cred.mqtt_host;
+                opt.clientid = s_saved_cred.client_id;
+                opt.username = s_saved_cred.username;
+                opt.password = s_saved_cred.password;
+                opt.keepalive = APP_MQTT_KEEPALIVE_SEC;
+                opt.clean_session = 1;
+                int ret = cm_mqtt_client_connect(s_client, &opt);
+                APP_LOGI("mqtt active reconnect ret=%d", ret);
             }
         }
     }
@@ -121,6 +152,10 @@ int app_mqtt_connect(const app_mqtt_credential_t *cred)
         cm_mqtt_client_destroy(s_client);
         s_client = NULL;
     }
+    /* 保存凭证用于主动重连兜底 */
+    s_saved_cred = *cred;
+    s_has_cred = true;
+
     s_client = cm_mqtt_client_create();
     if (!s_client) {
         APP_LOGE("mqtt client create fail");
@@ -186,6 +221,9 @@ int app_mqtt_disconnect(void)
         s_client = NULL;
     }
     s_connected = false;
+    s_need_reconnect = false;
+    s_has_cred = false;
+    memset(&s_saved_cred, 0, sizeof(s_saved_cred));
     return 0;
 }
 

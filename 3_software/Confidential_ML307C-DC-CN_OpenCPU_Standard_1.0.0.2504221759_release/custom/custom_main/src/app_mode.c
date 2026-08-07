@@ -48,14 +48,15 @@ app_mode_e app_mode_default_on(void)
 
 int app_mode_set(app_mode_e new_mode)
 {
-    if (new_mode <= APP_MODE_OFF || new_mode >= APP_MODE_NUM) {
+    if (new_mode < APP_MODE_OFF || new_mode >= APP_MODE_NUM) {
         return -1;
     }
     app_mode_e old;
     mode_lock();
     old = s_cur_mode;
     s_cur_mode = new_mode;
-    if (new_mode == APP_MODE_FIND_DOG) {
+    /* 仅在模式实际切换到寻狗时重置计时器，避免重复进入重置 */
+    if (old != new_mode && new_mode == APP_MODE_FIND_DOG) {
         s_find_dog_start_tick = (uint32_t)osKernelGetTickCount();
     }
     mode_unlock();

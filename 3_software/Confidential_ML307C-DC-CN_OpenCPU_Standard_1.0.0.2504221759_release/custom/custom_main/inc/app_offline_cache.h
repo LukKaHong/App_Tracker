@@ -1,7 +1,7 @@
 /**
  * @file    app_offline_cache.h
  * @brief   离线定位缓存：环形结构（push/pop/count/clear）
- *          存储路径：off_dat.bin（数据） + off_idx.bin（索引头）
+ *          纯 RAM 缓存，不落盘（需求 6.2：重启后可丢失）
  *          最大 APP_OFFLINE_CACHE_MAX 条，写满覆盖最旧。
  */
 #ifndef __APP_OFFLINE_CACHE_H__
@@ -29,9 +29,11 @@ int  app_offline_cache_count(void);
 /* 清空缓存 */
 int  app_offline_cache_clear(void);
 
-/* 触发限速补传：按 5 条/秒速率把所有缓存弹出并通过 cb 上报 */
+/* 增量补传：每次调用弹出最旧一条并通过 cb 上报
+ * 返回 0=已弹出一条且仍有数据；1=缓存已空，补传完成；-1=参数错误
+ * 调用方应在主循环中周期性调用直到返回 1，避免长时间阻塞主任务 */
 typedef void (*app_offline_replay_cb_t)(const app_offline_record_t *rec);
-void app_offline_cache_replay(app_offline_replay_cb_t cb);
+int  app_offline_cache_replay_step(app_offline_replay_cb_t cb);
 
 #ifdef __cplusplus
 }
