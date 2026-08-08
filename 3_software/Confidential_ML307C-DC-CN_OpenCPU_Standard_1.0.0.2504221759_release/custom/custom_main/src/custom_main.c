@@ -28,6 +28,7 @@
 #include "app_mqtt_client.h"
 #include "app_command.h"
 #include "app_ota.h"
+#include "app_lbs.h"
 #include "bsp.h"
 
 /* ===== 全局状态 ===== */
@@ -401,19 +402,39 @@ static void one_shot_loc_task(void *arg)
     uint32_t start = (uint32_t)osKernelGetTickCount();
     /* 给 GPS 冷启动一些时间 */
     osDelay(APP_MS_TO_TICK(APP_ONESHOT_GPS_WARMUP_MS));
+    bool gps_fixed = false;
     while (1) {
         uint32_t elapsed = (uint32_t)osKernelGetTickCount() - start;
         if (elapsed >= APP_MS_TO_TICK(APP_ONESHOT_TIMEOUT_MS)) {
-            APP_LOGW("one-shot: timeout %dms, report last loc", elapsed * APP_TICK_MS);
+            APP_LOGW("one-shot: gps timeout %dms", elapsed * APP_TICK_MS);
             break;
         }
         /* 判断是否收到新的有效定位 */
         if (g_loc_updated_tick != tick_before_open) {
             APP_LOGI("one-shot: location fixed after %dms", elapsed * APP_TICK_MS);
+            gps_fixed = true;
             break;
         }
         osDelay(APP_MS_TO_TICK(500));
     }
+
+    /* GPS 超时回退 LBS 基站定位（保证超省电模式总能上报位置） */
+#if APP_LBS_ENABLED
+    if (!gps_fixed) {
+        app_location_t lbs_loc;
+        APP_LOGI("one-shot: gps no fix, fallback to LBS");
+        if (app_lbs_get_location(&lbs_loc) == 0) {
+            if (g_loc_mutex) osMutexAcquire(g_loc_mutex, osWaitForever);
+            g_last_loc = lbs_loc;
+            g_loc_updated_tick = (uint32_t)osKernelGetTickCount();
+            if (g_loc_mutex) osMutexRelease(g_loc_mutex);
+            APP_LOGI("one-shot: LBS ok lon=%.6f lat=%.6f acc=%dm",
+                     lbs_loc.longitude, lbs_loc.latitude, lbs_loc.accuracy);
+        } else {
+            APP_LOGW("one-shot: LBS fail, report last loc");
+        }
+    }
+#endif
 
     /* 定位完成后切回超低功耗（需求 1.2.4：定位完成之后关闭定位功能） */
     bsp_gps_set_power_mode(BSP_GPS_LPMODE_ULTRA_LOW);

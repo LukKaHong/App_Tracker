@@ -26,6 +26,7 @@ ram_source_files = [
     'custom_main/src/app_mqtt_client.c',
     'custom_main/src/app_protocol.c',
     'custom_main/src/app_command.c',
+    'custom_main/src/app_lbs.c',
 ]
 
 flash_source_files = [
