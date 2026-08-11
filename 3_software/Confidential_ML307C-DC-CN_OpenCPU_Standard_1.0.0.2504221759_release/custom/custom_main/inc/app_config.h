@@ -75,7 +75,7 @@ extern "C" {
  *    使用 UART_DEV_1 (PIN_28=RX, PIN_29=TX, FUNCTION1)
  * =================================================================== */
 #define APP_GPS_UART_DEV            CM_UART_DEV_1
-#define APP_GPS_UART_BAUDRATE       CM_UART_BAUDRATE_9600
+#define APP_GPS_UART_BAUDRATE       CM_UART_BAUDRATE_115200
 #define APP_GPS_UART_PIN_RX          CM_IOMUX_PIN_28      /* UART1_RX  */
 #define APP_GPS_UART_PIN_TX          CM_IOMUX_PIN_29      /* UART1_TX  */
 #define APP_GPS_UART_PIN_TX_FUNC    CM_IOMUX_FUNC_FUNCTION1
