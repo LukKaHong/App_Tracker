@@ -1,5 +1,215 @@
-[17:31:59.066]收←◆[PET][I] alive mode=2 rssi=-530 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-10 22:44:08:289]
+[08-10 22:44:08:289]
+[08-10 22:44:08:289][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
+[08-10 22:44:08:289][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
+[08-10 22:44:08:289][INFO: Main      ] 
+[08-10 22:44:08:289][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
+[08-10 22:44:08:289][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
+[08-10 22:44:08:289][INFO: QspiFlash ] Detecting QSPI flash devices...
+[08-10 22:44:08:289][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
+[08-10 22:44:08:289][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
+[08-10 22:44:08:289][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
+[08-10 22:44:08:289][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
+[08-10 22:44:08:289][INFO: Crypto    ] Initializing crypto library...
+[08-10 22:44:08:289][INFO: Main      ] Running in normal booting mode.
+[08-10 22:44:08:289][INFO: Main      ] Loading...
+[08-10 22:44:08:289][INFO: Bl1Main   ] Welcome to boot rom.
+[08-10 22:44:08:289][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
+[08-10 22:44:08:289][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
+[08-10 22:44:08:289][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
+[08-10 22:44:08:289][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[08-10 22:44:08:289][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
+[08-10 22:44:08:289][INFO: Bl1Main   ] BL1: OKay.
+[08-10 22:44:08:289][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
+[08-10 22:44:08:289][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
+[08-10 22:44:08:289][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[08-10 22:44:08:289][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
+[08-10 22:44:08:289][INFO: Bl1Main   ] BL1: OKay.
+[08-10 22:44:09:178][INFO: UsbArch   ] usb phy reg: 0xd42070a4 = 0x189b
+[08-10 22:44:09:277][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[08-10 22:44:09:277][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
+[08-10 22:44:09:277]
+[08-10 22:44:09:277][BOOT33]VB_VERSION_DATE   :[20241210]
+[08-10 22:44:09:566]
+[08-10 22:44:09:566] ** PC      : 0x80017000
+[08-10 22:44:09:636]Version: SDK_1.011.144 Apr 22 2025 18:01:58
 
-[17:32:07.386]收←◆[PET][W] LOC report without gps fix (lat=0,lon=0)
+[08-10 22:44:09:636]Ac 4, Board 2, DKB 1
 
-[17:32:07.439]收←◆[PET][I] LOC #1 tx: {"event_type":"location","message_id":"loc_865229081435439_boot_19700101085948_6cb0_000001","imei":"865229081435439","device_sn":"865229081435439","event_time":"2026-07-30T09:32:09Z","longitude":0,"latitude":0,"coordinate_system":"WG
+[08-10 22:44:09:636]PSRAM fuse: 13
+
+[08-10 22:44:09:636]
+
+[08-10 22:44:09:636]Cinit 2
+
+[08-10 22:44:09:636]Flash type: nvm 0, factory 0, fota 0
+
+[08-10 22:44:09:636]Phase1Inits
+
+[08-10 22:44:09:636]diag Phase1 Init
+
+[08-10 22:44:09:636]dro_efuse = 135
+
+[08-10 22:44:09:636]profile num = 2
+
+[08-10 22:44:09:636]CRNLR_SVC_FP[0] = 0x29
+
+[08-10 22:44:09:636]CRNLR_SVC_FP[1] = 0x29
+
+[08-10 22:44:09:636]CRNLR_SVC_FP[2] = 0x29
+
+[08-10 22:44:09:636]CRNLR_SVC_FP[3] = 0x33
+
+[08-10 22:44:09:636]Bootup not silent
+
+[08-10 22:44:09:636][ELOOP] __cm_eloop_init 0x7e2626e0,128
+
+[08-10 22:44:09:753][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
+
+[08-10 22:44:09:753][ELOOP] rdy_list eloop=0x7e2626e0
+
+[08-10 22:44:09:753][ELOOP] eloop millsec=4294967295 tick=4294967295
+
+[08-10 22:44:09:753]InitTask started
+
+[08-10 22:44:09:753]Chip ID: 0xb01605
+
+[08-10 22:44:09:753]PS_NONCACHE_DATA_ZI rf [0x7e389300]
+
+[08-10 22:44:09:753]check unpressed rf/dsp size,rf [0x0000f000],dsp [0x00040800]
+
+[08-10 22:44:09:753]Crane mpu configure
+
+[08-10 22:44:09:753]start file system init
+
+[08-10 22:44:09:753]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d4000, reserved_end_addr=0x2d7000
+
+[08-10 22:44:09:753]
+
+[08-10 22:44:09:753]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
+
+[08-10 22:44:09:753]qspi_nor_set_flash_block_protect:write status register finished.
+
+[08-10 22:44:09:753]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
+
+[08-10 22:44:09:753]flash_protect_area_type=12
+
+[08-10 22:44:09:753]
+
+[08-10 22:44:09:753]SPI Nor/NAND flash init success
+
+[08-10 22:44:09:753]
+
+[08-10 22:44:09:753]FDI_Transport_Fsys_Register: 0, C:/
+
+[08-10 22:44:09:753]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
+
+[08-10 22:44:09:753]LfsGrpCnt 5
+
+[08-10 22:44:09:753]lfs.c:1245:error: Corrupted dir pair at {0x0, 0x1}
+
+[08-10 22:44:09:753]lfs_api.c:1064:error: Fail to mount in PTN 0, err -84
+
+[08-10 22:44:09:777][PTN 0] free size: 516096
+
+[08-10 22:44:09:777]lfs[PTN 0] init success
+
+[08-10 22:44:09:777]sulog Disable:0x4a656515,0x55
+
+[08-10 22:44:09:777]sulog Enable:0x45555515,0x55
+
+[08-10 22:44:12:678]OnKeyPoweroff_Task
+
+[08-10 22:44:12:678]eeHandlerPhase2Init
+
+[08-10 22:44:13:306][ cmlog ]60,__cm_nv_def_fota_load read open failed, maybe not inital
+
+[08-10 22:44:13:306][ cmlog ]123,__cm_nv_def_fota_cfg_init entry, init all
+
+[08-10 22:44:13:421][ cmlog ]netcard type = 16 cfg = 0
+
+[08-10 22:44:13:421]Usb mode 0, descriptor 70
+
+[08-10 22:44:13:421][ cmlog ]usb2com queue send err(status)
+
+[08-10 22:44:13:421]USIMPhase2Init 0
+
+[08-10 22:44:13:421]
+
+[08-10 22:44:13:421]copy rf size[0x0000f000] to [0x7e000000]
+
+[08-10 22:44:13:421]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+
+[08-10 22:44:13:421]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
+
+[08-10 22:44:13:671]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+
+[08-10 22:44:13:671]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
+
+[08-10 22:44:13:671]power_up_reason: 0x2, power_down_reason: 0x0
+
+[08-10 22:44:13:712]InitIPCControl: data:0x0
+
+[08-10 22:44:14:520]AT command server ready!
+
+[08-10 22:44:14:520]Booting done
+
+[08-10 22:44:14:552][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
+ 0
+
+[08-10 22:44:14:552][ cmlog ]atp10 cmiot AT+COPS=3,0
+ 0
+
+[08-10 22:44:14:552][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
+ 0
+
+[08-10 22:44:14:552][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
+
+[08-10 22:44:14:720]SW restart reason: Normal power on
+
+[08-10 22:44:14:720][ cmlog ]dm nv read err
+
+[08-10 22:44:14:720][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
+
+[08-10 22:44:14:872][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023b9d9
+
+[08-10 22:44:14:872][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
+
+[08-10 22:44:14:872][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0xe880
+
+[08-10 22:44:14:872][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0xe880
+
+[08-10 22:44:14:872][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x2a90
+
+[08-10 22:44:14:872][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x2b08,vma:0x802d9b08,lma:0x802d9b08,sz:0x1294
+
+[08-10 22:44:14:872][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0xde90,vma:0x7e1dc0e8,lma:0x802e4e90,sz:0x9f0
+
+[08-10 22:44:14:872][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf05ad8,vma:0x7e1dcad8,lma:0x7e1dcad8,sz:0x5c44
+
+[08-10 22:44:14:872][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x3da8,vma:0x7e1d2000,lma:0x802dada8,sz:0xa0e8
+
+[08-10 22:44:14:872][ cmlog ][OPENCPU]:[PET][I] offline cache init (ram-only) count=0
+
+[08-10 22:44:14:872]
+[08-10 22:44:14:872]
+
+[08-10 22:44:14:872][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
+
+[08-10 22:44:14:956]
+[08-10 22:44:14:956]
+
+[08-10 22:44:15:062][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_19700101000519_130b
+
+[08-10 22:44:15:062]
+[08-10 22:44:15:062]
+
+[08-10 22:44:15:062][ cmlog ][OPENCPU]:[PET][I] pet tracker start in OFF mode, waiting for power-on key
+
+[08-10 22:44:15:062]
+[08-10 22:44:15:062]
+
+[08-10 22:44:15:062][CM-OC] func:cm_opencpu_start line:211,ret:0
+
+[08-10 22:44:17:028][ cmlog ]__cm_daemon_thread 3 1
+

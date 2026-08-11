@@ -306,7 +306,7 @@ static void provisioning_and_connect(void)
     /* === 联调阶段：直接使用硬编码凭证 === */
     strncpy(cred.mqtt_host, "119.23.217.155", sizeof(cred.mqtt_host) - 1);
     cred.mqtt_port = 18883;
-    strncpy(cred.username, "4qf26fuipe8owzx3sxwy", sizeof(cred.username) - 1);
+    strncpy(cred.username, "yyf588r3y8ec6evxbv6e", sizeof(cred.username) - 1);
     /* password 为空 */
     cred.password[0] = '\0';
     /* client_id 使用 IMEI（ThingsBoard ACCESS_TOKEN 模式） */
@@ -334,7 +334,7 @@ static void provisioning_and_connect(void)
 /* ===== GPS 接收回调：解析并保存最新定位 ===== */
 static void gps_rx_cb(const char *line)
 {
-    /* 此回调运行在 UART RX 中断上下文，禁止调用 APP_LOG（内部使用互斥锁+USB 阻塞发送） */
+    /* 此回调运行在 UART RX 中断上下文，禁止调用 APP_LOG（内部使用互斥锁+DEBUG 串口阻塞发送） */
     /* 收到任何 NMEA 数据说明波特率已对齐，停止 CFGPRT 重试 */
     g_gps_baudrate_set = true;
     app_location_t loc;
