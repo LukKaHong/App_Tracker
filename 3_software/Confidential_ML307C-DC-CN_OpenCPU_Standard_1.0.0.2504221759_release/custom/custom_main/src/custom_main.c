@@ -303,6 +303,10 @@ static void provisioning_and_connect(void)
     app_mqtt_credential_t cred;
     memset(&cred, 0, sizeof(cred));
 
+    /* 等待 PS 网络注册成功（CEREG state=1/5）后再连接 MQTT，
+     * 避免 DNS 解析失败 / 连接错误触发 SDK 内部异常 */
+    wait_network_ready();
+
     /* === 联调阶段：直接使用硬编码凭证 === */
     strncpy(cred.mqtt_host, "119.23.217.155", sizeof(cred.mqtt_host) - 1);
     cred.mqtt_port = 18883;
@@ -375,8 +379,8 @@ static void handle_key_longpress(void)
 {
     if (!g_power_on) {
         APP_LOGI("power on -> NORMAL");
-        /* 锁定睡眠，避免业务运行中模组进入休眠 */
-        cm_pm_work_lock();
+        /* [DEBUG] PM 已禁用，排查 osa_tx_run.c 崩溃 */
+        /* cm_pm_work_lock(); */
         g_power_on = true;
         bsp_buzzer_beep(2, 100, 100);
         /* RGB 绿->红->蓝 交替闪烁（需求 3：开机时） */
@@ -405,10 +409,8 @@ static void handle_key_longpress(void)
         }
         app_mode_set(APP_MODE_OFF);
         app_mqtt_disconnect();
-        /* 解锁睡眠，让模组进入深度休眠；按键 GPIO 中断作为唤醒源
-         * 主任务进入 osDelay 后系统将自动进入低功耗，
-         * 按键 IO 上下沿中断可唤醒系统并触发 key_event_cb */
-        cm_pm_work_unlock();
+        /* [DEBUG] PM 已禁用，排查 osa_tx_run.c 崩溃 */
+        /* cm_pm_work_unlock(); */
     }
 }
 
@@ -506,8 +508,16 @@ static void main_task(void *arg)
 {
     (void)arg;
 
-    /* 等待开机 */
-    while (!g_power_on) osDelay(APP_MS_TO_TICK(200));
+    /* 等待开机：在等待循环中轮询按键并处理长按事件
+     * 不使用 osTimer，避免 cm_gpio_get_level 在 System Timer Thread 中触发 OSA 错误 */
+    while (!g_power_on) {
+        bsp_key_poll();
+        if (g_key_longpress_pending) {
+            g_key_longpress_pending = false;
+            handle_key_longpress();
+        }
+        osDelay(APP_MS_TO_TICK(20));
+    }
 
     /* 启动 GPS UART */
     if (bsp_gps_open(gps_rx_cb) != 0) {
@@ -524,26 +534,32 @@ static void main_task(void *arg)
 
     uint32_t last_loc_tick = 0;
     uint32_t last_indicator_check_tick = 0;
+    uint32_t last_battery_tick = 0;      /* [FIX] 电量节流：避免每 20ms 调用 modem OSA */
+    uint32_t last_rssi_tick = 0;         /* [FIX] RSSI 节流：避免每 20ms 调用 modem OSA */
     bool low_battery_announced = false;
     bool platform_cmd_active = false;  /* 平台指令触发的指示灯正在持续 */
     app_mode_e last_mode = APP_MODE_OFF;
 
     while (1) {
-        if (!g_power_on) {
-            osDelay(APP_MS_TO_TICK(500));
-            continue;
-        }
+        /* 轮询按键（替代 osTimer，避免 System Timer Thread 崩溃） */
+        bsp_key_poll();
 
-        /* 处理按键长按事件（由 key_event_cb 在定时器上下文置位）
-         * 在主任务上下文中执行开关机流程，允许 osDelay / bsp_buzzer_beep 阻塞 */
+        /* 处理按键长按事件（由 key_event_cb 在 bsp_key_poll 中置位）
+         * 必须放在 g_power_on 检查之前，否则关机后无法再开机 */
         if (g_key_longpress_pending) {
             g_key_longpress_pending = false;
             handle_key_longpress();
             continue;
         }
 
+        if (!g_power_on) {
+            osDelay(APP_MS_TO_TICK(20));
+            continue;
+        }
+
         app_mode_e mode = app_mode_get();
         uint32_t interval = app_mode_get_loc_interval_ms();
+        uint32_t now = (uint32_t)osKernelGetTickCount();
 
         /* MQTT 连接成功后执行 subscribe + publish ONLINE
          * 不能在 MQTT 回调中调用这些 API，故在主循环中检测标志 */
@@ -641,25 +657,30 @@ static void main_task(void *arg)
             }
         }
 
-        /* 标准版：电量周期采样 + 超低电量强制切超级省电 */
-        int mv = 0, soc = 0;
-        if (bsp_battery_read(&mv, &soc) == 0) {
-            if (soc != g_last_soc) {
-                APP_LOGI("battery mv=%d soc=%d", mv, soc);
-                g_last_soc = soc;
-            }
-            if (soc < APP_SUPER_LOW_BATTERY) {
-                if (mode != APP_MODE_SUPER_SAVE) {
-                    APP_LOGW("super low battery, force SUPER_SAVE");
-                    app_mode_set(APP_MODE_SUPER_SAVE);
-                    continue;
+        /* 标准版：电量周期采样 + 超低电量强制切超级省电
+         * [FIX] 每 5000ms 采样一次：cm_adc_read / cm_battery_get_soc 经由 modem OSA tx 路径，
+         * 主循环 20ms 一次无节流调用会导致 OSA tx buffer 重入，
+         * Tx Status 被置 0x4 引发 System Timer Thread osa_tx_run.c:241 崩溃 */
+        int mv = 0, soc = -1;
+        if ((now - last_battery_tick) >= APP_MS_TO_TICK(5000)) {
+            last_battery_tick = now;
+            if (bsp_battery_read(&mv, &soc) == 0) {
+                if (soc != g_last_soc) {
+                    APP_LOGI("battery mv=%d soc=%d", mv, soc);
+                    g_last_soc = soc;
+                }
+                if (soc >= 0 && soc < APP_SUPER_LOW_BATTERY) {
+                    if (mode != APP_MODE_SUPER_SAVE) {
+                        APP_LOGW("super low battery, force SUPER_SAVE");
+                        app_mode_set(APP_MODE_SUPER_SAVE);
+                        /* 不 continue，后续可能还有低电指示灯等处理 */
+                    }
                 }
             }
         }
 
         /* 标准版：低电指示灯周期维护（每 2 秒）
          * 充电检测功能暂未实现，仅基于 SOC 维护低电慢闪 */
-        uint32_t now = (uint32_t)osKernelGetTickCount();
         if ((now - last_indicator_check_tick) >= APP_MS_TO_TICK(2000)) {
             last_indicator_check_tick = now;
             g_charging_status = 0;  /* 充电功能未实现，固定为放电 */
@@ -677,8 +698,14 @@ static void main_task(void *arg)
             }
         }
 
-        /* 信号强度周期采样 */
-        g_last_rssi = read_signal_strength();
+        /* 信号强度周期采样
+         * [FIX] 每 5000ms 采样一次：cm_modem_info_radio 经由 modem OSA tx 路径，
+         * 主循环 20ms 一次无节流调用会导致 OSA tx buffer 重入，
+         * Tx Status 被置 0x4 引发 System Timer Thread osa_tx_run.c:241 崩溃 */
+        if ((now - last_rssi_tick) >= APP_MS_TO_TICK(5000)) {
+            last_rssi_tick = now;
+            g_last_rssi = read_signal_strength();
+        }
 
         /* 周期定位（超省电模式不主动定位） */
         if (interval > 0 && (now - last_loc_tick) >= APP_MS_TO_TICK(interval)) {
@@ -719,7 +746,7 @@ static void main_task(void *arg)
                      hb_loc.satellite_cnt, hb_loc.latitude, hb_loc.longitude);
         }
 
-        osDelay(APP_MS_TO_TICK(1000));
+        osDelay(APP_MS_TO_TICK(20));  /* 20ms 间隔支持按键轮询 */
     }
 }
 
@@ -738,11 +765,15 @@ static void system_init(void)
     app_offline_cache_init();
     app_mqtt_init(mqtt_event_cb);
 
-    /* 初始化 PM：注册低功耗进入/退出回调 */
-    cm_pm_cfg_t pm_cfg = { pm_enter_cb, pm_exit_cb };
-    cm_pm_init(pm_cfg);
-    /* 开机默认锁定睡眠（在 OFF 模式时再解锁） */
-    cm_pm_work_lock();
+    /* [DEBUG] 暂时禁用 PM 以排查 osa_tx_run.c 崩溃：
+     * SDK 示例不使用 cm_pm_init/cm_pm_work_lock，PM 内部定时器
+     * 可能在 System Timer Thread 中触发崩溃。若禁用后崩溃消失，
+     * 则确认 PM 为根因，需寻找替代方案管理睡眠 */
+    /* cm_pm_cfg_t pm_cfg = { pm_enter_cb, pm_exit_cb }; */
+    /* cm_pm_init(pm_cfg); */
+    /* cm_pm_work_lock(); */
+    (void)pm_enter_cb;
+    (void)pm_exit_cb;
 
     if (cm_sys_get_imei(g_imei) != 0) {
         strcpy(g_imei, "000000000000000");

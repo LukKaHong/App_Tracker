@@ -23,6 +23,7 @@ int  bsp_init(void);
 typedef void (*bsp_key_event_cb_t)(bool long_pressed);
 void bsp_key_register_cb(bsp_key_event_cb_t cb);
 bool bsp_key_is_pressed(void);
+void bsp_key_poll(void);  /* 在 main_task 中以 20ms 间隔调用 */
 
 /* ========== 蜂鸣器 ========== */
 int  bsp_buzzer_on(void);

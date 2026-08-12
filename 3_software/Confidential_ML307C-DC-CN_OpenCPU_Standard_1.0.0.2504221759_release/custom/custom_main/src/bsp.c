@@ -24,19 +24,19 @@
  * 按键
  * ==================================================================== */
 static bsp_key_event_cb_t s_key_cb = NULL;
-static osTimerId_t        s_key_timer = NULL;
 static uint32_t           s_key_press_tick = 0;
 static bool               s_key_pressed = false;
 
 static void key_irq_handler(void)
 {
     /* 中断上下文，仅作为 GPIO 中断注册入口；
-     * 实际去抖与事件派发由 key_check_timer_cb 周期轮询 GPIO 电平完成 */
+     * 实际去抖与事件派发由 bsp_key_poll() 周期轮询 GPIO 电平完成 */
 }
 
-static void key_check_timer_cb(void *arg)
+/* 按键轮询：在 main_task 中以 20ms 间隔调用，替代 osTimer 回调
+ * 避免 cm_gpio_get_level 在 System Timer Thread 上下文中触发 OSA 错误 */
+void bsp_key_poll(void)
 {
-    (void)arg;
     cm_gpio_level_e level = CM_GPIO_LEVEL_LOW;
     cm_gpio_get_level(APP_KEY_GPIO, &level);
 
@@ -69,15 +69,14 @@ static int bsp_key_init(void)
         APP_LOGE("key gpio init fail");
         return -1;
     }
-    cm_gpio_interrupt_register(APP_KEY_GPIO, (void *)key_irq_handler);
-    cm_gpio_interrupt_enable(APP_KEY_GPIO, APP_KEY_INTERRUPT_MODE);
-
-    if (s_key_timer == NULL) {
-        osTimerAttr_t tattr = {0};
-        tattr.name = "key_t";
-        s_key_timer = osTimerNew(key_check_timer_cb, osTimerPeriodic, NULL, &tattr);
-        osTimerStart(s_key_timer, APP_MS_TO_TICK(20)); /* 20ms 周期去抖 */
-    }
+    /* [DEBUG] 禁用 GPIO 中断以排查 osa_tx_run.c 崩溃：
+     * SDK 可能将 GPIO 中断处理延迟到 System Timer Thread 执行，
+     * 内部调用 cm_gpio_get_level（已知在此线程不安全）导致 OSA 崩溃。
+     * 按键检测已由 main_task 轮询完成，中断仅用于唤醒，暂禁用以验证 */
+    /* cm_gpio_interrupt_register(APP_KEY_GPIO, (void *)key_irq_handler); */
+    /* cm_gpio_interrupt_enable(APP_KEY_GPIO, APP_KEY_INTERRUPT_MODE); */
+    (void)key_irq_handler;
+    /* 按键去抖由 main_task 调用 bsp_key_poll() 完成，不使用 osTimer */
     return 0;
 }
 
@@ -127,76 +126,88 @@ void bsp_buzzer_beep(int times, uint32_t on_ms, uint32_t off_ms)
     }
 }
 
-/* 异步持续响铃：osTimer 周期触发，每秒响一次 */
+/* 异步持续响铃：独立任务实现，避免在 osTimer 回调中调用 cm_gpio_set_level */
 typedef struct {
-    osTimerId_t timer;
     uint32_t    on_ms;
     uint32_t    off_ms;
-    uint32_t    period_ms;
     uint32_t    start_tick;
     uint32_t    duration_ms;   /* 0 = 持续 */
-    bool        running;
-    bool        on_phase;
+    volatile bool running;
 } buzzer_async_ctx_t;
 
 static buzzer_async_ctx_t s_buzz_ctx = {0};
+static osThreadId_t       s_buzz_thread = NULL;
 
-static void buzzer_async_cb(void *arg)
+/* 蜂鸣器异步响铃任务：在独立线程中调用 cm_gpio_set_level */
+static void buzzer_async_task(void *arg)
 {
     (void)arg;
-    if (!s_buzz_ctx.running) return;
-    /* 检查总时长 */
-    if (s_buzz_ctx.duration_ms > 0) {
-        uint32_t elapsed = (uint32_t)osKernelGetTickCount() - s_buzz_ctx.start_tick;
-        if (elapsed >= APP_MS_TO_TICK(s_buzz_ctx.duration_ms)) {
-            bsp_buzzer_off();
-            s_buzz_ctx.running = false;
-            return;
+    uint32_t on_ms      = s_buzz_ctx.on_ms;
+    uint32_t off_ms     = s_buzz_ctx.off_ms;
+    uint32_t duration_ms = s_buzz_ctx.duration_ms;
+    uint32_t start_tick = (uint32_t)osKernelGetTickCount();
+
+    while (s_buzz_ctx.running) {
+        /* on 相位 */
+        bsp_buzzer_on();
+        osDelay(APP_MS_TO_TICK(on_ms));
+
+        /* 检查总时长 */
+        if (duration_ms > 0) {
+            uint32_t elapsed = (uint32_t)osKernelGetTickCount() - start_tick;
+            if (elapsed >= APP_MS_TO_TICK(duration_ms)) break;
+        }
+
+        /* off 相位 */
+        bsp_buzzer_off();
+        osDelay(APP_MS_TO_TICK(off_ms));
+
+        /* 检查总时长 */
+        if (duration_ms > 0) {
+            uint32_t elapsed = (uint32_t)osKernelGetTickCount() - start_tick;
+            if (elapsed >= APP_MS_TO_TICK(duration_ms)) break;
         }
     }
-    /* 切换响/停相位 */
-    s_buzz_ctx.on_phase = !s_buzz_ctx.on_phase;
-    if (s_buzz_ctx.on_phase) {
-        bsp_buzzer_on();
-        osTimerStart(s_buzz_ctx.timer, APP_MS_TO_TICK(s_buzz_ctx.on_ms));
-    } else {
-        bsp_buzzer_off();
-        osTimerStart(s_buzz_ctx.timer, APP_MS_TO_TICK(s_buzz_ctx.off_ms));
-    }
+
+    bsp_buzzer_off();
+    s_buzz_ctx.running = false;
+    s_buzz_thread = NULL;
+    /* 任务函数 return 即自动退出 */
 }
 
 void bsp_buzzer_beep_async(uint32_t duration_sec)
 {
-    /* 停止之前的异步响铃 */
-    if (s_buzz_ctx.timer && s_buzz_ctx.running) {
-        osTimerStop(s_buzz_ctx.timer);
-        bsp_buzzer_off();
+    /* 停止之前的响铃任务 */
+    s_buzz_ctx.running = false;
+    if (s_buzz_thread) {
+        osThreadTerminate(s_buzz_thread);
+        s_buzz_thread = NULL;
     }
-    if (s_buzz_ctx.timer == NULL) {
-        osTimerAttr_t tattr = {0};
-        tattr.name = "buz_async";
-        s_buzz_ctx.timer = osTimerNew(buzzer_async_cb, osTimerOnce, NULL, &tattr);
-        if (s_buzz_ctx.timer == NULL) return;
-    }
+
     s_buzz_ctx.on_ms      = APP_BUZZER_BEEP_ON_MS;
     s_buzz_ctx.off_ms     = APP_BUZZER_BEEP_OFF_MS;
     s_buzz_ctx.duration_ms = duration_sec * 1000;
     s_buzz_ctx.start_tick = (uint32_t)osKernelGetTickCount();
-    s_buzz_ctx.on_phase   = false;
     s_buzz_ctx.running    = true;
-    /* 立即响一次 */
-    bsp_buzzer_on();
-    s_buzz_ctx.on_phase = true;
-    osTimerStart(s_buzz_ctx.timer, APP_MS_TO_TICK(s_buzz_ctx.on_ms));
+
+    osThreadAttr_t attr = {0};
+    attr.name = "buz_async";
+    attr.stack_size = 2 * 1024;
+    attr.priority = osPriorityBelowNormal;
+    s_buzz_thread = osThreadNew(buzzer_async_task, NULL, &attr);
+    if (s_buzz_thread == NULL) {
+        s_buzz_ctx.running = false;
+    }
 }
 
 void bsp_buzzer_stop(void)
 {
-    if (s_buzz_ctx.timer && s_buzz_ctx.running) {
-        osTimerStop(s_buzz_ctx.timer);
+    s_buzz_ctx.running = false;
+    if (s_buzz_thread) {
+        osThreadTerminate(s_buzz_thread);
+        s_buzz_thread = NULL;
     }
     bsp_buzzer_off();
-    s_buzz_ctx.running = false;
 }
 
 /* ====================================================================
@@ -257,19 +268,20 @@ void bsp_rgb_blink(bsp_rgb_color_e color, int times, uint32_t on_ms, uint32_t of
     }
 }
 
-/* 异步 RGB 模式定时器：支持充电慢闪/充满常亮/低电慢闪/平台指令快闪 */
+/* 异步 RGB 模式：独立任务实现，避免在 osTimer 回调中调用 cm_gpio_set_level
+ * （SDK 的 GPIO 写 API 在 System Timer Thread 上下文中不安全，会导致 osa_tx_run.c 崩溃） */
 typedef struct {
-    osTimerId_t      timer;
     bsp_rgb_pattern_e pattern;
     bsp_rgb_color_e  cur_color;
     int              color_idx;
     bool             on_phase;
     uint32_t         start_tick;
     uint32_t         duration_ms;  /* 0 = 持续 */
-    bool             running;
+    volatile bool    running;
 } rgb_pattern_ctx_t;
 
 static rgb_pattern_ctx_t s_rgb_ctx = {0};
+static osThreadId_t      s_rgb_thread = NULL;
 
 /* 平台指令模式：绿→红→蓝循环快闪 */
 static const bsp_rgb_color_e s_platform_cmd_colors[] = {
@@ -301,64 +313,106 @@ static void rgb_pattern_apply(bsp_rgb_pattern_e pattern, bool on_phase, int idx)
     }
 }
 
-static uint32_t rgb_pattern_get_period(bsp_rgb_pattern_e pattern, bool on_phase)
+static uint32_t rgb_pattern_get_on_ms(bsp_rgb_pattern_e pattern)
 {
     switch (pattern) {
     case BSP_RGB_PATTERN_CHARGING:
     case BSP_RGB_PATTERN_LOW_BATTERY:
-        return APP_MS_TO_TICK(on_phase ? APP_RGB_BLINK_SLOW_ON_MS : APP_RGB_BLINK_SLOW_OFF_MS);
+        return APP_RGB_BLINK_SLOW_ON_MS;
     case BSP_RGB_PATTERN_PLATFORM_CMD:
-        return APP_MS_TO_TICK(on_phase ? APP_RGB_BLINK_FAST_ON_MS : APP_RGB_BLINK_FAST_OFF_MS);
+        return APP_RGB_BLINK_FAST_ON_MS;
     case BSP_RGB_PATTERN_FULL:
-        return APP_MS_TO_TICK(1000);  /* 常亮，定时器只是用来检查总时长 */
+        return 1000;
     default:
-        return APP_MS_TO_TICK(1000);
+        return 1000;
     }
 }
 
-static void rgb_pattern_cb(void *arg)
+static uint32_t rgb_pattern_get_off_ms(bsp_rgb_pattern_e pattern)
+{
+    switch (pattern) {
+    case BSP_RGB_PATTERN_CHARGING:
+    case BSP_RGB_PATTERN_LOW_BATTERY:
+        return APP_RGB_BLINK_SLOW_OFF_MS;
+    case BSP_RGB_PATTERN_PLATFORM_CMD:
+        return APP_RGB_BLINK_FAST_OFF_MS;
+    case BSP_RGB_PATTERN_FULL:
+        return 0;  /* 常亮，无 off 相位 */
+    default:
+        return 0;
+    }
+}
+
+/* RGB 闪烁任务：在独立线程中调用 cm_gpio_set_level，避免 System Timer Thread 崩溃 */
+static void rgb_blink_task(void *arg)
 {
     (void)arg;
-    if (!s_rgb_ctx.running) return;
-    /* 检查总时长 */
-    if (s_rgb_ctx.duration_ms > 0) {
-        uint32_t elapsed = (uint32_t)osKernelGetTickCount() - s_rgb_ctx.start_tick;
-        if (elapsed >= APP_MS_TO_TICK(s_rgb_ctx.duration_ms)) {
-            bsp_rgb_set(BSP_RGB_OFF);
-            s_rgb_ctx.running = false;
-            s_rgb_ctx.pattern = BSP_RGB_PATTERN_NONE;
-            return;
+    bsp_rgb_pattern_e pattern = s_rgb_ctx.pattern;
+    uint32_t duration_ms = s_rgb_ctx.duration_ms;
+    uint32_t start_tick  = (uint32_t)osKernelGetTickCount();
+    int color_idx = 0;
+    bool on_phase = true;
+
+    /* 初始 on 相位 */
+    rgb_pattern_apply(pattern, true, color_idx);
+
+    while (s_rgb_ctx.running) {
+        /* 确定当前相位的持续时间 */
+        uint32_t phase_ms = on_phase ? rgb_pattern_get_on_ms(pattern)
+                                     : rgb_pattern_get_off_ms(pattern);
+        if (phase_ms == 0) phase_ms = 1000;  /* 常亮模式 */
+
+        osDelay(APP_MS_TO_TICK(phase_ms));
+
+        /* 检查总时长 */
+        if (duration_ms > 0) {
+            uint32_t elapsed = (uint32_t)osKernelGetTickCount() - start_tick;
+            if (elapsed >= APP_MS_TO_TICK(duration_ms)) break;
+        }
+
+        /* 切换相位（常亮模式不切换） */
+        if (pattern != BSP_RGB_PATTERN_FULL) {
+            on_phase = !on_phase;
+            if (on_phase && pattern == BSP_RGB_PATTERN_PLATFORM_CMD) {
+                color_idx++;
+            }
+            rgb_pattern_apply(pattern, on_phase, color_idx);
         }
     }
-    /* 切换相位 */
-    s_rgb_ctx.on_phase = !s_rgb_ctx.on_phase;
-    if (s_rgb_ctx.on_phase && s_rgb_ctx.pattern == BSP_RGB_PATTERN_PLATFORM_CMD) {
-        s_rgb_ctx.color_idx++;
-    }
-    rgb_pattern_apply(s_rgb_ctx.pattern, s_rgb_ctx.on_phase, s_rgb_ctx.color_idx);
-    osTimerStart(s_rgb_ctx.timer, rgb_pattern_get_period(s_rgb_ctx.pattern, s_rgb_ctx.on_phase));
+
+    bsp_rgb_set(BSP_RGB_OFF);
+    s_rgb_ctx.running = false;
+    s_rgb_ctx.pattern = BSP_RGB_PATTERN_NONE;
+    s_rgb_thread = NULL;
+    /* 任务函数 return 即自动退出（CMSIS-RTOS2） */
 }
 
 void bsp_rgb_set_pattern(bsp_rgb_pattern_e pattern, uint32_t duration_sec)
 {
-    if (s_rgb_ctx.timer && s_rgb_ctx.running) {
-        osTimerStop(s_rgb_ctx.timer);
+    /* 停止之前的闪烁任务 */
+    s_rgb_ctx.running = false;
+    if (s_rgb_thread) {
+        osThreadTerminate(s_rgb_thread);
+        s_rgb_thread = NULL;
     }
-    if (s_rgb_ctx.timer == NULL) {
-        osTimerAttr_t tattr = {0};
-        tattr.name = "rgb_pat";
-        s_rgb_ctx.timer = osTimerNew(rgb_pattern_cb, osTimerOnce, NULL, &tattr);
-        if (s_rgb_ctx.timer == NULL) return;
-    }
+
     s_rgb_ctx.pattern     = pattern;
     s_rgb_ctx.color_idx   = 0;
     s_rgb_ctx.on_phase    = true;
     s_rgb_ctx.start_tick  = (uint32_t)osKernelGetTickCount();
     s_rgb_ctx.duration_ms = duration_sec * 1000;
     s_rgb_ctx.running     = (pattern != BSP_RGB_PATTERN_NONE);
+
     if (s_rgb_ctx.running) {
-        rgb_pattern_apply(pattern, true, 0);
-        osTimerStart(s_rgb_ctx.timer, rgb_pattern_get_period(pattern, true));
+        osThreadAttr_t attr = {0};
+        attr.name = "rgb_blink";
+        attr.stack_size = 2 * 1024;
+        attr.priority = osPriorityBelowNormal;
+        s_rgb_thread = osThreadNew(rgb_blink_task, NULL, &attr);
+        if (s_rgb_thread == NULL) {
+            s_rgb_ctx.running = false;
+            bsp_rgb_set(BSP_RGB_OFF);
+        }
     } else {
         bsp_rgb_set(BSP_RGB_OFF);
     }
@@ -366,10 +420,11 @@ void bsp_rgb_set_pattern(bsp_rgb_pattern_e pattern, uint32_t duration_sec)
 
 void bsp_rgb_stop_pattern(void)
 {
-    if (s_rgb_ctx.timer && s_rgb_ctx.running) {
-        osTimerStop(s_rgb_ctx.timer);
-    }
     s_rgb_ctx.running = false;
+    if (s_rgb_thread) {
+        osThreadTerminate(s_rgb_thread);
+        s_rgb_thread = NULL;
+    }
     s_rgb_ctx.pattern = BSP_RGB_PATTERN_NONE;
     bsp_rgb_set(BSP_RGB_OFF);
 }

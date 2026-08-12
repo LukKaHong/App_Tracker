@@ -19,8 +19,7 @@ static osThreadId_t         s_task = NULL;
 static app_mqtt_event_cb_t  s_user_cb = NULL;
 static bool                 s_running = false;
 static bool                 s_connected = false;
-static volatile bool        s_need_reconnect = false;
-/* 保存最近一次连接凭证，用于断线后主动重连（SDK 内部重连失败时兜底） */
+/* 保存最近一次连接凭证，用于 app_mqtt_disconnect 后重新连接 */
 static app_mqtt_credential_t s_saved_cred;
 static bool                 s_has_cred = false;
 
@@ -37,15 +36,15 @@ static int cb_connack(cm_mqtt_client_t *client, int session, cm_mqtt_conn_state_
         if (s_user_cb) s_user_cb(APP_MQTT_EVT_CONNECTED, NULL);
         APP_LOGI("mqtt connected");
     } else {
-        /* 非成功状态：客户端断开/服务器拒绝/ping 超时/网络异常等
-         * 通知上层断线，并触发主动重连兜底（SDK 内部重连可能放弃） */
+        /* 非成功状态：客户端断开/服务器拒绝/ping 超时/网络异常等。
+         * SDK 内部自动重连（RECONN_TIMES=3, RECONN_CYCLE=20s）会处理恢复，
+         * 此处仅通知上层并更新状态。 */
         bool was_connected = s_connected;
         s_connected = false;
         APP_LOGW("mqtt connack fail:%d (was_connected=%d)", conn_res, was_connected);
         if (was_connected && s_user_cb) {
             s_user_cb(APP_MQTT_EVT_DISCONNECTED, NULL);
         }
-        s_need_reconnect = true;
     }
     return 0;
 }
@@ -81,51 +80,37 @@ static int cb_timeout(cm_mqtt_client_t *client, unsigned short msgid)
     return 0;
 }
 
-/* ====== 内部任务：监听断开并重连 ======
- * SDK 内部已开启自动重连（CM_MQTT_OPT_RECONN_MODE=1），
- * 但仍可能出现 SDK 放弃重连或状态不同步的情况。
- * 本任务做两件事：
- *   1) 周期轮询 cm_mqtt_client_get_state，捕获未触发 connack_cb 的断线
- *   2) s_need_reconnect 置位时，5 秒后主动调用 cm_mqtt_client_connect 兜底 */
+/* ====== 内部任务：监听断开状态 + 应用层重连 ======
+ * SDK 内部自动重连（RECONN_TIMES=3, RECONN_CYCLE=20s）仅处理网络级断连，
+ * connack fail（服务器拒绝凭证）后 SDK 不会重试。
+ * 本任务每 60s 调用 app_mqtt_connect 兜底重连，无限重试直到连上。 */
 static void mqtt_task(void *arg)
 {
     (void)arg;
+    uint32_t disconnect_tick = 0;
     while (s_running) {
         osDelay(APP_MS_TO_TICK(1000));
         if (!s_running || !s_client) continue;
 
-        /* 状态轮询：检测未触发回调的断线（如异常网络中断） */
+        uint32_t now = (uint32_t)osKernelGetTickCount();
         int st = cm_mqtt_client_get_state(s_client);
         if (st == CM_MQTT_STATE_DISCONNECTED) {
             if (s_connected) {
+                /* 之前连着，刚断开 */
                 s_connected = false;
+                disconnect_tick = now;
                 APP_LOGW("mqtt state poll detected disconnect");
                 if (s_user_cb) s_user_cb(APP_MQTT_EVT_DISCONNECTED, NULL);
+            } else if (disconnect_tick == 0) {
+                /* 初始连接失败（connack fail），从未连上过 */
+                disconnect_tick = now;
             }
-            s_need_reconnect = true;
-        }
-
-        if (!s_need_reconnect) continue;
-        s_need_reconnect = false;
-
-        APP_LOGI("mqtt reconnect in 5s");
-        osDelay(APP_MS_TO_TICK(5000));
-        if (!s_running) break;
-
-        /* 主动重连兜底：SDK 内部重连可能已放弃，这里调用 connect 复位状态 */
-        if (s_client && s_has_cred) {
-            int cur = cm_mqtt_client_get_state(s_client);
-            if (cur == CM_MQTT_STATE_DISCONNECTED) {
-                cm_mqtt_connect_options_t opt = {0};
-                opt.hostport = s_saved_cred.mqtt_port;
-                opt.hostname = s_saved_cred.mqtt_host;
-                opt.clientid = s_saved_cred.client_id;
-                opt.username = s_saved_cred.username;
-                opt.password = s_saved_cred.password;
-                opt.keepalive = APP_MQTT_KEEPALIVE_SEC;
-                opt.clean_session = 1;
-                int ret = cm_mqtt_client_connect(s_client, &opt);
-                APP_LOGI("mqtt active reconnect ret=%d", ret);
+            /* 应用层重连：connack fail 后 SDK 不重试，每 60s 兜底 */
+            if (s_has_cred && disconnect_tick > 0 &&
+                (now - disconnect_tick) >= APP_MS_TO_TICK(60000)) {
+                disconnect_tick = now;
+                APP_LOGI("mqtt app-level reconnect");
+                app_mqtt_connect(&s_saved_cred);
             }
         }
     }
@@ -170,13 +155,25 @@ int app_mqtt_connect(const app_mqtt_credential_t *cred)
     cbs.timeout_cb = cb_timeout;
     cm_mqtt_client_set_opt(s_client, CM_MQTT_OPT_EVENT, &cbs);
 
-    /* 心跳周期 / 超时 */
-    int ping = APP_MQTT_KEEPALIVE_SEC;
+    /* 客户端参数：与 SDK 示例（examples/mqtt_unicom）保持一致。
+     * 崩溃根因已定位为主循环高频调用 cm_adc_read/cm_modem_info_radio
+     * 损坏 OSA tx 状态，与 SDK 定时器无关，已通过节流修复。 */
+    int version = 4;        /* MQTT 3.1.1 */
+    cm_mqtt_client_set_opt(s_client, CM_MQTT_OPT_VERSION, &version);
+    int ping = APP_MQTT_KEEPALIVE_SEC;  /* keepalive PING 周期（秒） */
     cm_mqtt_client_set_opt(s_client, CM_MQTT_OPT_PING_CYCLE, &ping);
-    int reconn_mode = 1; /* 指数退避 */
+    int pkt_timeout = 10;   /* 发送超时 10 秒（QoS 1/2 消息可靠投递） */
+    cm_mqtt_client_set_opt(s_client, CM_MQTT_OPT_PKT_TIMEOUT, &pkt_timeout);
+    int retry_times = 3;    /* QoS 重传次数 */
+    cm_mqtt_client_set_opt(s_client, CM_MQTT_OPT_RETRY_TIMES, &retry_times);
+    int reconn_mode = 0;    /* 固定间隔重连 */
     cm_mqtt_client_set_opt(s_client, CM_MQTT_OPT_RECONN_MODE, &reconn_mode);
-    int reconn_cycle = 10;
+    int reconn_times = 3;   /* SDK 内部自动重连次数 */
+    cm_mqtt_client_set_opt(s_client, CM_MQTT_OPT_RECONN_TIMES, &reconn_times);
+    int reconn_cycle = 20;  /* 重连间隔 20 秒 */
     cm_mqtt_client_set_opt(s_client, CM_MQTT_OPT_RECONN_CYCLE, &reconn_cycle);
+    int dns_priority = 1;   /* IPv4 优先 */
+    cm_mqtt_client_set_opt(s_client, CM_MQTT_OPT_DNS_PRIORITY, &dns_priority);
 
     /* 连接 */
     cm_mqtt_connect_options_t opt = {0};
@@ -192,10 +189,9 @@ int app_mqtt_connect(const app_mqtt_credential_t *cred)
     int ret = cm_mqtt_client_connect(s_client, &opt);
     if (ret != 0) {
         APP_LOGE("mqtt connect ret=%d", ret);
-        s_need_reconnect = true;
     }
 
-    /* 启动重连监控任务 */
+    /* 启动状态监控任务 */
     if (!s_running) {
         s_running = true;
         osThreadAttr_t tattr = {0};
@@ -221,7 +217,6 @@ int app_mqtt_disconnect(void)
         s_client = NULL;
     }
     s_connected = false;
-    s_need_reconnect = false;
     s_has_cred = false;
     memset(&s_saved_cred, 0, sizeof(s_saved_cred));
     return 0;
