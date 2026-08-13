@@ -95,11 +95,18 @@ bool bsp_key_is_pressed(void)
  * ==================================================================== */
 static int bsp_buzzer_init(void)
 {
-    cm_iomux_set_pin_func(APP_BUZZER_IOMUX_PIN, CM_IOMUX_FUNC_FUNCTION1);
+    int32_t ret;
+    /* Pin33 默认功能1=PCM_OUT，功能2=GPIO19，必须切 FUNCTION2 才是 GPIO */
+    cm_iomux_set_pin_func(APP_BUZZER_IOMUX_PIN, CM_IOMUX_FUNC_FUNCTION2);
     cm_gpio_cfg_t cfg = {0};
     cfg.direction = CM_GPIO_DIRECTION_OUTPUT;
     cfg.pull = CM_GPIO_PULL_NONE;
-    if (cm_gpio_init(APP_BUZZER_GPIO, &cfg) != 0) return -1;
+    ret = cm_gpio_init(APP_BUZZER_GPIO, &cfg);
+    if (ret != 0) {
+        cm_gpio_deinit(APP_BUZZER_GPIO);
+        ret = cm_gpio_init(APP_BUZZER_GPIO, &cfg);
+    }
+    if (ret != 0) return -1;
     cm_gpio_set_level(APP_BUZZER_GPIO,
                       (APP_BUZZER_ACTIVE_LEVEL == CM_GPIO_LEVEL_HIGH) ? CM_GPIO_LEVEL_LOW : CM_GPIO_LEVEL_HIGH);
     return 0;
@@ -213,13 +220,19 @@ void bsp_buzzer_stop(void)
 /* ====================================================================
  * RGB LED
  * ==================================================================== */
-static int bsp_rgb_init_one(cm_gpio_num_e gpio, cm_iomux_pin_e pin)
+static int bsp_rgb_init_one(cm_gpio_num_e gpio, cm_iomux_pin_e pin, cm_iomux_func_e func)
 {
-    cm_iomux_set_pin_func(pin, CM_IOMUX_FUNC_FUNCTION1);
+    int32_t ret;
+    cm_iomux_set_pin_func(pin, func);
     cm_gpio_cfg_t cfg = {0};
     cfg.direction = CM_GPIO_DIRECTION_OUTPUT;
     cfg.pull = CM_GPIO_PULL_NONE;
-    if (cm_gpio_init(gpio, &cfg) != 0) return -1;
+    ret = cm_gpio_init(gpio, &cfg);
+    if (ret != 0) {
+        cm_gpio_deinit(gpio);
+        ret = cm_gpio_init(gpio, &cfg);
+    }
+    if (ret != 0) return -1;
     cm_gpio_set_level(gpio,
                       (APP_RGB_ACTIVE_LEVEL == CM_GPIO_LEVEL_HIGH) ? CM_GPIO_LEVEL_LOW : CM_GPIO_LEVEL_HIGH);
     return 0;
@@ -227,9 +240,9 @@ static int bsp_rgb_init_one(cm_gpio_num_e gpio, cm_iomux_pin_e pin)
 
 static int bsp_rgb_init(void)
 {
-    if (bsp_rgb_init_one(APP_RGB_R_GPIO, APP_RGB_R_IOMUX_PIN) != 0) return -1;
-    if (bsp_rgb_init_one(APP_RGB_G_GPIO, APP_RGB_G_IOMUX_PIN) != 0) return -1;
-    if (bsp_rgb_init_one(APP_RGB_B_GPIO, APP_RGB_B_IOMUX_PIN) != 0) return -1;
+    if (bsp_rgb_init_one(APP_RGB_R_GPIO, APP_RGB_R_IOMUX_PIN, APP_RGB_R_IOMUX_FUNC) != 0) return -1;
+    if (bsp_rgb_init_one(APP_RGB_G_GPIO, APP_RGB_G_IOMUX_PIN, APP_RGB_G_IOMUX_FUNC) != 0) return -1;
+    if (bsp_rgb_init_one(APP_RGB_B_GPIO, APP_RGB_B_IOMUX_PIN, APP_RGB_B_IOMUX_FUNC) != 0) return -1;
     return 0;
 }
 

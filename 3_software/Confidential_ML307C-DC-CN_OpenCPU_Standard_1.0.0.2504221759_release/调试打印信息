@@ -1,972 +1,255 @@
-[08-12 22:12:31:166]
-[08-12 22:12:31:166]
-[08-12 22:12:31:166][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
-[08-12 22:12:31:166][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
-[08-12 22:12:31:166][INFO: Main      ] 
-[08-12 22:12:31:166][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
-[08-12 22:12:31:166][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
-[08-12 22:12:31:166][INFO: QspiFlash ] Detecting QSPI flash devices...
-[08-12 22:12:31:166][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
-[08-12 22:12:31:166][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
-[08-12 22:12:31:166][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
-[08-12 22:12:31:166][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
-[08-12 22:12:31:166][INFO: Crypto    ] Initializing crypto library...
-[08-12 22:12:31:166][INFO: Main      ] Running in normal booting mode.
-[08-12 22:12:31:166][INFO: Main      ] Loading...
-[08-12 22:12:31:166][INFO: Bl1Main   ] Welcome to boot rom.
-[08-12 22:12:31:166][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
-[08-12 22:12:31:166][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
-[08-12 22:12:31:166][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
-[08-12 22:12:31:166][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[08-12 22:12:31:166][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
-[08-12 22:12:31:166][INFO: Bl1Main   ] BL1: OKay.
-[08-12 22:12:31:166][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
-[08-12 22:12:31:166][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
-[08-12 22:12:31:166][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[08-12 22:12:31:166][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
-[08-12 22:12:31:166][INFO: Bl1Main   ] BL1: OKay.
-[08-12 22:12:32:059][INFO: UsbArch   ] usb phy reg: 0xd42070a4 = 0x189b
-[08-12 22:12:32:152][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[08-12 22:12:32:152][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
-[08-12 22:12:32:152]
-[08-12 22:12:32:152][BOOT33]VB_VERSION_DATE   :[20241210]
-[08-12 22:12:32:441]
-[08-12 22:12:32:441] ** PC      : 0x80017000
-[08-12 22:12:32:482]Version: SDK_1.011.144 Apr 22 2025 18:01:58
+[08-13 21:13:41:651]
+[08-13 21:13:41:651]
+[08-13 21:13:41:651][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
+[08-13 21:13:41:651][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
+[08-13 21:13:41:651][INFO: Main      ] 
+[08-13 21:13:41:651][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
+[08-13 21:13:41:651][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
+[08-13 21:13:41:651][INFO: QspiFlash ] Detecting QSPI flash devices...
+[08-13 21:13:41:651][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
+[08-13 21:13:41:651][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
+[08-13 21:13:41:651][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
+[08-13 21:13:41:651][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
+[08-13 21:13:41:651][INFO: Crypto    ] Initializing crypto library...
+[08-13 21:13:41:651][INFO: Main      ] Running in normal booting mode.
+[08-13 21:13:41:651][INFO: Main      ] Loading...
+[08-13 21:13:41:651][INFO: Bl1Main   ] Welcome to boot rom.
+[08-13 21:13:41:651][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
+[08-13 21:13:41:651][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
+[08-13 21:13:41:651][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
+[08-13 21:13:41:651][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[08-13 21:13:41:651][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
+[08-13 21:13:41:651][INFO: Bl1Main   ] BL1: OKay.
+[08-13 21:13:41:651][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
+[08-13 21:13:41:651][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
+[08-13 21:13:41:651][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[08-13 21:13:41:651][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
+[08-13 21:13:41:651][INFO: Bl1Main   ] BL1: OKay.
+[08-13 21:13:42:526][INFO: UsbArch   ] usb phy reg: 0xd42070a4 = 0x189b
+[08-13 21:13:42:638][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[08-13 21:13:42:638][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
+[08-13 21:13:42:638]
+[08-13 21:13:42:638][BOOT33]VB_VERSION_DATE   :[20241210]
+[08-13 21:13:42:926]
+[08-13 21:13:42:926] ** PC      : 0x80017000
+[08-13 21:13:42:967]Version: SDK_1.011.144 Apr 22 2025 18:01:58
 
-[08-12 22:12:32:482]Ac 4, Board 2, DKB 1
+[08-13 21:13:42:967]Ac 4, Board 2, DKB 1
 
-[08-12 22:12:32:482]PSRAM fuse: 13
+[08-13 21:13:42:967]PSRAM fuse: 13
 
-[08-12 22:12:32:482]
+[08-13 21:13:42:967]
 
-[08-12 22:12:32:482]Cinit 2
+[08-13 21:13:42:967]Cinit 2
 
-[08-12 22:12:32:482]Flash type: nvm 0, factory 0, fota 0
+[08-13 21:13:42:967]Flash type: nvm 0, factory 0, fota 0
 
-[08-12 22:12:32:482]Phase1Inits
+[08-13 21:13:42:967]Phase1Inits
 
-[08-12 22:12:32:482]diag Phase1 Init
+[08-13 21:13:42:967]diag Phase1 Init
 
-[08-12 22:12:32:510]dro_efuse = 135
+[08-13 21:13:42:998]dro_efuse = 135
 
-[08-12 22:12:32:510]profile num = 2
+[08-13 21:13:42:998]profile num = 2
 
-[08-12 22:12:32:510]CRNLR_SVC_FP[0] = 0x29
+[08-13 21:13:42:998]CRNLR_SVC_FP[0] = 0x29
 
-[08-12 22:12:32:510]CRNLR_SVC_FP[1] = 0x29
+[08-13 21:13:42:998]CRNLR_SVC_FP[1] = 0x29
 
-[08-12 22:12:32:510]CRNLR_SVC_FP[2] = 0x29
+[08-13 21:13:42:998]CRNLR_SVC_FP[2] = 0x29
 
-[08-12 22:12:32:510]CRNLR_SVC_FP[3] = 0x33
+[08-13 21:13:42:998]CRNLR_SVC_FP[3] = 0x33
 
-[08-12 22:12:32:510]Bootup not silent
+[08-13 21:13:42:998]Bootup not silent
 
-[08-12 22:12:32:510][ELOOP] __cm_eloop_init 0x7e2626e0,128
+[08-13 21:13:42:998][ELOOP] __cm_eloop_init 0x7e2626e0,128
 
-[08-12 22:12:32:628][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
+[08-13 21:13:43:122][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[08-12 22:12:32:628][ELOOP] rdy_list eloop=0x7e2626e0
+[08-13 21:13:43:122][ELOOP] rdy_list eloop=0x7e2626e0
 
-[08-12 22:12:32:628][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-13 21:13:43:122][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-12 22:12:32:628]InitTask started
+[08-13 21:13:43:122]InitTask started
 
-[08-12 22:12:32:628]Chip ID: 0xb01605
+[08-13 21:13:43:122]Chip ID: 0xb01605
 
-[08-12 22:12:32:628]PS_NONCACHE_DATA_ZI rf [0x7e389300]
+[08-13 21:13:43:122]PS_NONCACHE_DATA_ZI rf [0x7e389300]
 
-[08-12 22:12:32:628]check unpressed rf/dsp size,rf [0x0000f000],dsp [0x00040800]
+[08-13 21:13:43:122]check unpressed rf/dsp size,rf [0x0000f000],dsp [0x00040800]
 
-[08-12 22:12:32:628]Crane mpu configure
+[08-13 21:13:43:122]Crane mpu configure
 
-[08-12 22:12:32:628]start file system init
+[08-13 21:13:43:122]start file system init
 
-[08-12 22:12:32:628]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d4000, reserved_end_addr=0x2d7000
+[08-13 21:13:43:122]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d4000, reserved_end_addr=0x2d7000
 
-[08-12 22:12:32:628]
+[08-13 21:13:43:122]
 
-[08-12 22:12:32:628]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
+[08-13 21:13:43:122]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
 
-[08-12 22:12:32:628]qspi_nor_set_flash_block_protect:write status register finished.
+[08-13 21:13:43:122]qspi_nor_set_flash_block_protect:write status register finished.
 
-[08-12 22:12:32:628]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
+[08-13 21:13:43:122]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
 
-[08-12 22:12:32:628]flash_protect_area_type=12
+[08-13 21:13:43:122]flash_protect_area_type=12
 
-[08-12 22:12:32:628]
+[08-13 21:13:43:122]
 
-[08-12 22:12:32:628]SPI Nor/NAND flash init success
+[08-13 21:13:43:122]SPI Nor/NAND flash init success
 
-[08-12 22:12:32:628]
+[08-13 21:13:43:122]
 
-[08-12 22:12:32:628]FDI_Transport_Fsys_Register: 0, C:/
+[08-13 21:13:43:122]FDI_Transport_Fsys_Register: 0, C:/
 
-[08-12 22:12:32:628]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
+[08-13 21:13:43:122]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
 
-[08-12 22:12:32:628]LfsGrpCnt 5
+[08-13 21:13:43:122]LfsGrpCnt 5
 
-[08-12 22:12:32:628]lfs.c:1245:error: Corrupted dir pair at {0x0, 0x1}
+[08-13 21:13:43:122]lfs root is valid
 
-[08-12 22:12:32:628]lfs_api.c:1064:error: Fail to mount in PTN 0, err -84
+[08-13 21:13:43:122][PTN 0] free size: 430080
 
-[08-12 22:12:32:653][PTN 0] free size: 516096
+[08-13 21:13:43:122]lfs[PTN 0] init success
 
-[08-12 22:12:32:653]lfs[PTN 0] init success
+[08-13 21:13:43:122]OnKeyPoweroff_Task
 
-[08-12 22:12:32:653]sulog Disable:0x4a656515,0x55
+[08-13 21:13:43:122]eeHandlerPhase2Init
 
-[08-12 22:12:32:653]sulog Enable:0x45555515,0x55
+[08-13 21:13:43:237][ cmlog ]netcard type = 16 cfg = 0
 
-[08-12 22:12:32:730]OnKeyPoweroff_Task
+[08-13 21:13:43:237]Usb mode 0, descriptor 70[ cmlog ]usb2com queue send err(status)
 
-[08-12 22:12:32:730]eeHandlerPhase2Init
+[08-13 21:13:43:237]
 
-[08-12 22:12:33:368][ cmlog ]60,__cm_nv_def_fota_load read open failed, maybe not inital
+[08-13 21:13:43:237]USIMPhase2Init 0
 
-[08-12 22:12:33:368][ cmlog ]123,__cm_nv_def_fota_cfg_init entry, init all
+[08-13 21:13:43:237]
 
-[08-12 22:12:33:478][ cmlog ]netcard type = 16 cfg = 0
+[08-13 21:13:43:237]copy rf size[0x0000f000] to [0x7e000000]
 
-[08-12 22:12:33:478]Usb mode 0, descriptor 70
+[08-13 21:13:43:237]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
 
-[08-12 22:12:33:478][ cmlog ]usb2com queue send err(status)
+[08-13 21:13:43:237]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
 
-[08-12 22:12:33:478]USIMPhase2Init 0
+[08-13 21:13:43:284]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
 
-[08-12 22:12:33:478]
+[08-13 21:13:43:284]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
 
-[08-12 22:12:33:478]copy rf size[0x0000f000] to [0x7e000000]
+[08-13 21:13:43:284]power_up_reason: 0x2, power_down_reason: 0x0
 
-[08-12 22:12:33:478]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+[08-13 21:13:43:356]InitIPCControl: data:0x0
 
-[08-12 22:12:33:478]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
+[08-13 21:13:43:499]AT command server ready!
 
-[08-12 22:12:33:693]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+[08-13 21:13:43:499]Booting done
 
-[08-12 22:12:33:693]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
+[08-13 21:13:43:606]SW restart reason: Normal power on
 
-[08-12 22:12:33:693]power_up_reason: 0x2, power_down_reason: 0x0
+[08-13 21:13:43:606][ cmlog ]dm nv read err
 
-[08-12 22:12:33:786]InitIPCControl: data:0x0
+[08-13 21:13:43:606][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
 
-[08-12 22:12:34:583]AT command server ready!
+[08-13 21:13:43:606][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023b9d9
 
-[08-12 22:12:34:583]Booting done
+[08-13 21:13:43:606][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
 
-[08-12 22:12:34:617][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
+[08-13 21:13:43:606][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x15db0
+
+[08-13 21:13:43:606][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x15db0
+
+[08-13 21:13:43:606][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x6188
+
+[08-13 21:13:43:606][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x6200,vma:0x802dd200,lma:0x802dd200,sz:0x19b4
+
+[08-13 21:13:43:606][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x153c0,vma:0x7e1df800,lma:0x802ec3c0,sz:0x9f0
+
+[08-13 21:13:43:606][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf091f0,vma:0x7e1e01f0,lma:0x7e1e01f0,sz:0x5c58
+
+[08-13 21:13:43:632][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x7bc0,vma:0x7e1d2000,lma:0x802debc0,sz:0xd800
+
+[08-13 21:13:43:632][ cmlog ][OPENCPU]:[PET][I] offline cache init (ram-only) count=0
+
+[08-13 21:13:43:632]
+[08-13 21:13:43:632]
+
+[08-13 21:13:43:632][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
+
+[08-13 21:13:43:632]
+[08-13 21:13:43:632]
+
+[08-13 21:13:43:681][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
  0
 
-[08-12 22:12:34:617][ cmlog ]atp10 cmiot AT+COPS=3,0
+[08-13 21:13:43:681][ cmlog ]atp10 cmiot AT+COPS=3,0
  0
 
-[08-12 22:12:34:617][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
+[08-13 21:13:43:681][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
  0
 
-[08-12 22:12:34:617][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
+[08-13 21:13:43:681][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
 
-[08-12 22:12:34:763]SW restart reason: Normal power on
+[08-13 21:13:43:758][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_20260813131343_d133
 
-[08-12 22:12:34:763][ cmlog ]dm nv read err
+[08-13 21:13:43:758]
+[08-13 21:13:43:758]
 
-[08-12 22:12:34:763][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
+[08-13 21:13:43:758][ cmlog ][OPENCPU]:[PET][I] rgb init pin=30 gpio=16 iomux_set=0 func=2(exp2)
 
-[08-12 22:12:34:914][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023b9d9
+[08-13 21:13:43:758]
+[08-13 21:13:43:758]
 
-[08-12 22:12:34:914][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
+[08-13 21:13:43:758][ cmlog ][OPENCPU]:[PET][I] rgb init pin=31 gpio=17 iomux_set=0 func=2(exp2)
 
-[08-12 22:12:34:914][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x15b98
+[08-13 21:13:43:758]
+[08-13 21:13:43:758]
 
-[08-12 22:12:34:914][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x15b98
+[08-13 21:13:43:758][ cmlog ][OPENCPU]:[PET][I] rgb init pin=32 gpio=18 iomux_set=0 func=2(exp2)
 
-[08-12 22:12:34:914][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x60a0
+[08-13 21:13:43:758]
+[08-13 21:13:43:758]
 
-[08-12 22:12:34:914][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x6118,vma:0x802dd118,lma:0x802dd118,sz:0x1884
+[08-13 21:13:43:758][ cmlog ][OPENCPU]:[PET][I] pet tracker start in OFF mode, waiting for power-on key
 
-[08-12 22:12:34:914][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x151a8,vma:0x7e1df800,lma:0x802ec1a8,sz:0x9f0
+[08-13 21:13:43:758]
+[08-13 21:13:43:758]
 
-[08-12 22:12:34:914][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf091f0,vma:0x7e1e01f0,lma:0x7e1e01f0,sz:0x5c58
+[08-13 21:13:43:758][CM-OC] func:cm_opencpu_start line:211,ret:0
 
-[08-12 22:12:34:914][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x79a8,vma:0x7e1d2000,lma:0x802de9a8,sz:0xd800
+[08-13 21:13:45:053][ cmlog ]__cm_daemon_thread 3 1
 
-[08-12 22:12:34:914][ cmlog ][OPENCPU]:[PET][I] offline cache init (ram-only) count=0
+[08-13 21:13:46:757][ cmlog ][OPENCPU]:[PET][I] [TEST] ===== RGB toggle diagnostic (2s interval) =====
 
-[08-12 22:12:34:914]
-[08-12 22:12:34:914]
+[08-13 21:13:46:757]
+[08-13 21:13:46:757]
 
-[08-12 22:12:34:914][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
+[08-13 21:13:46:811][ cmlog ][OPENCPU]:[PET][I] [TEST] set=1  read R=1 G=1 B=1 (pin30/31/32)
 
-[08-12 22:12:34:914]
-[08-12 22:12:34:914]
+[08-13 21:13:46:811]
+[08-13 21:13:46:811]
 
-[08-12 22:12:35:083][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_19700101011941_0099
+[08-13 21:13:48:812][ cmlog ][OPENCPU]:[PET][I] [TEST] set=0  read R=0 G=0 B=0 (pin30/31/32)
 
-[08-12 22:12:35:083]
-[08-12 22:12:35:083]
+[08-13 21:13:48:812]
+[08-13 21:13:48:812]
 
-[08-12 22:12:35:083][ cmlog ][OPENCPU]:[PET][I] pet tracker start in OFF mode, waiting for power-on key
+[08-13 21:13:50:811][ cmlog ][OPENCPU]:[PET][I] [TEST] set=1  read R=1 G=1 B=1 (pin30/31/32)
 
-[08-12 22:12:35:083]
-[08-12 22:12:35:083]
+[08-13 21:13:50:811]
+[08-13 21:13:50:811]
 
-[08-12 22:12:35:083][CM-OC] func:cm_opencpu_start line:211,ret:0
+[08-13 21:13:52:810][ cmlog ][OPENCPU]:[PET][I] [TEST] set=0  read R=0 G=0 B=0 (pin30/31/32)
 
-[08-12 22:12:37:046][ cmlog ]__cm_daemon_thread 3 1
+[08-13 21:13:52:810]
+[08-13 21:13:52:810]
 
-[08-12 22:12:46:883][ cmlog ][OPENCPU]:[PET][I] power on -> NORMAL
+[08-13 21:13:54:811][ cmlog ][OPENCPU]:[PET][I] [TEST] set=1  read R=1 G=1 B=1 (pin30/31/32)
 
-[08-12 22:12:46:883]
-[08-12 22:12:46:883]
+[08-13 21:13:54:811]
+[08-13 21:13:54:811]
 
-[08-12 22:12:47:195][ cmlog ][OPENCPU]:[PET][I] mode 0 -> 2
+[08-13 21:13:56:811][ cmlog ][OPENCPU]:[PET][I] [TEST] set=0  read R=0 G=0 B=0 (pin30/31/32)
 
-[08-12 22:12:47:195]
-[08-12 22:12:47:195]
-
-[08-12 22:12:47:195][ cmlog ]virt_at_event_queue already exist
-[08-12 22:12:47:195]
-
-[08-12 22:12:47:195][ cmlog ]cm_virt_at_mutex_acquire
-
-[08-12 22:12:47:195][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[08-12 22:12:47:493][ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
-
-[08-12 22:12:47:493]+CEREG: 5,1,"2697","02F00A04",7
-
-[08-12 22:12:47:493]]
-
-[08-12 22:12:47:493][ cmlog ]vir_at_wait_get_flag:1
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ][-4]get urcdata skip head and tail
-
-[08-12 22:12:47:493][ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2697","02F00A04",7]
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
-
-[08-12 22:12:47:493][ cmlog ]dynamic_virt_at_callback
-
-[08-12 22:12:47:493][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-
-[08-12 22:12:47:493]OK
-
-[08-12 22:12:47:493]]
-
-[08-12 22:12:47:493][ cmlog ]vir_at_wait_get_flag:0
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ][-4]get urcdata skip head and tail
-
-[08-12 22:12:47:493][ cmlog ]memory_buffer len 2, data:[OK]
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ]cm_virt_at_mutex_release
-
-[08-12 22:12:47:493][ cmlog ]cm_virt_at_send_sync ret = 0
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ][OPENCPU]:[PET][I] network ready, cereg=1
-
-[08-12 22:12:47:493]
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ][OPENCPU]:[PET][I] use hardcoded credential (debug)
-
-[08-12 22:12:47:493]
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ][OPENCPU]:[PET][I] mqtt connect 119.23.217.155:18883
-
-[08-12 22:12:47:493]
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ADNS] cm_async_dns_request cid = 1 
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
-[08-12 22:12:47:493]
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
-[08-12 22:12:47:493]
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ][OPENCPU]:[CMMQTT] client tsk start
-[08-12 22:12:47:493]
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
-[08-12 22:12:47:493]
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ELOOP] register_event eloop 0x7e2626e0,0x802d9f20,0x7e0bc0f0
-
-[08-12 22:12:47:493][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x802d9f20,0x7e0bc0f0
-
-[08-12 22:12:47:493][ELOOP] post event=0x7e044be8
-
-[08-12 22:12:47:493][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:12:47:493][ELOOP] unregister event=0x7e044be8
-
-[08-12 22:12:47:493][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[08-12 22:12:47:493][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[08-12 22:12:47:493][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[08-12 22:12:47:493][ELOOP] eloop_event_init 0x7e044c00,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[08-12 22:12:47:493][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[08-12 22:12:47:493][ELOOP] eloop_event_init 0x7e044c18,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[08-12 22:12:47:493]asocket open ok 0 3
-
-[08-12 22:12:47:493][ cmlog ]ipv4: 1 10.38.180.141 
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
-[08-12 22:12:47:493]
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:12:47:493][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:12:47:493][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:12:47:493][ cmlog ][OPENCPU]:[PET][W] super low battery, force SUPER_SAVE
-
-[08-12 22:12:47:493]
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:493][ cmlog ][OPENCPU]:[PET][I] mode 2 -> 4
-
-[08-12 22:12:47:493]
-[08-12 22:12:47:493]
-
-[08-12 22:12:47:563]asocket_cb 3 2
-
-[08-12 22:12:47:563]asocket_cb 3 4
-
-[08-12 22:12:47:563][ELOOP] post event=0x7e044c00
-
-[08-12 22:12:47:563][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:12:47:563]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[08-12 22:12:47:563]asocket_event 0x7e2940ec,0x7e044c00
-
-[08-12 22:12:47:563][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
-[08-12 22:12:47:563]
-[08-12 22:12:47:563]
-
-[08-12 22:12:47:563][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:12:47:563][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:12:47:563][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:12:47:563][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
-[08-12 22:12:47:563]
-[08-12 22:12:47:563]
-
-[08-12 22:12:47:563][ cmlog ][OPENCPU]:[CMMQTT] send len:19
-[08-12 22:12:47:563]
-[08-12 22:12:47:563]
-
-[08-12 22:12:47:794]asocket_cb 3 2
-
-[08-12 22:12:47:794]asocket_cb 3 10
-
-[08-12 22:12:47:794][ELOOP] post event=0x7e044c00
-
-[08-12 22:12:47:794][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:12:47:794]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[08-12 22:12:47:794]asocket_event 0x7e2940ec,0x7e044c00
-
-[08-12 22:12:47:794][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-12 22:12:47:794]
-[08-12 22:12:47:794]
-
-[08-12 22:12:47:794][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:12:47:794][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:12:47:794][ELOOP] elasocket_cb 3 0
-
-[08-12 22:12:47:794][ELOOP] post event=0x7e044be8
-
-[08-12 22:12:47:794]asocket_cb 3 9
-
-[08-12 22:12:47:794][ELOOP] post event=0x7e044c18
-
-[08-12 22:12:47:794]asocket_cb 3 0
-
-[08-12 22:12:47:794][ELOOP] post event=0x7e044be8
-
-[08-12 22:12:47:794]oop millsec=4294967295 tick=4294967295
-
-[08-12 22:12:47:794][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:12:47:794]asocket_on_eloop 0x7e044be8,0x7e2940ec
-
-[08-12 22:12:47:794]asocket_event 0x7e2940ec,0x7e044be8
-
-[08-12 22:12:47:794][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-12 22:12:47:794]
-[08-12 22:12:47:794]
-
-[08-12 22:12:47:794][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[08-12 22:12:47:794]
-
-[08-12 22:12:47:794]asocket_on_eloop 0x7e044c18,0x7e2940ec
-
-[08-12 22:12:47:794]asocket_event 0x7e2940ec,0x7e044c18
-
-[08-12 22:12:47:794][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:6
-[08-12 22:12:47:794]
-[08-12 22:12:47:794]
-
-[08-12 22:12:47:794][ cmlog ][OPENCPU]:[CMMQTT] __mqtt_client_sock_cb: 3 error_code = 0
-[08-12 22:12:47:794]
-
-[08-12 22:12:47:794][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:12:47:794][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:12:47:794][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:12:47:794][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-650 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:12:47:794]
-[08-12 22:12:47:794]
-
-[08-12 22:12:47:794][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-12 22:12:47:794]
-[08-12 22:12:47:794]
-
-[08-12 22:12:47:794]asocket_cb 3 1
-
-[08-12 22:12:47:794][ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
-[08-12 22:12:47:794]
-[08-12 22:12:47:794]
-
-[08-12 22:12:47:794][ cmlog ][OPENCPU]:[CMMQTT] conn ack:5
-[08-12 22:12:47:794]
-[08-12 22:12:47:794]
-
-[08-12 22:12:47:794][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:3
-[08-12 22:12:47:794]
-[08-12 22:12:47:794]
-
-[08-12 22:12:47:794][ELOOP] register_event eloop 0x7e2626e0,0x802d8d68,0x00000003
-
-[08-12 22:12:47:794][ELOOP] eloop_event_init 0x7e044c30,0x7e2626e0,0x802d8d68,0x00000003
-
-[08-12 22:12:47:794][ELOOP] post event=0x7e044c30
-
-[08-12 22:12:47:794][ cmlog ][OPENCPU]:[PET][W] mqtt connack fail:3 (was_connected=0)
-
-[08-12 22:12:47:794]
-[08-12 22:12:47:794]
-
-[08-12 22:12:47:794][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:3
-[08-12 22:12:47:794]
-[08-12 22:12:47:794]
-
-[08-12 22:12:47:794][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:12:47:794][ELOOP] unregister event=0x7e044c30
-
-[08-12 22:12:47:794][ELOOP] unregister event=0x7e044be8
-
-[08-12 22:12:47:794][ELOOP] unregister event=0x7e044c00
-
-[08-12 22:12:47:794][ELOOP] unregister event=0x7e044c18
-
-[08-12 22:12:47:794]asocket_cb 3 11
-
-[08-12 22:12:47:794]asocket not found
-
-[08-12 22:12:47:794]asocket_cb 3 0
-
-[08-12 22:12:47:794]asocket not found
-
-[08-12 22:12:47:794]asocket_cb 3 2
-
-[08-12 22:12:47:794]asocket not found
-
-[08-12 22:12:47:794][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:12:47:794][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:12:47:794][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:12:47:859][ cmlog ][OPENCPU]:[PET][I] enter SUPER_SAVE, gps lpmode=0 + closed
-
-[08-12 22:12:47:859]
-[08-12 22:12:47:859]
-
-[08-12 22:12:57:790][ cmlog ][OPENCPU]:[PET][I] alive mode=4 rssi=-650 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:12:57:790]
-[08-12 22:12:57:790]
-
-[08-12 22:13:07:954][ cmlog ][OPENCPU]:[PET][I] alive mode=4 rssi=-660 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:13:07:954]
-[08-12 22:13:07:954]
-
-[08-12 22:13:17:445][ cmlog ][OPENCPU]:[PET][I] alive mode=4 rssi=-690 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:13:17:445]
-[08-12 22:13:17:445]
-
-[08-12 22:13:27:450][ cmlog ][OPENCPU]:[PET][I] alive mode=4 rssi=-660 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:13:27:450]
-[08-12 22:13:27:450]
-
-[08-12 22:13:37:458][ cmlog ][OPENCPU]:[PET][I] alive mode=4 rssi=-620 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:13:37:458]
-[08-12 22:13:37:458]
-
-[08-12 22:13:47:482][ cmlog ][OPENCPU]:[PET][I] alive mode=4 rssi=-660 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:13:47:482]
-[08-12 22:13:47:482]
-
-[08-12 22:13:48:513][ cmlog ][OPENCPU]:[PET][I] mqtt app-level reconnect
-
-[08-12 22:13:48:513]
-[08-12 22:13:48:513]
-
-[08-12 22:13:48:513][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:3
-[08-12 22:13:48:513]
-[08-12 22:13:48:513]
-
-[08-12 22:13:48:513][ cmlog ][OPENCPU]:[PET][W] mqtt connack fail:2 (was_connected=0)
-
-[08-12 22:13:48:513]
-[08-12 22:13:48:513]
-
-[08-12 22:13:48:513][ cmlog ][OPENCPU]:[CMMQTT] id:0,disconnect from server
-[08-12 22:13:48:513]
-[08-12 22:13:48:513]
-
-[08-12 22:13:48:824][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:5
-[08-12 22:13:48:824]
-[08-12 22:13:48:824]
-
-[08-12 22:13:48:824][ cmlog ][OPENCPU]:[CMMQTT] id:1263750470,destroy client
-[08-12 22:13:48:824]
-[08-12 22:13:48:824]
-
-[08-12 22:13:48:824][ cmlog ][OPENCPU]:[PET][I] mqtt connect 119.23.217.155:18883
-
-[08-12 22:13:48:824]
-[08-12 22:13:48:824]
-
-[08-12 22:13:48:824][ADNS] cm_async_dns_request cid = 1 
-[08-12 22:13:48:824]
-
-[08-12 22:13:48:824][ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
-[08-12 22:13:48:824]
-[08-12 22:13:48:824]
-
-[08-12 22:13:48:824][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
-[08-12 22:13:48:824]
-[08-12 22:13:48:824]
-
-[08-12 22:13:48:824][ELOOP] register_event eloop 0x7e2626e0,0x802d9f20,0x7e0c41a0
-
-[08-12 22:13:48:824][ELOOP] eloop_event_init 0x7e044c18,0x7e2626e0,0x802d9f20,0x7e0c41a0
-
-[08-12 22:13:48:824][ELOOP] post event=0x7e044c18
-
-[08-12 22:13:48:824][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:48:824][ELOOP] unregister event=0x7e044c18
-
-[08-12 22:13:48:824][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[08-12 22:13:48:824][ELOOP] eloop_event_init 0x7e044c18,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[08-12 22:13:48:824][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[08-12 22:13:48:824][ELOOP] eloop_event_init 0x7e044c00,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[08-12 22:13:48:824][ELOOP] register_event eloop 0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[08-12 22:13:48:824][ELOOP] eloop_event_init 0x7e044be8,0x7e2626e0,0x8025fab5,0x7e2940ec
-
-[08-12 22:13:48:824]asocket open ok 0 3
-
-[08-12 22:13:48:824][ cmlog ]ipv4: 1 10.38.180.141 
-[08-12 22:13:48:824]
-
-[08-12 22:13:48:824][ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
-[08-12 22:13:48:824]
-[08-12 22:13:48:824]
-
-[08-12 22:13:48:824][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:13:48:824][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:48:824][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:13:48:824][ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
-[08-12 22:13:48:824]
-[08-12 22:13:48:824]
-
-[08-12 22:13:48:996]asocket_cb 3 2
-
-[08-12 22:13:48:996]asocket_cb 3 4
-
-[08-12 22:13:48:996][ELOOP] post event=0x7e044c00
-
-[08-12 22:13:48:996][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:48:996]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[08-12 22:13:48:996]asocket_event 0x7e2940ec,0x7e044c00
-
-[08-12 22:13:48:996][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
-[08-12 22:13:48:996]
-[08-12 22:13:48:996]
-
-[08-12 22:13:48:996][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:13:48:996][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:48:996][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:13:48:996][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
-[08-12 22:13:48:996]
-[08-12 22:13:48:996]
-
-[08-12 22:13:48:996][ cmlog ][OPENCPU]:[CMMQTT] send len:53
-[08-12 22:13:48:996]
-[08-12 22:13:48:996]
-
-[08-12 22:13:49:370]asocket_cb 3 2
-
-[08-12 22:13:49:370]asocket_cb 3 10
-
-[08-12 22:13:49:370][ELOOP] post event=0x7e044c00
-
-[08-12 22:13:49:370][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:49:370]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[08-12 22:13:49:370]asocket_event 0x7e2940ec,0x7e044c00
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:13:49:370][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:49:370][ELOOP] elasocket_cb 3 0
-
-[08-12 22:13:49:370][ELOOP] post event=0x7e044c18
-
-[08-12 22:13:49:370]oop millsec=4294967295 tick=4294967295
-
-[08-12 22:13:49:370][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:49:370]asocket_on_eloop 0x7e044c18,0x7e2940ec
-
-[08-12 22:13:49:370]asocket_event 0x7e2940ec,0x7e044c18
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:13:49:370][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:49:370][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370]asocket_cb 3 1
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[PET][I] mqtt connected
-
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] send len:34
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[PET][I] [TX telemetry] len=305
-
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[PET][I]   {"event_type":"state","message_id":"state_865229081435439_2026-08-12T14:13:49Z","imei":"865229081
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[PET][I]   439","device_sn":"865229081435439","online_status":"ONLINE","event_time":"2026-08-12T14:13:49Z","
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[PET][I]   tery_level":0,"firmware_version":"1.0.0","network_type":"LTE","signal_strength":-670,"charging_st
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[PET][I]   s":0}
-
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] send len:335
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devicasocket_cb 3 2
-
-[08-12 22:13:49:370]asocket_cb 3 10
-
-[08-12 22:13:49:370][ELOOP] post event=0x7e044c00
-
-[08-12 22:13:49:370]asocket_cb 3 0
-
-[08-12 22:13:49:370][ELOOP] post event=0x7e044c18
-
-[08-12 22:13:49:370]es/me/telemetry,len:335
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[PET][I] state ONLINE published
-
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:49:370]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[08-12 22:13:49:370]asocket_event 0x7e2940ec,0x7e044c00
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370]asocket_on_eloop 0x7e044c18,0x7e2940ec
-
-[08-12 22:13:49:370]asocket_event 0x7e2940ec,0x7e044c18
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:5
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:13:49:370][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:49:370][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:13:49:370][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:49:370][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:13:49:370][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:49:370][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-12 22:13:49:370]asocket_cb 3 2
-
-[08-12 22:13:49:370]asocket_cb 3 10
-
-[08-12 22:13:49:370][ELOOP] post event=0x7e044c00
-
-[08-12 22:13:49:370]asocket_cb 3 0
-
-[08-12 22:13:49:370][ELOOP] post event=0x7e044c18
-
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370]asocket_cb 3 1
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] pkt type:9,len:5
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[PET][I] rpc subscribed
-
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[PET][I] mqtt subscribed
-
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:49:370]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[08-12 22:13:49:370]asocket_event 0x7e2940ec,0x7e044c00
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370]asocket_on_eloop 0x7e044c18,0x7e2940ec
-
-[08-12 22:13:49:370]asocket_event 0x7e2940ec,0x7e044c18
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:13:49:370][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:49:370][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:13:49:370][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:49:370][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:13:49:370][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:13:49:370][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:49:370]asocket_cb 3 1
-
-[08-12 22:13:49:370][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-[08-12 22:13:49:370]
-[08-12 22:13:49:370]
-
-[08-12 22:13:57:469][ cmlog ][OPENCPU]:[PET][I] alive mode=4 rssi=-600 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:13:57:469]
-[08-12 22:13:57:469]
-
-[08-12 22:14:07:476][ cmlog ][OPENCPU]:[PET][I] alive mode=4 rssi=-660 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:14:07:476]
-[08-12 22:14:07:476]
-
-[08-12 22:14:17:478][ cmlog ][OPENCPU]:[PET][I] alive mode=4 rssi=-690 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:14:17:478]
-[08-12 22:14:17:478]
-
-[08-12 22:14:27:487][ cmlog ][OPENCPU]:[PET][I] alive mode=4 rssi=-690 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:14:27:487]
-[08-12 22:14:27:487]
-
-[08-12 22:14:37:493][ cmlog ][OPENCPU]:[PET][I] alive mode=4 rssi=-700 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:14:37:493]
-[08-12 22:14:37:493]
-
-[08-12 22:14:47:507][ cmlog ][OPENCPU]:[PET][I] alive mode=4 rssi=-690 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
-
-[08-12 22:14:47:507]
-[08-12 22:14:47:507]
-
-[08-12 22:14:49:137][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:0
-[08-12 22:14:49:137]
-[08-12 22:14:49:137]
-
-[08-12 22:14:49:137][ cmlog ][OPENCPU]:[CMMQTT] send len:2
-[08-12 22:14:49:137]
-[08-12 22:14:49:137]
-
-[08-12 22:14:49:137][ cmlog ][OPENCPU]:[CMMQTT] id:0,pingreq to server
-[08-12 22:14:49:137]
-[08-12 22:14:49:137]
-
-[08-12 22:14:49:359]asocket_cb 3 2
-
-[08-12 22:14:49:359]asocket_cb 3 10
-
-[08-12 22:14:49:359][ELOOP] post event=0x7e044c00
-
-[08-12 22:14:49:359]asocket_cb 3 0
-
-[08-12 22:14:49:359][ELOOP] post event=0x7e044c18
-
-[08-12 22:14:49:359][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:14:49:359]asocket_on_eloop 0x7e044c00,0x7e2940ec
-
-[08-12 22:14:49:359]asocket_event 0x7e2940ec,0x7e044c00
-
-[08-12 22:14:49:359][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-12 22:14:49:359]
-[08-12 22:14:49:359]
-
-[08-12 22:14:49:359]asocket_on_eloop 0x7e044c18,0x7e2940ec
-
-[08-12 22:14:49:359]asocket_event 0x7e2940ec,0x7e044c18
-
-[08-12 22:14:49:359][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-12 22:14:49:359]
-[08-12 22:14:49:359]
-
-[08-12 22:14:49:359][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:2
-[08-12 22:14:49:359]
-
-[08-12 22:14:49:359][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:14:49:359][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:14:49:359][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:14:49:359][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:14:49:359][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
-
-[08-12 22:14:49:359][ELOOP] rdy_list eloop=0x7e2626e0
-
-[08-12 22:14:49:359][ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[08-12 22:14:49:359][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-12 22:14:49:359]
-[08-12 22:14:49:359]
-
-[08-12 22:14:49:359]asocket_cb 3 1
-
-[08-12 22:14:49:359][ cmlog ][OPENCPU]:[CMMQTT] pkt type:13,len:2
-[08-12 22:14:49:359]
-[08-12 22:14:49:359]
+[08-13 21:13:56:811]
+[08-13 21:13:56:811]
 

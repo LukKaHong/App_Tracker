@@ -85,7 +85,7 @@ extern "C" {
 
 /* ===================================================================
  * 7. 蜂鸣器 - GPIO 驱动（也可改为 PWM）
- *    Pin33 默认 PCM_OUT，复用功能1 = GPIO19
+ *    Pin33 默认 PCM_OUT，复用功能2 = GPIO19
  * =================================================================== */
 #define APP_BUZZER_GPIO             CM_GPIO_NUM_19
 #define APP_BUZZER_IOMUX_PIN        CM_IOMUX_PIN_33
@@ -94,15 +94,19 @@ extern "C" {
 
 /* ===================================================================
  * 8. RGB 指示灯 - 3 路 GPIO（如使用 PWM 可改为 PWM 设备）
- *    Pin30/31/32 默认 PCM_CLK/SYNC/IN，复用功能1 = GPIO16/17/18
+ *    Pin30/32 默认 PCM_CLK/IN，复用功能2 = GPIO16/18
+ *    Pin86 默认 GPIO2，功能1 = GPIO2
  * =================================================================== */
 #define APP_RGB_R_GPIO              CM_GPIO_NUM_16
 #define APP_RGB_R_IOMUX_PIN         CM_IOMUX_PIN_30
-#define APP_RGB_G_GPIO              CM_GPIO_NUM_17
-#define APP_RGB_G_IOMUX_PIN         CM_IOMUX_PIN_31
+#define APP_RGB_R_IOMUX_FUNC        CM_IOMUX_FUNC_FUNCTION2
+#define APP_RGB_G_GPIO              CM_GPIO_NUM_2
+#define APP_RGB_G_IOMUX_PIN         CM_IOMUX_PIN_86
+#define APP_RGB_G_IOMUX_FUNC        CM_IOMUX_FUNC_FUNCTION1
 #define APP_RGB_B_GPIO              CM_GPIO_NUM_18
 #define APP_RGB_B_IOMUX_PIN         CM_IOMUX_PIN_32
-#define APP_RGB_ACTIVE_LEVEL        CM_GPIO_LEVEL_HIGH  /* TODO 视电路而定，共阳/共阴决定 */
+#define APP_RGB_B_IOMUX_FUNC        CM_IOMUX_FUNC_FUNCTION2
+#define APP_RGB_ACTIVE_LEVEL        CM_GPIO_LEVEL_HIGH  /* 共阴 LED，高电平点亮 */
 
 /* ===================================================================
  * 9. 电池电量 ADC

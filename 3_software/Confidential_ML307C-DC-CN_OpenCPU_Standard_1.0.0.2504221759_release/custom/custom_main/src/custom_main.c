@@ -11,6 +11,8 @@
 #include "cm_sys.h"
 #include "cm_os.h"
 #include "cm_pm.h"
+#include "cm_gpio.h"
+#include "cm_iomux.h"
 #include "cm_rtc.h"
 #include "cm_modem_info.h"
 #include "cm_modem.h"
