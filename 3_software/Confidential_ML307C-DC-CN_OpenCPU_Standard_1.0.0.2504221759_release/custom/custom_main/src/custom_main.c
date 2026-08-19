@@ -28,8 +28,6 @@
 #include "app_mqtt_client.h"
 #include "app_command.h"
 #include "app_ota.h"
-#include "app_lbs.h"
-#include "cm_lbs.h"
 #include "bsp.h"
 
 /* ===== 全局状态 ===== */
@@ -453,7 +451,7 @@ static void one_shot_loc_task(void *arg)
     while (1) {
         uint32_t elapsed = (uint32_t)osKernelGetTickCount() - start;
         if (elapsed >= APP_MS_TO_TICK(APP_ONESHOT_TIMEOUT_MS)) {
-            APP_LOGW("one-shot: timeout %dms, no gps fix", elapsed * APP_TICK_MS);
+            APP_LOGW("one-shot: timeout %dms, report last loc", elapsed * APP_TICK_MS);
             break;
         }
         /* 判断是否收到新的有效定位 */
@@ -463,28 +461,13 @@ static void one_shot_loc_task(void *arg)
         }
         osDelay(APP_MS_TO_TICK(500));
     }
-    bool gps_fixed = (g_loc_updated_tick != tick_before_open);
 
     /* 定位完成后切回超低功耗（需求 1.2.4：定位完成之后关闭定位功能） */
     bsp_gps_set_power_mode(BSP_GPS_LPMODE_ULTRA_LOW);
     osDelay(APP_MS_TO_TICK(100));
     bsp_gps_close();
     g_gps_opened = false;
-    APP_LOGI("one-shot: gps closed");
-
-#if APP_LBS_ENABLE
-    /* GPS 未定位成功时使用 LBS 基站定位兜底（室内等场景）：
-     * 新鲜的基站粗定位优于上报陈旧/无效 GPS 坐标 */
-    if (!gps_fixed) {
-        APP_LOGI("one-shot: gps no fix, try LBS fallback");
-        app_location_t lbs;
-        if (app_lbs_get_location(&lbs, APP_LBS_TIMEOUT_S) == 0) {
-            if (g_loc_mutex) osMutexAcquire(g_loc_mutex, osWaitForever);
-            g_last_loc = lbs;
-            if (g_loc_mutex) osMutexRelease(g_loc_mutex);
-        }
-    }
-#endif
+    APP_LOGI("one-shot: gps closed, publishing");
 
     /* 上报一次定位数据 */
     publish_location(false);
@@ -493,31 +476,6 @@ static void one_shot_loc_task(void *arg)
     /* 任务自行结束（CMSIS-RTOS2: 任务函数 return 即自动退出） */
     APP_LOGI("one-shot: task done");
 }
-
-#if APP_LBS_ENABLE
-/* ===== LBS 兜底任务（周期上报场景） =====
- * GPS 长时间无 fix（室内）时由主循环触发，独立任务执行 LBS 请求，
- * 避免阻塞主循环 20ms 按键轮询。
- * 注意：任务内只更新 g_last_loc，不直接 publish_location——
- * publish 内部使用静态 JSON 缓冲区，与主循环并发上报会竞争损坏 */
-static volatile bool s_lbs_fallback_running = false;
-static uint32_t      s_lbs_last_attempt_tick = 0;
-
-static void lbs_fallback_task(void *arg)
-{
-    (void)arg;
-    APP_LOGI("LBS fallback task start");
-    app_location_t lbs;
-    if (app_lbs_get_location(&lbs, APP_LBS_TIMEOUT_S) == 0) {
-        if (g_loc_mutex) osMutexAcquire(g_loc_mutex, osWaitForever);
-        g_last_loc = lbs;
-        if (g_loc_mutex) osMutexRelease(g_loc_mutex);
-        /* 不在此处上报，下一个周期上报自动携带 LBS 结果 */
-    }
-    s_lbs_fallback_running = false;
-    APP_LOGI("LBS fallback task done");
-}
-#endif
 
 /* ===== 应用层日志输出（通过 DBG 口） ===== */
 void app_log_output(const char *level, const char *fmt, ...)
@@ -754,28 +712,6 @@ static void main_task(void *arg)
         /* 周期定位（超省电模式不主动定位） */
         if (interval > 0 && (now - last_loc_tick) >= APP_MS_TO_TICK(interval)) {
             last_loc_tick = now;
-#if APP_LBS_ENABLE
-            /* GPS 长时间无 fix 时触发 LBS 兜底任务（冷却限流）：
-             * gps_stale：从未定位 或 距上次 GPS fix 超过冷却时间（室内 LBS 结果
-             *            也会定期刷新，避免宠物移动后一直上报陈旧基站位置）
-             * cooldown：距上次 LBS 尝试超过冷却时间（保护 OneOsPos 平台 QPS/日配额） */
-            bool gps_stale = (g_loc_updated_tick == 0) ||
-                             ((now - g_loc_updated_tick) >= APP_MS_TO_TICK(APP_LBS_FALLBACK_COOLDOWN_MS));
-            bool cooldown_ok = (s_lbs_last_attempt_tick == 0) ||
-                               ((now - s_lbs_last_attempt_tick) >= APP_MS_TO_TICK(APP_LBS_FALLBACK_COOLDOWN_MS));
-            if (gps_stale && cooldown_ok && !s_lbs_fallback_running) {
-                s_lbs_last_attempt_tick = now;
-                s_lbs_fallback_running = true;
-                osThreadAttr_t attr = {0};
-                attr.name = "lbs_fb";
-                attr.stack_size = 4096;
-                attr.priority = osPriorityBelowNormal;
-                if (osThreadNew(lbs_fallback_task, NULL, &attr) == NULL) {
-                    s_lbs_fallback_running = false;
-                    APP_LOGE("LBS fallback task create fail");
-                }
-            }
-#endif
             publish_location(false);
         }
 
@@ -861,118 +797,11 @@ static void system_init(void)
 /* ====================================================================
  * OpenCPU 入口
  * ==================================================================== */
-
-/* ===== [LBS TEST] 复位自动测试 LBS 定位 =====
- * 测试任务：等 PDP 激活（官方示例要求，CEREG 不够）→ 执行一次 LBS → 打印结果。
- * 测完删除此函数。 */
-static volatile bool     g_lbs_done = false;      /* [DIAG] LBS 调用结束标志 */
-static osThreadId_t      g_lbs_test_tid = NULL;   /* [DIAG] 测试任务句柄，供看门狗探测 */
-
-/* [DIAG] LBS 看门狗：若 cm_lbs_init 内部挂死，周期性探测卡死位置：
- *  1) lbs_test 线程状态/栈水位 → 是否栈溢出(4KB)或阻塞
- *  2) cm_lbs_get_attr 探针（纯读缓存，线程安全）：
- *     - ret=-1          : init 第一条指令都没执行到（几乎不可能）
- *     - ret=0, pid=NULL : 卡在 osThreadNew/osMessageQueueNew（内核对象创建）
- *     - ret=0, pid有效  : 卡在 backup_attr 之后的 malloc/create_attr（堆锁挂起） */
-static void lbs_watchdog_task(void *arg)
-{
-    (void)arg;
-    static const char *state_name[] = {
-        "Idle", "Ready", "Running", "Blocked", "Terminated", "Unknown", "Unknown"
-    };
-    for (int round = 1; round <= 4; round++) {
-        osDelay(APP_MS_TO_TICK(12000));
-        if (g_lbs_done) {
-            APP_LOGI("[LBS-WD] lbs done, watchdog exit");
-            return;
-        }
-        APP_LOGI("[LBS-WD] round %d: lbs_test STILL STUCK!", round);
-        if (g_lbs_test_tid != NULL) {
-            osThreadState_t st = osThreadGetState(g_lbs_test_tid);
-            int si = (st >= 0 && st <= 5) ? (int)st : 5;
-            APP_LOGI("[LBS-WD] lbs_test state=%s(%d) stack_free=%u",
-                     state_name[si], (int)st, (unsigned)osThreadGetStackSpace(g_lbs_test_tid));
-        }
-        cm_lbs_oneospos_attr_t probe;
-        memset(&probe, 0, sizeof(probe));
-        int gret = (int)cm_lbs_get_attr(CM_LBS_PLAT_ONEOSPOS, &probe);
-        APP_LOGI("[LBS-WD] probe cm_lbs_get_attr ret=%d pid=%s tmo=%d nb=%d",
-                 gret,
-                 (gret == 0 && probe.pid != NULL) ? probe.pid : "(null)",
-                 probe.time_out, probe.nearbts_enable);
-    }
-    APP_LOGI("[LBS-WD] 4 rounds done, watchdog exit. Please reset device.");
-}
-
-static void lbs_test_task(void *arg)
-{
-    (void)arg;
-    APP_LOGI("[LBS-TEST] task start, waiting PDP active...");
-    /* 官方示例：cm_lbs 依赖 PDP 数据通道，CEREG 注册成功 ≠ PDP 激活。
-     * PDP 未激活时 cm_lbs_init 内部 asocket 初始化会永久挂死 */
-    for (int i = 0; i < 90; i++) {   /* 最多等 45 秒 */
-        if (cm_modem_get_pdp_state(1) == 1) {
-            APP_LOGI("[LBS-TEST] PDP active after %ds", i / 2);
-            break;
-        }
-        if (i % 10 == 0) {
-            APP_LOGI("[LBS-TEST] waiting PDP, %ds...", i / 2);
-        }
-        osDelay(APP_MS_TO_TICK(500));
-    }
-    /* PDP 激活到数据通道可用需适当等待（官方示例 osDelay(1000)） */
-    APP_LOGI("[LBS-TEST] settle 2s for data channel");
-    osDelay(APP_MS_TO_TICK(2000));
-
-    /* [DIAG] 启动看门狗（高优先级，12s 后开始探测），并记录本任务句柄 */
-    g_lbs_test_tid = osThreadGetId();
-    g_lbs_done = false;
-    {
-        osThreadAttr_t wd_attr = {0};
-        wd_attr.name = "lbs_wd";
-        wd_attr.stack_size = 2048;
-        wd_attr.priority = osPriorityHigh;   /* 必须高于被测任务，保证能抢占探测 */
-        if (osThreadNew(lbs_watchdog_task, NULL, &wd_attr) == NULL) {
-            APP_LOGE("[LBS-WD] watchdog create fail");
-        }
-    }
-
-    app_location_t loc;
-    memset(&loc, 0, sizeof(loc));
-    APP_LOGI("[LBS-TEST] requesting OneOsPos LBS, timeout=%ds...", APP_LBS_TIMEOUT_S);
-    int ret = app_lbs_get_location(&loc, APP_LBS_TIMEOUT_S);
-    g_lbs_done = true;  /* [DIAG] 通知看门狗退出 */
-    if (ret == 0) {
-        APP_LOGI("[LBS-TEST] *** SUCCESS ***");
-        APP_LOGI("[LBS-TEST] lon=%.6f lat=%.6f", loc.longitude, loc.latitude);
-        APP_LOGI("[LBS-TEST] radius=%dm sat=%d src=%s coord=%s",
-                 loc.accuracy, loc.satellite_cnt, loc.source, loc.coord_sys);
-        /* 百度/高德地图链接（GCJ02 可直接看；若 WGS84 需换算） */
-        APP_LOGI("[LBS-TEST] check: https://uri.amap.com/marker?position=%.6f,%.6f",
-                 loc.longitude, loc.latitude);
-    } else {
-        APP_LOGE("[LBS-TEST] *** FAIL *** ret=%d", ret);
-        APP_LOGE("[LBS-TEST] ret 含义: -1=网络异常 -2=超时/未知 -3=忙 -4=参数错");
-    }
-    APP_LOGI("[LBS-TEST] task done");
-}
-
 int cm_opencpu_entry(void *param)
 {
     (void)param;
 
     system_init();
-
-    /* [LBS TEST] 复位自动启动 LBS 测试任务（测试完删除） */
-    {
-        osThreadAttr_t tattr = {0};
-        tattr.name = "lbs_test";
-        tattr.stack_size = 4096;
-        tattr.priority = osPriorityBelowNormal;
-        if (osThreadNew(lbs_test_task, NULL, &tattr) == NULL) {
-            APP_LOGE("[LBS-TEST] task create fail");
-        }
-    }
 
     /* 需求 1.1：装上电池、复位后默认为关机模式，等待长按按键 5 秒开机 */
     /* g_power_on 保持 false，APP_MODE_OFF 为默认值，main_task 会阻塞等待开机 */
