@@ -34,6 +34,7 @@ flash_source_files = [
     'custom_main/src/app_provisioning.c',
     'custom_main/src/app_offline_cache.c',
     'custom_main/src/app_ota.c',
+    'custom_main/src/app_lbs.c',
 ]
 
 

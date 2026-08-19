@@ -26,6 +26,7 @@
 static bsp_key_event_cb_t s_key_cb = NULL;
 static uint32_t           s_key_press_tick = 0;
 static bool               s_key_pressed = false;
+static bool               s_key_longpress_fired = false;
 
 static void key_irq_handler(void)
 {
@@ -46,15 +47,27 @@ void bsp_key_poll(void)
         /* 按下沿 */
         s_key_pressed = true;
         s_key_press_tick = (uint32_t)osKernelGetTickCount();
+        s_key_longpress_fired = false;
+    } else if (pressed_now && s_key_pressed) {
+        /* 持续按下：达到长按阈值立即触发，无需等待释放 */
+        if (!s_key_longpress_fired) {
+            uint32_t held = (uint32_t)osKernelGetTickCount() - s_key_press_tick;
+            if (held >= APP_MS_TO_TICK(APP_KEY_LONGPRESS_MS)) {
+                s_key_longpress_fired = true;
+                if (s_key_cb) s_key_cb(true);
+            }
+        }
     } else if (!pressed_now && s_key_pressed) {
         /* 释放沿 */
         uint32_t held = (uint32_t)osKernelGetTickCount() - s_key_press_tick;
         s_key_pressed = false;
-        if (held >= APP_MS_TO_TICK(APP_KEY_LONGPRESS_MS)) {
-            if (s_key_cb) s_key_cb(true);
-        } else if (held > APP_MS_TO_TICK(50)) {
-            if (s_key_cb) s_key_cb(false);
+        /* 长按已触发则不再处理短按；仅在未触发长按时判定短按 */
+        if (!s_key_longpress_fired) {
+            if (held > APP_MS_TO_TICK(50)) {
+                if (s_key_cb) s_key_cb(false);
+            }
         }
+        s_key_longpress_fired = false;
     }
 }
 

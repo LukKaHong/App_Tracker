@@ -1,255 +1,477 @@
-[08-13 21:13:41:651]
-[08-13 21:13:41:651]
-[08-13 21:13:41:651][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
-[08-13 21:13:41:651][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
-[08-13 21:13:41:651][INFO: Main      ] 
-[08-13 21:13:41:651][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
-[08-13 21:13:41:651][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
-[08-13 21:13:41:651][INFO: QspiFlash ] Detecting QSPI flash devices...
-[08-13 21:13:41:651][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
-[08-13 21:13:41:651][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
-[08-13 21:13:41:651][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
-[08-13 21:13:41:651][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
-[08-13 21:13:41:651][INFO: Crypto    ] Initializing crypto library...
-[08-13 21:13:41:651][INFO: Main      ] Running in normal booting mode.
-[08-13 21:13:41:651][INFO: Main      ] Loading...
-[08-13 21:13:41:651][INFO: Bl1Main   ] Welcome to boot rom.
-[08-13 21:13:41:651][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
-[08-13 21:13:41:651][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
-[08-13 21:13:41:651][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
-[08-13 21:13:41:651][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[08-13 21:13:41:651][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
-[08-13 21:13:41:651][INFO: Bl1Main   ] BL1: OKay.
-[08-13 21:13:41:651][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
-[08-13 21:13:41:651][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
-[08-13 21:13:41:651][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[08-13 21:13:41:651][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
-[08-13 21:13:41:651][INFO: Bl1Main   ] BL1: OKay.
-[08-13 21:13:42:526][INFO: UsbArch   ] usb phy reg: 0xd42070a4 = 0x189b
-[08-13 21:13:42:638][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[08-13 21:13:42:638][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
-[08-13 21:13:42:638]
-[08-13 21:13:42:638][BOOT33]VB_VERSION_DATE   :[20241210]
-[08-13 21:13:42:926]
-[08-13 21:13:42:926] ** PC      : 0x80017000
-[08-13 21:13:42:967]Version: SDK_1.011.144 Apr 22 2025 18:01:58
+[08-19 13:31:07:770][ cmlog ]__cm_daemon_thread 0 1
 
-[08-13 21:13:42:967]Ac 4, Board 2, DKB 1
+[08-19 13:31:08:002][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
 
-[08-13 21:13:42:967]PSRAM fuse: 13
+[08-19 13:31:08:002]OK
 
-[08-13 21:13:42:967]
+[08-19 13:31:08:002]]
 
-[08-13 21:13:42:967]Cinit 2
+[08-19 13:31:08:002][ cmlog ]vir_at_wait_get_flag:0
+[08-19 13:31:08:002]
 
-[08-13 21:13:42:967]Flash type: nvm 0, factory 0, fota 0
+[08-19 13:31:08:002][ cmlog ][-4]get urcdata skip head and tail
 
-[08-13 21:13:42:967]Phase1Inits
+[08-19 13:31:08:002][ cmlog ]memory_buffer len 2, data:[OK]
+[08-19 13:31:08:002]
 
-[08-13 21:13:42:967]diag Phase1 Init
+[08-19 13:31:08:997]SW_RESET @0�
+[08-19 13:31:09:412]
+[08-19 13:31:09:412][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
+[08-19 13:31:09:412][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
+[08-19 13:31:09:412][INFO: Main      ] 
+[08-19 13:31:09:412][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
+[08-19 13:31:09:412][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
+[08-19 13:31:09:412][INFO: QspiFlash ] Detecting QSPI flash devices...
+[08-19 13:31:09:412][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
+[08-19 13:31:09:412][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
+[08-19 13:31:09:412][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
+[08-19 13:31:09:412][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
+[08-19 13:31:09:412][INFO: Crypto    ] Initializing crypto library...
+[08-19 13:31:09:412][INFO: Main      ] Running in normal booting mode.
+[08-19 13:31:09:412][INFO: Main      ] Loading...
+[08-19 13:31:09:412][INFO: Bl1Main   ] Welcome to boot rom.
+[08-19 13:31:09:412][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
+[08-19 13:31:09:412][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
+[08-19 13:31:09:412][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
+[08-19 13:31:09:412][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[08-19 13:31:09:412][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
+[08-19 13:31:09:412][INFO: Bl1Main   ] BL1: OKay.
+[08-19 13:31:09:412][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
+[08-19 13:31:09:412][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
+[08-19 13:31:09:412][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[08-19 13:31:09:412][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
+[08-19 13:31:09:412][INFO: Bl1Main   ] BL1: OKay.
+[08-19 13:31:10:296][INFO: UsbArch   ] usb phy reg: 0xd42070a4 = 0x189b
+[08-19 13:31:10:398][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[08-19 13:31:10:398][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
+[08-19 13:31:10:398]
+[08-19 13:31:10:398][BOOT33]VB_VERSION_DATE   :[20241210]
+[08-19 13:31:10:687]
+[08-19 13:31:10:687] ** PC      : 0x80017000
+[08-19 13:31:10:728]Version: SDK_1.011.144 Apr 22 2025 18:01:58
 
-[08-13 21:13:42:998]dro_efuse = 135
+[08-19 13:31:10:728]Ac 4, Board 2, DKB 1
 
-[08-13 21:13:42:998]profile num = 2
+[08-19 13:31:10:728]PSRAM fuse: 13
 
-[08-13 21:13:42:998]CRNLR_SVC_FP[0] = 0x29
+[08-19 13:31:10:728]
 
-[08-13 21:13:42:998]CRNLR_SVC_FP[1] = 0x29
+[08-19 13:31:10:728]Cinit 2
 
-[08-13 21:13:42:998]CRNLR_SVC_FP[2] = 0x29
+[08-19 13:31:10:728]Flash type: nvm 0, factory 0, fota 0
 
-[08-13 21:13:42:998]CRNLR_SVC_FP[3] = 0x33
+[08-19 13:31:10:728]Phase1Inits
 
-[08-13 21:13:42:998]Bootup not silent
+[08-19 13:31:10:728]diag Phase1 Init
 
-[08-13 21:13:42:998][ELOOP] __cm_eloop_init 0x7e2626e0,128
+[08-19 13:31:10:758]dro_efuse = 135
 
-[08-13 21:13:43:122][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
+[08-19 13:31:10:758]profile num = 2
 
-[08-13 21:13:43:122][ELOOP] rdy_list eloop=0x7e2626e0
+[08-19 13:31:10:758]CRNLR_SVC_FP[0] = 0x29
 
-[08-13 21:13:43:122][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-19 13:31:10:758]CRNLR_SVC_FP[1] = 0x29
 
-[08-13 21:13:43:122]InitTask started
+[08-19 13:31:10:758]CRNLR_SVC_FP[2] = 0x29
 
-[08-13 21:13:43:122]Chip ID: 0xb01605
+[08-19 13:31:10:758]CRNLR_SVC_FP[3] = 0x33
 
-[08-13 21:13:43:122]PS_NONCACHE_DATA_ZI rf [0x7e389300]
+[08-19 13:31:10:758]Bootup not silent
 
-[08-13 21:13:43:122]check unpressed rf/dsp size,rf [0x0000f000],dsp [0x00040800]
+[08-19 13:31:10:758][ELOOP] __cm_eloop_init 0x7e2626e0,128
 
-[08-13 21:13:43:122]Crane mpu configure
+[08-19 13:31:10:881][ELOOP] eloop_wait eloop 0x7e2626e0,4294967295
 
-[08-13 21:13:43:122]start file system init
+[08-19 13:31:10:881][ELOOP] rdy_list eloop=0x7e2626e0
 
-[08-13 21:13:43:122]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d4000, reserved_end_addr=0x2d7000
+[08-19 13:31:10:881][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-13 21:13:43:122]
+[08-19 13:31:10:881]InitTask started
 
-[08-13 21:13:43:122]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
+[08-19 13:31:10:881]Chip ID: 0xb01605
 
-[08-13 21:13:43:122]qspi_nor_set_flash_block_protect:write status register finished.
+[08-19 13:31:10:881]PS_NONCACHE_DATA_ZI rf [0x7e389300]
 
-[08-13 21:13:43:122]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
+[08-19 13:31:10:881]check unpressed rf/dsp size,rf [0x0000f000],dsp [0x00040800]
 
-[08-13 21:13:43:122]flash_protect_area_type=12
+[08-19 13:31:10:881]Crane mpu configure
 
-[08-13 21:13:43:122]
+[08-19 13:31:10:881]start file system init
 
-[08-13 21:13:43:122]SPI Nor/NAND flash init success
+[08-19 13:31:10:881]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d4000, reserved_end_addr=0x2d7000
 
-[08-13 21:13:43:122]
+[08-19 13:31:10:881]
 
-[08-13 21:13:43:122]FDI_Transport_Fsys_Register: 0, C:/
+[08-19 13:31:10:881]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
 
-[08-13 21:13:43:122]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
+[08-19 13:31:10:881]qspi_nor_set_flash_block_protect:write status register finished.
 
-[08-13 21:13:43:122]LfsGrpCnt 5
+[08-19 13:31:10:881]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
 
-[08-13 21:13:43:122]lfs root is valid
+[08-19 13:31:10:881]flash_protect_area_type=12
 
-[08-13 21:13:43:122][PTN 0] free size: 430080
+[08-19 13:31:10:881]
 
-[08-13 21:13:43:122]lfs[PTN 0] init success
+[08-19 13:31:10:881]SPI Nor/NAND flash init success
 
-[08-13 21:13:43:122]OnKeyPoweroff_Task
+[08-19 13:31:10:881]
 
-[08-13 21:13:43:122]eeHandlerPhase2Init
+[08-19 13:31:10:881]FDI_Transport_Fsys_Register: 0, C:/
 
-[08-13 21:13:43:237][ cmlog ]netcard type = 16 cfg = 0
+[08-19 13:31:10:881]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
 
-[08-13 21:13:43:237]Usb mode 0, descriptor 70[ cmlog ]usb2com queue send err(status)
+[08-19 13:31:10:881]LfsGrpCnt 5
 
-[08-13 21:13:43:237]
+[08-19 13:31:10:881]lfs root is valid
 
-[08-13 21:13:43:237]USIMPhase2Init 0
+[08-19 13:31:10:881][PTN 0] free size: 430080
 
-[08-13 21:13:43:237]
+[08-19 13:31:10:881]lfs[PTN 0] init success
 
-[08-13 21:13:43:237]copy rf size[0x0000f000] to [0x7e000000]
+[08-19 13:31:10:881]OnKeyPoweroff_Task
 
-[08-13 21:13:43:237]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+[08-19 13:31:10:881]eeHandlerPhase2Init
 
-[08-13 21:13:43:237]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
+[08-19 13:31:10:995][ cmlog ]netcard type = 16 cfg = 0
 
-[08-13 21:13:43:284]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+[08-19 13:31:10:995]Usb mode 0, descriptor 70
 
-[08-13 21:13:43:284]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
+[08-19 13:31:10:995]USIMPhase2Init 0
 
-[08-13 21:13:43:284]power_up_reason: 0x2, power_down_reason: 0x0
+[08-19 13:31:10:995]
 
-[08-13 21:13:43:356]InitIPCControl: data:0x0
+[08-19 13:31:10:995][ cmlog ]usb2com queue send err(status)
 
-[08-13 21:13:43:499]AT command server ready!
+[08-19 13:31:10:995]copy rf size[0x0000f000] to [0x7e000000]
 
-[08-13 21:13:43:499]Booting done
+[08-19 13:31:10:995]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
 
-[08-13 21:13:43:606]SW restart reason: Normal power on
+[08-19 13:31:10:995]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
 
-[08-13 21:13:43:606][ cmlog ]dm nv read err
+[08-19 13:31:11:046]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
 
-[08-13 21:13:43:606][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
+[08-19 13:31:11:046]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
 
-[08-13 21:13:43:606][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023b9d9
+[08-19 13:31:11:046]power_up_reason: 0x40, power_down_reason: 0x4
 
-[08-13 21:13:43:606][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
+[08-19 13:31:11:165]InitIPCControl: data:0x0
 
-[08-13 21:13:43:606][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x15db0
+[08-19 13:31:11:261]AT command server ready!
 
-[08-13 21:13:43:606][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x15db0
+[08-19 13:31:11:261]Booting done
 
-[08-13 21:13:43:606][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x6188
+[08-19 13:31:11:397]SW restart reason: Charging in powering off
 
-[08-13 21:13:43:606][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x6200,vma:0x802dd200,lma:0x802dd200,sz:0x19b4
+[08-19 13:31:11:397][ cmlog ]dm nv read err
 
-[08-13 21:13:43:606][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x153c0,vma:0x7e1df800,lma:0x802ec3c0,sz:0x9f0
+[08-19 13:31:11:397][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
 
-[08-13 21:13:43:606][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf091f0,vma:0x7e1e01f0,lma:0x7e1e01f0,sz:0x5c58
+[08-19 13:31:11:397][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023b9d9
 
-[08-13 21:13:43:632][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x7bc0,vma:0x7e1d2000,lma:0x802debc0,sz:0xd800
+[08-19 13:31:11:397][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
 
-[08-13 21:13:43:632][ cmlog ][OPENCPU]:[PET][I] offline cache init (ram-only) count=0
+[08-19 13:31:11:397][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x167c0
 
-[08-13 21:13:43:632]
-[08-13 21:13:43:632]
+[08-19 13:31:11:397][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x167c0
 
-[08-13 21:13:43:632][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
+[08-19 13:31:11:397][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x6648
 
-[08-13 21:13:43:632]
-[08-13 21:13:43:632]
+[08-19 13:31:11:397][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x66c0,vma:0x802dd6c0,lma:0x802dd6c0,sz:0x1c04
 
-[08-13 21:13:43:681][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
+[08-19 13:31:11:397][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x15dc8,vma:0x7e1dfaf8,lma:0x802ecdc8,sz:0x9f8
+
+[08-19 13:31:11:397][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf094f0,vma:0x7e1e04f0,lma:0x7e1e04f0,sz:0x5c98
+
+[08-19 13:31:11:397][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x82d0,vma:0x7e1d2000,lma:0x802df2d0,sz:0xdaf8
+
+[08-19 13:31:11:397][ cmlog ][OPENCPU]:[PET][I] offline cache init (ram-only) count=0
+
+[08-19 13:31:11:397]
+[08-19 13:31:11:397]
+
+[08-19 13:31:11:397][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
+
+[08-19 13:31:11:397]
+[08-19 13:31:11:397]
+
+[08-19 13:31:11:447][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
  0
 
-[08-13 21:13:43:681][ cmlog ]atp10 cmiot AT+COPS=3,0
+[08-19 13:31:11:447][ cmlog ]atp10 cmiot AT+COPS=3,0
  0
 
-[08-13 21:13:43:681][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
+[08-19 13:31:11:447][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
  0
 
-[08-13 21:13:43:681][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
+[08-19 13:31:11:447][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
 
-[08-13 21:13:43:758][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_20260813131343_d133
+[08-19 13:31:11:568][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_20260819053112_2d94
 
-[08-13 21:13:43:758]
-[08-13 21:13:43:758]
+[08-19 13:31:11:568]
+[08-19 13:31:11:568]
 
-[08-13 21:13:43:758][ cmlog ][OPENCPU]:[PET][I] rgb init pin=30 gpio=16 iomux_set=0 func=2(exp2)
+[08-19 13:31:11:568][ cmlog ][OPENCPU]:[PET][I] [LBS-TEST] task start, waiting PDP active...
 
-[08-13 21:13:43:758]
-[08-13 21:13:43:758]
+[08-19 13:31:11:568]
+[08-19 13:31:11:568]
 
-[08-13 21:13:43:758][ cmlog ][OPENCPU]:[PET][I] rgb init pin=31 gpio=17 iomux_set=0 func=2(exp2)
+[08-19 13:31:11:568][ cmlog ]virt_at_event_queue already exist
+[08-19 13:31:11:568]
 
-[08-13 21:13:43:758]
-[08-13 21:13:43:758]
+[08-19 13:31:11:568][ cmlog ]cm_virt_at_mutex_acquire
 
-[08-13 21:13:43:758][ cmlog ][OPENCPU]:[PET][I] rgb init pin=32 gpio=18 iomux_set=0 func=2(exp2)
+[08-19 13:31:11:568][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
 
-[08-13 21:13:43:758]
-[08-13 21:13:43:758]
+[08-19 13:31:11:568][ cmlog ]__cm_oc_virt_at_urc len:[2], urc:[
 
-[08-13 21:13:43:758][ cmlog ][OPENCPU]:[PET][I] pet tracker start in OFF mode, waiting for power-on key
+[08-19 13:31:11:568]]
 
-[08-13 21:13:43:758]
-[08-13 21:13:43:758]
+[08-19 13:31:11:568][ cmlog ]vir_at_wait_get_flag:1
+[08-19 13:31:11:568]
 
-[08-13 21:13:43:758][CM-OC] func:cm_opencpu_start line:211,ret:0
+[08-19 13:31:11:568][ cmlog ]recv urc data is too short
 
-[08-13 21:13:45:053][ cmlog ]__cm_daemon_thread 3 1
+[08-19 13:31:11:568][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
 
-[08-13 21:13:46:757][ cmlog ][OPENCPU]:[PET][I] [TEST] ===== RGB toggle diagnostic (2s interval) =====
+[08-19 13:31:11:568]OK
 
-[08-13 21:13:46:757]
-[08-13 21:13:46:757]
+[08-19 13:31:11:568]]
 
-[08-13 21:13:46:811][ cmlog ][OPENCPU]:[PET][I] [TEST] set=1  read R=1 G=1 B=1 (pin30/31/32)
+[08-19 13:31:11:568][ cmlog ]vir_at_wait_get_flag:1
+[08-19 13:31:11:568]
 
-[08-13 21:13:46:811]
-[08-13 21:13:46:811]
+[08-19 13:31:11:568][ cmlog ][-4]get urcdata skip head and tail
 
-[08-13 21:13:48:812][ cmlog ][OPENCPU]:[PET][I] [TEST] set=0  read R=0 G=0 B=0 (pin30/31/32)
+[08-19 13:31:11:568][ cmlog ]memory_buffer len 2, data:[OK]
+[08-19 13:31:11:568]
 
-[08-13 21:13:48:812]
-[08-13 21:13:48:812]
+[08-19 13:31:11:568][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
 
-[08-13 21:13:50:811][ cmlog ][OPENCPU]:[PET][I] [TEST] set=1  read R=1 G=1 B=1 (pin30/31/32)
+[08-19 13:31:11:568][ cmlog ]dynamic_virt_at_callback
 
-[08-13 21:13:50:811]
-[08-13 21:13:50:811]
+[08-19 13:31:11:568][ cmlog ]cm_virt_at_mutex_release
 
-[08-13 21:13:52:810][ cmlog ][OPENCPU]:[PET][I] [TEST] set=0  read R=0 G=0 B=0 (pin30/31/32)
+[08-19 13:31:11:568][ cmlog ]cm_virt_at_send_sync ret = 0
+[08-19 13:31:11:568]
 
-[08-13 21:13:52:810]
-[08-13 21:13:52:810]
+[08-19 13:31:11:568][ cmlog ][OPENCPU]:[PET][I] [LBS-TEST] waiting PDP, 0s...
 
-[08-13 21:13:54:811][ cmlog ][OPENCPU]:[PET][I] [TEST] set=1  read R=1 G=1 B=1 (pin30/31/32)
+[08-19 13:31:11:568]
+[08-19 13:31:11:568]
 
-[08-13 21:13:54:811]
-[08-13 21:13:54:811]
+[08-19 13:31:11:568][ cmlog ][OPENCPU]:[PET][I] pet tracker start in OFF mode, waiting for power-on key
 
-[08-13 21:13:56:811][ cmlog ][OPENCPU]:[PET][I] [TEST] set=0  read R=0 G=0 B=0 (pin30/31/32)
+[08-19 13:31:11:568]
+[08-19 13:31:11:568]
 
-[08-13 21:13:56:811]
-[08-13 21:13:56:811]
+[08-19 13:31:11:568][CM-OC] func:cm_opencpu_start line:211,ret:0
+
+[08-19 13:31:12:298][ cmlog ]virt_at_event_queue already exist
+[08-19 13:31:12:298]
+
+[08-19 13:31:12:298][ cmlog ]__cm_virt_at_task already exist
+[08-19 13:31:12:298]
+
+[08-19 13:31:12:298][ cmlog ]cm_virt_at_mutex_acquire
+
+[08-19 13:31:12:298][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[08-19 13:31:12:298][ cmlog ]__cm_oc_virt_at_urc len:[2], urc:[
+
+[08-19 13:31:12:298]]
+
+[08-19 13:31:12:298][ cmlog ]vir_at_wait_get_flag:1
+[08-19 13:31:12:298]
+
+[08-19 13:31:12:298][ cmlog ]recv urc data is too short
+
+[08-19 13:31:12:298][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+
+[08-19 13:31:12:298]OK
+
+[08-19 13:31:12:298]]
+
+[08-19 13:31:12:298][ cmlog ]vir_at_wait_get_flag:1
+[08-19 13:31:12:298]
+
+[08-19 13:31:12:298][ cmlog ][-4]get urcdata skip head and tail
+
+[08-19 13:31:12:298][ cmlog ]memory_buffer len 2, data:[OK]
+[08-19 13:31:12:298]
+
+[08-19 13:31:12:298][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
+
+[08-19 13:31:12:298][ cmlog ]dynamic_virt_at_callback
+
+[08-19 13:31:12:298][ cmlog ]cm_virt_at_mutex_release
+
+[08-19 13:31:12:298][ cmlog ]cm_virt_at_send_sync ret = 0
+[08-19 13:31:12:298]
+
+[08-19 13:31:12:853][ cmlog ]virt_at_event_queue already exist
+[08-19 13:31:12:853]
+
+[08-19 13:31:12:853][ cmlog ]__cm_virt_at_task already exist
+[08-19 13:31:12:853]
+
+[08-19 13:31:12:853][ cmlog ]cm_virt_at_mutex_acquire
+
+[08-19 13:31:12:853][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[08-19 13:31:12:853][ cmlog ]__cm_oc_virt_at_urc len:[2], urc:[
+
+[08-19 13:31:12:853]]
+
+[08-19 13:31:12:853][ cmlog ]vir_at_wait_get_flag:1
+[08-19 13:31:12:853]
+
+[08-19 13:31:12:853][ cmlog ]recv urc data is too short
+
+[08-19 13:31:12:853][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+
+[08-19 13:31:12:853]OK
+
+[08-19 13:31:12:853]]
+
+[08-19 13:31:12:853][ cmlog ]vir_at_wait_get_flag:1
+[08-19 13:31:12:853]
+
+[08-19 13:31:12:853][ cmlog ][-4]get urcdata skip head and tail
+
+[08-19 13:31:12:853][ cmlog ]memory_buffer len 2, data:[OK]
+[08-19 13:31:12:853]
+
+[08-19 13:31:12:853][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
+
+[08-19 13:31:12:853][ cmlog ]dynamic_virt_at_callback
+
+[08-19 13:31:12:853][ cmlog ]cm_virt_at_mutex_release
+
+[08-19 13:31:12:853][ cmlog ]cm_virt_at_send_sync ret = 0
+[08-19 13:31:12:853]
+
+[08-19 13:31:12:923][ cmlog ]__cm_daemon_thread 3 1
+
+[08-19 13:31:13:368][ cmlog ]virt_at_event_queue already exist
+[08-19 13:31:13:368]
+
+[08-19 13:31:13:368][ cmlog ]__cm_virt_at_task already exist
+[08-19 13:31:13:368]
+
+[08-19 13:31:13:368][ cmlog ]cm_virt_at_mutex_acquire
+
+[08-19 13:31:13:368][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[08-19 13:31:13:368][ cmlog ]cm_virt_at_mutex_release
+
+[08-19 13:31:14:169][ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
+
+[08-19 13:31:14:169]+CGACT: 1,1]
+
+[08-19 13:31:14:169][ cmlog ]vir_at_wait_get_flag:1
+[08-19 13:31:14:169]
+
+[08-19 13:31:14:169][ cmlog ][-2]get urcdata skip head
+
+[08-19 13:31:14:169][ cmlog ]memory_buffer len 11, data:[+CGACT: 1,1]
+[08-19 13:31:14:169]
+
+[08-19 13:31:14:169][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
+
+[08-19 13:31:14:169][ cmlog ]dynamic_virt_at_callback
+
+[08-19 13:31:14:169][ cmlog ]__cm_oc_virt_at_urc len:[2], urc:[
+
+[08-19 13:31:14:169]]
+
+[08-19 13:31:14:169][ cmlog ]vir_at_wait_get_flag:0
+[08-19 13:31:14:169]
+
+[08-19 13:31:14:169][ cmlog ]recv urc data is too short
+
+[08-19 13:31:14:169][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+
+[08-19 13:31:14:169]OK
+
+[08-19 13:31:14:169]]
+
+[08-19 13:31:14:169][ cmlog ]vir_at_wait_get_flag:0
+[08-19 13:31:14:169]
+
+[08-19 13:31:14:169][ cmlog ][-4]get urcdata skip head and tail
+
+[08-19 13:31:14:169][ cmlog ]memory_buffer len 2, data:[OK]
+[08-19 13:31:14:169]
+
+[08-19 13:31:14:169][ cmlog ]cm_virt_at_send_sync ret = 0
+[08-19 13:31:14:169]
+
+[08-19 13:31:14:169][ cmlog ][OPENCPU]:[PET][I] [LBS-TEST] PDP active after 1s
+
+[08-19 13:31:14:169]
+[08-19 13:31:14:169]
+
+[08-19 13:31:14:169][ cmlog ][OPENCPU]:[PET][I] [LBS-TEST] settle 2s for data channel
+
+[08-19 13:31:14:169]
+[08-19 13:31:14:169]
+
+[08-19 13:31:16:246][ cmlog ][OPENCPU]:[PET][I] [LBS-TEST] requesting OneOsPos LBS, timeout=30s...
+
+[08-19 13:31:16:246]
+[08-19 13:31:16:246]
+
+[08-19 13:31:16:246][ cmlog ]virt_at_event_queue already exist
+[08-19 13:31:16:246]
+
+[08-19 13:31:16:246][ cmlog ]__cm_virt_at_task already exist
+[08-19 13:31:16:246]
+
+[08-19 13:31:16:246][ cmlog ]cm_virt_at_mutex_acquire
+
+[08-19 13:31:16:246][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[08-19 13:31:16:246][ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
+
+[08-19 13:31:16:246]+CGACT: 1,1]
+
+[08-19 13:31:16:246][ cmlog ]vir_at_wait_get_flag:1
+[08-19 13:31:16:246]
+
+[08-19 13:31:16:246][ cmlog ][-2]get urcdata skip head
+
+[08-19 13:31:16:246][ cmlog ]memory_buffer len 11, data:[+CGACT: 1,1]
+[08-19 13:31:16:246]
+
+[08-19 13:31:16:246][ cmlog ]virt_at_send reply, vir_at_wait_get_flag set 0
+
+[08-19 13:31:16:246][ cmlog ]dynamic_virt_at_callback
+
+[08-19 13:31:16:246][ cmlog ]__cm_oc_virt_at_urc len:[2], urc:[
+
+[08-19 13:31:16:246]]
+
+[08-19 13:31:16:246][ cmlog ]vir_at_wait_get_flag:0
+[08-19 13:31:16:246]
+
+[08-19 13:31:16:246][ cmlog ]recv urc data is too short
+
+[08-19 13:31:16:246][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+
+[08-19 13:31:16:246]OK
+
+[08-19 13:31:16:246]]
+
+[08-19 13:31:16:246][ cmlog ]vir_at_wait_get_flag:0
+[08-19 13:31:16:246]
+
+[08-19 13:31:16:246][ cmlog ][-4]get urcdata skip head and tail
+
+[08-19 13:31:16:246][ cmlog ]memory_buffer len 2, data:[OK]
+[08-19 13:31:16:246]
+
+[08-19 13:31:16:246][ cmlog ]cm_virt_at_mutex_release
+
+[08-19 13:31:16:246][ cmlog ]cm_virt_at_send_sync ret = 0
+[08-19 13:31:16:246]
 
