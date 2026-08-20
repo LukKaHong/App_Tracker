@@ -81,6 +81,7 @@ typedef struct {
     char command_id[64];
     int  duration_seconds;   /* SOUND/LIGHT 持续时长，默认 -1 表示未提供 */
     int  interval_seconds;   /* LOCATION_FREQUENCY 间隔，默认 -1 表示未提供 */
+    char mode[16];           /* DEVICE_MODE 模式串：searching/walking/supervise/lowpower/sleep，空表示未提供 */
     char url[256];           /* OTA 升级 URL，空字符串表示未提供 */
 } app_rpc_parsed_t;
 

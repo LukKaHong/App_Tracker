@@ -501,10 +501,16 @@ static bsp_gps_rx_cb_t s_gps_cb = NULL;
 static char            s_gps_line[APP_GPS_RX_BUF_SIZE];
 static int             s_gps_line_pos = 0;
 
-static void gps_uart_event_cb(void *param, uint32_t evt)
+/* ===== GPS 数据轮询（主循环任务上下文调用，替代 UART 中断回调）=====
+ * [FIX] 原 RX_ARRIVED 事件回调在中断上下文执行 NMEA 解析 + APP_LOGI +
+ * osMutexAcquire，违反 SDK 约定（cm_uart.h：回调中不可输出 LOG、不可执行
+ * 复杂任务）。日志通道与 modem OSA tx 并发重入导致 System Timer Thread
+ * osa_tx_run.c:241 崩溃（Tx Status 0x4），模组反复静默复位。
+ * 改为主循环 20ms 非阻塞轮询读取，解析/日志/锁均在任务上下文执行。
+ * 115200bps 下 20ms 最多约 288 字节，UART 驱动内部接收缓冲可容纳。 */
+void bsp_gps_poll(void)
 {
-    (void)param;
-    if (!(evt & CM_UART_EVENT_TYPE_RX_ARRIVED)) return;
+    if (!s_gps_cb) return;   /* UART 未打开 */
 
     char buf[64];
     int n;
@@ -515,9 +521,7 @@ static void gps_uart_event_cb(void *param, uint32_t evt)
             if (c == '\n') {
                 if (s_gps_line_pos > 0) {
                     s_gps_line[s_gps_line_pos] = '\0';
-                    /* 中断/回调上下文：禁止 APP_LOGI（可能阻塞/重入）
-                     * 由 s_gps_cb 上层负责日志输出 */
-                    if (s_gps_cb) s_gps_cb(s_gps_line);
+                    s_gps_cb(s_gps_line);
                     s_gps_line_pos = 0;
                 }
                 continue;
@@ -533,12 +537,6 @@ int bsp_gps_open(bsp_gps_rx_cb_t cb)
 {
     cm_iomux_set_pin_func(APP_GPS_UART_PIN_TX, APP_GPS_UART_PIN_TX_FUNC);
     cm_iomux_set_pin_func(APP_GPS_UART_PIN_RX, APP_GPS_UART_PIN_RX_FUNC);
-
-    cm_uart_event_t evt = {0};
-    evt.event_type = CM_UART_EVENT_TYPE_RX_ARRIVED | CM_UART_EVENT_TYPE_RX_OVERFLOW;
-    evt.event_param = NULL;
-    evt.event_entry = (void *)gps_uart_event_cb;
-    cm_uart_register_event(s_gps_dev, (void *)&evt);
 
     cm_uart_cfg_t cfg = {0};
     cfg.byte_size = CM_UART_BYTE_SIZE_8;
@@ -559,6 +557,8 @@ int bsp_gps_open(bsp_gps_rx_cb_t cb)
 
 int bsp_gps_close(void)
 {
+    s_gps_cb = NULL;          /* 停止轮询处理 */
+    s_gps_line_pos = 0;
     return cm_uart_close(s_gps_dev);
 }
 
@@ -663,6 +663,9 @@ int bsp_gps_parse_nmea(const char *line, app_location_t *out_loc)
      * NoSV(field7): 参与定位的卫星数量（即需求"卫星连接数"）
      * HDOP(field8): 水平精度因子，accuracy ≈ HDOP × 5m */
     if (strstr(line, "GGA")) {
+#if APP_GPS_NMEA_DEBUG
+        APP_LOGI("nmea GGA: %s", line);
+#endif
         const char *fs  = nmea_field(line, 6);
         /* FS=0 表示无定位，丢弃（避免上报无效坐标） */
         if (!*fs || atoi(fs) == 0) return 0;
@@ -694,6 +697,9 @@ int bsp_gps_parse_nmea(const char *line, app_location_t *out_loc)
          * Valid(field2): A=有效 V=无效
          * Speed(field7): 速度，单位 knot（1 knot = 1.852 km/h = 0.5144 m/s）
          * Course(field8): 航向，0~359.9 度 */
+#if APP_GPS_NMEA_DEBUG
+        APP_LOGI("nmea RMC: %s", line);
+#endif
         const char *status = nmea_field(line, 2);
         if (*status != 'A') return 0; /* V = 无效 */
         const char *lat = nmea_field(line, 3);

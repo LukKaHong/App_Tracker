@@ -31,6 +31,11 @@ extern "C" {
 #define APP_PROVISIONING_PATH       "/api/device/v1/provision"
 #define APP_PROVISIONING_SECRET     "device-provisioning-test-secret"   /* TODO: 替换为一型一密真实 secret */
 
+/* 联调开关（协议 3：HTTP Provisioning 正式流程）
+ * 1 = 使用硬编码 MQTT 凭证直连（联调阶段，见 custom_main.c）
+ * 0 = 正式流程：缓存凭证优先，无凭证走 SaaS provisioning */
+#define APP_USE_HARDCODED_CREDENTIAL 1
+
 /* ===================================================================
  * 3. 平台 MQTT Topic
  * =================================================================== */
@@ -59,12 +64,20 @@ extern "C" {
 #define APP_SUPER_LOW_BATTERY        5      /* SOC < 5%  : 超低电量 */
 
 #define APP_KEY_LONGPRESS_MS        5000    /* 长按 5 秒切换开关机 */
-#define APP_FIND_DOG_DURATION_MS    (10 * 60 * 1000)  /* 寻狗模式 10 分钟 */
 
-/* 各模式定位周期 (ms) */
-#define APP_INTERVAL_FIND_DOG_MS    (5  * 1000)
-#define APP_INTERVAL_NORMAL_MS      (30 * 1000)
-#define APP_INTERVAL_SAVEPOWER_MS   (5  * 60 * 1000)
+/* 需求 1：各模式定位周期 (ms) —— 与协议 mode 字符串一一对应 */
+#define APP_INTERVAL_SEARCHING_MS   (10 * 1000)           /* 寻宠 searching：10 秒/次 */
+#define APP_INTERVAL_WALKING_MS     (30 * 1000)           /* 遛宠 walking：30 秒/次 */
+#define APP_INTERVAL_SUPERVISE_MS   (5  * 60 * 1000)      /* 看护 supervise：5 分/次 */
+#define APP_INTERVAL_LOWPOWER_MS    (60 * 60 * 1000)      /* 省电 lowpower：1 小时/次 */
+/* 休眠 sleep：不主动上报，收到平台指令后单次定位（app_mode 返回 0） */
+
+/* 需求 1：寻宠/遛宠模式超时自动切回看护模式 */
+#define APP_SEARCHING_DURATION_MS   (10 * 60 * 1000)      /* 寻宠 10 分钟后切回看护 */
+#define APP_WALKING_DURATION_MS     (30 * 60 * 1000)      /* 遛宠 30 分钟后切回看护 */
+
+/* 指令默认持续时间（HARDWARE_COMMAND_INTEGRATION.md 第 2 节：默认 30 秒） */
+#define APP_CMD_DEFAULT_DURATION_S  30
 
 /* ===================================================================
  * 5. GPS 定位芯片 (CC1161W) - UART 通讯
@@ -74,10 +87,14 @@ extern "C" {
 #define APP_GPS_UART_BAUDRATE       CM_UART_BAUDRATE_115200
 #define APP_GPS_UART_BAUDRATE_RATE  115200    /* 数值，用于 CFGPRT 命令 */
 #define APP_GPS_UART_PIN_RX          CM_IOMUX_PIN_28      /* UART1_RX  */
-#define APP_GPS_UART_PIN_TX          CM_IOMUX_PIN_29      /* UART1_TX  */
+#define APP_GPS_UART_PIN_TX          CM_IOMUX_PIN_29      /* UART1_TX */
 #define APP_GPS_UART_PIN_TX_FUNC    CM_IOMUX_FUNC_FUNCTION1
 #define APP_GPS_UART_PIN_RX_FUNC    CM_IOMUX_FUNC_FUNCTION1
 #define APP_GPS_RX_BUF_SIZE         (512)
+/* [DEBUG] NMEA 原始语句调试：打印 GGA/RMC 原始行。
+ * 已完成使命（2026-08-20 排查崩溃根因 + 验证 GGA NoSV 卫星数解析），
+ * 正式运行关闭，需要时改回 1 */
+#define APP_GPS_NMEA_DEBUG          0
 
 /* ===================================================================
  * 6. 按键 - 中断方式 + 低功耗唤醒
@@ -136,6 +153,25 @@ extern "C" {
 #define APP_RGB_BLINK_SLOW_OFF_MS   500
 #define APP_BUZZER_BEEP_ON_MS       200
 #define APP_BUZZER_BEEP_OFF_MS      800
+
+/* ===================================================================
+ * 10.1 LBS & WiFi 原始参数上报（需求 2.2）
+ *      设备仅采集基站/WiFi 原始参数上报平台，由平台调高德解算。
+ *      WiFi 扫描期间模组掉网（CFUN=5），扫描后恢复（CFUN=1）。
+ * =================================================================== */
+/* WiFi 参数采集开关：
+ * 1 = 启用 WiFi 扫描（每次扫描模组掉网约 40~90 秒，MQTT 短暂断开）
+ * 0 = 暂时屏蔽：仅采集基站参数（bts/nearbts），不掉网，MQTT 保持连接；
+ *     上报报文不含 macs 字段，平台仅用基站信息解算 */
+#define APP_LBS_WIFI_ENABLE                 0
+
+#define APP_LBS_WIFI_SCAN_MIN_INTERVAL_MS   (5 * 60 * 1000)  /* WiFi 扫描最小间隔 5 分钟 */
+#define APP_LBS_WIFI_SCAN_TIMEOUT_S         30               /* WiFi 扫描总超时（秒） */
+#define APP_LBS_WIFI_SCAN_MAX_COUNT         30               /* 期望上报 AP 数量（高德上限 30） */
+#define APP_LBS_WIFI_SCAN_ROUND             3                /* 扫描轮次 */
+#define APP_LBS_PDP_WAIT_TIMEOUT_S          30               /* 扫描后等待 PDP 激活超时（秒） */
+#define APP_LBS_URL_BUF_SIZE                1024             /* bts/nearbts/macs 字符串缓冲 */
+#define APP_LBS_JSON_BUF_SIZE               (APP_LBS_URL_BUF_SIZE + 512)
 
 /* ===================================================================
  * 11. 日志

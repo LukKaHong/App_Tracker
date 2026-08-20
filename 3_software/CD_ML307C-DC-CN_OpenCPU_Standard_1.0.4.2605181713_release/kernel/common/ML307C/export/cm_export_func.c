@@ -109,6 +109,8 @@ int cm_core_stub_init(void)
     test += (int)cm_fs_exist;
     test += (int)cm_fs_filesize;
     test += (int)cm_fs_getinfo;
+    test += (int)cm_fs_findfirst;
+    test += (int)cm_fs_findnext;
     test += (int)cm_rtc_set_timezone;
     test += (int)cm_rtc_get_timezone;
     test += (int)cm_rtc_set_current_time;
@@ -232,6 +234,13 @@ int cm_core_stub_init(void)
     test += (int)cm_fota_exec_upgrade;
     test += (int)cm_fota_set_reboot_time;
     test += (int)cm_fota_res_callback_register;
+    test += (int)cm_ota_set_otasize;
+    test += (int)cm_ota_get_capacity;
+    test += (int)cm_ota_init;
+    test += (int)cm_ota_firmware_write;
+    test += (int)cm_ota_get_written_size;
+    test += (int)cm_ota_firmware_erase;
+    test += (int)cm_ota_upgrade;
     test += (int)cm_httpclient_uri_encode;
     test += (int)cm_httpclient_uri_encode_component;
     test += (int)cm_httpclient_create;
@@ -294,6 +303,8 @@ int cm_core_stub_init(void)
     test += (int)cm_virt_at_urc_cb_dereg;
     test += (int)cm_sms_send_txt;
     test += (int)cm_sms_send_pdu;
+    test += (int)cm_modem_info_cell;
+    test += (int)cm_modem_info_radio;
     test += (int)cm_usb2com_register_recv_cb;
     test += (int)cm_usb2com_send_data;
     test += (int)cm_usb2com_register_status_cb;

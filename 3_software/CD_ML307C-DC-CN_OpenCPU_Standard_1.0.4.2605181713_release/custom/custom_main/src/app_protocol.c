@@ -146,6 +146,7 @@ int app_protocol_parse_rpc(const char *payload, int payload_len,
     memset(out, 0, sizeof(*out));
     out->duration_seconds = -1;
     out->interval_seconds = -1;
+    out->mode[0] = '\0';
     out->url[0] = '\0';
 
     /* 提取 method */
@@ -165,6 +166,7 @@ int app_protocol_parse_rpc(const char *payload, int payload_len,
     if (json_get_int(buf, "interval_seconds", &tmp)) {
         out->interval_seconds = tmp;
     }
+    json_get_string(buf, "mode", out->mode, sizeof(out->mode));
     json_get_string(buf, "url", out->url, sizeof(out->url));
 
     return 0;

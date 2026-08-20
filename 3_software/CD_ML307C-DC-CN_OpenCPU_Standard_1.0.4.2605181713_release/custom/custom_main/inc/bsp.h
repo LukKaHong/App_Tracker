@@ -68,10 +68,15 @@ void bsp_rgb_stop_pattern(void);
 int  bsp_battery_read(int *voltage_mv, int *soc);
 
 /* ========== GPS UART (CC1161W, NMEA 0183) ========== */
-/* 初始化 GPS UART，注册接收回调 */
+/* 初始化 GPS UART，注册接收回调（数据经 bsp_gps_poll 轮询取出后回调） */
 typedef void (*bsp_gps_rx_cb_t)(const char *line);
 int  bsp_gps_open(bsp_gps_rx_cb_t cb);
 int  bsp_gps_close(void);
+
+/* GPS 数据轮询：在 main_task 主循环中以 ~20ms 间隔调用（非阻塞）。
+ * [FIX] 替代 UART RX 中断回调——中断上下文不可调用 APP_LOG/osMutex/
+ * 复杂解析（SDK 约定），曾导致 OSA tx 重入引发模组静默复位 */
+void bsp_gps_poll(void);
 
 /* 设置 GPS 芯片 UART 波特率（CFGPRT 指令），与主控 UART 波特率对齐 */
 int  bsp_gps_set_uart_baudrate(uint32_t baud);

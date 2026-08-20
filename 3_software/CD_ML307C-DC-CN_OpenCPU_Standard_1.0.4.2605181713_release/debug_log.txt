@@ -1,1963 +1,2162 @@
-[08-20 13:17:02:819]
-[08-20 13:17:02:819]
-[08-20 13:17:02:819][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
-[08-20 13:17:02:819][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
-[08-20 13:17:02:819][INFO: Main      ] 
-[08-20 13:17:02:819][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
-[08-20 13:17:02:819][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
-[08-20 13:17:02:819][INFO: QspiFlash ] Detecting QSPI flash devices...
-[08-20 13:17:02:819][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
-[08-20 13:17:02:819][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
-[08-20 13:17:02:819][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
-[08-20 13:17:02:819][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
-[08-20 13:17:02:819][INFO: Crypto    ] Initializing crypto library...
-[08-20 13:17:02:819][INFO: Main      ] Running in normal booting mode.
-[08-20 13:17:02:819][INFO: Main      ] Loading...
-[08-20 13:17:02:819][INFO: Bl1Main   ] Welcome to boot rom.
-[08-20 13:17:02:819][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
-[08-20 13:17:02:819][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
-[08-20 13:17:02:819][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
-[08-20 13:17:02:819][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[08-20 13:17:02:819][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
-[08-20 13:17:02:819][INFO: Bl1Main   ] BL1: OKay.
-[08-20 13:17:02:819][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
-[08-20 13:17:02:819][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
-[08-20 13:17:02:819][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[08-20 13:17:02:819][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
-[08-20 13:17:02:819][INFO: Bl1Main   ] BL1: OKay.
-[08-20 13:17:02:819][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[08-20 13:17:02:819][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
-[08-20 13:17:02:819]
-[08-20 13:17:02:819][BOOT33]VB_VERSION_DATE   :[20241210]
-[08-20 13:17:03:115]
-[08-20 13:17:03:115] ** PC      : 0x80017000
-[08-20 13:17:03:157]Version: SDK_1.011.144 May 18 2026 17:16:18
+[08-20 22:58:43:541]
+[08-20 22:58:43:541]
+[08-20 22:58:43:541][INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
+[08-20 22:58:43:541][INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
+[08-20 22:58:43:541][INFO: Main      ] 
+[08-20 22:58:43:541][INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
+[08-20 22:58:43:541][INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
+[08-20 22:58:43:541][INFO: QspiFlash ] Detecting QSPI flash devices...
+[08-20 22:58:43:541][INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
+[08-20 22:58:43:541][INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
+[08-20 22:58:43:541][INFO: BootCtrl  ] Loading bootloader from QSPI flash...
+[08-20 22:58:43:541][INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
+[08-20 22:58:43:541][INFO: Crypto    ] Initializing crypto library...
+[08-20 22:58:43:541][INFO: Main      ] Running in normal booting mode.
+[08-20 22:58:43:541][INFO: Main      ] Loading...
+[08-20 22:58:43:541][INFO: Bl1Main   ] Welcome to boot rom.
+[08-20 22:58:43:541][INFO: Bl1Main   ] ### Non-trusted boot mode. ###
+[08-20 22:58:43:541][INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
+[08-20 22:58:43:541][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
+[08-20 22:58:43:541][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[08-20 22:58:43:541][INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
+[08-20 22:58:43:541][INFO: Bl1Main   ] BL1: OKay.
+[08-20 22:58:43:541][INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
+[08-20 22:58:43:541][INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
+[08-20 22:58:43:541][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[08-20 22:58:43:541][INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
+[08-20 22:58:43:541][INFO: Bl1Main   ] BL1: OKay.
+[08-20 22:58:44:430][INFO: UsbArch   ] usb phy reg: 0xd42070a4 = 0x189b
+[08-20 22:58:44:527][INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[08-20 22:58:44:527][INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
+[08-20 22:58:44:527]
+[08-20 22:58:44:527][BOOT33]VB_VERSION_DATE   :[20241210]
+[08-20 22:58:44:823]
+[08-20 22:58:44:823] ** PC      : 0x80017000
+[08-20 22:58:44:864]Version: SDK_1.011.144 May 18 2026 17:16:18
 
-[08-20 13:17:03:157]Ac 4, Board 2, DKB 1
+[08-20 22:58:44:864]Ac 4, Board 2, DKB 1
 
-[08-20 13:17:03:157]PSRAM fuse: 13
+[08-20 22:58:44:864]PSRAM fuse: 13
 
-[08-20 13:17:03:157]
+[08-20 22:58:44:864]
 
-[08-20 13:17:03:157]Cinit 2
+[08-20 22:58:44:864]Cinit 2
 
-[08-20 13:17:03:157]Flash type: nvm 0, factory 0, fota 0
+[08-20 22:58:44:864]Flash type: nvm 0, factory 0, fota 0
 
-[08-20 13:17:03:157]Phase1Inits
+[08-20 22:58:44:864]Phase1Inits
 
-[08-20 13:17:03:157]diag Phase1 Init
+[08-20 22:58:44:864]diag Phase1 Init
 
-[08-20 13:17:03:187]dro_efuse = 135
+[08-20 22:58:44:895]dro_efuse = 135
 
-[08-20 13:17:03:187]profile num = 2
+[08-20 22:58:44:895]profile num = 2
 
-[08-20 13:17:03:187]CRNLR_SVC_FP[0] = 0x29
+[08-20 22:58:44:895]CRNLR_SVC_FP[0] = 0x29
 
-[08-20 13:17:03:187]CRNLR_SVC_FP[1] = 0x29
+[08-20 22:58:44:895]CRNLR_SVC_FP[1] = 0x29
 
-[08-20 13:17:03:187]CRNLR_SVC_FP[2] = 0x29
+[08-20 22:58:44:895]CRNLR_SVC_FP[2] = 0x29
 
-[08-20 13:17:03:187]CRNLR_SVC_FP[3] = 0x33
+[08-20 22:58:44:895]CRNLR_SVC_FP[3] = 0x33
 
-[08-20 13:17:03:187]Bootup not silent
+[08-20 22:58:44:895]Bootup not silent
 
-[08-20 13:17:03:187][ELOOP] __cm_eloop_init 0x7e263c6c,128
+[08-20 22:58:44:895][ELOOP] __cm_eloop_init 0x7e263c6c,128
 
-[08-20 13:17:03:294][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:58:45:002][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:17:03:294][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:45:002][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:03:294][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:58:45:002][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:17:03:294]InitTask started
+[08-20 22:58:45:002]InitTask started
 
-[08-20 13:17:03:294]Chip ID: 0xb01605
+[08-20 22:58:45:002]Chip ID: 0xb01605
 
-[08-20 13:17:03:294]PS_NONCACHE_DATA_ZI rf [0x7e389300]
+[08-20 22:58:45:002]PS_NONCACHE_DATA_ZI rf [0x7e389300]
 
-[08-20 13:17:03:294]check unpressed rf/dsp size,rf [0x00014000],dsp [0x00040800]
+[08-20 22:58:45:002]check unpressed rf/dsp size,rf [0x00014000],dsp [0x00040800]
 
-[08-20 13:17:03:294]Crane mpu configure
+[08-20 22:58:45:002]Crane mpu configure
 
-[08-20 13:17:03:294]start file system init
+[08-20 22:58:45:002]start file system init
 
-[08-20 13:17:03:294]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d5000, reserved_end_addr=0x2d7000
+[08-20 22:58:45:002]bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d5000, reserved_end_addr=0x2d7000
 
-[08-20 13:17:03:294]
+[08-20 22:58:45:002]
 
-[08-20 13:17:03:294]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
+[08-20 22:58:45:002]qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
 
-[08-20 13:17:03:294]qspi_nor_set_flash_block_protect:write status register finished.
+[08-20 22:58:45:002]qspi_nor_set_flash_block_protect:write status register finished.
 
-[08-20 13:17:03:294]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
+[08-20 22:58:45:002]qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
 
-[08-20 13:17:03:294]flash_protect_area_type=12
+[08-20 22:58:45:002]flash_protect_area_type=12
 
-[08-20 13:17:03:294]
+[08-20 22:58:45:002]
 
-[08-20 13:17:03:294]SPI Nor/NAND flash init success
+[08-20 22:58:45:002]SPI Nor/NAND flash init success
 
-[08-20 13:17:03:294]
+[08-20 22:58:45:002]
 
-[08-20 13:17:03:294]FDI_Transport_Fsys_Register: 0, C:/
+[08-20 22:58:45:002]FDI_Transport_Fsys_Register: 0, C:/
 
-[08-20 13:17:03:294]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
+[08-20 22:58:45:002]LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
 
-[08-20 13:17:03:294]LfsGrpCnt 5
+[08-20 22:58:45:002]LfsGrpCnt 5
 
-[08-20 13:17:03:294]lfs.c:1245:error: Corrupted dir pair at {0x0, 0x1}
+[08-20 22:58:45:002]lfs.c:1245:error: Corrupted dir pair at {0x0, 0x1}
 
-[08-20 13:17:03:294]lfs_api.c:1064:error: Fail to mount in PTN 0, err -84
+[08-20 22:58:45:002]lfs_api.c:1064:error: Fail to mount in PTN 0, err -84
 
-[08-20 13:17:03:320][PTN 0] free size: 516096
+[08-20 22:58:45:027][PTN 0] free size: 516096
 
-[08-20 13:17:03:320]lfs[PTN 0] init success
+[08-20 22:58:45:027]lfs[PTN 0] init success
 
-[08-20 13:17:03:320]sulog Disable:0x4a656515,0x55
+[08-20 22:58:45:027]sulog Disable:0x4a656515,0x55
 
-[08-20 13:17:03:320]sulog Enable:0x45555515,0x55
+[08-20 22:58:45:027]sulog Enable:0x45555515,0x55
 
-[08-20 13:17:03:399]OnKeyPoweroff_Task
+[08-20 22:58:45:109]OnKeyPoweroff_Task
 
-[08-20 13:17:03:399]eeHandlerPhase2Init
+[08-20 22:58:45:109]eeHandlerPhase2Init
 
-[08-20 13:17:04:058][ cmlog ]60,__cm_nv_def_fota_load read open failed, maybe not inital
+[08-20 22:58:45:788][ cmlog ]60,__cm_nv_def_fota_load read open failed, maybe not inital
 
-[08-20 13:17:04:058][ cmlog ]123,__cm_nv_def_fota_cfg_init entry, init all
+[08-20 22:58:45:788][ cmlog ]123,__cm_nv_def_fota_cfg_init entry, init all
 
-[08-20 13:17:04:169][ cmlog ]netcard type = 16 cfg = 0
+[08-20 22:58:45:906][ cmlog ]netcard type = 16 cfg = 0
 
-[08-20 13:17:04:169]Usb mode 0, descriptor 70
+[08-20 22:58:45:906]Usb mode 0, descriptor 70
 
-[08-20 13:17:04:169][ cmlog ]usb2com queue send err(status)
+[08-20 22:58:45:906][ cmlog ]usb2com queue send err(status)
 
-[08-20 13:17:04:169]USIMPhase2Init 0
+[08-20 22:58:45:906]USIMPhase2Init 0
 
-[08-20 13:17:04:169]
+[08-20 22:58:45:906]
 
-[08-20 13:17:04:169]copy rf size[0x00014000] to [0x7e000000]
+[08-20 22:58:45:906]copy rf size[0x00014000] to [0x7e000000]
 
-[08-20 13:17:04:169]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+[08-20 22:58:45:906]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
 
-[08-20 13:17:04:169]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
+[08-20 22:58:45:906]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
 
-[08-20 13:17:04:367]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+[08-20 22:58:46:119]ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
 
-[08-20 13:17:04:367]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
+[08-20 22:58:46:119]ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
 
-[08-20 13:17:04:367]power_up_reason: 0x40, power_down_reason: 0x4
+[08-20 22:58:46:119]power_up_reason: 0x40, power_down_reason: 0x0
 
-[08-20 13:17:04:463]InitIPCControl: data:0x0
+[08-20 22:58:46:216]InitIPCControl: data:0x0
 
-[08-20 13:17:05:403]AT command server ready!
+[08-20 22:58:47:184]AT command server ready!
 
-[08-20 13:17:05:403]Booting done
+[08-20 22:58:47:184]Booting done
 
-[08-20 13:17:05:437][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
+[08-20 22:58:47:216][ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME"
  0
 
-[08-20 13:17:05:437][ cmlog ]atp10 cmiot AT+COPS=3,0
+[08-20 22:58:47:216][ cmlog ]atp10 cmiot AT+COPS=3,0
  0
 
-[08-20 13:17:05:437][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
+[08-20 22:58:47:216][ cmlog ]atp10 cmiot AT+MEDCR=0,176,8
  0
 
-[08-20 13:17:05:437][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
+[08-20 22:58:47:216][ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
 
-[08-20 13:17:05:585]SW restart reason: Charging in powering off
+[08-20 22:58:47:363]SW restart reason: Charging in powering off
 
-[08-20 13:17:05:585][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
+[08-20 22:58:47:363][ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
 
-[08-20 13:17:06:455][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023c731
+[08-20 22:58:48:208][CM-OC] func:cm_opencpu_start line:203,core_stub=0x8023c731
 
-[08-20 13:17:06:455][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
+[08-20 22:58:48:208][CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
 
-[08-20 13:17:06:455][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x80000
+[08-20 22:58:48:208][CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x80000
 
-[08-20 13:17:06:455][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x15950
+[08-20 22:58:48:208][CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x16c18
 
-[08-20 13:17:06:455][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x6078
+[08-20 22:58:48:208][CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x60c0
 
-[08-20 13:17:06:455][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x60f0,vma:0x802dd0f0,lma:0x802dd0f0,sz:0x181c
+[08-20 22:58:48:208][CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x6138,vma:0x802dd138,lma:0x802dd138,sz:0x1dec
 
-[08-20 13:17:06:455][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x14f60,vma:0x7e1df648,lma:0x802ebf60,sz:0x9f0
+[08-20 22:58:48:208][CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x161f0,vma:0x7e1e02c0,lma:0x802ed1f0,sz:0xa28
 
-[08-20 13:17:06:455][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf09038,vma:0x7e1e0038,lma:0x7e1e0038,sz:0x5c80
+[08-20 22:58:48:208][CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf09ce8,vma:0x7e1e0ce8,lma:0x7e1e0ce8,sz:0x6ca4
 
-[08-20 13:17:06:455][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x7918,vma:0x7e1d2000,lma:0x802de918,sz:0xd648
+[08-20 22:58:48:208][CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x7f30,vma:0x7e1d2000,lma:0x802def30,sz:0xe2c0
 
-[08-20 13:17:06:455][ cmlog ][OPENCPU]:[PET][I] offline cache init (ram-only) count=0
+[08-20 22:58:48:208][ cmlog ][OPENCPU]:[PET][I] offline cache init (ram-only) count=0
 
-[08-20 13:17:06:455]
-[08-20 13:17:06:455]
+[08-20 22:58:48:208]
+[08-20 22:58:48:208]
 
-[08-20 13:17:06:455][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
+[08-20 22:58:48:208][ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.0.0
 
-[08-20 13:17:06:455]
-[08-20 13:17:06:455]
+[08-20 22:58:48:208]
+[08-20 22:58:48:208]
 
-[08-20 13:17:06:552][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_19700102045148_87d0
+[08-20 22:58:48:329][ cmlog ][OPENCPU]:[PET][I] boot_id=boot_19700102143403_0c6f
 
-[08-20 13:17:06:552]
-[08-20 13:17:06:552]
+[08-20 22:58:48:329]
+[08-20 22:58:48:329]
 
-[08-20 13:17:06:552][ cmlog ][OPENCPU]:[PET][I] pet tracker auto power-on at boot
+[08-20 22:58:48:329][ cmlog ][OPENCPU]:[PET][I] pet tracker boot, default OFF mode
 
-[08-20 13:17:06:552]
-[08-20 13:17:06:552]
+[08-20 22:58:48:329]
+[08-20 22:58:48:329]
 
-[08-20 13:17:06:552][ cmlog ][OPENCPU]:[PET][I] auto power on -> NORMAL
+[08-20 22:58:48:329][ cmlog ][OPENCPU]:[PET][I] boot -> SEARCHING mode (debug direct-poweron)
 
-[08-20 13:17:06:552]
-[08-20 13:17:06:552]
+[08-20 22:58:48:329]
+[08-20 22:58:48:329]
 
-[08-20 13:17:06:552][CM-OC] func:cm_opencpu_start line:211,ret:0
+[08-20 22:58:48:329][ cmlog ][OPENCPU]:[PET][I] mode 0 -> 1
 
-[08-20 13:17:06:906][ cmlog ][OPENCPU]:[PET][I] mode 0 -> 2
+[08-20 22:58:48:329]
+[08-20 22:58:48:329]
 
-[08-20 13:17:06:906]
-[08-20 13:17:06:906]
+[08-20 22:58:48:329][ cmlog ]g_sync_at_name: sync+CEREG
 
-[08-20 13:17:06:906][ cmlog ]g_sync_at_name: sync+CEREG
+[08-20 22:58:48:329][ cmlog ]virt_at_event_queue already exist
+[08-20 22:58:48:329]
 
-[08-20 13:17:06:906][ cmlog ]virt_at_event_queue already exist
-[08-20 13:17:06:906]
+[08-20 22:58:48:329][ cmlog ]cm_virt_at_mutex_acquire
 
-[08-20 13:17:06:906][ cmlog ]cm_virt_at_mutex_acquire
+[08-20 22:58:48:329][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
 
-[08-20 13:17:06:906][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+[08-20 22:58:48:329]
 
-[08-20 13:17:06:906]
+[08-20 22:58:48:497][ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
 
-[08-20 13:17:07:071][ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
+[08-20 22:58:48:497]+CEREG: 5,0
 
-[08-20 13:17:07:071]+CEREG: 5,0
+[08-20 22:58:48:497]]
 
-[08-20 13:17:07:071]]
+[08-20 22:58:48:497][ cmlog ]vir_at_wait_get_flag:1
+[08-20 22:58:48:497]
 
-[08-20 13:17:07:071][ cmlog ]vir_at_wait_get_flag:1
-[08-20 13:17:07:071]
+[08-20 22:58:48:497][ cmlog ][-4]get urcdata skip head and tail
 
-[08-20 13:17:07:071][ cmlog ][-4]get urcdata skip head and tail
+[08-20 22:58:48:497][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+[08-20 22:58:48:497]
 
-[08-20 13:17:07:071][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
-[08-20 13:17:07:071]
+[08-20 22:58:48:497][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
 
-[08-20 13:17:07:071][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+[08-20 22:58:48:497]OK
 
-[08-20 13:17:07:071]OK
+[08-20 22:58:48:497]]
 
-[08-20 13:17:07:071]]
+[08-20 22:58:48:497][ cmlog ]vir_at_wait_get_flag:1
+[08-20 22:58:48:497]
 
-[08-20 13:17:07:071][ cmlog ]vir_at_wait_get_flag:1
-[08-20 13:17:07:071]
+[08-20 22:58:48:497][ cmlog ][-4]get urcdata skip head and tail
 
-[08-20 13:17:07:071][ cmlog ][-4]get urcdata skip head and tail
+[08-20 22:58:48:497][ cmlog ]memory_buffer len 2, data:[OK]
+[08-20 22:58:48:497]
 
-[08-20 13:17:07:071][ cmlog ]memory_buffer len 2, data:[OK]
-[08-20 13:17:07:071]
+[08-20 22:58:48:497][ cmlog ]Processing OK response, virt_at_buffer_len=11
 
-[08-20 13:17:07:071][ cmlog ]Processing OK response, virt_at_buffer_len=11
+[08-20 22:58:48:497][ cmlog ]dynamic_virt_at_callback
 
-[08-20 13:17:07:071][ cmlog ]dynamic_virt_at_callback
+[08-20 22:58:48:497][ cmlog ]flag=1, resp_cb_flag=0, sync_flag:1.
+[08-20 22:58:48:497]
 
-[08-20 13:17:07:071][ cmlog ]flag=1, resp_cb_flag=0, sync_flag:1.
-[08-20 13:17:07:071]
+[08-20 22:58:48:497][ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
 
-[08-20 13:17:07:071][ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
 
+[08-20 22:58:48:568][ cmlog ]cm_virt_at_mutex_release
 
-[08-20 13:17:07:071][ cmlog ]cm_virt_at_mutex_release
+[08-20 22:58:48:568][ cmlog ]cm_virt_at_send_sync ret = 0
+[08-20 22:58:48:568]
 
-[08-20 13:17:07:071][ cmlog ]cm_virt_at_send_sync ret = 0
-[08-20 13:17:07:071]
+[08-20 22:58:48:568][CM-OC] func:cm_opencpu_start line:211,ret:0
 
-[08-20 13:17:07:183][ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
+[08-20 22:58:48:661][ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
 
-[08-20 13:17:07:183]+CEREG: 0
+[08-20 22:58:48:661]+CEREG: 0
 
-[08-20 13:17:07:183]]
+[08-20 22:58:48:661]]
 
-[08-20 13:17:07:183][ cmlog ]vir_at_wait_get_flag:0
-[08-20 13:17:07:183]
+[08-20 22:58:48:661][ cmlog ]vir_at_wait_get_flag:0
+[08-20 22:58:48:661]
 
-[08-20 13:17:07:183][ cmlog ][-4]get urcdata skip head and tail
+[08-20 22:58:48:661][ cmlog ][-4]get urcdata skip head and tail
 
-[08-20 13:17:07:183][ cmlog ]memory_buffer len 9, data:[+CEREG: 0]
-[08-20 13:17:07:183]
+[08-20 22:58:48:661][ cmlog ]memory_buffer len 9, data:[+CEREG: 0]
+[08-20 22:58:48:661]
 
-[08-20 13:17:07:183][ cmlog ][URC]__cm_urc_consult
+[08-20 22:58:48:661][ cmlog ][URC]__cm_urc_consult
 
-[08-20 13:17:07:183][ cmlog ]urc_head is null
-[08-20 13:17:07:183]
+[08-20 22:58:48:661][ cmlog ]urc_head is null
+[08-20 22:58:48:661]
 
-[08-20 13:17:07:183][ cmlog ]urc_head_internal is null
-[08-20 13:17:07:183]
+[08-20 22:58:48:661][ cmlog ]urc_head_internal is null
+[08-20 22:58:48:661]
 
-[08-20 13:17:08:079][ cmlog ]g_sync_at_name: sync+CEREG
+[08-20 22:58:49:585][ cmlog ]g_sync_at_name: sync+CEREG
 
-[08-20 13:17:08:079][ cmlog ]virt_at_event_queue already exist
-[08-20 13:17:08:079]
+[08-20 22:58:49:585][ cmlog ]virt_at_event_queue already exist
+[08-20 22:58:49:585]
 
-[08-20 13:17:08:079][ cmlog ]__cm_virt_at_task already exist
-[08-20 13:17:08:079]
+[08-20 22:58:49:585][ cmlog ]__cm_virt_at_task already exist
+[08-20 22:58:49:585]
 
-[08-20 13:17:08:079][ cmlog ]cm_virt_at_mute[ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
+[08-20 22:58:49:585][ cmlog ]cm_virt_at_mutex_acquire
 
-[08-20 13:17:08:135]+CEREG: 1,"2670","0AA9FE06",7
+[08-20 22:58:49:585][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
 
-[08-20 13:17:08:135]]
+[08-20 22:58:49:585]
 
-[08-20 13:17:08:135][ cmlog ]vir_at_wait_get_flag:0
-[08-20 13:17:08:135]
+[08-20 22:58:49:585][ cmlog ]cm_virt_at_mutex_release
 
-[08-20 13:17:08:135][ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
 
-[08-20 13:17:08:135][ cmlog ]memory_buffer len 29, data:[+CEREG: 1,"2670","0AA9FE06",7]
-[08-20 13:17:08:135]
+[08-20 22:58:49:585]+CEREG: 5,0
 
-[08-20 13:17:08:135][ cmlog ][URC]__cm_urc_consult
+[08-20 22:58:49:585]]
 
-[08-20 13:17:08:135][ cmlog ]urc_head is null
-[08-20 13:17:08:135]
+[08-20 22:58:49:687][ cmlog ]vir_at_wait_get_flag:1
+[08-20 22:58:49:687]
 
-[08-20 13:17:08:135][ cmlog ]urc_head_internal is null
-[08-20 13:17:08:135]
+[08-20 22:58:49:687][ cmlog ][-4]get urcdata skip head and tail
 
-[08-20 13:17:08:135][ cmlog ]__cm_daemon_thread 3 1
+[08-20 22:58:49:687][ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+[08-20 22:58:49:687]
 
-[08-20 13:17:08:218]x_acquire
+[08-20 22:58:49:687][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
 
-[08-20 13:17:08:218][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+[08-20 22:58:49:687]OK
 
-[08-20 13:17:08:218]
+[08-20 22:58:49:687]]
 
-[08-20 13:17:08:218][ cmlog ]cm_virt_at_mutex_release
+[08-20 22:58:49:687][ cmlog ]vir_at_wait_get_flag:1
+[08-20 22:58:49:687]
 
-[08-20 13:17:09:466][ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
+[08-20 22:58:49:687][ cmlog ][-4]get urcdata skip head and tail
 
-[08-20 13:17:09:466]+CEREG: 5,1,"2670","0AA9FE06",7
+[08-20 22:58:49:687][ cmlog ]memory_buffer len 2, data:[OK]
+[08-20 22:58:49:687]
 
-[08-20 13:17:09:466]]
+[08-20 22:58:49:687][ cmlog ]Processing OK response, virt_at_buffer_len=11
 
-[08-20 13:17:09:466][ cmlog ]vir_at_wait_get_flag:1
-[08-20 13:17:09:466]
+[08-20 22:58:49:687][ cmlog ]dynamic_virt_at_callback
 
-[08-20 13:17:09:466][ cmlog ][-4]get urcdata skip head and tail
+[08-20 22:58:49:687][ cmlog ]flag=2, resp_cb_flag=1, sync_flag:2.
+[08-20 22:58:49:687]
 
-[08-20 13:17:09:466][ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2670","0AA9FE06",7]
-[08-20 13:17:09:466]
+[08-20 22:58:49:687][ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
 
-[08-20 13:17:09:466][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
 
-[08-20 13:17:09:466]OK
+[08-20 22:58:49:687][ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
 
-[08-20 13:17:09:466]]
+[08-20 22:58:49:687]+CEREG: 1,"2670","0AA9FE06",7
 
-[08-20 13:17:09:466][ cmlog ]vir_at_wait_get_flag:1
-[08-20 13:17:09:466]
+[08-20 22:58:49:687]]
 
-[08-20 13:17:09:466][ cmlog ][-4]get urcdata skip head and tail
+[08-20 22:58:49:687][ cmlog ]vir_at_wait_get_flag:0
+[08-20 22:58:49:687]
 
-[08-20 13:17:09:466][ cmlog ]memory_buffer len 2, data:[OK]
-[08-20 13:17:09:466]
+[08-20 22:58:49:687][ cmlog ][-4]get urcdata skip head and tail
 
-[08-20 13:17:09:466][ cmlog ]Processing OK response, virt_at_buffer_len=31
+[08-20 22:58:49:687][ cmlog ]memory_buffer len 29, data:[+CEREG: 1,"2670","0AA9FE06",7]
+[08-20 22:58:49:687]
 
-[08-20 13:17:09:466][ cmlog ]dynamic_virt_at_callback
+[08-20 22:58:49:687][ cmlog ][URC]__cm_urc_consult
 
-[08-20 13:17:09:466][ cmlog ]flag=2, resp_cb_flag=1, sync_flag:2.
-[08-20 13:17:09:466]
+[08-20 22:58:49:687][ cmlog ]urc_head is null
+[08-20 22:58:49:687]
 
-[08-20 13:17:09:466][ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+[08-20 22:58:49:687][ cmlog ]urc_head_internal is null
+[08-20 22:58:49:687]
 
+[08-20 22:58:49:687][ cmlog ]__cm_daemon_thread 3 1
 
-[08-20 13:17:09:466][ cmlog ]cm_virt_at_send_sync ret = 0
-[08-20 13:17:09:466]
+[08-20 22:58:49:764]
+[08-20 22:58:49:764][ cmlog ]cm_virt_at_send_sync ret = 0
+[08-20 22:58:49:764]
 
-[08-20 13:17:09:466][ cmlog ][OPENCPU]:[PET][I] network ready, cereg=1
+[08-20 22:58:51:040][ cmlog ]g_sync_at_name: sync+CEREG
 
-[08-20 13:17:09:466]
-[08-20 13:17:09:466]
+[08-20 22:58:51:040][ cmlog ]virt_at_event_queue already exist
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:466][ cmlog ][OPENCPU]:[PET][I] use hardcoded credential (debug)
+[08-20 22:58:51:040][ cmlog ]__cm_virt_at_task already exist
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:466]
-[08-20 13:17:09:466]
+[08-20 22:58:51:040][ cmlog ]cm_virt_at_mutex_acquire
 
-[08-20 13:17:09:466][ cmlog ][OPENCPU]:[PET][I] mqtt connect 119.23.217.155:18883
+[08-20 22:58:51:040][ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
 
-[08-20 13:17:09:466]
-[08-20 13:17:09:466]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:466][ADNS] cm_async_dns_request cid = 1 
-[08-20 13:17:09:466]
+[08-20 22:58:51:040][ cmlog ]cm_virt_at_mutex_release
 
-[08-20 13:17:09:466][ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
-[08-20 13:17:09:466]
-[08-20 13:17:09:466]
+[08-20 22:58:51:040][ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
 
-[08-20 13:17:09:466][ cmlog ][OPENCPU]:[CMMQTT] client tsk start
-[08-20 13:17:09:466]
-[08-20 13:17:09:466]
+[08-20 22:58:51:040]+CEREG: 5,1,"2670","0AA9FE06",7
 
-[08-20 13:17:09:466][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
-[08-20 13:17:09:466]
-[08-20 13:17:09:466]
+[08-20 22:58:51:040]]
 
-[08-20 13:17:09:466][ELOOP] register_event eloop 0x7e263c6c,0x802d9ffc,0x7e07a260
+[08-20 22:58:51:040][ cmlog ]vir_at_wait_get_flag:1
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:466][ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x802d9ffc,0x7e07a260
+[08-20 22:58:51:040][ cmlog ][-4]get urcdata skip head and tail
 
-[08-20 13:17:09:466][ELOOP] post event=0x7e044be8
+[08-20 22:58:51:040][ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2670","0AA9FE06",7]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:466][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:040][ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
 
-[08-20 13:17:09:466][ELOOP] unregister event=0x7e044be8
+[08-20 22:58:51:040]OK
 
-[08-20 13:17:09:466][ELOOP] register_event eloop 0x7e263c6c,0x8026002d,0x7e2956dc
+[08-20 22:58:51:040]]
 
-[08-20 13:17:09:466][ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x8026002d,0x7e2956dc
+[08-20 22:58:51:040][ cmlog ]vir_at_wait_get_flag:1
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:466][ELOOP] register_event eloop 0x7e263c6c,0x8026002d,0x7e2956dc
+[08-20 22:58:51:040][ cmlog ][-4]get urcdata skip head and tail
 
-[08-20 13:17:09:466][ELOOP] eloop_event_init 0x7e044c00,0x7e263c6c,0x8026002d,0x7e2956dc
+[08-20 22:58:51:040][ cmlog ]memory_buffer len 2, data:[OK]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:466][ELOOP] register_event eloop 0x7e263c6c,0x8026002d,0x7e2956dc
+[08-20 22:58:51:040][ cmlog ]Processing OK response, virt_at_buffer_len=31
 
-[08-20 13:17:09:466][ELOOP] eloop_event_init 0x7e044c18,0x7e263c6c,0x8026002d,0x7e2956dc
+[08-20 22:58:51:040][ cmlog ]dynamic_virt_at_callback
 
-[08-20 13:17:09:466]asocket open ok 0 3
+[08-20 22:58:51:040][ cmlog ]flag=3, resp_cb_flag=2, sync_flag:3.
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:466][ cmlog ]ipv4: 1 10.250.45.217 
-[08-20 13:17:09:466]
+[08-20 22:58:51:040][ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
 
-[08-20 13:17:09:466][ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
-[08-20 13:17:09:466]
-[08-20 13:17:09:466]
 
-[08-20 13:17:09:466][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:58:51:040][ cmlog ]cm_virt_at_send_sync ret = 0
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:466][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:040][ cmlog ][OPENCPU]:[PET][I] network ready, cereg=1
 
-[08-20 13:17:09:466][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:58:51:040]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:466][ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
-[08-20 13:17:09:466]
-[08-20 13:17:09:466]
+[08-20 22:58:51:040][ cmlog ][OPENCPU]:[PET][I] use hardcoded credential (debug)
 
-[08-20 13:17:09:544]asocket_cb 3 2
+[08-20 22:58:51:040]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:544]asocket_cb 3 4
+[08-20 22:58:51:040][ cmlog ][OPENCPU]:[PET][I] mqtt connect 119.23.217.155:18883
 
-[08-20 13:17:09:544][ELOOP] post event=0x7e044c00
+[08-20 22:58:51:040]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:544][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:040][ADNS] cm_async_dns_request cid = 1 
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:544]asocket_on_eloop 0x7e044c00,0x7e2956dc
+[08-20 22:58:51:040][ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
+[08-20 22:58:51:040]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:544]asocket_event 0x7e2956dc,0x7e044c00
+[08-20 22:58:51:040][ cmlog ][OPENCPU]:[CMMQTT] client tsk start
+[08-20 22:58:51:040]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:544][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
-[08-20 13:17:09:544]
-[08-20 13:17:09:544]
+[08-20 22:58:51:040][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
+[08-20 22:58:51:040]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:544][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:58:51:040][ELOOP] register_event eloop 0x7e263c6c,0x802da030,0x7e0b01d8
 
-[08-20 13:17:09:544][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:040][ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x802da030,0x7e0b01d8
 
-[08-20 13:17:09:544][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:58:51:040][ELOOP] post event=0x7e044be8
 
-[08-20 13:17:09:544][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
-[08-20 13:17:09:544]
-[08-20 13:17:09:544]
+[08-20 22:58:51:040][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:09:544][ cmlog ][OPENCPU]:[CMMQTT] send len:53
-[08-20 13:17:09:544]
-[08-20 13:17:09:544]
+[08-20 22:58:51:040][ELOOP] unregister event=0x7e044be8
 
-[08-20 13:17:09:675]asocket_cb 3 2
+[08-20 22:58:51:040][ELOOP] register_event eloop 0x7e263c6c,0x8026002d,0x7e2956dc
 
-[08-20 13:17:09:675]asocket_cb 3 10
+[08-20 22:58:51:040][ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x8026002d,0x7e2956dc
 
-[08-20 13:17:09:675][ELOOP] post event=0x7e044c00
+[08-20 22:58:51:040][ELOOP] register_event eloop 0x7e263c6c,0x8026002d,0x7e2956dc
 
-[08-20 13:17:09:675][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:040][ELOOP] eloop_event_init 0x7e044c00,0x7e263c6c,0x8026002d,0x7e2956dc
 
-[08-20 13:17:09:675]asocket_on_eloop 0x7e044c00,0x7e2956dc
+[08-20 22:58:51:040][ELOOP] register_event eloop 0x7e263c6c,0x8026002d,0x7e2956dc
 
-[08-20 13:17:09:675]asocket_event 0x7e2956dc,0x7e044c00
+[08-20 22:58:51:040][ELOOP] eloop_event_init 0x7e044c18,0x7e263c6c,0x8026002d,0x7e2956dc
 
-[08-20 13:17:09:675][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-20 13:17:09:675]
-[08-20 13:17:09:675]
+[08-20 22:58:51:040]asocket open ok 0 3
 
-[08-20 13:17:09:675][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:58:51:040][ cmlog ]ipv4: 1 10.249.146.200 
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:675][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:040][ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
+[08-20 22:58:51:040]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:675][ELOOP] asocket_cb 3 0
+[08-20 22:58:51:040][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:17:09:675][ELOOP] post event=0x7e044be8
+[08-20 22:58:51:040][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:09:675]eloop millsec=4294967295 tick=4294967295
+[08-20 22:58:51:040][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:17:09:675][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:040][ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
+[08-20 22:58:51:040]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:675]asocket_on_eloop 0x7e044be8,0x7e2956dc
+[08-20 22:58:51:040][ cmlog ][OPENCPU]:[PET][I] mode -> searching, gps lpmode=2
 
-[08-20 13:17:09:675]asocket_event 0x7e2956dc,0x7e044be8
+[08-20 22:58:51:040]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:675][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-20 13:17:09:675]
-[08-20 13:17:09:675]
+[08-20 22:58:51:040][ cmlog ][OPENCPU]:[PET][I] gps opened (mode=searching lpmode=2)
 
-[08-20 13:17:09:675][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[08-20 13:17:09:675]
+[08-20 22:58:51:040]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:675][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:58:51:040][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
 
-[08-20 13:17:09:675][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:040]
+[08-20 22:58:51:040]
 
-[08-20 13:17:09:675][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:58:51:109]asocket_cb 3 2
 
-[08-20 13:17:09:675][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-20 13:17:09:675]
-[08-20 13:17:09:675]
+[08-20 22:58:51:109]asocket_cb 3 4
 
-[08-20 13:17:09:675]asocket_cb 3 1
+[08-20 22:58:51:109][ELOOP] post event=0x7e044c00
 
-[08-20 13:17:09:675][ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
-[08-20 13:17:09:675]
-[08-20 13:17:09:675]
+[08-20 22:58:51:109][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:09:675][ cmlog ][OPENCPU]:[PET][I] mqtt connected
+[08-20 22:58:51:109]asocket_on_eloop 0x7e044c00,0x7e2956dc
 
-[08-20 13:17:09:675]
-[08-20 13:17:09:675]
+[08-20 22:58:51:109]asocket_event 0x7e2956dc,0x7e044c00
 
-[08-20 13:17:09:769][ cmlog ][OPENCPU]:[CMMQTT] send len:34
-[08-20 13:17:09:769]
-[08-20 13:17:09:769]
+[08-20 22:58:51:109][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
+[08-20 22:58:51:109]
+[08-20 22:58:51:109]
 
-[08-20 13:17:09:769][ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
-[08-20 13:17:09:769]
-[08-20 13:17:09:769]
+[08-20 22:58:51:109][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:17:09:769][ cmlog ][OPENCPU]:[CMMQTT] send len:336
-[08-20 13:17:09:769]
-[08-20 13:17:09:769]
+[08-20 22:58:51:109][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:09:769][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:336
-[08-20 13:17:09:769]
-[08-20 13:17:09:769]
+[08-20 22:58:51:109][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:17:09:769][ cmlog ][OPENCPU]:[PET][I] state ONLINE published
+[08-20 22:58:51:109][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
+[08-20 22:58:51:109]
+[08-20 22:58:51:109]
 
-[08-20 13:17:09:769]
-[08-20 13:17:09:769]
+[08-20 22:58:51:109][ cmlog ][OPENCPU]:[CMMQTT] send len:53
+[08-20 22:58:51:109]
+[08-20 22:58:51:109]
 
-[08-20 13:17:09:957]asocket_cb 3 2
+[08-20 22:58:51:241]asocket_cb 3 2
 
-[08-20 13:17:09:957]asocket_cb 3 10
+[08-20 22:58:51:241]asocket_cb 3 10
 
-[08-20 13:17:09:957][ELOOP] post event=0x7e044c00
+[08-20 22:58:51:241][ELOOP] post event=0x7e044c00
 
-[08-20 13:17:09:957]asocket_cb 3 0
+[08-20 22:58:51:241][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:09:957][ELOOP] post event=0x7e044be8
+[08-20 22:58:51:241]asocket_on_eloop 0x7e044c00,0x7e2956dc
 
-[08-20 13:17:09:957][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:241]asocket_event 0x7e2956dc,0x7e044c00
 
-[08-20 13:17:09:957]asocket_on_eloop 0x7e044c00,0x7e2956dc
+[08-20 22:58:51:241][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[08-20 22:58:51:241]
+[08-20 22:58:51:241]
 
-[08-20 13:17:09:957]asocket_event 0x7e2956dc,0x7e044c00
+asocket_cb 3 0
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-20 13:17:09:957]
-[08-20 13:17:09:957]
+[08-20 22:58:51:241][ELOOP] post event=0x7e044be8
 
-[08-20 13:17:09:957]asocket_on_eloop 0x7e044be8,0x7e2956dc
+[08-20 22:58:51:241]
+[08-20 22:58:51:241]asocket_on_eloop 0x7e044be8,0x7e2956dc
 
-[08-20 13:17:09:957]asocket_event 0x7e2956dc,0x7e044be8
+[08-20 22:58:51:241]asocket_event 0x7e2956dc,0x7e044be8
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-20 13:17:09:957]
-[08-20 13:17:09:957]
+[08-20 22:58:51:241][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[08-20 22:58:51:241]
+[08-20 22:58:51:241]
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:5
-[08-20 13:17:09:957]
+[08-20 22:58:51:241][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[08-20 22:58:51:241]
 
-[08-20 13:17:09:957][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:58:51:241][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:17:09:957][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:241][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:09:957][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:58:51:241][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:17:09:957][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:241][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:09:957][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:58:51:241][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:17:09:957][ELOOP] rdy_list eloop=0x7e26asocket_cb 3 2
+[08-20 22:58:51:241][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:09:957]asocket_cb 3 10
+[08-20 22:58:51:241][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:17:09:957][ELOOP] post event=0x7e044c00
+[08-20 22:58:51:241][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[08-20 22:58:51:241]
+[08-20 22:58:51:241]
 
-[08-20 13:17:09:957]asocket_cb 3 0
+[08-20 22:58:51:241]asocket_cb 3 1
 
-[08-20 13:17:09:957][ELOOP] post event=0x7e044be8
+[08-20 22:58:51:241][ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
+[08-20 22:58:51:241]
+[08-20 22:58:51:241]
 
-[08-20 13:17:09:957]3c6c
+[08-20 22:58:51:241][ cmlog ][OPENCPU]:[PET][I] mqtt connected
 
-[08-20 13:17:09:957]asocket_on_eloop 0x7e044c00,0x7e2956dc
+[08-20 22:58:51:241]
+[08-20 22:58:51:241]
 
-[08-20 13:17:09:957]asocket_event 0x7e2956dc,0x7e044c00
+[08-20 22:58:51:287][ cmlog ][OPENCPU]:[CMMQTT] send len:34
+[08-20 22:58:51:287]
+[08-20 22:58:51:287]
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-20 13:17:09:957]
-[08-20 13:17:09:957]
+[08-20 22:58:51:287][ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
+[08-20 22:58:51:287]
+[08-20 22:58:51:287]
 
-[08-20 13:17:09:957]asocket_on_eloop 0x7e044be8,0x7e2956dc
+[08-20 22:58:51:287][ cmlog ][OPENCPU]:[CMMQTT] send len:354
+[08-20 22:58:51:287]
+[08-20 22:58:51:287]
 
-[08-20 13:17:09:957]asocket_event 0x7e2956dc,0x7e044be8
+[08-20 22:58:51:287][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:354
+[08-20 22:58:51:287]
+[08-20 22:58:51:287]
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-20 13:17:09:957]
-[08-20 13:17:09:957]
+[08-20 22:58:51:287][ cmlog ][OPENCPU]:[PET][I] state ONLINE published
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:9
-[08-20 13:17:09:957]
+[08-20 22:58:51:287]
+[08-20 22:58:51:287]
 
-[08-20 13:17:09:957][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:58:51:407]asocket_cb 3 2
 
-[08-20 13:17:09:957][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:407]asocket_cb 3 10
 
-[08-20 13:17:09:957][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:58:51:407][ELOOP] post event=0x7e044c00
 
-[08-20 13:17:09:957][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:51:407]asocket_cb 3 0
 
-[08-20 13:17:09:957][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:58:51:407][ELOOP] post event=0x7e044be8
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-20 13:17:09:957]
-[08-20 13:17:09:957]
+[08-20 22:58:51:407][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:09:957]asocket_cb 3 1
+[08-20 22:58:51:407]asocket_on_eloop 0x7e044c00,0x7e2956dc
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[CMMQTT] pkt type:9,len:5
-[08-20 13:17:09:957]
-[08-20 13:17:09:957]
+[08-20 22:58:51:407]asocket_event 0x7e2956dc,0x7e044c00
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[PET][I] rpc subscribed
+[08-20 22:58:51:407][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[08-20 22:58:51:407]
+[08-20 22:58:51:407]
 
-[08-20 13:17:09:957]
-[08-20 13:17:09:957]
+[08-20 22:58:51:407]asocket_on_eloop 0x7e044be8,0x7e2956dc
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[PET][I] mqtt subscribed
+[08-20 22:58:51:407]asocket_event 0x7e2956dc,0x7e044be8
 
-[08-20 13:17:09:957]
-[08-20 13:17:09:957]
+[08-20 22:58:51:407][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[08-20 22:58:51:407]
+[08-20 22:58:51:407]
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-20 13:17:09:957]
-[08-20 13:17:09:957]
+[08-20 22:58:51:407][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:5
+[08-20 22:58:51:407]
 
-[08-20 13:17:09:957]asocket_cb 3 1
+[08-20 22:58:51:407][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-[08-20 13:17:09:957]
-[08-20 13:17:09:957]
+[08-20 22:58:51:407][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:09:957][ cmlog ][OPENCPU]:[CMMQTT] tcp ret:-1
-[08-20 13:17:09:957]
+[08-20 22:58:51:407][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:17:11:476][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:51:407][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:11:476]
-[08-20 13:17:11:476]
+[08-20 22:58:51:407][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:17:13:259][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-620 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:58:51:407][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:13:259]
-[08-20 13:17:13:259]
+[08-20 22:58:51:407][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:17:13:480][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:51:407][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[08-20 22:58:51:407]
+[08-20 22:58:51:407]
 
-[08-20 13:17:13:480]
-[08-20 13:17:13:480]
+[08-20 22:58:51:407]asocket_cb 3 1
 
-[08-20 13:17:15:491][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:51:407][ cmlog ][OPENCPU]:[CMMQTT] pkt type:9,len:5
+[08-20 22:58:51:407]
+[08-20 22:58:51:407]
 
-[08-20 13:17:15:491]
-[08-20 13:17:15:491]
+[08-20 22:58:51:407][ cmlog ][OPENCPU]:[PET][I] rpc subscribed
 
-[08-20 13:17:17:491][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:51:407]
+[08-20 22:58:51:407]
 
-[08-20 13:17:17:491]
-[08-20 13:17:17:491]
+[08-20 22:58:51:407][ cmlog ][OPENCPU]:[PET][I] mqtt subscribed
 
-[08-20 13:17:19:492][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:51:407]
+[08-20 22:58:51:407]
 
-[08-20 13:17:19:492]
-[08-20 13:17:19:492]
+[08-20 22:58:51:525]asocket_cb 3 2
 
-[08-20 13:17:21:500][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:51:525]asocket_cb 3 10
 
-[08-20 13:17:21:500]
-[08-20 13:17:21:500]
+[08-20 22:58:51:525][ELOOP] post event=0x7e044c00
 
-[08-20 13:17:23:263][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-620 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:58:51:525]asocket_cb 3 0
 
-[08-20 13:17:23:263]
-[08-20 13:17:23:263]
+[08-20 22:58:51:525][ELOOP] post event=0x7e044be8
 
-[08-20 13:17:23:506][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:51:525][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:23:506]
-[08-20 13:17:23:506]
+[08-20 22:58:51:525]asocket_on_eloop 0x7e044c00,0x7e2956dc
 
-[08-20 13:17:25:505][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:51:525]asocket_event 0x7e2956dc,0x7e044c00
 
-[08-20 13:17:25:505]
-[08-20 13:17:25:505]
+[08-20 22:58:51:525][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[08-20 22:58:51:525]
+[08-20 22:58:51:525]
 
-[08-20 13:17:27:505][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:51:525]asocket_on_eloop 0x7e044be8,0x7e2956dc
 
-[08-20 13:17:27:505]
-[08-20 13:17:27:505]
+[08-20 22:58:51:525]asocket_event 0x7e2956dc,0x7e044be8
 
-[08-20 13:17:29:504][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:51:525][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[08-20 22:58:51:525]
+[08-20 22:58:51:525]
 
-[08-20 13:17:29:504]
-[08-20 13:17:29:504]
+[08-20 22:58:51:525][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[08-20 22:58:51:525]
 
-[08-20 13:17:31:506][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:51:525][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:17:31:506]
-[08-20 13:17:31:506]
+[08-20 22:58:51:525][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:33:244][ cmlog ][OPENCPU]:[PET][W] LOC report without gps fix (lat=0,lon=0)
+[08-20 22:58:51:525][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:17:33:244]
-[08-20 13:17:33:244]
+[08-20 22:58:51:525][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:33:308][ cmlog ][OPENCPU]:[CMMQTT] send len:513
-[08-20 13:17:33:308]
-[08-20 13:17:33:308]
+[08-20 22:58:51:525][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:17:33:308][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:513
-[08-20 13:17:33:308]
-[08-20 13:17:33:308]
+[08-20 22:58:51:525][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:33:308][ cmlog ][OPENCPU]:[PET][I] LOC #1 publish ok
+[08-20 22:58:51:525][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:17:33:308]
-[08-20 13:17:33:308]
+[08-20 22:58:51:525][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[08-20 22:58:51:525]
+[08-20 22:58:51:525]
 
-[08-20 13:17:33:332][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-620 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:58:51:525]asocket_cb 3 1
 
-[08-20 13:17:33:332]
-[08-20 13:17:33:332]
+[08-20 22:58:51:525][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+[08-20 22:58:51:525]
+[08-20 22:58:51:525]
 
-[08-20 13:17:33:438]asocket_cb 3 2
+[08-20 22:58:51:525][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145852.000,2225.14444,N,11332.64111,E,1,21,0.980,35.4,M,-3.5,M,,*61
 
-[08-20 13:17:33:438]asocket_cb 3 10
+[08-20 22:58:51:525]
+[08-20 22:58:51:525]
 
-[08-20 13:17:33:438][ELOOP] post event=0x7e044c00
+[08-20 22:58:51:525][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145852.000,A,2225.14444,N,11332.64111,E,0.000,250.772,200826,,,A,S*0C
 
-[08-20 13:17:33:438]asocket_cb 3 0
+[08-20 22:58:51:525]
+[08-20 22:58:51:525]
 
-[08-20 13:17:33:438][ELOOP] post event=0x7e044be8
+[08-20 22:58:52:472][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145853.000,2225.14441,N,11332.64126,E,1,21,0.980,35.4,M,-3.5,M,,*61
 
-[08-20 13:17:33:438][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:52:472]
+[08-20 22:58:52:472]
 
-[08-20 13:17:33:438]asocket_on_eloop 0x7e044c00,0x7e2956dc
+[08-20 22:58:52:472][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145853.000,A,2225.14441,N,11332.64126,E,0.000,250.772,200826,,,A,S*0C
 
-[08-20 13:17:33:438]asocket_event 0x7e2956dc,0x7e044c00
+[08-20 22:58:52:472]
+[08-20 22:58:52:472]
 
-[08-20 13:17:33:438][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-20 13:17:33:438]
-[08-20 13:17:33:438]
+[08-20 22:58:53:476][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145854.000,2225.14438,N,11332.64126,E,1,21,0.980,35.4,M,-3.5,M,,*68
 
-[08-20 13:17:33:438]asocket_on_eloop 0x7e044be8,0x7e2956dc
+[08-20 22:58:53:476]
+[08-20 22:58:53:476]
 
-[08-20 13:17:33:438]asocket_event 0x7e2956dc,0x7e044be8
+[08-20 22:58:53:476][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145854.000,A,2225.14438,N,11332.64126,E,0.000,250.772,200826,,,A,S*05
 
-[08-20 13:17:33:438][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-20 13:17:33:438]
-[08-20 13:17:33:438]
+[08-20 22:58:53:476]
+[08-20 22:58:53:476]
 
-[08-20 13:17:33:438][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[08-20 13:17:33:438]
+[08-20 22:58:54:483][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145855.000,2225.14442,N,11332.64115,E,1,21,0.980,35.3,M,-3.5,M,,*63
 
-[08-20 13:17:33:438][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:58:54:483]
+[08-20 22:58:54:483]
 
-[08-20 13:17:33:438][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:54:483][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145855.000,A,2225.14442,N,11332.64115,E,0.000,250.772,200826,,,A,S*09
 
-[08-20 13:17:33:438][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:58:54:483]
+[08-20 22:58:54:483]
 
-[08-20 13:17:33:438][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:55:037][ cmlog ][OPENCPU]:[CMMQTT] send len:518
+[08-20 22:58:55:037]
+[08-20 22:58:55:037]
 
-[08-20 13:17:33:438][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:58:55:037][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:518
+[08-20 22:58:55:037]
+[08-20 22:58:55:037]
 
-[08-20 13:17:33:438][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:58:55:037][ cmlog ][OPENCPU]:[PET][I] LOC #1 publish ok
 
-[08-20 13:17:33:438][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:58:55:037]
+[08-20 22:58:55:037]
 
-[08-20 13:17:33:438][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-20 13:17:33:438]
-[08-20 13:17:33:438]
+[08-20 22:58:55:037][ cmlog ][OPENCPU]:[PET][I] alive mode=searching rssi=-62 gps=FIX sat=21 lat=22.41907 lon=113.54402 lbs=none
 
-[08-20 13:17:33:438]asocket_cb 3 1
+[08-20 22:58:55:037]
+[08-20 22:58:55:037]
 
-[08-20 13:17:33:438][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-[08-20 13:17:33:438]
-[08-20 13:17:33:438]
+[08-20 22:58:55:037][ cmlog ][OPENCPU]:[PET][I] lbs: task start (force_wifi=0 report=0)
 
-[08-20 13:17:33:520][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:55:037]
+[08-20 22:58:55:037]
 
-[08-20 13:17:33:520]
-[08-20 13:17:33:520]
+[08-20 22:58:55:154]asocket_cb 3 2
 
-[08-20 13:17:35:521][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:55:154]asocket_cb 3 10
 
-[08-20 13:17:35:521]
-[08-20 13:17:35:521]
+[08-20 22:58:55:154][ELOOP] post event=0x7e044c00
 
-[08-20 13:17:37:519][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:55:154]asocket_cb 3 0
 
-[08-20 13:17:37:519]
-[08-20 13:17:37:519]
+[08-20 22:58:55:154][ELOOP] post event=0x7e044be8
 
-[08-20 13:17:39:519][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:55:154][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:39:519]
-[08-20 13:17:39:519]
+[08-20 22:58:55:154]asocket_on_eloop 0x7e044c00,0x7e2956dc
 
-[08-20 13:17:41:529][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:55:154]asocket_event 0x7e2956dc,0x7e044c00
 
-[08-20 13:17:41:529]
-[08-20 13:17:41:529]
+[08-20 22:58:55:154][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[08-20 22:58:55:154]
+[08-20 22:58:55:154]
 
-[08-20 13:17:43:331][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-610 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:58:55:154]asocket_on_eloop 0x7e044be8,0x7e2956dc
 
-[08-20 13:17:43:331]
-[08-20 13:17:43:331]
+[08-20 22:58:55:154]asocket_event 0x7e2956dc,0x7e044be8
 
-[08-20 13:17:43:534][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:55:154][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[08-20 22:58:55:154]
+[08-20 22:58:55:154]
 
-[08-20 13:17:43:534]
-[08-20 13:17:43:534]
+[08-20 22:58:55:154][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[08-20 22:58:55:154]
 
-[08-20 13:17:45:544][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:55:154][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:17:45:544]
-[08-20 13:17:45:544]
+[08-20 22:58:55:154][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:47:546][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:55:154][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:17:47:546]
-[08-20 13:17:47:546]
+[08-20 22:58:55:154][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:49:544][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:55:154][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:17:49:544]
-[08-20 13:17:49:544]
+[08-20 22:58:55:154][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:17:51:544][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:55:154][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:17:51:544]
-[08-20 13:17:51:544]
+[08-20 22:58:55:154][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[08-20 22:58:55:154]
+[08-20 22:58:55:154]
 
-[08-20 13:17:53:345][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-620 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:58:55:154]asocket_cb 3 1
 
-[08-20 13:17:53:345]
-[08-20 13:17:53:345]
+[08-20 22:58:55:154][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+[08-20 22:58:55:154]
+[08-20 22:58:55:154]
 
-[08-20 13:17:53:548][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:55:497][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145856.000,2225.14427,N,11332.64112,E,1,21,0.981,35.5,M,-3.5,M,,*63
 
-[08-20 13:17:53:548]
-[08-20 13:17:53:548]
+[08-20 22:58:55:497]
+[08-20 22:58:55:497]
 
-[08-20 13:17:55:549][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:55:497][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145856.000,A,2225.14427,N,11332.64112,E,0.000,250.772,200826,,,A,S*0E
 
-[08-20 13:17:55:549]
-[08-20 13:17:55:549]
+[08-20 22:58:55:497]
+[08-20 22:58:55:497]
 
-[08-20 13:17:57:549][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:56:487][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145857.000,2225.14427,N,11332.64112,E,1,21,0.981,35.5,M,-3.5,M,,*62
 
-[08-20 13:17:57:549]
-[08-20 13:17:57:549]
+[08-20 22:58:56:487]
+[08-20 22:58:56:487]
 
-[08-20 13:17:59:548][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:56:487][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145857.000,A,2225.14427,N,11332.64112,E,0.000,250.772,200826,,,A,S*0F
 
-[08-20 13:17:59:548]
-[08-20 13:17:59:548]
+[08-20 22:58:56:487]
+[08-20 22:58:56:487]
 
-[08-20 13:18:01:547][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:58:56:487][ cmlog ][OPENCPU]:[PET][I] lbs: task done
 
-[08-20 13:18:01:547]
-[08-20 13:18:01:547]
+[08-20 22:58:56:487]
+[08-20 22:58:56:487]
 
-[08-20 13:18:03:249][ cmlog ][OPENCPU]:[PET][W] LOC report without gps fix (lat=0,lon=0)
+[08-20 22:58:57:485][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145858.000,2225.14438,N,11332.64125,E,1,21,0.981,35.2,M,-3.5,M,,*60
 
-[08-20 13:18:03:249]
-[08-20 13:18:03:249]
+[08-20 22:58:57:485]
+[08-20 22:58:57:485]
 
-[08-20 13:18:03:311][ cmlog ][OPENCPU]:[CMMQTT] send len:513
-[08-20 13:18:03:311]
-[08-20 13:18:03:311]
+[08-20 22:58:57:485][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145858.000,A,2225.14438,N,11332.64125,E,0.000,250.772,200826,,,A,S*0A
 
-[08-20 13:18:03:311][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:513
-[08-20 13:18:03:311]
-[08-20 13:18:03:311]
+[08-20 22:58:57:485]
+[08-20 22:58:57:485]
 
-[08-20 13:18:03:311][ cmlog ][OPENCPU]:[PET][I] LOC #2 publish ok
+[08-20 22:58:58:485][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145859.000,2225.14435,N,11332.64119,E,1,21,0.981,35.1,M,-3.5,M,,*60
 
-[08-20 13:18:03:311]
-[08-20 13:18:03:311]
+[08-20 22:58:58:485]
+[08-20 22:58:58:485]
 
-[08-20 13:18:03:437][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-600 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:58:58:485][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145859.000,A,2225.14435,N,11332.64119,E,0.000,250.772,200826,,,A,S*09
 
-[08-20 13:18:03:437]
-[08-20 13:18:03:437]
+[08-20 22:58:58:485]
+[08-20 22:58:58:485]
 
-[08-20 13:18:03:437]asocket_cb 3 2
+[08-20 22:58:59:470][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145900.000,2225.14444,N,11332.64104,E,1,20,1.013,35.2,M,-3.5,M,,*66
 
-[08-20 13:18:03:437]asocket_cb 3 10
+[08-20 22:58:59:470]
+[08-20 22:58:59:470]
 
-[08-20 13:18:03:437][ELOOP] post event=0x7e044c00
+[08-20 22:58:59:470][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145900.000,A,2225.14444,N,11332.64104,E,0.000,250.772,200826,,,A,S*0E
 
-[08-20 13:18:03:437]asocket_cb 3 0
+[08-20 22:58:59:470]
+[08-20 22:58:59:470]
 
-[08-20 13:18:03:437][ELOOP] post event=0x7e044be8
+[08-20 22:59:00:495][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145901.000,2225.14444,N,11332.64129,E,1,20,1.013,35.3,M,-3.5,M,,*69
 
-[08-20 13:18:03:437][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:00:495]
+[08-20 22:59:00:495]
 
-[08-20 13:18:03:437]asocket_on_eloop 0x7e044c00,0x7e2956dc
+[08-20 22:59:00:495][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145901.000,A,2225.14444,N,11332.64129,E,0.000,250.772,200826,,,A,S*00
 
-[08-20 13:18:03:437]asocket_event 0x7e2956dc,0x7e044c00
+[08-20 22:59:00:495]
+[08-20 22:59:00:495]
 
-[08-20 13:18:03:437][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-20 13:18:03:437]
-[08-20 13:18:03:437]
+[08-20 22:59:01:490][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145902.000,2225.14429,N,11332.64114,E,1,21,0.981,35.0,M,-3.5,M,,*6E
 
-[08-20 13:18:03:437]asocket_on_eloop 0x7e044be8,0x7e2956dc
+[08-20 22:59:01:490]
+[08-20 22:59:01:490]
 
-[08-20 13:18:03:437]asocket_event 0x7e2956dc,0x7e044be8
+[08-20 22:59:01:490][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145902.000,A,2225.14429,N,11332.64114,E,0.000,250.772,200826,,,A,S*06
 
-[08-20 13:18:03:437][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-20 13:18:03:437]
-[08-20 13:18:03:437]
+[08-20 22:59:01:490]
+[08-20 22:59:01:490]
 
-[08-20 13:18:03:437][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[08-20 13:18:03:437]
+[08-20 22:59:02:475][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145903.000,2225.14451,N,11332.64122,E,1,21,0.982,35.2,M,-3.5,M,,*64
 
-[08-20 13:18:03:437][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:02:475]
+[08-20 22:59:02:475]
 
-[08-20 13:18:03:437][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:02:475][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145903.000,A,2225.14451,N,11332.64122,E,0.000,250.772,200826,,,A,S*0D
 
-[08-20 13:18:03:437][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:02:475]
+[08-20 22:59:02:475]
 
-[08-20 13:18:03:437][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:03:485][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145904.000,2225.14448,N,11332.64103,E,1,21,0.982,35.4,M,-3.5,M,,*6E
 
-[08-20 13:18:03:437][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:03:485]
+[08-20 22:59:03:485]
 
-[08-20 13:18:03:437][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:03:485][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145904.000,A,2225.14448,N,11332.64103,E,0.000,250.772,200826,,,A,S*01
 
-[08-20 13:18:03:437][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:03:485]
+[08-20 22:59:03:485]
 
-[08-20 13:18:03:437][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-20 13:18:03:437]
-[08-20 13:18:03:437]
+[08-20 22:59:04:486][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145905.000,2225.14433,N,11332.64099,E,1,21,0.982,35.3,M,-3.5,M,,*66
 
-[08-20 13:18:03:437]asocket_cb 3 1
+[08-20 22:59:04:486]
+[08-20 22:59:04:486]
 
-[08-20 13:18:03:437][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-[08-20 13:18:03:437]
-[08-20 13:18:03:437]
+[08-20 22:59:04:486][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145905.000,A,2225.14433,N,11332.64099,E,0.000,250.772,200826,,,A,S*0E
 
-[08-20 13:18:03:558][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:04:486]
+[08-20 22:59:04:486]
 
-[08-20 13:18:03:558]
-[08-20 13:18:03:558]
+[08-20 22:59:05:046][ cmlog ][OPENCPU]:[CMMQTT] send len:518
+[08-20 22:59:05:046]
+[08-20 22:59:05:046]
 
-[08-20 13:18:05:568][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:046][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:518
+[08-20 22:59:05:046]
+[08-20 22:59:05:046]
 
-[08-20 13:18:05:568]
-[08-20 13:18:05:568]
+[08-20 22:59:05:046][ cmlog ][OPENCPU]:[PET][I] LOC #2 publish ok
 
-[08-20 13:18:07:570][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:046]
+[08-20 22:59:05:046]
 
-[08-20 13:18:07:570]
-[08-20 13:18:07:570]
+[08-20 22:59:05:046][ cmlog ][OPENCPU]:[PET][I] alive mode=searching rssi=-64 gps=FIX sat=21 lat=22.41907 lon=113.54402 lbs=460,0,9840,178912774,-8
 
-[08-20 13:18:09:567][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:046][ cmlog ][OPENCPU]:[PET][I] lbs: task start (force_wifi=0 report=0)
 
-[08-20 13:18:09:567]
-[08-20 13:18:09:567]
+[08-20 22:59:05:046]
+[08-20 22:59:05:046]
 
-[08-20 13:18:11:567][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:161]asocket_cb 3 2
 
-[08-20 13:18:11:567]
-[08-20 13:18:11:567]
+[08-20 22:59:05:161]asocket_cb 3 10
 
-[08-20 13:18:13:349][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-610 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:05:161][ELOOP] post event=0x7e044c00
 
-[08-20 13:18:13:349]
-[08-20 13:18:13:349]
+[08-20 22:59:05:161]asocket_cb 3 0
 
-[08-20 13:18:13:572][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:161][ELOOP] post event=0x7e044be8
 
-[08-20 13:18:13:572]
-[08-20 13:18:13:572]
+[08-20 22:59:05:161][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:18:15:588][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:161]asocket_on_eloop 0x7e044c00,0x7e2956dc
 
-[08-20 13:18:15:588]
-[08-20 13:18:15:588]
+[08-20 22:59:05:161]asocket_event 0x7e2956dc,0x7e044c00
 
-[08-20 13:18:17:588][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:161][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[08-20 22:59:05:161]
+[08-20 22:59:05:161]
 
-[08-20 13:18:17:588]
-[08-20 13:18:17:588]
+[08-20 22:59:05:161]asocket_on_eloop 0x7e044be8,0x7e2956dc
 
-[08-20 13:18:19:582][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:161]asocket_event 0x7e2956dc,0x7e044be8
 
-[08-20 13:18:19:582]
-[08-20 13:18:19:582]
+[08-20 22:59:05:161][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[08-20 22:59:05:161]
+[08-20 22:59:05:161]
 
-[08-20 13:18:21:583][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:161][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[08-20 22:59:05:161]
 
-[08-20 13:18:21:583]
-[08-20 13:18:21:583]
+[08-20 22:59:05:161][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:18:23:364][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-600 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:05:161][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:18:23:364]
-[08-20 13:18:23:364]
+[08-20 22:59:05:161][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:18:23:591][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:161][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:18:23:591]
-[08-20 13:18:23:591]
+[08-20 22:59:05:161][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:18:25:587][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:161][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:18:25:587]
-[08-20 13:18:25:587]
+[08-20 22:59:05:161][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:18:27:595][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:161][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[08-20 22:59:05:161]
+[08-20 22:59:05:161]
 
-[08-20 13:18:27:595]
-[08-20 13:18:27:595]
+[08-20 22:59:05:161]asocket_cb 3 1
 
-[08-20 13:18:29:585][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:161][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+[08-20 22:59:05:161]
+[08-20 22:59:05:161]
 
-[08-20 13:18:29:585]
-[08-20 13:18:29:585]
+[08-20 22:59:05:161][ cmlog ][OPENCPU]:[PET][I] lbs: task done
 
-[08-20 13:18:31:590][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:05:161]
+[08-20 22:59:05:161]
 
-[08-20 13:18:31:590]
-[08-20 13:18:31:590]
+[08-20 22:59:05:479][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145906.000,2225.14450,N,11332.64128,E,1,21,0.982,35.3,M,-3.5,M,,*6B
 
-[08-20 13:18:33:248][ cmlog ][OPENCPU]:[PET][W] LOC report without gps fix (lat=0,lon=0)
+[08-20 22:59:05:479]
+[08-20 22:59:05:479]
 
-[08-20 13:18:33:248]
-[08-20 13:18:33:248]
+[08-20 22:59:05:479][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145906.000,A,2225.14450,N,11332.64128,E,0.000,250.772,200826,,,A,S*03
 
-[08-20 13:18:33:312][ cmlog ][OPENCPU]:[CMMQTT] send len:513
-[08-20 13:18:33:312]
-[08-20 13:18:33:312]
+[08-20 22:59:05:479]
+[08-20 22:59:05:479]
 
-[08-20 13:18:33:312][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:513
-[08-20 13:18:33:312]
-[08-20 13:18:33:312]
+[08-20 22:59:06:500][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145907.000,2225.14437,N,11332.64118,E,1,22,0.978,35.6,M,-3.5,M,,*6B
 
-[08-20 13:18:33:312][ cmlog ][OPENCPU]:[PET][I] LOC #3 publish ok
+[08-20 22:59:06:500]
+[08-20 22:59:06:500]
 
-[08-20 13:18:33:312]
-[08-20 13:18:33:312]
+[08-20 22:59:06:500][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145907.000,A,2225.14437,N,11332.64118,E,0.000,250.772,200826,,,A,S*00
 
-[08-20 13:18:33:453]asocket_cb 3 2
+[08-20 22:59:06:500]
+[08-20 22:59:06:500]
 
-[08-20 13:18:33:453]asocket_cb 3 10
+[08-20 22:59:07:485][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145908.000,2225.14426,N,11332.64108,E,1,22,0.978,35.4,M,-3.5,M,,*67
 
-[08-20 13:18:33:453][ELOOP] post event=0x7e044c00
+[08-20 22:59:07:485]
+[08-20 22:59:07:485]
 
-[08-20 13:18:33:453]asocket_cb 3 0
+[08-20 22:59:07:485][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145908.000,A,2225.14426,N,11332.64108,E,0.000,250.772,200826,,,A,S*0E
 
-[08-20 13:18:33:453][ELOOP] post event=0x7e044be8
+[08-20 22:59:07:485]
+[08-20 22:59:07:485]
 
-[08-20 13:18:33:453][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:08:471][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145909.000,2225.14426,N,11332.64103,E,1,22,0.978,35.2,M,-3.5,M,,*6B
 
-[08-20 13:18:33:453]asocket_on_eloop 0x7e044c00,0x7e2956dc
+[08-20 22:59:08:471]
+[08-20 22:59:08:471]
 
-[08-20 13:18:33:453]asocket_event 0x7e2956dc,0x7e044c00
+[08-20 22:59:08:471][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145909.000,A,2225.14426,N,11332.64103,E,0.000,250.772,200826,,,A,S*04
 
-[08-20 13:18:33:453][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-20 13:18:33:453]
-[08-20 13:18:33:453]
+[08-20 22:59:08:471]
+[08-20 22:59:08:471]
 
-[08-20 13:18:33:453]asocket_on_eloop 0x7e044be8,0x7e2956dc
+[08-20 22:59:09:495][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145910.000,2225.14441,N,11332.64117,E,1,22,0.978,35.7,M,-3.5,M,,*62
 
-[08-20 13:18:33:453]asocket_event 0x7e2956dc,0x7e044be8
+[08-20 22:59:09:495]
+[08-20 22:59:09:495]
 
-[08-20 13:18:33:453][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-20 13:18:33:453]
-[08-20 13:18:33:453]
+[08-20 22:59:09:495][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145910.000,A,2225.14441,N,11332.64117,E,0.000,250.772,200826,,,A,S*08
 
-[08-20 13:18:33:453][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[08-20 13:18:33:453]
+[08-20 22:59:09:495]
+[08-20 22:59:09:495]
 
-[08-20 13:18:33:453][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:10:483][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145911.000,2225.14440,N,11332.64106,E,1,22,0.978,35.3,M,-3.5,M,,*66
 
-[08-20 13:18:33:453][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:10:483]
+[08-20 22:59:10:483]
 
-[08-20 13:18:33:453][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:10:483][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145911.000,A,2225.14440,N,11332.64106,E,0.000,250.772,200826,,,A,S*08
 
-[08-20 13:18:33:453][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:10:483]
+[08-20 22:59:10:483]
 
-[08-20 13:18:33:453][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:11:484][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145912.000,2225.14425,N,11332.64100,E,1,22,0.978,35.3,M,-3.5,M,,*60
 
-[08-20 13:18:33:453][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:11:484]
+[08-20 22:59:11:484]
 
-[08-20 13:18:33:453][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:11:484][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145912.000,A,2225.14425,N,11332.64100,E,0.000,250.772,200826,,,A,S*0E
 
-[08-20 13:18:33:453][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-20 13:18:33:453]
-[08-20 13:18:33:453]
+[08-20 22:59:11:484]
+[08-20 22:59:11:484]
 
-[08-20 13:18:33:453]asocket_cb 3 1
+[08-20 22:59:12:470][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145913.000,2225.14444,N,11332.64102,E,1,22,0.979,35.3,M,-3.5,M,,*65
 
-[08-20 13:18:33:453][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-[08-20 13:18:33:453]
-[08-20 13:18:33:453]
+[08-20 22:59:12:470]
+[08-20 22:59:12:470]
 
-[08-20 13:18:33:453][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-600 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:12:470][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145913.000,A,2225.14444,N,11332.64102,E,0.000,250.772,200826,,,A,S*0A
 
-[08-20 13:18:33:453]
-[08-20 13:18:33:453]
+[08-20 22:59:12:470]
+[08-20 22:59:12:470]
 
-[08-20 13:18:33:596][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:13:496][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145914.000,2225.14429,N,11332.64117,E,1,22,0.979,35.4,M,-3.5,M,,*6A
 
-[08-20 13:18:33:596]
-[08-20 13:18:33:596]
+[08-20 22:59:13:496]
+[08-20 22:59:13:496]
 
-[08-20 13:18:35:606][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:13:496][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145914.000,A,2225.14429,N,11332.64117,E,0.000,250.772,200826,,,A,S*02
 
-[08-20 13:18:35:606]
-[08-20 13:18:35:606]
+[08-20 22:59:13:496]
+[08-20 22:59:13:496]
 
-[08-20 13:18:37:605][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:14:479][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145915.000,2225.14442,N,11332.64112,E,1,22,0.979,35.5,M,-3.5,M,,*62
 
-[08-20 13:18:37:605]
-[08-20 13:18:37:605]
+[08-20 22:59:14:479]
+[08-20 22:59:14:479]
 
-[08-20 13:18:39:604][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:14:479][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145915.000,A,2225.14442,N,11332.64112,E,0.000,250.772,200826,,,A,S*0B
 
-[08-20 13:18:39:604]
-[08-20 13:18:39:604]
+[08-20 22:59:14:479]
+[08-20 22:59:14:479]
 
-[08-20 13:18:41:605][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:15:064][ cmlog ][OPENCPU]:[CMMQTT] send len:518
+[08-20 22:59:15:064]
+[08-20 22:59:15:064]
 
-[08-20 13:18:41:605]
-[08-20 13:18:41:605]
+[08-20 22:59:15:064][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:518
+[08-20 22:59:15:064]
+[08-20 22:59:15:064]
 
-[08-20 13:18:43:387][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-610 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:15:064][ cmlog ][OPENCPU]:[PET][I] LOC #3 publish ok
 
-[08-20 13:18:43:387]
-[08-20 13:18:43:387]
+[08-20 22:59:15:064]
+[08-20 22:59:15:064]
 
-[08-20 13:18:43:611][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:15:064][ cmlog ][OPENCPU]:[PET][I] alive mode=searching rssi=-64 gps=FIX sat=22 lat=22.41907 lon=113.54402 lbs=460,0,9840,178912774,-8
 
-[08-20 13:18:43:611]
-[08-20 13:18:43:611]
+[08-20 22:59:15:064][ cmlog ][OPENCPU]:[PET][I] lbs: task start (force_wifi=0 report=0)
 
-[08-20 13:18:45:620][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:15:064]
+[08-20 22:59:15:064]
 
-[08-20 13:18:45:620]
-[08-20 13:18:45:620]
+[08-20 22:59:15:179]asocket_cb 3 2
 
-[08-20 13:18:47:620][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:15:179]asocket_cb 3 10
 
-[08-20 13:18:47:620]
-[08-20 13:18:47:620]
+[08-20 22:59:15:179][ELOOP] post event=0x7e044c00
 
-[08-20 13:18:49:620][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:15:179]asocket_cb 3 0
 
-[08-20 13:18:49:620]
-[08-20 13:18:49:620]
+[08-20 22:59:15:179][ELOOP] post event=0x7e044be8
 
-[08-20 13:18:51:619][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:15:179][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:18:51:619]
-[08-20 13:18:51:619]
+[08-20 22:59:15:179]asocket_on_eloop 0x7e044c00,0x7e2956dc
 
-[08-20 13:18:53:402][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-600 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:15:179]asocket_event 0x7e2956dc,0x7e044c00
 
-[08-20 13:18:53:402]
-[08-20 13:18:53:402]
+[08-20 22:59:15:179][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[08-20 22:59:15:179]
+[08-20 22:59:15:179]
 
-[08-20 13:18:53:624][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:15:179]asocket_on_eloop 0x7e044be8,0x7e2956dc
 
-[08-20 13:18:53:624]
-[08-20 13:18:53:624]
+[08-20 22:59:15:179]asocket_event 0x7e2956dc,0x7e044be8
 
-[08-20 13:18:55:625][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:15:179][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[08-20 22:59:15:179]
+[08-20 22:59:15:179]
 
-[08-20 13:18:55:625]
-[08-20 13:18:55:625]
+[08-20 22:59:15:179][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[08-20 22:59:15:179]
 
-[08-20 13:18:57:624][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:15:179][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:18:57:624]
-[08-20 13:18:57:624]
+[08-20 22:59:15:179][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:18:59:624][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:15:179][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:18:59:624]
-[08-20 13:18:59:624]
+[08-20 22:59:15:179][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:19:01:623][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:15:179][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:19:01:623]
-[08-20 13:19:01:623]
+[08-20 22:59:15:179][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:19:03:244][ cmlog ][OPENCPU]:[PET][W] LOC report without gps fix (lat=0,lon=0)
+[08-20 22:59:15:179][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:19:03:244]
-[08-20 13:19:03:244]
+[08-20 22:59:15:179][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[08-20 22:59:15:179]
+[08-20 22:59:15:179]
 
-[08-20 13:19:03:305][ cmlog ][OPENCPU]:[CMMQTT] send len:513
-[08-20 13:19:03:305]
-[08-20 13:19:03:305]
+[08-20 22:59:15:179]asocket_cb 3 1
 
-[08-20 13:19:03:305][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:513
-[08-20 13:19:03:305]
-[08-20 13:19:03:305]
+[08-20 22:59:15:179][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+[08-20 22:59:15:179]
+[08-20 22:59:15:179]
 
-[08-20 13:19:03:305][ cmlog ][OPENCPU]:[PET][I] LOC #4 publish ok
+[08-20 22:59:15:194][ cmlog ][OPENCPU]:[PET][I] lbs: task done
 
-[08-20 13:19:03:305]
-[08-20 13:19:03:305]
+[08-20 22:59:15:194]
+[08-20 22:59:15:194]
 
-[08-20 13:19:03:443]asocket_cb 3 2
+[08-20 22:59:15:484][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145916.000,2225.14444,N,11332.64107,E,1,22,0.979,35.3,M,-3.5,M,,*65
 
-[08-20 13:19:03:443]asocket_cb 3 10
+[08-20 22:59:15:484]
+[08-20 22:59:15:484]
 
-[08-20 13:19:03:443][ELOOP] post event=0x7e044c00
+[08-20 22:59:15:484][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145916.000,A,2225.14444,N,11332.64107,E,0.000,250.772,200826,,,A,S*0A
 
-[08-20 13:19:03:443]asocket_cb 3 0
+[08-20 22:59:15:484]
+[08-20 22:59:15:484]
 
-[08-20 13:19:03:443][ELOOP] post event=0x7e044be8
+[08-20 22:59:16:499][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145917.000,2225.14440,N,11332.64115,E,1,22,0.979,35.5,M,-3.5,M,,*65
 
-[08-20 13:19:03:443][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:16:499]
+[08-20 22:59:16:499]
 
-[08-20 13:19:03:443]asocket_on_eloop 0x7e044c00,0x7e2956dc
+[08-20 22:59:16:499][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145917.000,A,2225.14440,N,11332.64115,E,0.000,250.772,200826,,,A,S*0C
 
-[08-20 13:19:03:443]asocket_event 0x7e2956dc,0x7e044c00
+[08-20 22:59:16:499]
+[08-20 22:59:16:499]
 
-[08-20 13:19:03:443][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-20 13:19:03:443]
-[08-20 13:19:03:443]
+[08-20 22:59:17:483][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145918.000,2225.14442,N,11332.64112,E,1,22,0.979,35.6,M,-3.5,M,,*6C
 
-[08-20 13:19:03:443]asocket_on_eloop 0x7e044be8,0x7e2956dc
+[08-20 22:59:17:483]
+[08-20 22:59:17:483]
 
-[08-20 13:19:03:443]asocket_event 0x7e2956dc,0x7e044be8
+[08-20 22:59:17:483][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145918.000,A,2225.14442,N,11332.64112,E,0.000,250.772,200826,,,A,S*06
 
-[08-20 13:19:03:443][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-20 13:19:03:443]
-[08-20 13:19:03:443]
+[08-20 22:59:17:483]
+[08-20 22:59:17:483]
 
-[08-20 13:19:03:443][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[08-20 13:19:03:443]
+[08-20 22:59:18:492][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145919.000,2225.14447,N,11332.64111,E,1,22,0.979,35.4,M,-3.5,M,,*69
 
-[08-20 13:19:03:443][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:18:492]
+[08-20 22:59:18:492]
 
-[08-20 13:19:03:443][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:18:492][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145919.000,A,2225.14447,N,11332.64111,E,0.000,250.772,200826,,,A,S*01
 
-[08-20 13:19:03:443][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:18:492]
+[08-20 22:59:18:492]
 
-[08-20 13:19:03:443][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:19:473][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145920.000,2225.14435,N,11332.64113,E,1,22,0.980,35.4,M,-3.5,M,,*62
 
-[08-20 13:19:03:443][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:19:473]
+[08-20 22:59:19:473]
 
-[08-20 13:19:03:443][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:19:473][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145920.000,A,2225.14435,N,11332.64113,E,0.000,250.772,200826,,,A,S*0C
 
-[08-20 13:19:03:443][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:19:473]
+[08-20 22:59:19:473]
 
-[08-20 13:19:03:443][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-20 13:19:03:443]
-[08-20 13:19:03:443]
+[08-20 22:59:20:480][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145921.000,2225.14427,N,11332.64121,E,1,22,0.980,35.4,M,-3.5,M,,*61
 
-[08-20 13:19:03:443]asocket_cb 3 1
+[08-20 22:59:20:480]
+[08-20 22:59:20:480]
 
-[08-20 13:19:03:443][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-[08-20 13:19:03:443]
-[08-20 13:19:03:443]
+[08-20 22:59:20:480][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145921.000,A,2225.14427,N,11332.64121,E,0.000,250.772,200826,,,A,S*0F
 
-[08-20 13:19:03:443][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-600 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:20:480]
+[08-20 22:59:20:480]
 
-[08-20 13:19:03:443]
-[08-20 13:19:03:443]
+[08-20 22:59:22:104][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145922.000,2225.14445,N,11332.64122,E,1,22,0.980,35.5,M,-3.5,M,,*64
 
-[08-20 13:19:03:624][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:22:104]
+[08-20 22:59:22:104]
 
-[08-20 13:19:03:624]
-[08-20 13:19:03:624]
+[08-20 22:59:22:104][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145922.000,A,2225.14445,N,11332.64122,E,0.000,250.772,200826,,,A,S*0B
 
-[08-20 13:19:05:625][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:22:104]
+[08-20 22:59:22:104]
 
-[08-20 13:19:05:625]
-[08-20 13:19:05:625]
+[08-20 22:59:22:468][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145923.000,2225.14428,N,11332.64125,E,1,22,0.980,35.2,M,-3.5,M,,*6E
 
-[08-20 13:19:07:622][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:22:468]
+[08-20 22:59:22:468]
 
-[08-20 13:19:07:622]
-[08-20 13:19:07:622]
+[08-20 22:59:22:468][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145923.000,A,2225.14428,N,11332.64125,E,0.000,250.772,200826,,,A,S*06
 
-[08-20 13:19:09:623][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:22:468]
+[08-20 22:59:22:468]
 
-[08-20 13:19:09:623]
-[08-20 13:19:09:623]
+[08-20 22:59:23:476][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145924.000,2225.14448,N,11332.64128,E,1,22,0.980,35.4,M,-3.5,M,,*64
 
-[08-20 13:19:11:624][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:23:476]
+[08-20 22:59:23:476]
 
-[08-20 13:19:11:624]
-[08-20 13:19:11:624]
+[08-20 22:59:23:476][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145924.000,A,2225.14448,N,11332.64128,E,0.000,250.772,200826,,,A,S*0A
 
-[08-20 13:19:13:447][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-610 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:23:476]
+[08-20 22:59:23:476]
 
-[08-20 13:19:13:447]
-[08-20 13:19:13:447]
+[08-20 22:59:24:479][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145925.000,2225.14432,N,11332.64127,E,1,21,0.984,35.3,M,-3.5,M,,*67
 
-[08-20 13:19:13:627][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:24:479]
+[08-20 22:59:24:479]
 
-[08-20 13:19:13:627]
-[08-20 13:19:13:627]
+[08-20 22:59:24:479][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145925.000,A,2225.14432,N,11332.64127,E,0.000,250.772,200826,,,A,S*09
 
-[08-20 13:19:15:638][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:24:479]
+[08-20 22:59:24:479]
 
-[08-20 13:19:15:638]
-[08-20 13:19:15:638]
+[08-20 22:59:25:058][ cmlog ][OPENCPU]:[CMMQTT] send len:518
+[08-20 22:59:25:058]
+[08-20 22:59:25:058]
 
-[08-20 13:19:17:638][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:25:058][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:518
+[08-20 22:59:25:058]
+[08-20 22:59:25:058]
 
-[08-20 13:19:17:638]
-[08-20 13:19:17:638]
+[08-20 22:59:25:058][ cmlog ][OPENCPU]:[PET][I] LOC #4 publish ok
 
-[08-20 13:19:19:638][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:25:058]
+[08-20 22:59:25:058]
 
-[08-20 13:19:19:638]
-[08-20 13:19:19:638]
+[08-20 22:59:25:058][ cmlog ][OPENCPU]:[PET][I] alive mode=searching rssi=-63 gps=FIX sat=21 lat=22.41907 lon=113.54402 lbs=460,0,9840,178912774,-8
 
-[08-20 13:19:21:649][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:25:058][ cmlog ][OPENCPU]:[PET][I] lbs: task start (force_wifi=0 report=0)
 
-[08-20 13:19:21:649]
-[08-20 13:19:21:649]
+[08-20 22:59:25:058]
+[08-20 22:59:25:058]
 
-[08-20 13:19:23:450][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-610 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:25:166]asocket_cb 3 2
 
-[08-20 13:19:23:450]
-[08-20 13:19:23:450]
+[08-20 22:59:25:166]asocket_cb 3 10
 
-[08-20 13:19:23:651][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:25:166][ELOOP] post event=0x7e044c00
 
-[08-20 13:19:23:651]
-[08-20 13:19:23:651]
+[08-20 22:59:25:166]asocket_cb 3 0
 
-[08-20 13:19:25:661][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:25:166][ELOOP] post event=0x7e044be8
 
-[08-20 13:19:25:661]
-[08-20 13:19:25:661]
+[08-20 22:59:25:166][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:19:27:661][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:25:166]asocket_on_eloop 0x7e044c00,0x7e2956dc
 
-[08-20 13:19:27:661]
-[08-20 13:19:27:661]
+[08-20 22:59:25:166]asocket_event 0x7e2956dc,0x7e044c00
 
-[08-20 13:19:29:661][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:25:166][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[08-20 22:59:25:166]
+[08-20 22:59:25:166]
 
-[08-20 13:19:29:661]
-[08-20 13:19:29:661]
+[08-20 22:59:25:166]asocket_on_eloop 0x7e044be8,0x7e2956dc
 
-[08-20 13:19:31:662][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:25:166]asocket_event 0x7e2956dc,0x7e044be8
 
-[08-20 13:19:31:662]
-[08-20 13:19:31:662]
+[08-20 22:59:25:166][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[08-20 22:59:25:166]
+[08-20 22:59:25:166]
 
-[08-20 13:19:33:241][ cmlog ][OPENCPU]:[PET][W] LOC report without gps fix (lat=0,lon=0)
+[08-20 22:59:25:166][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[08-20 22:59:25:166]
 
-[08-20 13:19:33:241]
-[08-20 13:19:33:241]
+[08-20 22:59:25:166][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:19:33:308][ cmlog ][OPENCPU]:[CMMQTT] send len:513
-[08-20 13:19:33:308]
-[08-20 13:19:33:308]
+[08-20 22:59:25:166][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:19:33:308][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:513
-[08-20 13:19:33:308]
-[08-20 13:19:33:308]
+[08-20 22:59:25:166][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:19:33:308][ cmlog ][OPENCPU]:[PET][I] LOC #5 publish ok
+[08-20 22:59:25:166][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:19:33:308]
-[08-20 13:19:33:308]
+[08-20 22:59:25:166][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:19:33:441]asocket_cb 3 2
+[08-20 22:59:25:166][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:19:33:441]asocket_cb 3 10
+[08-20 22:59:25:166][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:19:33:441][ELOOP] post event=0x7e044c00
+[08-20 22:59:25:166][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[08-20 22:59:25:166]
+[08-20 22:59:25:166]
 
-[08-20 13:19:33:441]asocket_cb 3 0
+[08-20 22:59:25:166]asocket_cb 3 1
 
-[08-20 13:19:33:441][ELOOP] post event=0x7e044be8
+[08-20 22:59:25:166][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+[08-20 22:59:25:166]
+[08-20 22:59:25:166]
 
-[08-20 13:19:33:441][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:25:435][ cmlog ][OPENCPU]:[PET][I] lbs: task done
 
-[08-20 13:19:33:441]asocket_on_eloop 0x7e044c00,0x7e2956dc
+[08-20 22:59:25:435]
+[08-20 22:59:25:435]
 
-[08-20 13:19:33:441]asocket_event 0x7e2956dc,0x7e044c00
+[08-20 22:59:25:474][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145926.000,2225.14425,N,11332.64128,E,1,21,0.985,35.2,M,-3.5,M,,*6D
 
-[08-20 13:19:33:441][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-20 13:19:33:441]
-[08-20 13:19:33:441]
+[08-20 22:59:25:474]
+[08-20 22:59:25:474]
 
-[08-20 13:19:33:441]asocket_on_eloop 0x7e044be8,0x7e2956dc
+[08-20 22:59:25:474][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145926.000,A,2225.14425,N,11332.64128,E,0.000,250.772,200826,,,A,S*03
 
-[08-20 13:19:33:441]asocket_event 0x7e2956dc,0x7e044be8
+[08-20 22:59:25:474]
+[08-20 22:59:25:474]
 
-[08-20 13:19:33:441][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-20 13:19:33:441]
-[08-20 13:19:33:441]
+[08-20 22:59:26:625][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145927.000,2225.14441,N,11332.64117,E,1,21,0.985,35.7,M,-3.5,M,,*67
 
-[08-20 13:19:33:441][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[08-20 13:19:33:441]
+[08-20 22:59:26:625]
+[08-20 22:59:26:625]
 
-[08-20 13:19:33:441][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:26:625][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145927.000,A,2225.14441,N,11332.64117,E,0.000,250.772,200826,,,A,S*0C
 
-[08-20 13:19:33:441][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:26:625]
+[08-20 22:59:26:625]
 
-[08-20 13:19:33:441][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:27:469][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145928.000,2225.14433,N,11332.64097,E,1,22,0.981,35.4,M,-3.5,M,,*60
 
-[08-20 13:19:33:441][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:27:469]
+[08-20 22:59:27:469]
 
-[08-20 13:19:33:441][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:27:469][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145928.000,A,2225.14433,N,11332.64097,E,0.000,250.772,200826,,,A,S*0F
 
-[08-20 13:19:33:441][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:27:469]
+[08-20 22:59:27:469]
 
-[08-20 13:19:33:441][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:28:474][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145929.000,2225.14448,N,11332.64106,E,1,22,0.981,35.4,M,-3.5,M,,*64
 
-[08-20 13:19:33:441][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-20 13:19:33:441]
-[08-20 13:19:33:441]
+[08-20 22:59:28:474]
+[08-20 22:59:28:474]
 
-[08-20 13:19:33:441]asocket_cb 3 1
+[08-20 22:59:28:474][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145929.000,A,2225.14448,N,11332.64106,E,0.000,250.772,200826,,,A,S*0B
 
-[08-20 13:19:33:441][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-[08-20 13:19:33:441]
-[08-20 13:19:33:441]
+[08-20 22:59:28:474]
+[08-20 22:59:28:474]
 
-[08-20 13:19:33:464][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-610 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:29:478][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145930.000,2225.14438,N,11332.64107,E,1,22,0.981,35.5,M,-3.5,M,,*6B
 
-[08-20 13:19:33:464]
-[08-20 13:19:33:464]
+[08-20 22:59:29:478]
+[08-20 22:59:29:478]
 
-[08-20 13:19:33:667][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:29:478][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145930.000,A,2225.14438,N,11332.64107,E,0.000,250.772,200826,,,A,S*05
 
-[08-20 13:19:33:667]
-[08-20 13:19:33:667]
+[08-20 22:59:29:478]
+[08-20 22:59:29:478]
 
-[08-20 13:19:35:676][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:30:465][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145931.000,2225.14444,N,11332.64098,E,1,22,0.981,35.4,M,-3.5,M,,*67
 
-[08-20 13:19:35:676]
-[08-20 13:19:35:676]
+[08-20 22:59:30:465]
+[08-20 22:59:30:465]
 
-[08-20 13:19:37:676][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:30:465][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145931.000,A,2225.14444,N,11332.64098,E,0.000,250.772,200826,,,A,S*08
 
-[08-20 13:19:37:676]
-[08-20 13:19:37:676]
+[08-20 22:59:30:465]
+[08-20 22:59:30:465]
 
-[08-20 13:19:39:675][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:31:499][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145932.000,2225.14422,N,11332.64118,E,1,21,0.985,35.3,M,-3.5,M,,*6D
 
-[08-20 13:19:39:675]
-[08-20 13:19:39:675]
+[08-20 22:59:31:499]
+[08-20 22:59:31:499]
 
-[08-20 13:19:41:675][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:31:499][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145932.000,A,2225.14422,N,11332.64118,E,0.000,250.772,200826,,,A,S*02
 
-[08-20 13:19:41:675]
-[08-20 13:19:41:675]
+[08-20 22:59:31:499]
+[08-20 22:59:31:499]
 
-[08-20 13:19:43:478][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-590 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:32:483][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145933.000,2225.14434,N,11332.64101,E,1,21,0.986,35.3,M,-3.5,M,,*60
 
-[08-20 13:19:43:478]
-[08-20 13:19:43:478]
+[08-20 22:59:32:483]
+[08-20 22:59:32:483]
 
-[08-20 13:19:43:681][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:32:483][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145933.000,A,2225.14434,N,11332.64101,E,0.000,250.772,200826,,,A,S*0C
 
-[08-20 13:19:43:681]
-[08-20 13:19:43:681]
+[08-20 22:59:32:483]
+[08-20 22:59:32:483]
 
-[08-20 13:19:45:682][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:33:470][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145934.000,2225.14437,N,11332.64127,E,1,21,0.986,35.3,M,-3.5,M,,*60
 
-[08-20 13:19:45:682]
-[08-20 13:19:45:682]
+[08-20 22:59:33:470]
+[08-20 22:59:33:470]
 
-[08-20 13:19:47:681][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:33:470][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145934.000,A,2225.14437,N,11332.64127,E,0.000,250.772,200826,,,A,S*0C
 
-[08-20 13:19:47:681]
-[08-20 13:19:47:681]
+[08-20 22:59:33:470]
+[08-20 22:59:33:470]
 
-[08-20 13:19:49:680][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:34:493][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145935.000,2225.14450,N,11332.64125,E,1,21,0.986,35.3,M,-3.5,M,,*62
 
-[08-20 13:19:49:680]
-[08-20 13:19:49:680]
+[08-20 22:59:34:493]
+[08-20 22:59:34:493]
 
-[08-20 13:19:51:681][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:34:493][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145935.000,A,2225.14450,N,11332.64125,E,0.000,250.772,200826,,,A,S*0E
 
-[08-20 13:19:51:681]
-[08-20 13:19:51:681]
+[08-20 22:59:34:493]
+[08-20 22:59:34:493]
 
-[08-20 13:19:53:483][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-600 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:35:075][ cmlog ][OPENCPU]:[CMMQTT] send len:518
+[08-20 22:59:35:075]
+[08-20 22:59:35:075]
 
-[08-20 13:19:53:483]
-[08-20 13:19:53:483]
+[08-20 22:59:35:075][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:518
+[08-20 22:59:35:075]
+[08-20 22:59:35:075]
 
-[08-20 13:19:53:685][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:35:075][ cmlog ][OPENCPU]:[PET][I] LOC #5 publish ok
 
-[08-20 13:19:53:685]
-[08-20 13:19:53:685]
+[08-20 22:59:35:075]
+[08-20 22:59:35:075]
 
-[08-20 13:19:55:696][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:35:075][ cmlog ][OPENCPU]:[PET][I] alive mode=searching rssi=-64 gps=FIX sat=21 lat=22.41907 lon=113.54402 lbs=460,0,9840,178912774,-8
 
-[08-20 13:19:55:696]
-[08-20 13:19:55:696]
+[08-20 22:59:35:075][ cmlog ][OPENCPU]:[PET][I] lbs: task start (force_wifi=0 report=0)
 
-[08-20 13:19:57:695][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:35:075]
+[08-20 22:59:35:075]
 
-[08-20 13:19:57:695]
-[08-20 13:19:57:695]
+[08-20 22:59:35:189]asocket_cb 3 2
 
-[08-20 13:19:59:695][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:35:189]asocket_cb 3 10
 
-[08-20 13:19:59:695]
-[08-20 13:19:59:695]
+[08-20 22:59:35:189][ELOOP] post event=0x7e044c00
 
-[08-20 13:20:01:694][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:35:189]asocket_cb 3 0
 
-[08-20 13:20:01:694]
-[08-20 13:20:01:694]
+[08-20 22:59:35:189][ELOOP] post event=0x7e044be8
 
-[08-20 13:20:03:255][ cmlog ][OPENCPU]:[PET][W] LOC report without gps fix (lat=0,lon=0)
+[08-20 22:59:35:189][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:20:03:255]
-[08-20 13:20:03:255]
+[08-20 22:59:35:189]asocket_on_eloop 0x7e044c00,0x7e2956dc
 
-[08-20 13:20:03:318][ cmlog ][OPENCPU]:[CMMQTT] send len:513
-[08-20 13:20:03:318]
-[08-20 13:20:03:318]
+[08-20 22:59:35:189]asocket_event 0x7e2956dc,0x7e044c00
 
-[08-20 13:20:03:318][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:513
-[08-20 13:20:03:318]
-[08-20 13:20:03:318]
+[08-20 22:59:35:189][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[08-20 22:59:35:189]
+[08-20 22:59:35:189]
 
-[08-20 13:20:03:318][ cmlog ][OPENCPU]:[PET][I] LOC #6 publish ok
+[08-20 22:59:35:189]asocket_on_eloop 0x7e044be8,0x7e2956dc
 
-[08-20 13:20:03:318]
-[08-20 13:20:03:318]
+[08-20 22:59:35:189]asocket_event 0x7e2956dc,0x7e044be8
 
-[08-20 13:20:03:448]asocket_cb 3 2
+[08-20 22:59:35:189][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[08-20 22:59:35:189]
+[08-20 22:59:35:189]
 
-[08-20 13:20:03:448]asocket_cb 3 10
+[08-20 22:59:35:189][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[08-20 22:59:35:189]
 
-[08-20 13:20:03:448][ELOOP] post event=0x7e044c00
+[08-20 22:59:35:189][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:20:03:448]asocket_cb 3 0
+[08-20 22:59:35:189][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:20:03:448][ELOOP] post event=0x7e044be8
+[08-20 22:59:35:189][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:20:03:448][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:35:189][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:20:03:448]asocket_on_eloop 0x7e044c00,0x7e2956dc
+[08-20 22:59:35:189][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:20:03:448]asocket_event 0x7e2956dc,0x7e044c00
+[08-20 22:59:35:189][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:20:03:448][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-20 13:20:03:448]
-[08-20 13:20:03:448]
+[08-20 22:59:35:189][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:20:03:448]asocket_on_eloop 0x7e044be8,0x7e2956dc
+[08-20 22:59:35:189][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[08-20 22:59:35:189]
+[08-20 22:59:35:189]
 
-[08-20 13:20:03:448]asocket_event 0x7e2956dc,0x7e044be8
+[08-20 22:59:35:189]asocket_cb 3 1
 
-[08-20 13:20:03:448][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-20 13:20:03:448]
-[08-20 13:20:03:448]
+[08-20 22:59:35:189][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+[08-20 22:59:35:189]
+[08-20 22:59:35:189]
 
-[08-20 13:20:03:448][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[08-20 13:20:03:448]
+[08-20 22:59:35:189][ cmlog ][OPENCPU]:[PET][I] lbs: task done
 
-[08-20 13:20:03:448][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:35:189]
+[08-20 22:59:35:189]
 
-[08-20 13:20:03:448][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:35:468][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145936.000,2225.14434,N,11332.64115,E,1,21,0.986,35.6,M,-3.5,M,,*65
 
-[08-20 13:20:03:448][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:35:468]
+[08-20 22:59:35:468]
 
-[08-20 13:20:03:448][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:35:468][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145936.000,A,2225.14434,N,11332.64115,E,0.000,250.772,200826,,,A,S*0C
 
-[08-20 13:20:03:448][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:35:468]
+[08-20 22:59:35:468]
 
-[08-20 13:20:03:448][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:36:478][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145937.000,2225.14427,N,11332.64109,E,1,21,0.986,35.4,M,-3.5,M,,*69
 
-[08-20 13:20:03:448][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:36:478]
+[08-20 22:59:36:478]
 
-[08-20 13:20:03:448][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-20 13:20:03:448]
-[08-20 13:20:03:448]
+[08-20 22:59:36:478][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145937.000,A,2225.14427,N,11332.64109,E,0.000,250.772,200826,,,A,S*02
 
-[08-20 13:20:03:448]asocket_cb 3 1
+[08-20 22:59:36:478]
+[08-20 22:59:36:478]
 
-[08-20 13:20:03:448][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-[08-20 13:20:03:448]
-[08-20 13:20:03:448]
+[08-20 22:59:37:464][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145938.000,2225.14437,N,11332.64102,E,1,20,1.079,35.3,M,-3.5,M,,*62
 
-[08-20 13:20:03:488][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-610 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:37:464]
+[08-20 22:59:37:464]
 
-[08-20 13:20:03:488]
-[08-20 13:20:03:488]
+[08-20 22:59:37:464][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145938.000,A,2225.14437,N,11332.64102,E,0.000,250.772,200826,,,A,S*07
 
-[08-20 13:20:03:709][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:37:464]
+[08-20 22:59:37:464]
 
-[08-20 13:20:03:709]
-[08-20 13:20:03:709]
+[08-20 22:59:38:470][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145939.000,2225.14424,N,11332.64108,E,1,19,1.094,35.4,M,-3.5,M,,*65
 
-[08-20 13:20:05:720][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:38:470]
+[08-20 22:59:38:470]
 
-[08-20 13:20:05:720]
-[08-20 13:20:05:720]
+[08-20 22:59:38:470][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145939.000,A,2225.14424,N,11332.64108,E,0.000,250.772,200826,,,A,S*0E
 
-[08-20 13:20:07:720][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:38:470]
+[08-20 22:59:38:470]
 
-[08-20 13:20:07:720]
-[08-20 13:20:07:720]
+[08-20 22:59:39:473][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145940.000,2225.14439,N,11332.64111,E,1,20,1.010,35.4,M,-3.5,M,,*69
 
-[08-20 13:20:09:719][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:39:473]
+[08-20 22:59:39:473]
 
-[08-20 13:20:09:719]
-[08-20 13:20:09:719]
+[08-20 22:59:39:473][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145940.000,A,2225.14439,N,11332.64111,E,0.000,250.772,200826,,,A,S*04
 
-[08-20 13:20:11:718][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:39:473]
+[08-20 22:59:39:473]
 
-[08-20 13:20:11:718]
-[08-20 13:20:11:718]
+[08-20 22:59:40:477][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145941.000,2225.14429,N,11332.64108,E,1,20,1.010,35.0,M,-3.5,M,,*65
 
-[08-20 13:20:13:501][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-600 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:40:477]
+[08-20 22:59:40:477]
 
-[08-20 13:20:13:501]
-[08-20 13:20:13:501]
+[08-20 22:59:40:477][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145941.000,A,2225.14429,N,11332.64108,E,0.000,250.772,200826,,,A,S*0C
 
-[08-20 13:20:13:724][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:40:477]
+[08-20 22:59:40:477]
 
-[08-20 13:20:13:724]
-[08-20 13:20:13:724]
+[08-20 22:59:41:462][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145942.000,2225.14434,N,11332.64107,E,1,20,1.010,35.2,M,-3.5,M,,*67
 
-[08-20 13:20:15:724][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:41:462]
+[08-20 22:59:41:462]
 
-[08-20 13:20:15:724]
-[08-20 13:20:15:724]
+[08-20 22:59:41:462][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145942.000,A,2225.14434,N,11332.64107,E,0.000,250.772,200826,,,A,S*0C
 
-[08-20 13:20:17:724][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:41:462]
+[08-20 22:59:41:462]
 
-[08-20 13:20:17:724]
-[08-20 13:20:17:724]
+[08-20 22:59:42:472][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145943.000,2225.14432,N,11332.64122,E,1,21,0.987,35.3,M,-3.5,M,,*61
 
-[08-20 13:20:19:724][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:42:472]
+[08-20 22:59:42:472]
 
-[08-20 13:20:19:724]
-[08-20 13:20:19:724]
+[08-20 22:59:42:472][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145943.000,A,2225.14432,N,11332.64122,E,0.000,250.772,200826,,,A,S*0C
 
-[08-20 13:20:21:733][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:42:472]
+[08-20 22:59:42:472]
 
-[08-20 13:20:21:733]
-[08-20 13:20:21:733]
+[08-20 22:59:43:476][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145944.000,2225.14427,N,11332.64120,E,1,21,0.987,35.3,M,-3.5,M,,*60
 
-[08-20 13:20:23:516][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-610 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:43:476]
+[08-20 22:59:43:476]
 
-[08-20 13:20:23:516]
-[08-20 13:20:23:516]
+[08-20 22:59:43:476][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145944.000,A,2225.14427,N,11332.64120,E,0.000,250.772,200826,,,A,S*0D
 
-[08-20 13:20:23:739][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:43:476]
+[08-20 22:59:43:476]
 
-[08-20 13:20:23:739]
-[08-20 13:20:23:739]
+[08-20 22:59:44:477][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145945.000,2225.14439,N,11332.64117,E,1,20,0.999,35.5,M,-3.5,M,,*62
 
-[08-20 13:20:25:738][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:44:477]
+[08-20 22:59:44:477]
 
-[08-20 13:20:25:738]
-[08-20 13:20:25:738]
+[08-20 22:59:44:477][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145945.000,A,2225.14439,N,11332.64117,E,0.000,250.772,200826,,,A,S*07
 
-[08-20 13:20:27:737][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:44:477]
+[08-20 22:59:44:477]
 
-[08-20 13:20:27:737]
-[08-20 13:20:27:737]
+[08-20 22:59:45:078][ cmlog ][OPENCPU]:[CMMQTT] send len:518
+[08-20 22:59:45:078]
+[08-20 22:59:45:078]
 
-[08-20 13:20:29:738][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:45:078][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:518
+[08-20 22:59:45:078]
+[08-20 22:59:45:078]
 
-[08-20 13:20:29:738]
-[08-20 13:20:29:738]
+[08-20 22:59:45:078][ cmlog ][OPENCPU]:[PET][I] LOC #6 publish ok
 
-[08-20 13:20:31:737][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:45:078]
+[08-20 22:59:45:078]
 
-[08-20 13:20:31:737]
-[08-20 13:20:31:737]
+[08-20 22:59:45:078][ cmlog ][OPENCPU]:[PET][I] alive mode=searching rssi=-63 gps=FIX sat=20 lat=22.41907 lon=113.54402 lbs=460,0,9840,178912774,-8
 
-[08-20 13:20:33:258][ cmlog ][OPENCPU]:[PET][W] LOC report without gps fix (lat=0,lon=0)
+[08-20 22:59:45:078][ cmlog ][OPENCPU]:[PET][I] lbs: task start (force_wifi=0 report=0)
 
-[08-20 13:20:33:258]
-[08-20 13:20:33:258]
+[08-20 22:59:45:078]
+[08-20 22:59:45:078]
 
-[08-20 13:20:33:325][ cmlog ][OPENCPU]:[CMMQTT] send len:513
-[08-20 13:20:33:325]
-[08-20 13:20:33:325]
+[08-20 22:59:45:194]asocket_cb 3 2
 
-[08-20 13:20:33:325][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:513
-[08-20 13:20:33:325]
-[08-20 13:20:33:325]
+[08-20 22:59:45:194]asocket_cb 3 10
 
-[08-20 13:20:33:325][ cmlog ][OPENCPU]:[PET][I] LOC #7 publish ok
+[08-20 22:59:45:194][ELOOP] post event=0x7e044c00
 
-[08-20 13:20:33:325]
-[08-20 13:20:33:325]
+[08-20 22:59:45:194]asocket_cb 3 0
 
-[08-20 13:20:33:455]asocket_cb 3 2
+[08-20 22:59:45:194][ELOOP] post event=0x7e044be8
 
-[08-20 13:20:33:455]asocket_cb 3 10
+[08-20 22:59:45:194][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:20:33:455][ELOOP] post event=0x7e044c00
+[08-20 22:59:45:194]asocket_on_eloop 0x7e044c00,0x7e2956dc
 
-[08-20 13:20:33:455]asocket_cb 3 0
+[08-20 22:59:45:194]asocket_event 0x7e2956dc,0x7e044c00
 
-[08-20 13:20:33:455][ELOOP] post event=0x7e044be8
+[08-20 22:59:45:194][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[08-20 22:59:45:194]
+[08-20 22:59:45:194]
 
-[08-20 13:20:33:455][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:45:194]asocket_on_eloop 0x7e044be8,0x7e2956dc
 
-[08-20 13:20:33:455]asocket_on_eloop 0x7e044c00,0x7e2956dc
+[08-20 22:59:45:194]asocket_event 0x7e2956dc,0x7e044be8
 
-[08-20 13:20:33:455]asocket_event 0x7e2956dc,0x7e044c00
+[08-20 22:59:45:194][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[08-20 22:59:45:194]
+[08-20 22:59:45:194]
 
-[08-20 13:20:33:455][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-20 13:20:33:455]
-[08-20 13:20:33:455]
+[08-20 22:59:45:194][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[08-20 22:59:45:194]
 
-[08-20 13:20:33:455]asocket_on_eloop 0x7e044be8,0x7e2956dc
+[08-20 22:59:45:194][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:20:33:455]asocket_event 0x7e2956dc,0x7e044be8
+[08-20 22:59:45:194][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:20:33:455][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-20 13:20:33:455]
-[08-20 13:20:33:455]
+[08-20 22:59:45:194][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:20:33:455][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[08-20 13:20:33:455]
+[08-20 22:59:45:194][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:20:33:455][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:45:194][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:20:33:455][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:45:194][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:20:33:455][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:45:194][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:20:33:455][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:45:194][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[08-20 22:59:45:194]
+[08-20 22:59:45:194]
 
-[08-20 13:20:33:455][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:45:194]asocket_cb 3 1
 
-[08-20 13:20:33:455][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:45:194][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+[08-20 22:59:45:194]
+[08-20 22:59:45:194]
 
-[08-20 13:20:33:455][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:45:269][ cmlog ][OPENCPU]:[PET][I] lbs: task done
 
-[08-20 13:20:33:455][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-20 13:20:33:455]
-[08-20 13:20:33:455]
+[08-20 22:59:45:269]
+[08-20 22:59:45:269]
 
-[08-20 13:20:33:455]asocket_cb 3 1
+[08-20 22:59:45:478][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145946.000,2225.14438,N,11332.64116,E,1,21,0.987,35.6,M,-3.5,M,,*6C
 
-[08-20 13:20:33:455][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-[08-20 13:20:33:455]
-[08-20 13:20:33:455]
+[08-20 22:59:45:478]
+[08-20 22:59:45:478]
 
-[08-20 13:20:33:515][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-590 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:45:478][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145946.000,A,2225.14438,N,11332.64116,E,0.000,250.772,200826,,,A,S*04
 
-[08-20 13:20:33:515]
-[08-20 13:20:33:515]
+[08-20 22:59:45:478]
+[08-20 22:59:45:478]
 
-[08-20 13:20:33:736][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:46:593][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145947.000,2225.14450,N,11332.64115,E,1,21,0.987,35.3,M,-3.5,M,,*65
 
-[08-20 13:20:33:736]
-[08-20 13:20:33:736]
+[08-20 22:59:46:593]
+[08-20 22:59:46:593]
 
-[08-20 13:20:35:737][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:46:593][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145947.000,A,2225.14450,N,11332.64115,E,0.000,250.772,200826,,,A,S*08
 
-[08-20 13:20:35:737]
-[08-20 13:20:35:737]
+[08-20 22:59:46:593]
+[08-20 22:59:46:593]
 
-[08-20 13:20:37:738][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:47:478][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145948.000,2225.14437,N,11332.64121,E,1,21,0.988,35.2,M,-3.5,M,,*62
 
-[08-20 13:20:37:738]
-[08-20 13:20:37:738]
+[08-20 22:59:47:478]
+[08-20 22:59:47:478]
 
-[08-20 13:20:39:737][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:47:478][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145948.000,A,2225.14437,N,11332.64121,E,0.000,250.772,200826,,,A,S*01
 
-[08-20 13:20:39:737]
-[08-20 13:20:39:737]
+[08-20 22:59:47:478]
+[08-20 22:59:47:478]
 
-[08-20 13:20:41:737][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:48:462][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145949.000,2225.14445,N,11332.64125,E,1,21,0.988,35.5,M,-3.5,M,,*65
 
-[08-20 13:20:41:737]
-[08-20 13:20:41:737]
+[08-20 22:59:48:462]
+[08-20 22:59:48:462]
 
-[08-20 13:20:43:519][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-600 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:48:462][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145949.000,A,2225.14445,N,11332.64125,E,0.000,250.772,200826,,,A,S*01
 
-[08-20 13:20:43:519]
-[08-20 13:20:43:519]
+[08-20 22:59:48:462]
+[08-20 22:59:48:462]
 
-[08-20 13:20:43:742][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:49:469][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145950.000,2225.14438,N,11332.64116,E,1,21,0.988,35.1,M,-3.5,M,,*63
 
-[08-20 13:20:43:742]
-[08-20 13:20:43:742]
+[08-20 22:59:49:469]
+[08-20 22:59:49:469]
 
-[08-20 13:20:45:752][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:49:469][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145950.000,A,2225.14438,N,11332.64116,E,0.000,250.772,200826,,,A,S*03
 
-[08-20 13:20:45:752]
-[08-20 13:20:45:752]
+[08-20 22:59:49:469]
+[08-20 22:59:49:469]
 
-[08-20 13:20:47:752][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:50:472][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145951.000,2225.14442,N,11332.64118,E,1,22,0.984,35.4,M,-3.5,M,,*6B
 
-[08-20 13:20:47:752]
-[08-20 13:20:47:752]
+[08-20 22:59:50:472]
+[08-20 22:59:50:472]
 
-[08-20 13:20:49:751][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:50:472][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145951.000,A,2225.14442,N,11332.64118,E,0.000,250.772,200826,,,A,S*01
 
-[08-20 13:20:49:751]
-[08-20 13:20:49:751]
+[08-20 22:59:50:472]
+[08-20 22:59:50:472]
 
-[08-20 13:20:51:751][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:51:717][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145952.000,2225.14428,N,11332.64113,E,1,22,0.984,35.3,M,-3.5,M,,*68
 
-[08-20 13:20:51:751]
-[08-20 13:20:51:751]
+[08-20 22:59:51:717]
+[08-20 22:59:51:717]
 
-[08-20 13:20:53:534][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-610 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:51:717][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145952.000,A,2225.14428,N,11332.64113,E,0.000,250.772,200826,,,A,S*05
 
-[08-20 13:20:53:534]
-[08-20 13:20:53:534]
+[08-20 22:59:51:717]
+[08-20 22:59:51:717]
 
-[08-20 13:20:53:756][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:52:483][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145953.000,2225.14442,N,11332.64104,E,1,21,1.012,35.3,M,-3.5,M,,*67
 
-[08-20 13:20:53:756]
-[08-20 13:20:53:756]
+[08-20 22:59:52:483]
+[08-20 22:59:52:483]
 
-[08-20 13:20:55:757][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:52:483][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145953.000,A,2225.14442,N,11332.64104,E,0.000,250.772,200826,,,A,S*0E
 
-[08-20 13:20:55:757]
-[08-20 13:20:55:757]
+[08-20 22:59:52:483]
+[08-20 22:59:52:483]
 
-[08-20 13:20:57:756][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:53:489][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145954.000,2225.14450,N,11332.64112,E,1,20,1.026,35.3,M,-3.5,M,,*62
 
-[08-20 13:20:57:756]
-[08-20 13:20:57:756]
+[08-20 22:59:53:489]
+[08-20 22:59:53:489]
 
-[08-20 13:20:59:756][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:53:489][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145954.000,A,2225.14450,N,11332.64112,E,0.000,250.772,200826,,,A,S*0D
 
-[08-20 13:20:59:756]
-[08-20 13:20:59:756]
+[08-20 22:59:53:489]
+[08-20 22:59:53:489]
 
-[08-20 13:21:01:755][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:54:491][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145955.000,2225.14447,N,11332.64104,E,1,20,1.026,35.3,M,-3.5,M,,*62
 
-[08-20 13:21:01:755]
-[08-20 13:21:01:755]
+[08-20 22:59:54:491]
+[08-20 22:59:54:491]
 
-[08-20 13:21:03:256][ cmlog ][OPENCPU]:[PET][W] LOC report without gps fix (lat=0,lon=0)
+[08-20 22:59:54:491][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145955.000,A,2225.14447,N,11332.64104,E,0.000,250.772,200826,,,A,S*0D
 
-[08-20 13:21:03:256]
-[08-20 13:21:03:256]
+[08-20 22:59:54:491]
+[08-20 22:59:54:491]
 
-[08-20 13:21:03:317][ cmlog ][OPENCPU]:[CMMQTT] send len:513
-[08-20 13:21:03:317]
-[08-20 13:21:03:317]
+[08-20 22:59:55:098][ cmlog ][OPENCPU]:[CMMQTT] send len:518
+[08-20 22:59:55:098]
+[08-20 22:59:55:098]
 
-[08-20 13:21:03:317][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:513
-[08-20 13:21:03:317]
-[08-20 13:21:03:317]
+[08-20 22:59:55:098][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:518
+[08-20 22:59:55:098]
+[08-20 22:59:55:098]
 
-[08-20 13:21:03:317][ cmlog ][OPENCPU]:[PET][I] LOC #8 publish ok
+[08-20 22:59:55:098][ cmlog ][OPENCPU]:[PET][I] LOC #7 publish ok
 
-[08-20 13:21:03:317]
-[08-20 13:21:03:317]
+[08-20 22:59:55:098]
+[08-20 22:59:55:098]
 
-[08-20 13:21:03:442]asocket_cb 3 2
+[08-20 22:59:55:098][ cmlog ][OPENCPU]:[PET][I] alive mode=searching rssi=-65 gps=FIX sat=20 lat=22.41907 lon=113.54402 lbs=460,0,9840,178912774,-8
 
-[08-20 13:21:03:442]asocket_cb 3 10
+[08-20 22:59:55:098][ cmlog ][OPENCPU]:[PET][I] lbs: task start (force_wifi=0 report=0)
 
-[08-20 13:21:03:442][ELOOP] post event=0x7e044c00
+[08-20 22:59:55:098]
+[08-20 22:59:55:098]
 
-[08-20 13:21:03:442]asocket_cb 3 0
+[08-20 22:59:55:219]asocket_cb 3 2
 
-[08-20 13:21:03:442][ELOOP] post event=0x7e044be8
+[08-20 22:59:55:219]asocket_cb 3 10
 
-[08-20 13:21:03:442][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:55:219][ELOOP] post event=0x7e044c00
 
-[08-20 13:21:03:442]asocket_on_eloop 0x7e044c00,0x7e2956dc
+[08-20 22:59:55:219]asocket_cb 3 0
 
-[08-20 13:21:03:442]asocket_event 0x7e2956dc,0x7e044c00
+[08-20 22:59:55:219][ELOOP] post event=0x7e044be8
 
-[08-20 13:21:03:442][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-[08-20 13:21:03:442]
-[08-20 13:21:03:442]
+[08-20 22:59:55:219][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:21:03:442]asocket_on_eloop 0x7e044be8,0x7e2956dc
+[08-20 22:59:55:219]asocket_on_eloop 0x7e044c00,0x7e2956dc
 
-[08-20 13:21:03:442]asocket_event 0x7e2956dc,0x7e044be8
+[08-20 22:59:55:219]asocket_event 0x7e2956dc,0x7e044c00
 
-[08-20 13:21:03:442][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-[08-20 13:21:03:442]
-[08-20 13:21:03:442]
+[08-20 22:59:55:219][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[08-20 22:59:55:219]
+[08-20 22:59:55:219]
 
-[08-20 13:21:03:442][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-[08-20 13:21:03:442]
+[08-20 22:59:55:219]asocket_on_eloop 0x7e044be8,0x7e2956dc
 
-[08-20 13:21:03:442][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:55:219]asocket_event 0x7e2956dc,0x7e044be8
 
-[08-20 13:21:03:442][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:55:219][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[08-20 22:59:55:219]
+[08-20 22:59:55:219]
 
-[08-20 13:21:03:442][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:55:219][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[08-20 22:59:55:219]
 
-[08-20 13:21:03:442][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:55:219][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:21:03:442][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[08-20 22:59:55:219][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:21:03:442][ELOOP] rdy_list eloop=0x7e263c6c
+[08-20 22:59:55:219][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:21:03:442][ELOOP] eloop millsec=4294967295 tick=4294967295
+[08-20 22:59:55:219][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:21:03:442][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-[08-20 13:21:03:442]
-[08-20 13:21:03:442]
+[08-20 22:59:55:219][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 
-[08-20 13:21:03:442]asocket_cb 3 1
+[08-20 22:59:55:219][ELOOP] rdy_list eloop=0x7e263c6c
 
-[08-20 13:21:03:442][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-[08-20 13:21:03:442]
-[08-20 13:21:03:442]
+[08-20 22:59:55:219][ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[08-20 13:21:03:543][ cmlog ][OPENCPU]:[PET][I] alive mode=2 rssi=-570 gps=NOFIX sat=0 lat=0.00000 lon=0.00000
+[08-20 22:59:55:219][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[08-20 22:59:55:219]
+[08-20 22:59:55:219]
 
-[08-20 13:21:03:543]
-[08-20 13:21:03:543]
+[08-20 22:59:55:219]asocket_cb 3 1
 
-[08-20 13:21:03:766][ cmlog ][OPENCPU]:[PET][I] gps baudrate retry CFGPRT 115200
+[08-20 22:59:55:219][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+[08-20 22:59:55:219]
+[08-20 22:59:55:219]
 
-[08-20 13:21:03:766]
-[08-20 13:21:03:766]
+[08-20 22:59:55:461][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,145956.000,2225.14445,N,11332.64115,E,1,20,1.026,35.4,M,-3.5,M,,*64
+
+[08-20 22:59:55:461]
+[08-20 22:59:55:461]
+
+[08-20 22:59:55:461][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,145956.000,A,2225.14445,N,11332.64115,E,0.000,250.772,200826,,,A,S*0C
+
+[08-20 22:59:55:461]
+[08-20 22:59:55:461]
+
+[08-20 23:00:06:465][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,150007.000,2225.14423,N,11332.64100,E,1,20,1.028,35.3,M,-3.5,M,,*60
+
+[08-20 23:00:06:465]
+[08-20 23:00:06:465]
+
+[08-20 23:00:06:465][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,150007.000,A,2225.14423,N,11332.64100,E,0.000,250.772,200826,,,A,S*01
+
+[08-20 23:00:06:465]
+[08-20 23:00:06:465]
+
+[08-20 23:00:07:492][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,150008.000,2225.14438,N,11332.64112,E,1,22,0.986,35.3,M,-3.5,M,,*68
+
+[08-20 23:00:07:492]
+[08-20 23:00:07:492]
+
+[08-20 23:00:07:492][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,150008.000,A,2225.14438,N,11332.64112,E,0.000,250.772,200826,,,A,S*07
+
+[08-20 23:00:07:492]
+[08-20 23:00:07:492]
+
+[08-20 23:00:08:461][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,150009.000,2225.14436,N,11332.64120,E,1,21,0.999,35.1,M,-3.5,M,,*69
+
+[08-20 23:00:08:461]
+[08-20 23:00:08:461]
+
+[08-20 23:00:08:461][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,150009.000,A,2225.14436,N,11332.64120,E,0.000,250.772,200826,,,A,S*09
+
+[08-20 23:00:08:461]
+[08-20 23:00:08:461]
+
+[08-20 23:00:09:480][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,150010.000,2225.14445,N,11332.64115,E,1,20,1.132,35.5,M,-3.5,M,,*6E
+
+[08-20 23:00:09:480]
+[08-20 23:00:09:480]
+
+[08-20 23:00:09:480][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,150010.000,A,2225.14445,N,11332.64115,E,0.000,250.772,200826,,,A,S*03
+
+[08-20 23:00:09:480]
+[08-20 23:00:09:480]
+
+[08-20 23:00:10:466][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,150011.000,2225.14429,N,11332.64127,E,1,20,1.132,35.3,M,-3.5,M,,*62
+
+[08-20 23:00:10:466]
+[08-20 23:00:10:466]
+
+[08-20 23:00:10:466][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,150011.000,A,2225.14429,N,11332.64127,E,0.000,250.772,200826,,,A,S*09
+
+[08-20 23:00:10:466]
+[08-20 23:00:10:466]
+
+[08-20 23:00:11:550][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,150012.000,2225.14433,N,11332.64116,E,1,20,1.132,35.2,M,-3.5,M,,*69
+
+[08-20 23:00:11:550]
+[08-20 23:00:11:550]
+
+[08-20 23:00:11:550][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,150012.000,A,2225.14433,N,11332.64116,E,0.000,250.772,200826,,,A,S*03
+
+[08-20 23:00:11:550]
+[08-20 23:00:11:550]
+
+[08-20 23:00:12:475][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,150013.000,2225.14444,N,11332.64120,E,1,20,0.999,35.4,M,-3.5,M,,*63
+
+[08-20 23:00:12:475]
+[08-20 23:00:12:475]
+
+[08-20 23:00:12:475][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,150013.000,A,2225.14444,N,11332.64120,E,0.000,250.772,200826,,,A,S*07
+
+[08-20 23:00:12:475]
+[08-20 23:00:12:475]
+
+[08-20 23:00:13:461][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,150014.000,2225.14421,N,11332.64104,E,1,20,0.999,35.4,M,-3.5,M,,*61
+
+[08-20 23:00:13:461]
+[08-20 23:00:13:461]
+
+[08-20 23:00:13:461][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,150014.000,A,2225.14421,N,11332.64104,E,0.000,250.772,200826,,,A,S*05
+
+[08-20 23:00:13:461]
+[08-20 23:00:13:461]
+
+[08-20 23:00:14:487][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,150015.000,2225.14441,N,11332.64123,E,1,19,1.186,35.3,M,-3.5,M,,*69
+
+[08-20 23:00:14:487]
+[08-20 23:00:14:487]
+
+[08-20 23:00:14:487][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,150015.000,A,2225.14441,N,11332.64123,E,0.000,250.772,200826,,,A,S*07
+
+[08-20 23:00:14:487]
+[08-20 23:00:14:487]
+
+[08-20 23:00:15:107][ cmlog ][OPENCPU]:[CMMQTT] send len:518
+[08-20 23:00:15:107]
+[08-20 23:00:15:107]
+
+[08-20 23:00:15:107][ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:518
+[08-20 23:00:15:107]
+[08-20 23:00:15:107]
+
+[08-20 23:00:15:107][ cmlog ][OPENCPU]:[PET][I] LOC #9 publish ok
+
+[08-20 23:00:15:107]
+[08-20 23:00:15:107]
+
+[08-20 23:00:15:107][ cmlog ][OPENCPU]:[PET][I] alive mode=searching rssi=-65 gps=FIX sat=19 lat=22.41907 lon=113.54402 lbs=460,0,9840,178912774,-8
+
+[08-20 23:00:15:107][ cmlog ][OPENCPU]:[PET][I] lbs: task start (force_wifi=0 report=0)
+
+[08-20 23:00:15:107]
+[08-20 23:00:15:107]
+
+[08-20 23:00:15:229]asocket_cb 3 2
+
+[08-20 23:00:15:229]asocket_cb 3 10
+
+[08-20 23:00:15:229][ELOOP] post event=0x7e044c00
+
+[08-20 23:00:15:229]asocket_cb 3 0
+
+[08-20 23:00:15:229][ELOOP] post event=0x7e044be8
+
+[08-20 23:00:15:229][ELOOP] rdy_list eloop=0x7e263c6c
+
+[08-20 23:00:15:229]asocket_on_eloop 0x7e044c00,0x7e2956dc
+
+[08-20 23:00:15:229]asocket_event 0x7e2956dc,0x7e044c00
+
+[08-20 23:00:15:229][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+[08-20 23:00:15:229]
+[08-20 23:00:15:229]
+
+[08-20 23:00:15:229]asocket_on_eloop 0x7e044be8,0x7e2956dc
+
+[08-20 23:00:15:229]asocket_event 0x7e2956dc,0x7e044be8
+
+[08-20 23:00:15:229][ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+[08-20 23:00:15:229]
+[08-20 23:00:15:229]
+
+[08-20 23:00:15:229][ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[08-20 23:00:15:229]
+
+[08-20 23:00:15:229][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+
+[08-20 23:00:15:229][ELOOP] rdy_list eloop=0x7e263c6c
+
+[08-20 23:00:15:229][ELOOP] eloop millsec=4294967295 tick=4294967295
+
+[08-20 23:00:15:229][ELOOP] rdy_list eloop=0x7e263c6c
+
+[08-20 23:00:15:229][ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+
+[08-20 23:00:15:229][ELOOP] rdy_list eloop=0x7e263c6c
+
+[08-20 23:00:15:229][ELOOP] eloop millsec=4294967295 tick=4294967295
+
+[08-20 23:00:15:229][ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+[08-20 23:00:15:229]
+[08-20 23:00:15:229]
+
+[08-20 23:00:15:229]asocket_cb 3 1
+
+[08-20 23:00:15:229][ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+[08-20 23:00:15:229]
+[08-20 23:00:15:229]
+
+[08-20 23:00:15:475][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,150016.000,2225.14450,N,11332.64106,E,1,19,1.186,35.3,M,-3.5,M,,*6D
+
+[08-20 23:00:15:475]
+[08-20 23:00:15:475]
+
+[08-20 23:00:15:475][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,150016.000,A,2225.14450,N,11332.64106,E,0.000,250.772,200826,,,A,S*03
+
+[08-20 23:00:15:475]
+[08-20 23:00:15:475]
+
+[08-20 23:00:16:476][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,150017.000,2225.14448,N,11332.64125,E,1,19,1.187,35.2,M,-3.5,M,,*64
+
+[08-20 23:00:16:476]
+[08-20 23:00:16:476]
+
+[08-20 23:00:16:476][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,150017.000,A,2225.14448,N,11332.64125,E,0.000,250.772,200826,,,A,S*0A
+
+[08-20 23:00:16:476]
+[08-20 23:00:16:476]
+
+[08-20 23:00:16:476][ cmlog ][OPENCPU]:[PET][I] lbs: task done
+
+[08-20 23:00:16:476]
+[08-20 23:00:16:476]
+
+[08-20 23:00:17:456][ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,150018.000,2225.14422,N,11332.64109,E,1,19,1.187,35.3,M,-3.5,M,,*68
+
+[08-20 23:00:17:456]
+[08-20 23:00:17:456]
+
+[08-20 23:00:17:456][ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,150018.000,A,2225.14422,N,11332.64109,E,0.000,250.772,200826,,,A,S*07
+
+[08-20 23:00:17:456]
+[08-20 23:00:17:456]
 

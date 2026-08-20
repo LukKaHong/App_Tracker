@@ -1,6 +1,8 @@
 /**
  * @file    app_mode.h
- * @brief   运行模式管理：关机 / 寻狗 / 正常 / 省电 / 超省电
+ * @brief   运行模式管理（需求 1：六种工作模式）
+ *          关机 / 寻宠 / 遛宠 / 看护 / 省电 / 休眠
+ *          模式字符串与平台协议（DEVICE_CLOUD_PROTOCOL.md 5.2 / HARDWARE_COMMAND_INTEGRATION.md）一致
  */
 #ifndef __APP_MODE_H__
 #define __APP_MODE_H__
@@ -13,11 +15,12 @@ extern "C" {
 #endif
 
 typedef enum {
-    APP_MODE_OFF = 0,       /* 关机模式 */
-    APP_MODE_FIND_DOG,      /* 寻狗模式：5 秒一次定位 */
-    APP_MODE_NORMAL,        /* 正常模式：30 秒一次 */
-    APP_MODE_SAVE_POWER,    /* 省电模式：5 分钟一次 */
-    APP_MODE_SUPER_SAVE,    /* 超省电：只联网不定位 */
+    APP_MODE_OFF = 0,       /* 关机模式：不联网不定位（协议无对应字符串） */
+    APP_MODE_SEARCHING,     /* 寻宠 searching：10 秒/次，10 分钟后自动切回看护 */
+    APP_MODE_WALKING,       /* 遛宠 walking：30 秒/次，30 分钟后自动切回看护 */
+    APP_MODE_SUPERVISE,     /* 看护 supervise：5 分钟/次 */
+    APP_MODE_LOWPOWER,      /* 省电 lowpower：1 小时/次 */
+    APP_MODE_SLEEP,         /* 休眠 sleep：保持联网不主动上报，收到指令后单次定位 */
     APP_MODE_NUM
 } app_mode_e;
 
@@ -31,14 +34,28 @@ app_mode_e app_mode_get(void);
  * 返回 0=成功，<0=失败 */
 int app_mode_set(app_mode_e new_mode);
 
-/* 默认开机模式（关机模式 -> 开机时进入） */
+/* 默认开机模式（关机模式 -> 开机时进入：看护模式） */
 app_mode_e app_mode_default_on(void);
 
-/* 寻狗模式自动退出倒计时（10 分钟到期回到正常模式） */
-void app_mode_reset_find_dog_timer(void);
-bool app_mode_find_dog_expired(void);
+/* ===== 协议字符串映射（searching/walking/supervise/lowpower/sleep）===== */
+/* 转协议字符串；OFF 模式返回 NULL */
+const char *app_mode_to_string(app_mode_e mode);
+/* 协议字符串转枚举；无效返回 APP_MODE_NUM */
+app_mode_e app_mode_from_string(const char *mode_str);
 
-/* 当前模式下定位周期 (ms)，超省电返回 0 */
+/* ===== 寻宠/遛宠超时自动切回看护（需求 1）===== */
+void app_mode_reset_switch_timer(void);
+/* 当前模式超时到期则自动切回看护并返回 true */
+bool app_mode_auto_switch_expired(void);
+
+/* ===== 平台常规定位频率覆盖（LOCATION_FREQUENCY 指令）===== */
+/* 设置平台指定的定位周期（秒）；seconds<=0 表示清除恢复模式默认值 */
+void app_mode_set_platform_interval(int seconds);
+/* 平台是否设置了覆盖值 */
+bool app_mode_has_platform_interval(void);
+
+/* 当前模式下定位周期 (ms)，休眠模式返回 0（不主动上报）；
+ * 若平台通过 LOCATION_FREQUENCY 设置了覆盖值则优先返回覆盖值 */
 uint32_t app_mode_get_loc_interval_ms(void);
 
 #ifdef __cplusplus

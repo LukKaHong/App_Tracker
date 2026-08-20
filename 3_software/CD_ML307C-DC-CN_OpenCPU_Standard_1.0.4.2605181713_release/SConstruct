@@ -24,8 +24,17 @@ from UtilsTools import *
 op_sys = Platform()
 print("Operation system: %s" % op_sys)
 
+# 子进程环境继承 TMP/TEMP：install_spawn 传递 env['ENV'] 给编译器子进程，
+# 若缺失 TMP/TEMP，gcc 的 cc1 会按 GetTempPath 回落到 C:\WINDOWS 写临时文件，
+# 在受限权限环境下导致 "Permission denied" 编译失败
+_spawn_env = {'PATH': os.environ['PATH']}
+if 'TMP' in os.environ:
+    _spawn_env['TMP'] = os.environ['TMP']
+if 'TEMP' in os.environ:
+    _spawn_env['TEMP'] = os.environ['TEMP']
+
 env = Environment(
-    ENV={'PATH': os.environ['PATH']},
+    ENV=_spawn_env,
     tools=['default', 'gcc', 'g++', 'gas', 'ar', 'gnulink'],
     toolpath=['tools/scons'],
     PROGSUFFIX='.elf',
