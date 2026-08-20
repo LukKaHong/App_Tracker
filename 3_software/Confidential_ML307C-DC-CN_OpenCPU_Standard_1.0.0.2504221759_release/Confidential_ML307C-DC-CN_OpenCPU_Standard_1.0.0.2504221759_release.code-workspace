@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "../../1_requirement"
+		},
+		{
+			"path": "../CD_ML307C-DC-CN_OpenCPU_Standard_1.0.4.2605181713_release"
 		}
 	],
 	"settings": {}
