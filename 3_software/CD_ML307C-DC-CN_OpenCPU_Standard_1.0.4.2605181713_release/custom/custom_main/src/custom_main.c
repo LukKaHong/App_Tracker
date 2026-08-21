@@ -57,6 +57,29 @@ static volatile bool g_gps_opened = false;
 /* GPS 波特率是否已对齐：收到首条 NMEA 数据后置 true
  * 需求 2.3：GPS 芯片波特率需与串口一致，2 秒间隔反复尝试设置直到成功 */
 static volatile bool g_gps_baudrate_set = false;
+/* GPS 当前实际应用的功耗模式（CFGLPMODE 值，-1=未应用/GPS 已关闭）
+ * 仅主循环读写；用于工作模式间切换时检测是否需重新下发 CFGLPMODE */
+static int g_gps_lpmode_applied = -1;
+
+/* 工作模式 → GPS 功耗模式（ICOE CFGLPMODE）映射：
+ * 寻宠 10s 高频次/快速移动        → 高性能（定位速度与轨迹优先）
+ * 遛宠 30s 高动态                 → 自适应（保轨迹质量，软件自动降功耗）
+ * 看护 5min / 省电 1h 长间隙定位   → 超低功耗（芯片自动开关：定位间隙休眠，
+ *                                    唤醒后星历/时间/位置有效，热启动秒级定位；
+ *                                    最长 1h 周期 < GPS 星历约 2h 有效期） */
+static bsp_gps_lpmode_e gps_lpmode_for_app_mode(app_mode_e mode)
+{
+    switch (mode) {
+    case APP_MODE_SUPERVISE:
+    case APP_MODE_LOWPOWER:
+        return BSP_GPS_LPMODE_ULTRA_LOW;
+    case APP_MODE_WALKING:
+        return BSP_GPS_LPMODE_AUTO;
+    default:                        /* SEARCHING 及其余：高性能 */
+        return BSP_GPS_LPMODE_HIGH;
+    }
+}
+
 /* MQTT 连接成功标志：由回调设置，主循环检测后执行 subscribe/publish
  * 不能在 MQTT 回调（cmmqtt-m 任务上下文）中直接调用 MQTT API，否则重入崩溃 */
 static volatile bool g_mqtt_just_connected = false;
@@ -407,6 +430,13 @@ static void provisioning_and_connect(void)
 #endif
 }
 
+/* 供 WiFi 扫描试验（app_lbs.c）在断开 MQTT 扫描后重连使用：
+ * 复用完整凭证流程（硬编码/缓存/provisioning 均覆盖） */
+void app_reconnect_mqtt(void)
+{
+    provisioning_and_connect();
+}
+
 /* ===== GPS 接收回调：解析并保存最新定位 ===== */
 static void gps_rx_cb(const char *line)
 {
@@ -489,6 +519,7 @@ static void handle_key_longpress(void)
             osDelay(APP_MS_TO_TICK(100));
             bsp_gps_close();
             g_gps_opened = false;
+            g_gps_lpmode_applied = -1;
         }
         /* 需求 1：非关机模式长按 5 秒进入关机模式 */
         app_mode_set(APP_MODE_OFF);
@@ -699,20 +730,20 @@ static void main_task(void *arg)
             }
         }
 
-        /* GPS 功耗模式切换（模式变化时）：
-         * 寻宠/遛宠/看护：高性能（快速定位）；省电：自适应（软件自动控制功耗）
-         * UART 开关由下方每秒一致性维护处理
+        /* GPS 功耗模式切换（模式变化时即时处理）：
+         * 功耗模式由 gps_lpmode_for_app_mode() 统一映射（寻宠=高性能、遛宠=自适应、
+         * 看护/省电=超低功耗）；GPS 未打开时仅记录日志，实际下发由下方每秒兜底完成
          * one-shot 任务运行中时跳过，避免与 one_shot_loc_task 竞态 */
         if (mode != last_mode) {
             last_mode = mode;
             if (mode != APP_MODE_SLEEP && mode != APP_MODE_OFF && !g_one_shot_running) {
-                bsp_gps_lpmode_e lpm = (mode == APP_MODE_LOWPOWER) ?
-                    BSP_GPS_LPMODE_AUTO : BSP_GPS_LPMODE_HIGH;
+                bsp_gps_lpmode_e lpm = gps_lpmode_for_app_mode(mode);
                 if (g_gps_opened) {
                     bsp_gps_set_power_mode(lpm);
+                    g_gps_lpmode_applied = (int)lpm;
                 }
                 APP_LOGI("mode -> %s, gps lpmode=%d",
-                         app_mode_to_string(mode), lpm);
+                         app_mode_to_string(mode), (int)lpm);
             }
         }
 
@@ -723,17 +754,17 @@ static void main_task(void *arg)
         if ((now - last_gps_sync_tick) >= APP_MS_TO_TICK(1000)) {
             last_gps_sync_tick = now;
             bool gps_should_open = (mode != APP_MODE_SLEEP && mode != APP_MODE_OFF);
+            bsp_gps_lpmode_e lpm = gps_lpmode_for_app_mode(mode);
             if (gps_should_open && !g_gps_opened &&
                 !g_one_shot_running && !g_one_shot_loc) {
                 if (bsp_gps_open(gps_rx_cb) == 0) {
                     g_gps_opened = true;
                     /* 重新打开 GPS 后波特率对齐状态失效，需重新设置 CFGPRT（问题 12） */
                     g_gps_baudrate_set = false;
-                    bsp_gps_lpmode_e lpm = (mode == APP_MODE_LOWPOWER) ?
-                        BSP_GPS_LPMODE_AUTO : BSP_GPS_LPMODE_HIGH;
                     bsp_gps_set_power_mode(lpm);
+                    g_gps_lpmode_applied = (int)lpm;
                     APP_LOGI("gps opened (mode=%s lpmode=%d)",
-                             app_mode_to_string(mode), lpm);
+                             app_mode_to_string(mode), (int)lpm);
                 } else {
                     APP_LOGE("gps open fail (mode=%s)", app_mode_to_string(mode));
                 }
@@ -743,7 +774,16 @@ static void main_task(void *arg)
                 osDelay(APP_MS_TO_TICK(100));
                 bsp_gps_close();
                 g_gps_opened = false;
+                g_gps_lpmode_applied = -1;
                 APP_LOGI("gps closed (mode=%s)", app_mode_to_string(mode));
+            } else if (gps_should_open && g_gps_opened &&
+                       !g_one_shot_loc && !g_one_shot_running &&
+                       (int)lpm != g_gps_lpmode_applied) {
+                /* 工作模式间切换（GPS 保持打开）：同步 CFGLPMODE 功耗模式 */
+                bsp_gps_set_power_mode(lpm);
+                g_gps_lpmode_applied = (int)lpm;
+                APP_LOGI("gps lpmode -> %d (mode=%s)",
+                         (int)lpm, app_mode_to_string(mode));
             }
         }
 
@@ -831,19 +871,24 @@ static void main_task(void *arg)
         /* 信号强度周期采样
          * [FIX] 每 5000ms 采样一次：cm_modem_info_radio 经由 modem OSA tx 路径，
          * 主循环 20ms 一次无节流调用会导致 OSA tx buffer 重入，
-         * Tx Status 被置 0x4 引发 System Timer Thread osa_tx_run.c:241 崩溃 */
-        if ((now - last_rssi_tick) >= APP_MS_TO_TICK(5000)) {
+         * Tx Status 被置 0x4 引发 System Timer Thread osa_tx_run.c:241 崩溃
+         * WiFi 扫描静默窗口内跳过采样（AT 查询会扰动协议栈，影响天线仲裁） */
+        if ((now - last_rssi_tick) >= APP_MS_TO_TICK(5000) &&
+            !app_lbs_is_modem_quiet()) {
             last_rssi_tick = now;
             g_last_rssi = read_signal_strength();
         }
 
         /* 周期定位（休眠/关机模式 interval=0 不主动上报）
          * 需求 2：GNSS 有效 → 上报 GPS 定位；
-         * GNSS 无有效定位（冷启动/室内/信号差）→ 需求 2.2 LBS & WiFi 原始参数兜底：
+         * GNSS 无有效定位（冷启动/室内/信号差）→ 需求 2.2 LBS&WiFi 原始参数兜底：
          * 采集基站+WiFi 原始参数上报平台，由平台调高德解算坐标
          * LBS 参数按定位周期持续采集（读取协议栈小区缓存，毫秒级、近零功耗），
-         * 仅在 GPS 无有效定位时上报采集到的基站参数 */
-        if (interval > 0 && (now - last_loc_tick) >= APP_MS_TO_TICK(interval)) {
+         * 仅在 GPS 无有效定位时上报采集到的基站参数
+         * WiFi 扫描静默窗口内推迟触发（lbs_task 的 modem 查询会扰动天线仲裁），
+         * 窗口结束后下个周期自然补上 */
+        if (interval > 0 && (now - last_loc_tick) >= APP_MS_TO_TICK(interval) &&
+            !app_lbs_is_modem_quiet()) {
             last_loc_tick = now;
             app_location_t cur_loc;
             if (g_loc_mutex) osMutexAcquire(g_loc_mutex, osWaitForever);

@@ -9,8 +9,10 @@
  *          字段含义见需求 2.2：mcc/mnc/lac(TAC)/cellid(ECI)/signal(负数 dBm)、
  *          mac(冒号分隔)/signal(RSSI 负数 dBm)
  *
- *          WiFi 扫描期间模组掉网（CFUN=5），扫描后恢复（CFUN=1）并等待
- *          网络注册。扫描受最小间隔限制（默认 5 分钟）以降低功耗与掉网影响。
+ *          WiFi 扫描采用断 MQTT 不断网方案：断开应用层 TCP（保持网络注册
+ *          与 PDP），静默等待 RRC 回落 IDLE 后扫描，完成后自动重连 MQTT
+ *          （离线窗口约 28s）。扫描受最小间隔限制（默认 5 分钟）以降低
+ *          功耗与断连影响。
  */
 #ifndef __APP_LBS_H__
 #define __APP_LBS_H__
@@ -41,6 +43,10 @@ bool app_lbs_is_running(void);
 /* 查询最近一次采集缓存的服务小区 bts 字符串（"mcc,mnc,lac,cellid,signal"）
  * 无缓存返回 NULL。仅用于日志/调试显示 */
 const char *app_lbs_get_cached_bts(void);
+
+/* WiFi 扫描静默窗口进行中：置位期间主循环应跳过 rssi 采样等
+ * modem 查询，避免 AT 活动扰动协议栈导致天线仲裁偏向 LTE */
+bool app_lbs_is_modem_quiet(void);
 
 #ifdef __cplusplus
 }

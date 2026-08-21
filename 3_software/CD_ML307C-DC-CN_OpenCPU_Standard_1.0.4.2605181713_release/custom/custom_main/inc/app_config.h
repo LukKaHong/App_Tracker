@@ -157,21 +157,32 @@ extern "C" {
 /* ===================================================================
  * 10.1 LBS & WiFi 原始参数上报（需求 2.2）
  *      设备仅采集基站/WiFi 原始参数上报平台，由平台调高德解算。
- *      WiFi 扫描期间模组掉网（CFUN=5），扫描后恢复（CFUN=1）。
+ *      WiFi 扫描方案：断 MQTT → 静默 8s → 扫描 ~17s → 重连 MQTT
+ *      离线时长约 28s（远优于 CFUN=5 方案的 40~90s）
  * =================================================================== */
 /* WiFi 参数采集开关：
- * 1 = 启用 WiFi 扫描（每次扫描模组掉网约 40~90 秒，MQTT 短暂断开）
- * 0 = 暂时屏蔽：仅采集基站参数（bts/nearbts），不掉网，MQTT 保持连接；
- *     上报报文不含 macs 字段，平台仅用基站信息解算 */
+ * 1 = 启用 WiFi 扫描（GPS 无效时采集 AP 列表，提高室内定位精度）
+ * 0 = 仅采集基站参数（bts/nearbts），报文不含 macs 字段 */
 #define APP_LBS_WIFI_ENABLE                 0
 
 #define APP_LBS_WIFI_SCAN_MIN_INTERVAL_MS   (5 * 60 * 1000)  /* WiFi 扫描最小间隔 5 分钟 */
-#define APP_LBS_WIFI_SCAN_TIMEOUT_S         30               /* WiFi 扫描总超时（秒） */
 #define APP_LBS_WIFI_SCAN_MAX_COUNT         30               /* 期望上报 AP 数量（高德上限 30） */
-#define APP_LBS_WIFI_SCAN_ROUND             3                /* 扫描轮次 */
-#define APP_LBS_PDP_WAIT_TIMEOUT_S          30               /* 扫描后等待 PDP 激活超时（秒） */
+#define APP_LBS_WIFI_SCAN_ROUND             2                /* 扫描轮次（平衡耗时与成功率） */
+#define APP_LBS_WIFI_SCAN_TIMEOUT_S         20               /* 单次扫描超时（秒） */
+#define APP_LBS_WIFI_RRC_IDLE_WAIT_S        8                /* 断 MQTT 后静默等待 RRC 回落 IDLE（秒） */
+#define APP_LBS_PDP_WAIT_TIMEOUT_S          30               /* 扫描后等待 PDP 激活超时（秒，保留兼容） */
 #define APP_LBS_URL_BUF_SIZE                1024             /* bts/nearbts/macs 字符串缓冲 */
 #define APP_LBS_JSON_BUF_SIZE               (APP_LBS_URL_BUF_SIZE + 512)
+
+/* ===================================================================
+ * WiFi 扫描方案说明（2026-08-21 实测定论）
+ * -------------------------------------------------------------------
+ * 结论：保持 MQTT TCP 连接时 RRC 永不 IDLE，WiFi 扫描 0 AP；
+ *       断开 MQTT 后静默 8s 再扫描，100% 成功（平均 6 AP）。
+ * 方案：断 MQTT → 静默等 RRC IDLE → 扫描 → 重连 MQTT
+ * 离线时长：约 28s（8s 静默 + ~17s 扫描 + ~3s 重连）
+ * 对比 CFUN=5 方案：40~90s 离线，功耗更高
+ * =================================================================== */
 
 /* ===================================================================
  * 11. 日志

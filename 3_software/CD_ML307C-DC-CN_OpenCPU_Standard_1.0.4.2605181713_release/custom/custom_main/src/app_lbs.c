@@ -3,19 +3,23 @@
  * @brief   LBS & WiFi 原始参数采集上报实现（需求 2.2）
  * @details 流程（参考 SDK examples/wifiscan 官方 demo）：
  *          1. cm_modem_get_cell_info 采集服务小区 + 邻区原始参数（需在线）
- *          2. WiFi 扫描：CFUN=5 关闭 4G 射频（模组掉网，扫描更稳定）
- *             → cm_wifiscan_start 异步扫描 → CFUN=1 恢复 → 等待 PDP 激活
+ *          2. WiFi 扫描（断 MQTT 不断网方案）：断开 MQTT（保持网络注册与
+ *             PDP，仅断应用层 TCP）→ 静默等待 RRC 回落 IDLE →
+ *             cm_wifiscan_start 异步扫描 → 重连 MQTT
+ *             （实测 2026-08-21：保持 TCP 连接时 RRC 永不 IDLE，扫描 0 AP；
+ *             断 MQTT 静默 8s 再扫描 100% 成功，离线窗口约 28s，
+ *             远优于 CFUN=5 掉网方案的 40~90s）
  *          3. 按高德智能硬件定位字段格式上报平台（平台调高德解算坐标）：
  *             bts="mcc,mnc,lac,cellid,signal"（服务小区）
  *             nearbts="...|..."（邻区，| 分隔）
  *             macs="AA:BB:CC:DD:EE:FF,rssi|..."（WiFi AP，| 分隔）
  *
- *          当前 APP_LBS_WIFI_ENABLE=0 暂时屏蔽 WiFi 扫描：
- *          仅采集基站参数上报（不掉网、MQTT 保持连接），报文不含 macs 字段。
- *          恢复 WiFi 采集改 app_config.h 中该开关为 1 即可。
+ *          WiFi 扫描由 app_config.h 中 APP_LBS_WIFI_ENABLE 控制（当前=0 屏蔽，
+ *          方案代码保留，恢复置 1 即可）；置 0 时仅采集基站参数上报
+ *          （无扫描窗口、MQTT 保持连接），报文不含 macs 字段。
  *
- *          WiFi 扫描受限频控制（默认 5 分钟最小间隔）以降低掉网与功耗影响；
- *          离线时 LBS 原始参数不上缓存（无线环境随时间变化，过期原始参数
+ *          WiFi 扫描受限频控制（默认 5 分钟最小间隔）以降低 MQTT 断连与功耗
+ *          影响；离线时 LBS 原始参数不上缓存（无线环境随时间变化，过期原始参数
  *          解算出的坐标无意义，且报文大于离线缓存单条容量）。
  */
 #include <string.h>
@@ -33,18 +37,28 @@
 #include "app_mqtt_client.h"
 #include "app_lbs.h"
 
+/* custom_main.c 提供：复用完整凭证流程重连 MQTT（WiFi 扫描后重连用） */
+extern void app_reconnect_mqtt(void);
+
 /* 由 custom_main.c 提供的通用上报接口（在线直发 / 离线缓存） */
 extern int app_main_publish_telemetry(const char *json, int len,
                                       const char *msgid, const char *event_time);
 
 #define LBS_EVT_SCAN_DONE   (1u << 0)
 
+/* WiFi 扫描公共资源（回调/结果缓存/完成事件；APP_LBS_WIFI_ENABLE=1 时启用） */
+#if APP_LBS_WIFI_ENABLE || APP_LBS_WIFI_ONLINE_TEST_ENABLE
+#define LBS_WIFI_COMMON_ENABLE   1
+#else
+#define LBS_WIFI_COMMON_ENABLE   0
+#endif
+
 static char     g_imei[16] = "000000000000000";
 static char     g_boot_id[32] = "boot_0000";
 static volatile bool s_running = false;          /* 采集任务运行中 */
 static uint32_t s_lbs_seq = 0;                   /* LBS 上报序号（message_id） */
 
-#if APP_LBS_WIFI_ENABLE
+#if LBS_WIFI_COMMON_ENABLE
 static osEventFlagsId_t s_scan_evt = NULL;
 static uint32_t s_last_wifi_scan_tick = 0;       /* 上次 WiFi 扫描时刻（限频） */
 
@@ -71,7 +85,7 @@ void app_lbs_set_boot_id(const char *boot_id)
 
 int app_lbs_init(void)
 {
-#if APP_LBS_WIFI_ENABLE
+#if LBS_WIFI_COMMON_ENABLE
     if (!s_scan_evt) {
         s_scan_evt = osEventFlagsNew(NULL);
     }
@@ -79,7 +93,7 @@ int app_lbs_init(void)
 #endif
     s_running = false;
     s_lbs_seq = 0;
-#if APP_LBS_WIFI_ENABLE
+#if LBS_WIFI_COMMON_ENABLE
     return s_scan_evt ? 0 : -1;
 #else
     return 0;
@@ -91,7 +105,16 @@ bool app_lbs_is_running(void)
     return s_running;
 }
 
-#if APP_LBS_WIFI_ENABLE
+/* 扫描静默标志：WiFi 扫描窗口内置位，主循环据此跳过 rssi 采样等 modem 查询，
+ * 避免 AT 活动扰动协议栈导致天线仲裁偏向 LTE */
+static volatile bool s_modem_quiet = false;
+
+bool app_lbs_is_modem_quiet(void)
+{
+    return s_modem_quiet;
+}
+
+#if LBS_WIFI_COMMON_ENABLE
 /* ===== WiFi 扫描回调（SDK 任务上下文）：拷贝结果并置完成标志 ===== */
 static void wifi_scan_cb(cm_wifi_scan_info_t *param, void *user_param)
 {
@@ -102,9 +125,9 @@ static void wifi_scan_cb(cm_wifi_scan_info_t *param, void *user_param)
     s_scan_done = true;
     if (s_scan_evt) osEventFlagsSet(s_scan_evt, LBS_EVT_SCAN_DONE);
 }
-#endif /* APP_LBS_WIFI_ENABLE */
+#endif /* LBS_WIFI_COMMON_ENABLE */
 
-/* ===== 采集基站原始参数（需网络在线，须在 CFUN=5 之前调用）=====
+/* ===== 采集基站原始参数（需网络在线，须在断 MQTT / WiFi 扫描前采集）=====
  * bts:     "mcc,mnc,lac,cellid,signal"（服务小区，signal 为负数 dBm）
  * nearbts: 邻区列表，组内格式同 bts，组间以 | 分隔
  * 返回 0 成功，<0 失败 */
@@ -157,14 +180,17 @@ static int collect_cell_info(char *bts, size_t bts_size,
 }
 
 #if APP_LBS_WIFI_ENABLE
-/* ===== WiFi 扫描：CFUN=5 掉网扫描 → CFUN=1 恢复 → 等 PDP 激活 =====
+/* ===== WiFi 扫描：断 MQTT → 静默等 RRC IDLE → 扫描 → 重连 MQTT =====
+ * 实测结论（2026-08-21）：保持 TCP 连接时 RRC 永不 IDLE，扫描 0 AP；
+ * 断开 MQTT 后静默 10s 再扫描，100% 成功（平均 6 AP）。
+ * 离线时长约 28s（8s 静默 + ~17s 扫描 + ~3s 重连），远优于 CFUN=5 的 40~90s。
  * 返回扫描到的 AP 数量（0 = 无有效结果） */
 static int do_wifi_scan(void)
 {
     uint8_t round = APP_LBS_WIFI_SCAN_ROUND;
     uint8_t max_count = APP_LBS_WIFI_SCAN_MAX_COUNT;
     uint8_t timeout_s = APP_LBS_WIFI_SCAN_TIMEOUT_S;
-    uint8_t priority = CM_WIFI_SCAN_WIFI_HIGH;  /* WiFi 优先（SDK demo 建议） */
+    uint8_t priority = CM_WIFI_SCAN_WIFI_HIGH;  /* WiFi 优先（扫描期天线归 WiFi） */
 
     if (cm_wifiscan_cfg(CM_WIFI_SCAN_CFG_ROUND, &round) != 0 ||
         cm_wifiscan_cfg(CM_WIFI_SCAN_CFG_MAX_COUNT, &max_count) != 0 ||
@@ -174,54 +200,66 @@ static int do_wifi_scan(void)
         return -1;
     }
 
-    /* WiFi 扫描期间关闭 4G 射频（模组掉网），扫描更稳定 */
-    if (cm_modem_set_cfun(5) < 0) {
-        APP_LOGW("lbs: set cfun 5 fail");
-        return -1;
+    /* 1. 断开 MQTT（保持网络注册与 PDP，仅断应用层 TCP） */
+    bool was_connected = app_mqtt_is_connected();
+    if (was_connected) {
+        APP_LOGI("lbs: disconnect mqtt for wifi scan...");
+        app_mqtt_disconnect();
     }
 
+    /* 2. 静默等待 RRC 回落 IDLE（关键：无数据活动让协议栈释放天线） */
+    s_modem_quiet = true;   /* 抑制主循环 rssi 采样等 AT 查询 */
+    APP_LOGI("lbs: quiet %ds for RRC idle...", APP_LBS_WIFI_RRC_IDLE_WAIT_S);
+    osDelay(APP_MS_TO_TICK(APP_LBS_WIFI_RRC_IDLE_WAIT_S * 1000));
+
+    /* 3. 启动 WiFi 扫描 */
     memset(&s_wifi_result, 0, sizeof(s_wifi_result));
     s_scan_done = false;
-    /* SDK cm_os.h 未开放 osEventFlagsClear，用 0 超时等待消费掉残留标志 */
     if (s_scan_evt) {
         osEventFlagsWait(s_scan_evt, LBS_EVT_SCAN_DONE, osFlagsWaitAny, 0);
     }
 
+    uint32_t t0 = (uint32_t)osKernelGetTickCount();
     if (cm_wifiscan_start(wifi_scan_cb, NULL) != 0) {
         APP_LOGW("lbs: wifiscan start fail");
-        cm_modem_set_cfun(1);
-        return -1;
+        s_modem_quiet = false;
+        goto restore;
     }
+    APP_LOGI("lbs: wifiscan started...");
 
-    /* 等待扫描完成回调（总超时 + 5 秒缓冲） */
+    /* 等待扫描完成 */
     if (s_scan_evt) {
         osEventFlagsWait(s_scan_evt, LBS_EVT_SCAN_DONE, osFlagsWaitAny,
-                         APP_MS_TO_TICK((APP_LBS_WIFI_SCAN_TIMEOUT_S + 5) * 1000));
+                         APP_MS_TO_TICK((timeout_s + 5) * 1000));
     }
-    /* 超时未完成则中断扫描 */
     cm_wifiscan_stop();
+    s_modem_quiet = false;
 
-    /* 恢复网络 */
-    if (cm_modem_set_cfun(1) < 0) {
-        osDelay(APP_MS_TO_TICK(1000));
-        cm_modem_set_cfun(1);
-    }
-
-    /* 等待 PDP 激活 */
-    int pdp_wait_cnt = APP_LBS_PDP_WAIT_TIMEOUT_S * 5;  /* 200ms 一次 */
-    while (pdp_wait_cnt-- > 0) {
-        if (cm_modem_get_pdp_state(1) == 1) break;
-        osDelay(APP_MS_TO_TICK(200));
-    }
-    /* PDP 激活到可数据通信需适当等待（SDK demo 建议） */
-    osDelay(APP_MS_TO_TICK(1000));
-
+    uint32_t elapsed_ms = ((uint32_t)osKernelGetTickCount() - t0) * APP_TICK_MS;
     if (!s_scan_done) {
-        APP_LOGW("lbs: wifiscan timeout");
-        return 0;
+        APP_LOGW("lbs: wifiscan timeout after %lums", (unsigned long)elapsed_ms);
+        goto restore;
     }
-    APP_LOGI("lbs: wifiscan got %d ap", s_wifi_result.bssid_number);
-    return s_wifi_result.bssid_number;
+    APP_LOGI("lbs: wifiscan done in %lums, ap=%d",
+             (unsigned long)elapsed_ms, (int)s_wifi_result.bssid_number);
+
+restore:
+    /* 4. 重连 MQTT（如果之前是连接状态） */
+    if (was_connected) {
+        APP_LOGI("lbs: reconnect mqtt...");
+        app_reconnect_mqtt();
+        int wait_s = 10;
+        while (wait_s-- > 0 && !app_mqtt_is_connected()) {
+            osDelay(APP_MS_TO_TICK(1000));
+        }
+        if (!app_mqtt_is_connected()) {
+            APP_LOGW("lbs: mqtt reconnect timeout");
+        } else {
+            APP_LOGI("lbs: mqtt reconnected");
+        }
+    }
+
+    return s_scan_done ? s_wifi_result.bssid_number : 0;
 }
 
 /* ===== 组装 macs 字符串（高德格式：MAC,rssi 以 | 分隔）===== */
@@ -269,7 +307,7 @@ static void lbs_report(bool force_wifi, bool report)
     char msgid[APP_MSG_ID_MAX_LEN];
     char event_time[24];
 
-    /* 1. 基站原始参数（需在线，必须在 CFUN=5 掉网前采集） */
+    /* 1. 基站原始参数（需在线，必须在断 MQTT / WiFi 扫描窗口前采集） */
     bool has_bts = (collect_cell_info(bts, sizeof(bts),
                                       nearbts, sizeof(nearbts)) == 0);
 
@@ -364,7 +402,8 @@ static void lbs_report(bool force_wifi, bool report)
              (unsigned long)s_lbs_seq, (int)has_bts, (int)has_macs);
 }
 
-/* ===== 采集上报任务（独立线程，WiFi 扫描阻塞约 30~60 秒）===== */
+/* ===== 采集上报任务（独立线程；含 WiFi 扫描时单次约 30s：
+ * 8s RRC 静默 + ~17s 扫描 + ~3s MQTT 重连）===== */
 static void lbs_task(void *arg)
 {
     /* arg 位编码：bit0 = force_wifi，bit1 = report */
