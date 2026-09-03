@@ -1,11 +1,13 @@
 /**
  * @file    app_command.c
  * @brief   云端指令处理：DEVICE_MODE / HIGH_FREQ / SOUND / LIGHT /
- *          LOCATION_FREQUENCY / SHUTDOWN / OTA
+ *          LOCATION_FREQUENCY / SHUTDOWN / GET_VERSION / OTA
  *          - DEVICE_MODE：平台模式切换（需求 1 / 硬件协议 DEVICE_MODE）
  *          - SOUND/LIGHT 异步持续 duration_seconds，默认 30 秒（硬件协议）
  *          - LOCATION_FREQUENCY 生效：覆盖常规定位周期（平台协议 6）
- *          - SHUTDOWN 软关机流程（不调用 cm_pm_poweroff 硬关机）
+ *          - SHUTDOWN：上报 OFFLINE 后 cm_pm_poweroff 断电关机（需求 V1.8：
+ *            软件关机模式已删除，平台关机指令等价于硬件断电关机）
+ *          - GET_VERSION：应答当前版本信息（需求 6.7 平台查询）
  *          - 按 command_id 幂等去重（硬件协议 4：重复指令仅重发缓存结果）
  *          - 失败码符合硬件协议 5：INVALID_PARAMETER/DEVICE_BUSY/INTERNAL_ERROR
  *          - 全部使用静态缓冲区，不使用 cJSON malloc/free（避免与 cmmqtt-m 堆冲突）
@@ -25,7 +27,8 @@
 
 /* 由 custom_main.c 提供的实现声明 */
 extern void app_main_trigger_one_shot_location(void);
-extern void app_main_request_shutdown(void);
+extern void app_main_execute_poweroff(void);
+extern void app_main_report_device_info(void);
 
 /* 全局上下文：当前 IMEI（由 custom_main 注入） */
 static char g_imei[16] = "000000000000000";
@@ -202,7 +205,7 @@ static void dispatch(const app_rpc_parsed_t *rpc, const char *command_id)
         app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
         dedup_record(command_id, true, NULL);
     } else if (strcmp(method, "LIGHT") == 0) {
-        /* RGB 绿->红->蓝 交替快闪，默认持续 30 秒（硬件协议默认值）
+        /* 指示灯持续快闪（5Hz，需求 5），默认持续 30 秒（硬件协议默认值）
          * 参数规则同 SOUND */
         if (rpc->duration_seconds < 0) {
             app_command_send_result(command_id, APP_CMD_FAILED,
@@ -213,19 +216,19 @@ static void dispatch(const app_rpc_parsed_t *rpc, const char *command_id)
         int duration = APP_CMD_DEFAULT_DURATION_S;
         if (rpc->duration_seconds > 0) duration = rpc->duration_seconds;
         if (duration == 0) {
-            bsp_rgb_stop_pattern();
+            bsp_led_stop();
         } else {
-            bsp_rgb_set_pattern(BSP_RGB_PATTERN_PLATFORM_CMD, (uint32_t)duration);
+            bsp_led_flash_async((uint32_t)duration);
         }
         app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
         dedup_record(command_id, true, NULL);
     } else if (strcmp(method, "LIGHT_STOP") == 0) {
-        bsp_rgb_stop_pattern();
+        bsp_led_stop();
         app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
         dedup_record(command_id, true, NULL);
     } else if (strcmp(method, "LOCATION_FREQUENCY") == 0) {
         /* 调整常规定位频率（平台协议 6）：interval_seconds 生效，
-         * 覆盖当前模式默认周期（休眠/关机模式除外） */
+         * 覆盖当前模式默认周期（休眠模式除外） */
         if (rpc->interval_seconds <= 0) {
             app_command_send_result(command_id, APP_CMD_FAILED,
                                      "INVALID_PARAMETER", "interval_seconds must be positive");
@@ -236,15 +239,20 @@ static void dispatch(const app_rpc_parsed_t *rpc, const char *command_id)
         app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
         dedup_record(command_id, true, NULL);
     } else if (strcmp(method, "SHUTDOWN") == 0) {
-        /* 软关机：先发 ACK，再触发与长按关机相同的流程
-         * （上报 OFFLINE → 关闭 GPS → 断开 MQTT → 进入 OFF 模式）
-         * 不再调用 cm_pm_poweroff 硬关机，避免直接断电导致数据丢失 */
+        /* 平台关机指令（需求 V1.8：软件关机模式已删除）：
+         * 先发 ACK，再由 custom_main 上报 OFFLINE → 断 MQTT →
+         * cm_pm_poweroff() 断电关机（与长按 PWR_ON/OFF 硬件关机殊途同归） */
         app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
         dedup_record(command_id, true, NULL);
         bsp_buzzer_stop();
-        bsp_rgb_stop_pattern();
+        bsp_led_stop();
         osDelay(APP_MS_TO_TICK(500)); /* 等待 ACK telemetry 发出 */
-        app_main_request_shutdown();
+        app_main_execute_poweroff();
+    } else if (strcmp(method, "GET_VERSION") == 0) {
+        /* 平台版本查询（需求 6.7）：应答当前 app_ver/hw_ver/modem_ver 等 */
+        app_main_report_device_info();
+        app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
+        dedup_record(command_id, true, NULL);
     } else if (strcmp(method, "OTA") == 0) {
         const char *url = rpc->url;
         if (!url || url[0] == '\0') {

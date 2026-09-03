@@ -1,15 +1,21 @@
 /**
  * @file    app_mqtt_client.c
  * @brief   MQTT 客户端实现：连接 / 订阅 / 发布 / 断线重连
+ *          重连退避（需求 6.1）：5s → 10s → 30s → 60s 封顶，连接成功重置；
+ *          看护/省电/休眠模式连续失败 APP_RECONN_MAX_FAIL_LP 次后停止自动
+ *          重连，等待下一定位周期 app_mqtt_kick_reconnect() 触发，避免弱网
+ *          环境持续耗电。退避计时用 RTC UTC 秒（LP 睡眠期间 OS tick 冻结）。
  */
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "cm_os.h"
 #include "cm_mqtt.h"
+#include "cm_rtc.h"
 #include "cm_modem_info.h"
 #include "app_log.h"
 #include "app_config.h"
+#include "app_mode.h"
 #include "app_mqtt_client.h"
 #include "app_protocol.h"
 
@@ -23,8 +29,45 @@ static bool                 s_connected = false;
 static app_mqtt_credential_t s_saved_cred;
 static bool                 s_has_cred = false;
 
+/* keepalive 秒数（需求 6.3 分模式；连接建立时生效） */
+static uint16_t             s_keepalive_sec = APP_MQTT_KEEPALIVE_LP_SEC;
+
+/* 重连退避状态（需求 6.1） */
+static uint32_t             s_fail_count = 0;      /* 连续失败次数 */
+static uint64_t             s_next_retry_utc = 0;  /* 下次允许重试时刻（UTC 秒） */
+static bool                 s_lp_stop = false;     /* LP 模式达失败上限，停止自动重连 */
+
+/* 发布缓冲区（声明前置：app_mqtt_init 需创建 s_pub_mutex，实现见文件后部） */
+#define PUB_BUF_NUM   4
+#define PUB_BUF_SIZE  1024
+static char         s_pub_buf[PUB_BUF_NUM][PUB_BUF_SIZE];
+static int          s_pub_idx = 0;
+static osMutexId_t  s_pub_mutex = NULL;
+
 #define EVT_CONNECTED    (1u << 0)
 #define EVT_DISCONNECTED (1u << 1)
+
+/* 退避阶梯：第 1/2/3 次失败后分别等 5/10/30s，其后 60s 封顶 */
+static uint32_t backoff_sec(uint32_t fail_count)
+{
+    if (fail_count <= 1) return APP_RECONN_BACKOFF_1_S;
+    if (fail_count == 2) return APP_RECONN_BACKOFF_2_S;
+    if (fail_count == 3) return APP_RECONN_BACKOFF_3_S;
+    return APP_RECONN_BACKOFF_MAX_S;
+}
+
+void app_mqtt_set_keepalive_sec(uint16_t sec)
+{
+    if (sec > 0) {
+        s_keepalive_sec = sec;
+    }
+}
+
+void app_mqtt_kick_reconnect(void)
+{
+    s_lp_stop = false;
+    s_next_retry_utc = 0;   /* 立即允许一次重试（mqtt_task 1s 周期内执行） */
+}
 
 /* ====== 回调 ====== */
 static int cb_connack(cm_mqtt_client_t *client, int session, cm_mqtt_conn_state_e conn_res)
@@ -32,6 +75,11 @@ static int cb_connack(cm_mqtt_client_t *client, int session, cm_mqtt_conn_state_
     (void)client; (void)session;
     if (conn_res == CM_MQTT_CONN_STATE_SUCCESS) {
         s_connected = true;
+        /* 连接成功重置退避状态（需求 6.1：5/10/30/60s 阶梯重新起算，
+         * 并清除 LP 停止标志，恢复自动重连能力） */
+        s_fail_count = 0;
+        s_next_retry_utc = 0;
+        s_lp_stop = false;
         osEventFlagsSet(s_evt, EVT_CONNECTED);
         if (s_user_cb) s_user_cb(APP_MQTT_EVT_CONNECTED, NULL);
         APP_LOGI("mqtt connected");
@@ -80,39 +128,50 @@ static int cb_timeout(cm_mqtt_client_t *client, unsigned short msgid)
     return 0;
 }
 
-/* ====== 内部任务：监听断开状态 + 应用层重连 ======
+/* ====== 内部任务：监听断开状态 + 应用层重连（退避策略，需求 6.1）======
  * SDK 内部自动重连（RECONN_TIMES=3, RECONN_CYCLE=20s）仅处理网络级断连，
- * connack fail（服务器拒绝凭证）后 SDK 不会重试。
- * 本任务每 60s 调用 app_mqtt_connect 兜底重连，无限重试直到连上。 */
+ * connack fail（服务器拒绝凭证）后 SDK 不会重试，由本任务按退避阶梯兜底。
+ * LP 模式（看护/省电/休眠）连续失败 APP_RECONN_MAX_FAIL_LP 次后停止自动
+ * 重连，等待下一定位周期唤醒时 app_mqtt_kick_reconnect() 触发。 */
 static void mqtt_task(void *arg)
 {
     (void)arg;
-    uint32_t disconnect_tick = 0;
     while (s_running) {
         osDelay(APP_MS_TO_TICK(1000));
         if (!s_running || !s_client) continue;
 
-        uint32_t now = (uint32_t)osKernelGetTickCount();
         int st = cm_mqtt_client_get_state(s_client);
-        if (st == CM_MQTT_STATE_DISCONNECTED) {
-            if (s_connected) {
-                /* 之前连着，刚断开 */
-                s_connected = false;
-                disconnect_tick = now;
-                APP_LOGW("mqtt state poll detected disconnect");
-                if (s_user_cb) s_user_cb(APP_MQTT_EVT_DISCONNECTED, NULL);
-            } else if (disconnect_tick == 0) {
-                /* 初始连接失败（connack fail），从未连上过 */
-                disconnect_tick = now;
-            }
-            /* 应用层重连：connack fail 后 SDK 不重试，每 60s 兜底 */
-            if (s_has_cred && disconnect_tick > 0 &&
-                (now - disconnect_tick) >= APP_MS_TO_TICK(60000)) {
-                disconnect_tick = now;
-                APP_LOGI("mqtt app-level reconnect");
-                app_mqtt_connect(&s_saved_cred);
-            }
+        if (st != CM_MQTT_STATE_DISCONNECTED) continue;
+
+        if (s_connected) {
+            /* 之前连着，刚断开 */
+            s_connected = false;
+            APP_LOGW("mqtt state poll detected disconnect");
+            if (s_user_cb) s_user_cb(APP_MQTT_EVT_DISCONNECTED, NULL);
         }
+        if (!s_has_cred) continue;
+
+        /* LP 模式失败次数达上限：停止自动重连，等下一定位周期 kick */
+        app_mode_e m = app_mode_get();
+        bool lp_mode = (m == APP_MODE_SUPERVISE || m == APP_MODE_LOWPOWER ||
+                        m == APP_MODE_SLEEP);
+        if (lp_mode && s_fail_count >= APP_RECONN_MAX_FAIL_LP && !s_lp_stop) {
+            s_lp_stop = true;
+            APP_LOGW("mqtt reconnect fail %lu times in lp mode, wait next cycle kick",
+                     (unsigned long)s_fail_count);
+        }
+        if (s_lp_stop) continue;
+
+        /* 退避计时用 RTC UTC 秒：LP 睡眠期间 OS tick 冻结，tick 计时会失真 */
+        uint64_t now_utc = cm_rtc_get_current_time();
+        if (now_utc < s_next_retry_utc) continue;
+
+        s_fail_count++;
+        s_next_retry_utc = now_utc + backoff_sec(s_fail_count);
+        APP_LOGI("mqtt app-level reconnect #%lu (next in %lus)",
+                 (unsigned long)s_fail_count,
+                 (unsigned long)backoff_sec(s_fail_count));
+        app_mqtt_connect(&s_saved_cred);
     }
 }
 
@@ -124,6 +183,11 @@ int app_mqtt_init(app_mqtt_event_cb_t cb)
         osEventFlagsAttr_t attr = {0};
         attr.name = "mqtt_evt";
         s_evt = osEventFlagsNew(&attr);
+    }
+    if (s_pub_mutex == NULL) {
+        osMutexAttr_t mattr = {0};
+        mattr.name = "mqtt_pub";
+        s_pub_mutex = osMutexNew(&mattr);
     }
     return 0;
 }
@@ -160,7 +224,7 @@ int app_mqtt_connect(const app_mqtt_credential_t *cred)
      * 损坏 OSA tx 状态，与 SDK 定时器无关，已通过节流修复。 */
     int version = 4;        /* MQTT 3.1.1 */
     cm_mqtt_client_set_opt(s_client, CM_MQTT_OPT_VERSION, &version);
-    int ping = APP_MQTT_KEEPALIVE_SEC;  /* keepalive PING 周期（秒） */
+    int ping = s_keepalive_sec;         /* keepalive PING 周期（秒，分模式，需求 6.3） */
     cm_mqtt_client_set_opt(s_client, CM_MQTT_OPT_PING_CYCLE, &ping);
     int pkt_timeout = 10;   /* 发送超时 10 秒（QoS 1/2 消息可靠投递） */
     cm_mqtt_client_set_opt(s_client, CM_MQTT_OPT_PKT_TIMEOUT, &pkt_timeout);
@@ -186,7 +250,7 @@ int app_mqtt_connect(const app_mqtt_credential_t *cred)
     opt.clientid = s_saved_cred.client_id;
     opt.username = s_saved_cred.username;
     opt.password = s_saved_cred.password;
-    opt.keepalive = APP_MQTT_KEEPALIVE_SEC;
+    opt.keepalive = s_keepalive_sec;
     opt.clean_session = 1;
 
     APP_LOGI("mqtt connect %s:%u", s_saved_cred.mqtt_host, s_saved_cred.mqtt_port);
@@ -233,18 +297,36 @@ bool app_mqtt_is_connected(void)
 
 /* cm_mqtt_client_publish 是异步接口，内部不拷贝 payload，
  * 调用方在 publish 返回后不能立即释放 payload 内存。
- * 用静态缓冲区拷贝一份，让调用方可以安全 free。 */
-static char s_pub_buf[1024];
+ * 调用方含多任务（main_task / lbs_task / one_shot_loc_task）：
+ * 1) 互斥锁保证 memcpy+publish 调用原子，消除并发交叉覆写；
+ * 2) 4 槽轮换缓冲，降低前一条报文在 SDK 异步发送窗口（QoS1 重传）
+ *    内被下一次 publish 覆写的概率。
+ * （PUB_BUF_NUM/PUB_BUF_SIZE/s_pub_buf/s_pub_idx/s_pub_mutex 声明在文件前部） */
+static char *pub_buf_acquire(void)
+{
+    if (s_pub_mutex) osMutexAcquire(s_pub_mutex, osWaitForever);
+    char *buf = s_pub_buf[s_pub_idx];
+    s_pub_idx = (s_pub_idx + 1) % PUB_BUF_NUM;
+    return buf;
+}
+
+static void pub_buf_release(void)
+{
+    if (s_pub_mutex) osMutexRelease(s_pub_mutex);
+}
 
 int app_mqtt_publish_telemetry(const char *payload, int len)
 {
     if (!s_client || !s_connected) return -1;
     if (!payload) return -2;
     if (len <= 0) len = (int)strlen(payload);
-    if (len > (int)sizeof(s_pub_buf)) return -3;
-    memcpy(s_pub_buf, payload, len);
-    return cm_mqtt_client_publish(s_client, APP_MQTT_TOPIC_TELEMETRY,
-                                  s_pub_buf, len, CM_MQTT_QOS_1);
+    if (len > PUB_BUF_SIZE) return -3;
+    char *buf = pub_buf_acquire();
+    memcpy(buf, payload, len);
+    int ret = cm_mqtt_client_publish(s_client, APP_MQTT_TOPIC_TELEMETRY,
+                                     buf, len, CM_MQTT_QOS_1);
+    pub_buf_release();
+    return ret;
 }
 
 int app_mqtt_publish_rpc_response(const char *request_id, const char *payload, int len)
@@ -253,9 +335,12 @@ int app_mqtt_publish_rpc_response(const char *request_id, const char *payload, i
     char topic[96];
     snprintf(topic, sizeof(topic), "%s%s", APP_MQTT_TOPIC_RPC_RESP, request_id);
     if (len <= 0 && payload) len = (int)strlen(payload);
-    if (len > (int)sizeof(s_pub_buf)) return -3;
-    memcpy(s_pub_buf, payload, len);
-    return cm_mqtt_client_publish(s_client, topic, s_pub_buf, len, CM_MQTT_QOS_0);
+    if (len > PUB_BUF_SIZE) return -3;
+    char *buf = pub_buf_acquire();
+    memcpy(buf, payload, len);
+    int ret = cm_mqtt_client_publish(s_client, topic, buf, len, CM_MQTT_QOS_0);
+    pub_buf_release();
+    return ret;
 }
 
 /* 订阅：连接成功后由调用方触发 */

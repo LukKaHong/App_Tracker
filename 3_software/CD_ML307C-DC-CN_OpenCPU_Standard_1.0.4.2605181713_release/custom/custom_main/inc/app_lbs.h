@@ -44,6 +44,13 @@ bool app_lbs_is_running(void);
  * 无缓存返回 NULL。仅用于日志/调试显示 */
 const char *app_lbs_get_cached_bts(void);
 
+/* 查询缓存的服务小区 cellid（数值，LBS 安全网：cellid 变化判定被动移动）
+ * 返回 0=有效缓存，<0=无缓存 */
+int app_lbs_get_cached_cellid(uint32_t *cellid);
+
+/* 注入当日累计步数（custom_main 每个定位周期调用，随 LBS 报文上报） */
+void app_lbs_set_steps(uint32_t steps);
+
 /* WiFi 扫描静默窗口进行中：置位期间主循环应跳过 rssi 采样等
  * modem 查询，避免 AT 活动扰动协议栈导致天线仲裁偏向 LTE */
 bool app_lbs_is_modem_quiet(void);

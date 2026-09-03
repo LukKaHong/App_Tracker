@@ -58,14 +58,22 @@ static char     g_boot_id[32] = "boot_0000";
 static volatile bool s_running = false;          /* 采集任务运行中 */
 static uint32_t s_lbs_seq = 0;                   /* LBS 上报序号（message_id） */
 
+static uint32_t s_steps = 0;                     /* 当日累计步数（custom_main 注入，随报文上报） */
+
 #if LBS_WIFI_COMMON_ENABLE
 static osEventFlagsId_t s_scan_evt = NULL;
-static uint32_t s_last_wifi_scan_tick = 0;       /* 上次 WiFi 扫描时刻（限频） */
+static uint64_t s_last_wifi_scan_utc = 0;        /* 上次 WiFi 扫描时刻（UTC 秒限频；
+                                                  * LP 睡眠期间 OS tick 冻结，必须用 RTC UTC） */
 
 /* WiFi 扫描结果缓存（回调上下文中拷贝） */
 static cm_wifi_scan_info_t s_wifi_result;
 static volatile bool s_scan_done = false;
 #endif
+
+void app_lbs_set_steps(uint32_t steps)
+{
+    s_steps = steps;
+}
 
 void app_lbs_set_imei(const char *imei)
 {
@@ -89,7 +97,7 @@ int app_lbs_init(void)
     if (!s_scan_evt) {
         s_scan_evt = osEventFlagsNew(NULL);
     }
-    s_last_wifi_scan_tick = 0;
+    s_last_wifi_scan_utc = 0;
 #endif
     s_running = false;
     s_lbs_seq = 0;
@@ -130,9 +138,11 @@ static void wifi_scan_cb(cm_wifi_scan_info_t *param, void *user_param)
 /* ===== 采集基站原始参数（需网络在线，须在断 MQTT / WiFi 扫描前采集）=====
  * bts:     "mcc,mnc,lac,cellid,signal"（服务小区，signal 为负数 dBm）
  * nearbts: 邻区列表，组内格式同 bts，组间以 | 分隔
+ * out_cellid: 输出服务小区 cellid 数值（可为 NULL）
  * 返回 0 成功，<0 失败 */
 static int collect_cell_info(char *bts, size_t bts_size,
-                             char *nearbts, size_t near_size)
+                             char *nearbts, size_t near_size,
+                             uint32_t *out_cellid)
 {
     cm_cell_info_t cells[8];
     memset(cells, 0, sizeof(cells));
@@ -161,6 +171,9 @@ static int collect_cell_info(char *bts, size_t bts_size,
     snprintf(bts, bts_size, "%s,%s,%u,%lu,%d",
              (const char *)p->mcc, (const char *)p->mnc,
              p->tac, (unsigned long)p->cid, signal_dbm);
+    if (out_cellid) {
+        *out_cellid = (uint32_t)p->cid;
+    }
 
     /* 邻区列表 */
     nearbts[0] = '\0';
@@ -287,12 +300,20 @@ static void build_macs_string(char *macs, size_t size)
 static char s_cached_bts[64] = "";
 static char s_cached_nearbts[512] = "";
 static bool s_cached_valid = false;
+static uint32_t s_cached_cellid = 0;      /* 服务小区 cellid 数值（LBS 安全网用） */
 
 /* 查询缓存的服务小区 bts 字符串（"mcc,mnc,lac,cellid,signal"）
  * 无缓存返回 NULL。仅用于日志/调试显示 */
 const char *app_lbs_get_cached_bts(void)
 {
     return s_cached_valid ? s_cached_bts : NULL;
+}
+
+int app_lbs_get_cached_cellid(uint32_t *cellid)
+{
+    if (!s_cached_valid || !cellid) return -1;
+    *cellid = s_cached_cellid;
+    return 0;
 }
 
 /* ===== 采集 + 上报一次 LBS&WiFi 原始参数 ===== */
@@ -308,17 +329,19 @@ static void lbs_report(bool force_wifi, bool report)
     char event_time[24];
 
     /* 1. 基站原始参数（需在线，必须在断 MQTT / WiFi 扫描窗口前采集） */
+    uint32_t cellid = 0;
     bool has_bts = (collect_cell_info(bts, sizeof(bts),
-                                      nearbts, sizeof(nearbts)) == 0);
+                                      nearbts, sizeof(nearbts), &cellid) == 0);
 
-    /* 2. WiFi 扫描（限频：默认最小间隔 5 分钟，force_wifi 可跳过限制） */
+    /* 2. WiFi 扫描（限频：默认最小间隔 5 分钟，force_wifi 可跳过限制）。
+     * 限频计时用 RTC UTC 秒：LP 睡眠期间 OS tick 冻结，tick 计时会使限频失真 */
     bool has_macs = false;
 #if APP_LBS_WIFI_ENABLE
-    uint32_t now = (uint32_t)osKernelGetTickCount();
-    bool wifi_allowed = force_wifi || (s_last_wifi_scan_tick == 0) ||
-        ((now - s_last_wifi_scan_tick) >= APP_MS_TO_TICK(APP_LBS_WIFI_SCAN_MIN_INTERVAL_MS));
+    uint64_t now_utc = cm_rtc_get_current_time();
+    bool wifi_allowed = force_wifi || (s_last_wifi_scan_utc == 0) ||
+        ((now_utc - s_last_wifi_scan_utc) >= (APP_LBS_WIFI_SCAN_MIN_INTERVAL_MS / 1000u));
     if (wifi_allowed) {
-        s_last_wifi_scan_tick = now;
+        s_last_wifi_scan_utc = now_utc;
         int ap_cnt = do_wifi_scan();
         if (ap_cnt > 0) {
             build_macs_string(macs, sizeof(macs));
@@ -343,6 +366,7 @@ static void lbs_report(bool force_wifi, bool report)
         s_cached_bts[sizeof(s_cached_bts) - 1] = '\0';
         strncpy(s_cached_nearbts, nearbts, sizeof(s_cached_nearbts) - 1);
         s_cached_nearbts[sizeof(s_cached_nearbts) - 1] = '\0';
+        s_cached_cellid = cellid;   /* LBS 安全网：供唤醒时与上周期 cellid 比对 */
         s_cached_valid = true;
     }
 
@@ -375,6 +399,7 @@ static void lbs_report(bool force_wifi, bool report)
 #if APP_LBS_WIFI_ENABLE
         ",\"macs\":\"%s\""
 #endif
+        ",\"steps\":%lu"
         ",\"boot_id\":\"%s\""
         ",\"sequence_no\":%lu"
         ",\"is_offline_upload\":false}",
@@ -384,6 +409,7 @@ static void lbs_report(bool force_wifi, bool report)
 #if APP_LBS_WIFI_ENABLE
         has_macs ? macs : "",
 #endif
+        (unsigned long)s_steps,
         g_boot_id, (unsigned long)s_lbs_seq);
 
     if (len <= 0 || len >= (int)sizeof(json)) {

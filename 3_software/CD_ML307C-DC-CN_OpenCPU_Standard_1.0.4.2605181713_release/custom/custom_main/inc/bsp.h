@@ -1,7 +1,14 @@
 /**
  * @file    bsp.h
- * @brief   板级硬件驱动：按键、蜂鸣器、RGB灯、电池、GPS UART
- *          按键长按 5 秒切换开关机；其余外设由应用层调用。
+ * @brief   板级硬件驱动（需求文档 V1.12 / 引脚分配 V1.10 定版）
+ *          - 蜂鸣器：Pin74 / PWM0，有源高电平触发（满占空比=响，关PWM=停）
+ *          - RUN_LED：Pin75 / PWM1，单灯，支持闪烁与呼吸（需求 5）
+ *          - GPS_PWR_EN：Pin22 / GPIO12，GNSS 电源控制，高电平开（需求 10）
+ *          - 充电检测：CHRG_State Pin87 / GPIO3，高电平=充电中（需求 7）
+ *          - 电池电量：ADC0 / Pin9，4:1 分压（需求 7）
+ *          - 计步器：QMA6100P 内置计步，I2C0 SCL=Pin57 / SDA=Pin58（需求 8）
+ *          - GPS UART：CC1161W NMEA 0183，UART1 Pin28/29
+ *          按键（Pin86）硬件预留，当前版本软件不实现（需求 3）。
  */
 #ifndef __BSP_H__
 #define __BSP_H__
@@ -18,54 +25,53 @@ extern "C" {
 /* ========== 全局初始化 ========== */
 int  bsp_init(void);
 
-/* ========== 按键 ========== */
-/* 按键事件回调：true 表示长按 5 秒触发，false 表示短按 */
-typedef void (*bsp_key_event_cb_t)(bool long_pressed);
-void bsp_key_register_cb(bsp_key_event_cb_t cb);
-bool bsp_key_is_pressed(void);
-void bsp_key_poll(void);  /* 在 main_task 中以 20ms 间隔调用 */
-
-/* ========== 蜂鸣器 ========== */
+/* ========== 蜂鸣器（需求 4）========== */
 int  bsp_buzzer_on(void);
 int  bsp_buzzer_off(void);
+/* 阻塞鸣响：times 次，每次 on_ms 亮 / off_ms 停 */
 void bsp_buzzer_beep(int times, uint32_t on_ms, uint32_t off_ms);
-/* 异步持续响：每秒响一次，持续 duration_sec 秒后自动停止；
- * duration_sec = 0 表示持续响直到调用 bsp_buzzer_stop() */
+/* 异步持续响：每秒响一次（200ms 鸣 / 800ms 停，需求 4），
+ * 持续 duration_sec 秒后自动停止；duration_sec = 0 表示持续响直到 bsp_buzzer_stop() */
 void bsp_buzzer_beep_async(uint32_t duration_sec);
 void bsp_buzzer_stop(void);
 
-/* ========== RGB 指示灯 ========== */
+/* ========== RUN_LED 运行指示灯（需求 5）========== */
 typedef enum {
-    BSP_RGB_OFF = 0,
-    BSP_RGB_RED,
-    BSP_RGB_GREEN,
-    BSP_RGB_BLUE,
-    BSP_RGB_YELLOW,   /* R+G */
-    BSP_RGB_CYAN,     /* G+B */
-    BSP_RGB_MAGENTA,  /* R+B */
-    BSP_RGB_WHITE,    /* R+G+B */
-} bsp_rgb_color_e;
+    BSP_LED_PATTERN_OFF = 0,      /* 熄灭（休眠/LP 睡眠） */
+    BSP_LED_PATTERN_ONLINE,       /* 已联网正常：慢闪（每 3 秒闪一次） */
+    BSP_LED_PATTERN_OFFLINE,      /* 未联网：快闪（5Hz） */
+    BSP_LED_PATTERN_LOW_BATTERY,  /* 低电量 SOC<20%：每秒双闪 */
+    BSP_LED_PATTERN_BREATH,       /* 呼吸灯（硬件能力预留，常态行为未使用） */
+} bsp_led_pattern_e;
 
-int  bsp_rgb_set(bsp_rgb_color_e color);
-void bsp_rgb_blink(bsp_rgb_color_e color, int times, uint32_t on_ms, uint32_t off_ms);
+int  bsp_led_on(void);    /* 常亮 */
+int  bsp_led_off(void);   /* 熄灭 */
+/* 常态指示模式切换（异步任务实现，持续至下次切换） */
+void bsp_led_set_pattern(bsp_led_pattern_e pattern);
+/* 平台指示灯指令：快闪 5Hz，持续 duration_sec 秒（需求 5；0 = 持续至 bsp_led_stop） */
+void bsp_led_flash_async(uint32_t duration_sec);
+/* 停止一切灯效并熄灭（进入 LP 前调用） */
+void bsp_led_stop(void);
 
-/* 异步 RGB 交替快闪：在 colors[] 数组中循环切换（如绿→红→蓝），
- * 持续 duration_sec 秒后自动停止；
- * duration_sec = 0 表示持续闪烁直到调用 bsp_rgb_stop_blink() */
-typedef enum {
-    BSP_RGB_PATTERN_NONE = 0,
-    BSP_RGB_PATTERN_CHARGING,      /* 充电中：绿色慢闪 */
-    BSP_RGB_PATTERN_FULL,           /* 充满：绿色常亮 */
-    BSP_RGB_PATTERN_LOW_BATTERY,    /* 低电：红色慢闪 */
-    BSP_RGB_PATTERN_PLATFORM_CMD,   /* 平台指令：绿→红→蓝快闪 */
-} bsp_rgb_pattern_e;
+/* ========== GPS 电源控制（GPS_PWR_EN，高电平开）========== */
+int  bsp_gps_power_on(void);
+int  bsp_gps_power_off(void);
 
-void bsp_rgb_set_pattern(bsp_rgb_pattern_e pattern, uint32_t duration_sec);
-void bsp_rgb_stop_pattern(void);
+/* ========== 充电状态检测（高电平 = 充电中）========== */
+bool bsp_charge_is_charging(void);
 
 /* ========== 电池电量 ========== */
 /* 读取电池电压 (mV) 并换算 SOC (0~100) */
 int  bsp_battery_read(int *voltage_mv, int *soc);
+
+/* ========== QMA6100P 内置计步器（需求 8）========== */
+/* 初始化：I2C 打开 + CHIP_ID 校验 + 软复位 + Active 模式 + STEP_EN 使能。
+ * I2C 引脚同时配置 LP 高阻浮空睡眠态（需求 V1.5：Gsensor 常供电持续计步）。 */
+int  bsp_pedometer_init(void);
+/* 读取 24bit 计数值（STEP_CNT 0x07/0x08/0x0D）；返回 0=成功 */
+int  bsp_pedometer_read(uint32_t *steps);
+/* 计数值清零（STEP_CLR 0x13 bit7，用于每天 0 点清零） */
+int  bsp_pedometer_clear(void);
 
 /* ========== GPS UART (CC1161W, NMEA 0183) ========== */
 /* 初始化 GPS UART，注册接收回调（数据经 bsp_gps_poll 轮询取出后回调） */
@@ -87,9 +93,9 @@ int  bsp_gps_parse_nmea(const char *line, app_location_t *out_loc);
 /* GPS 功耗模式（对应 ICOE 协议 CFGLPMODE） */
 typedef enum {
     BSP_GPS_LPMODE_ULTRA_LOW = 0,  /* 超低功耗（含自适应/系统自动开关/通道控制） */
-    BSP_GPS_LPMODE_AUTO     = 1,    /* 自适应功耗模式（软件自动控制） */
-    BSP_GPS_LPMODE_HIGH     = 2,    /* 高性能模式（默认） */
-    BSP_GPS_LPMODE_FULL     = 3,    /* Full Power Mode (AE Always ON) */
+    BSP_GPS_LPMODE_AUTO     = 1,   /* 自适应功耗模式（软件自动控制） */
+    BSP_GPS_LPMODE_HIGH     = 2,   /* 高性能模式（默认） */
+    BSP_GPS_LPMODE_FULL     = 3,   /* Full Power Mode (AE Always ON) */
 } bsp_gps_lpmode_e;
 
 /* 发送 NMEA 配置指令（自动计算校验和并追加 \r\n）
@@ -104,7 +110,6 @@ int  bsp_gps_set_power_mode(bsp_gps_lpmode_e mode);
  * wake_s: 提前唤醒 AP 时间(秒)
  * idle_s: 进入 IDLE 状态时间(秒) */
 int  bsp_gps_set_wakeup_time(int wake_s, int idle_s);
-
 
 #ifdef __cplusplus
 }

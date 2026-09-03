@@ -13,6 +13,7 @@
 
 #define FILE_MQTT_CRED      "mqttcred.bin"
 #define FILE_BOOT_INFO      "bootinfo.bin"
+#define FILE_WORK_MODE      "workmode.bin"
 #define FILE_OFFLINE_IDX    "off_idx.bin"
 #define FILE_OFFLINE_DAT    "off_dat.bin"
 
@@ -80,6 +81,25 @@ int app_storage_save_boot_info(const char *boot_id, uint32_t seq)
     }
     info.seq = seq;
     return storage_write_file(FILE_BOOT_INFO, &info, sizeof(info));
+}
+
+/* ========== 工作模式掉电保存（需求 9）==========
+ * 模式切换不频繁（平台指令/超时回切/低电强制），每次切换写一次 flash 可接受 */
+int app_storage_save_work_mode(int mode)
+{
+    int32_t m = mode;
+    return storage_write_file(FILE_WORK_MODE, &m, sizeof(m));
+}
+
+int app_storage_load_work_mode(int *mode)
+{
+    if (!mode) return -1;
+    int32_t m = -1;
+    if (storage_read_file(FILE_WORK_MODE, &m, sizeof(m)) != 0) {
+        return -1;
+    }
+    *mode = (int)m;
+    return 0;
 }
 
 /* ========== 离线缓存：第2阶段实现完整环形结构 ==========
