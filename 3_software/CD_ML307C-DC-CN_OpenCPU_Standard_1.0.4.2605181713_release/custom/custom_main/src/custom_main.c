@@ -551,7 +551,7 @@ static bool pedometer_cycle_update(void)
         }
     }
 
-    /* 静止判定（看护/省电可选优化，平台可配置开关） */
+    /* 静止判定（需求 8 必做功能：计步增量法；APP_STILL_DETECT_ENABLE 仅调试关闭用） */
 #if APP_STILL_DETECT_ENABLE
     /* 24bit 无符号差值：STEP_CLR 清零后回卷亦正确 */
     uint32_t delta = cnt - g_last_step_cnt;

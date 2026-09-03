@@ -181,7 +181,7 @@ extern "C" {
 #define APP_GSENSOR_INT_GPIO        CM_GPIO_NUM_0
 #define APP_GSENSOR_INT_IOMUX_PIN   CM_IOMUX_PIN_76
 
-/* 静止省电判定（需求 8，可选优化，平台可配置开关） */
+/* 静止省电判定（需求 8 必做功能：计步增量法，默认启用；仅调试场景关闭） */
 #define APP_STILL_DETECT_ENABLE     1       /* 静止省电总开关 */
 #define APP_STILL_STEP_THRESHOLD    3       /* 每定位周期步数增量 ≤ 3 步判定本周期静止 */
 #define APP_STILL_CYCLES            2       /* 连续 2 个周期静止判定为静止状态 */
