@@ -28,10 +28,6 @@ typedef struct {
 int  app_storage_load_credential(app_mqtt_credential_t *cred);
 int  app_storage_save_credential(const app_mqtt_credential_t *cred);
 
-/* ========== 启动 ID 与序号 ========== */
-int  app_storage_load_boot_info(char *boot_id, size_t bid_len, uint32_t *seq);
-int  app_storage_save_boot_info(const char *boot_id, uint32_t seq);
-
 /* ========== 工作模式掉电保存（需求 9：异常复位后恢复复位前工作模式）========== */
 int  app_storage_save_work_mode(int mode);
 /* 读取保存的工作模式；返回 <0 表示无有效保存（首次上电） */

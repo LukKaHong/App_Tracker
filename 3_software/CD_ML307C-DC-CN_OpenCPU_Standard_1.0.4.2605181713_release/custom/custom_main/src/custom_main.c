@@ -1025,10 +1025,37 @@ static void one_shot_loc_task(void *arg)
 }
 
 /* ===== 应用层日志输出（通过 DBG 口） ===== */
+/* 日志时间戳：NTP 对时成功后用本地时间（UTC+8，与 RTC 闹钟约定一致，
+ * 含日期，跨零点后日志可区分天；对时前 RTC 无效，改用开机后秒数（前缀 '+' 区分）。
+ * 日期换算复用 utc_to_cm_tm 的 gmtime_r 方式（UTC+偏移后按 UTC 解析，不依赖 tz） */
+static void app_log_timestamp(char *out, size_t size)
+{
+    if (g_ntp_synced) {
+        time_t t = (time_t)(cm_rtc_get_current_time() + (uint64_t)APP_TIMEZONE * 3600u);
+        struct tm tmv;
+        (void)gmtime_r(&t, &tmv);
+        /* struct tm 字段实际有界（tm_hour≤23、tm_year 为年份-1900），但编译器无法
+         * 感知 gmtime_r 的输出范围，按 int 全范围评估会误报 -Wformat-truncation；
+         * 钳位后值域不变（如 x%100 对 0~59 恒等），仅供编译器推断输出长度 */
+        (void)snprintf(out, size, "%04u-%02u-%02u %02u:%02u:%02u",
+                       (unsigned)((tmv.tm_year + 1900) % 10000u),
+                       (unsigned)((tmv.tm_mon + 1) % 100u),
+                       (unsigned)(tmv.tm_mday % 100u),
+                       (unsigned)(tmv.tm_hour % 100u),
+                       (unsigned)(tmv.tm_min % 100u),
+                       (unsigned)(tmv.tm_sec % 100u));
+    } else {
+        uint32_t sec = osKernelGetTickCount() * APP_TICK_MS / 1000u;
+        (void)snprintf(out, size, "+%lus", (unsigned long)sec);
+    }
+}
+
 void app_log_output(const char *level, const char *fmt, ...)
 {
+    char ts[24];
+    app_log_timestamp(ts, sizeof(ts));
     char buf[256];
-    int len = snprintf(buf, sizeof(buf), APP_LOG_TAG "[%s] ", level);
+    int len = snprintf(buf, sizeof(buf), APP_LOG_TAG "[%s][%s] ", level, ts);
     if (len < 0 || len >= (int)sizeof(buf)) return;
 
     va_list args;
@@ -1403,10 +1430,10 @@ static void system_init(void)
         g_iccid[0] = '\0';
     }
 
-    /* 每次启动生成新 boot_id 并清零序号 */
+    /* 每次启动生成新 boot_id 并清零序号（RAM-only，不落盘：
+     * boot_id+seq 仅用于云端幂等去重，掉电丢失无影响） */
     app_util_gen_boot_id(g_boot_id, sizeof(g_boot_id));
     g_seq = 0;
-    app_storage_save_boot_info(g_boot_id, g_seq);
     APP_LOGI("IMEI=%s ver=%s hw=%s modem=%s boot_id=%s",
              g_imei, APP_FIRMWARE_VERSION, APP_HW_VERSION, g_modem_ver, g_boot_id);
     app_lbs_set_boot_id(g_boot_id);

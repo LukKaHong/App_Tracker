@@ -1,94 +1,4 @@
 
-[11:35:11.643]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033512.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4D
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033512.679,V,,N,,E,0.000,,040926,,,N,V*0B
-
-
-
-[11:35:12.178]收←◆asocket_cb 3 8
-[ELOOP] post event=0x7e044c18
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 2
-[ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
-+CEREG: 0
-]
-[ cmlog ]vir_at_wait_get_flag:0
-
-[ cmlog ][-4]get urcdata skip head and tail
-[ cmlog ]memory_buffer len 9, data:[+CEREG: 0]
-
-[ cmlog ][URC]__cm_urc_consult
-[ cmlog ]urc_head is null
-
-[ cmlog ]urc_head_internal is null
-
-[ cmlog ]__cm_daemon_thread 0 1
-
-[11:35:12.518]收←◆[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-OK
-]
-[ cmlog ]vir_at_wait_get_flag:0
-
-[ cmlog ][-4]get urcdata skip head and tail
-[ cmlog ]memory_buffer len 2, data:[OK]
-
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c18,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c18
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:6
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] __mqtt_client_sock_cb: 3 error_code = 103
-
-[ cmlog ][OPENCPU]:[CMMQTT] socket err:0
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:3
-
-
-[ELOOP] register_event eloop 0x7e263c6c,0x802d9e4c,0x00000003
-[ELOOP] eloop_event_init 0x7e044c60,0x7e263c6c,0x802d9e4c,0x00000003
-[ELOOP] post event=0x7e044c60
-[ cmlog ][OPENCPU]:[PET][W] mqtt connack fail:1 (was_connected=1)
-
-
-[ cmlog ][OPENCPU]:[PET][W] mqtt disconnected
-
-
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] unregister event=0x7e044c60
-[ELOOP] unregister event=0x7e044be8
-[ELOOP] unregister event=0x7e044c00
-[ELOOP] unregister event=0x7e044c18
-asocket_cb 3 0
-asocket not found
-asocket_cb 3 2
-asocket not found
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033513.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4C
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033513.679,V,,N,,E,0.000,,040926,,,N,V*0A
-
-
-
-[11:35:13.526]收←◆SW_RESET @0
-[11:35:13.806]收←◆?
 
 [INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
 [INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
@@ -115,16 +25,11 @@ asocket not found
 [INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
 [INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
 [INFO: Bl1Main   ] BL1: OKay.
-
-[11:35:14.808]收←◆[INFO: UsbArch   ] usb phy reg: 
-[11:35:14.849]收←◆0xd42070a4 = 0x189b
-
-[11:35:14.901]收←◆[INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
+[INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
 [INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
 
 [BOOT33]VB_VERSION_DATE   :[20241210]
 
-[11:35:15.215]收←◆
  ** PC      : 0x80017000
 Version: SDK_1.011.144 May 18 2026 17:16:18
 Ac 4, Board 2, DKB 1
@@ -142,8 +47,7 @@ CRNLR_SVC_FP[2] = 0x29
 CRNLR_SVC_FP[3] = 0x33
 Bootup not silent
 [ELOOP] __cm_eloop_init 0x7e263c6c,128
-
-[11:35:15.305]收←◆[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 InitTask started
@@ -164,47 +68,52 @@ SPI Nor/NAND flash init success
 FDI_Transport_Fsys_Register: 0, C:/
 LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
 LfsGrpCnt 5
-lfs root is valid
-[PTN 0] free size: 425984
+lfs.c:1245:error: Corrupted dir pair at {0x0, 0x1}
+lfs_api.c:1064:error: Fail to mount in PTN 0, err -84
+[PTN 0] free size: 516096
 lfs[PTN 0] init success
+sulog Disable:0x4a656515,0x55
+sulog Enable:0x45555515,0x55
 OnKeyPoweroff_Task
 eeHandlerPhase2Init
-
-[11:35:15.474]收←◆[ cmlog ]netcard type = 16 cfg = 0
+[ cmlog ]60,__cm_nv_def_fota_load read open failed, maybe not inital
+[ cmlog ]123,__cm_nv_def_fota_cfg_init entry, init all
+[ cmlog ]netcard type = 16 cfg = 0
 Usb mode 0, descriptor 70
-[ cmlog ]usb2com queue send err(status)
 USIMPhase2Init 0
 
+[ cmlog ]usb2com queue send err(status)
 copy rf size[0x00014000] to [0x7e000000]
 ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
 ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
 ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
 ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
 power_up_reason: 0x40, power_down_reason: 0x4
-
-[11:35:15.636]收←◆InitIPCControl: data:0x0
-
-[11:35:15.781]收←◆AT command server ready!
+InitIPCControl: data:0x0
+AT command server ready!
 Booting done
-
-[11:35:15.806]收←◆SW restart reason: Charging in powering off
+[ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME" 0
+[ cmlog ]atp10 cmiot AT+COPS=3,0 0
+[ cmlog ]atp10 cmiot AT+MEDCR=0,176,8 0
+[ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
+SW restart reason: Charging in powering off
 [ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
 [CM-OC] func:cm_opencpu_start line:203,core_stub=0x801a625d
 [CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
 [CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x80000
-[CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x19ef0
-[CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x72b8
-[CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x7330,vma:0x802de330,lma:0x802de330,sz:0x2a5c
-[CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x19420,vma:0x7e1e1688,lma:0x802f0420,sz:0xad0
-[CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf0b158,vma:0x7e1e2158,lma:0x7e1e2158,sz:0x8060
-[CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x9d98,vma:0x7e1d2000,lma:0x802e0d98,sz:0xf688
-[ cmlog ][OPENCPU]:[PET][I] no saved work mode, enter default: 2
+[CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x19fa0
+[CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0x7228
+[CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0x72a0,vma:0x802de2a0,lma:0x802de2a0,sz:0x2a94
+[CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x194d0,vma:0x7e1e1790,lma:0x802f04d0,sz:0xad0
+[CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf0b260,vma:0x7e1e2260,lma:0x7e1e2260,sz:0x8060
+[CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x9d40,vma:0x7e1d2000,lma:0x802e0d40,sz:0xf790
+[ cmlog ][OPENCPU]:[PET][I][+3s] no saved work mode, enter default: 2
 
 
-[ cmlog ][OPENCPU]:[PET][I] offline cache init (ram-only) count=0
+[ cmlog ][OPENCPU]:[PET][I][+3s] offline cache init (ram-only) count=0
 
 
-[ cmlog ][OPENCPU]:[PET][I] power on reason=4
+[ cmlog ][OPENCPU]:[PET][I][+3s] power on reason=4
 
 
 [ cmlog ]g_sync_at_name: sync*ICCID
@@ -234,28 +143,10 @@ OK
 [ cmlog ]flag=1, resp_cb_flag=0, sync_flag:1.
 
 [ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
-[ cmlog ]__cm_oc_virt_at_urc len:[16], urc:[
-+CPIN: READY
-]
-[ cmlog ]vir_at_wait_get_flag:0
-
-[ cmlog ][-4]get urcdata skip head and tail
-[ cmlog ]memory_buffer len 12, data:[+CPIN: READY]
-
-[ cmlog ][URC]__cm_urc_consult
-[ cmlog ]urc_head is null
-
-[ cmlog ]urc_head_internal is null
-
-[ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME" 0
-[ cmlog ]atp10 cmiot AT+COPS=3,0 0
-[ cmlog ]atp10 cmiot AT+MEDCR=0,176,8 0
-[ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
 [ cmlog ]cm_virt_at_mutex_release
 [ cmlog ]cm_virt_at_send_sync ret = 0
 
-
-[11:35:16.198]收←◆[ cmlog ][OPENCPU]:[PET][I] IMEI=865229081435439 ver=1.1.0 hw=HW_V1.0 modem=ML307C-DC-CN_OpenCPU_Standard_1.0.4.2605181713_rele
+[ cmlog ][OPENCPU]:[PET][I][+3s] IMEI=865229081435439 ver=1.1.0 hw=HW_V1.0 modem=ML307C-DC-CN_OpenCPU_Standard_1.0.4.2605181713
 cm_i2c_open():[109],set pin:58, fun:1
 
 cm_i2c_open():[112],set pin:57,read fun:1
@@ -264,11 +155,11 @@ cm_i2c_open():[124],ML307R set I2C dev :0
 
 [ CM_I2C]i2c_init TWSI_ICR=0x60
 
-[ CM_I2C]Error: bus error detected,0x60,0x446!
+[ CM_I2C]Error: bus error detected,0x6a,0x406!
 
 [ CM_I2C]i2c_init TWSI_ICR=0x60
 
-[ CM_I2C]Error:Write start+slaveaddress
+[ CM_I2C]Error:Write stop
 
 cm_i2c_write():[201], wrtie err:-2
 
@@ -280,20 +171,303 @@ cm_i2c_write():[201], wrtie err:-2
 
 cm_i2c_write():[201], wrtie err:-2
 
-[ cmlog ][OPENCPU]:[PET][E] QMA6100P probe fail
+[ cmlog ][OPENCPU]:[PET][E][+3s] QMA6100P probe fail
 
 
-[ cmlog ][OPENCPU]:[PET][W] bsp_init partial fail:-1
+[ cmlog ][OPENCPU]:[PET][W][+3s] bsp_init partial fail:-1
 
 
-[ cmlog ][OPENCPU]:[PET][I] pet tracker boot, mode=supervise
+[ cmlog ][OPENCPU]:[PET][I][+3s] pet tracker boot, mode=supervise
 
 
-[ cmlog ][OPENCPU]:[PET][I] boot -> mode=supervise, connecting
+[ cmlog ][OPENCPU]:[PET][I][+3s] boot -> mode=supervise, connecting
 
 
-[ cmlog ]g_sync_at_name: sync+
-[11:35:18.345]收←◆[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
++CEREG: 5,0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=11
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=2, resp_cb_flag=1, sync_flag:2.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+[ cmlog ]cm_virt_at_mutex_release
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[CM-OC] func:cm_opencpu_start line:211,ret:0
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_release[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
++CEREG: 5,0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=11
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=3, resp_cb_flag=2, sync_flag:3.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_release[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
++CEREG: 5,0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=11
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=4, resp_cb_flag=3, sync_flag:4.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_releas[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
++CEREG: 5,0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=11
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=5, resp_cb_flag=4, sync_flag:5.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+e
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_release[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
++CEREG: 5,0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=11
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=6, resp_cb_flag=5, sync_flag:6.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_release[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
++CEREG: 5,0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=11
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=7, resp_cb_flag=6, sync_flag:7.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
++CEREG: 0
+]
+[ cmlog ]vir_at_wait_get_flag:0
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 9, data:[+CEREG: 0]
+
+[ cmlog ][URC]__cm_urc_consult
+[ cmlog ]urc_head is null
+
+[ cmlog ]urc_head_internal is null
+
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_release[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
++CEREG: 5,0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=11
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=8, resp_cb_flag=7, sync_flag:8.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_release[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
++CEREG: 5,0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=11
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=9, resp_cb_flag=8, sync_flag:9.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
++CEREG: 1,"2697","02F00A04",7
+]
+[ cmlog ]vir_at_wait_get_flag:0
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 29, data:[+CEREG: 1,"2697","02F00A04",7]
+
+[ cmlog ][URC]__cm_urc_consult
+[ cmlog ]urc_head is null
+
+[ cmlog ]urc_head_internal is null
+
+[ cmlog ]__cm_daemon_thread 3 1
+[ cmlog ]g_sync_at_name: sync+CEREG
 [ cmlog ]virt_at_event_queue already exist
 
 [ cmlog ]__cm_virt_at_task already exist
@@ -302,8 +476,7 @@ cm_i2c_write():[201], wrtie err:-2
 [ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
 
 [ cmlog ]cm_virt_at_mutex_release
-
-[11:35:18.695]收←◆[ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
+[ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
 +CEREG: 5,1,"2697","02F00A04",7
 ]
 [ cmlog ]vir_at_wait_get_flag:1
@@ -321,18 +494,18 @@ OK
 
 [ cmlog ]Processing OK response, virt_at_buffer_len=31
 [ cmlog ]dynamic_virt_at_callback
-[ cmlog ]flag=4, resp_cb_flag=3, sync_flag:4.
+[ cmlog ]flag=10, resp_cb_flag=9, sync_flag:10.
 
 [ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
 [ cmlog ]cm_virt_at_send_sync ret = 0
 
-[ cmlog ][OPENCPU]:[PET][I] network ready, cereg=1
+[ cmlog ][OPENCPU]:[PET][I][+13s] network ready, cereg=1
 
 
-[ cmlog ][OPENCPU]:[PET][I] use hardcoded credential (debug)
+[ cmlog ][OPENCPU]:[PET][I][+13s] use hardcoded credential (debug)
 
 
-[ cmlog ][OPENCPU]:[PET][I] mqtt connect 119.23.217.155:18883
+[ cmlog ][OPENCPU]:[PET][I][+13s] mqtt connect 119.23.217.155:18883
 
 
 [ADNS] cm_async_dns_request cid = 1 
@@ -346,8 +519,8 @@ OK
 [ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
 
 
-[ELOOP] register_event eloop 0x7e263c6c,0x802db154,0x7e042d78
-[ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x802db154,0x7e042d78
+[ELOOP] register_event eloop 0x7e263c6c,0x802db0c4,0x7e0bd508
+[ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x802db0c4,0x7e0bd508
 [ELOOP] post event=0x7e044be8
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] unregister event=0x7e044be8
@@ -358,7 +531,7 @@ OK
 [ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
 [ELOOP] eloop_event_init 0x7e044c18,0x7e263c6c,0x8025fe71,0x7e2956dc
 asocket open ok 0 3
-[ cmlog ]ipv4: 1 10.99.99.61 
+[ cmlog ]ipv4: 1 10.60.17.47 
 
 [ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
 
@@ -367,18 +540,6 @@ asocket open ok 0 3
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 [ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
-
-
-
-[11:35:18.900]收←◆[ CM_I2C]Error: i2c_wait_status time out,0x9,0x0!
-
-[ CM_I2C]i2c_init TWSI_ICR=0x60
-
-[ CM_I2C]Error:Write start+slaveaddress
-
-cm_i2c_write():[201], wrtie err:-2
-
-[ cmlog ][OPENCPU]:[PET][W] pedometer read fail
 
 
 asocket_cb 3 2
@@ -399,10 +560,6 @@ asocket_event 0x7e2956dc,0x7e044c00
 [ cmlog ][OPENCPU]:[CMMQTT] send len:53
 
 
-
-[11:35:19.016]收←◆[ cmlog ][OPENCPU]:[PET][I] lp: gnss on, waiting fix (timeout 90000ms)
-
-
 asocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
@@ -415,9 +572,6 @@ asocket_event 0x7e2956dc,0x7e044c00
 [ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[PET][I] gps: first uart line: #CFGLPMODE,2*43
-
-
 [ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
@@ -441,22 +595,26 @@ asocket_cb 3 1
 [ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
 
 
-[ cmlog ][OPENCPU]:[PET][I] mqtt connected
+[ cmlog ][OPENCPU]:[PET][I][+13s] mqtt connected
 
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][+14s] alive mode=supervise rssi=-72 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.00000 lbs=none
 [ cmlog ][OPENCPU]:[CMMQTT] send len:34
 
 
 [ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] send len:496
+[ cmlog ][OPENCPU]:[CMMQTT] send len:498
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:496
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:498
 
 
-[ cmlog ][OPENCPU]:[PET][I] state ONLINE published
+[ cmlog ][OPENCPU]:[PET][I][+14s] state ONLINE published
 
 
 [ cmlog ][OPENCPU]:[NTP]cm_ntp_set_cfg() server ntp.aliyun.com
@@ -468,23 +626,23 @@ asocket_cb 3 1
 [ cmlog ][OPENCPU]:[NTP]cm_ntp_sync host_name=ntp.aliyun.com
 
 
-[ELOOP] register_event eloop 0x7e263c6c,0x802d7608,0x7e1e1691
-[ELOOP] eloop_event_init 0x7e044c30,0x7e263c6c,0x802d7608,0x7e1e1691
+[ELOOP] register_event eloop 0x7e263c6c,0x802d75fc,0x7e1e1799
+[ELOOP] eloop_event_init 0x7e044c30,0x7e263c6c,0x802d75fc,0x7e1e1799
 [ELOOP] post event=0x7e044c30
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] unregister event=0x7e044c30
-[ cmlog ][OPENCPU]:[NTP]__on_eloop_ntp_DNS_recv_event host_name=ntp.aliyun.com
+[ cmlog ][OPENCPU]:[NTP]__on_eloop_ntp_DNS_recv_easocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+asocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+vent host_name=ntp.aliyun.com
 
 
 [ cmlog ][OPENCPU]:__on_eloop_ntp_DNS_recv_event: dns_addrtype 3
 
 
-[asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-ADNS] cm_async_dns_request cid = 1 
+[ADNS] cm_async_dns_request cid = 1 
 
 [ADNS] request id:1
 
@@ -508,27 +666,12 @@ asocket_event 0x7e2956dc,0x7e044be8
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:asocket_cb 3 2
+[ELOOP] rdy_list elooasocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
 asocket_cb 3 0
 [ELOOP] post event=0x7e044be8
-[CMMQTT] pkt type:9,len:5
-
-
-[ cmlog ][OPENCPU]:[PET][I] rpc subscribed
-
-
-[ cmlog ][OPENCPU]:[PET][I] mqtt subscribed
-
-
-[ELOOP] rdy_list eloop=0x7e263c6c
+p=0x7e263c6c
 asocket_on_eloop 0x7e044c00,0x7e2956dc
 asocket_event 0x7e2956dc,0x7e044c00
 [ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
@@ -539,16 +682,26 @@ asocket_event 0x7e2956dc,0x7e044be8
 [ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:9
 
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
-[ADNS] request info 1,ntp.aliyun.com,3
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:9,len:5
+
+
+[ cmlog ][OPENCPU]:[PET][I][+14s] rpc subscribed
+
+
+[ cmlog ][OPENCPU]:[PET][I][+14s] mqtt subscribed
+
+
 [ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
 
 
@@ -556,18 +709,30 @@ asocket_cb 3 1
 [ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
 
 
+[ cmlog ][OPENCPU]:[CMMQTT] tcp ret:-1
 
-[11:35:19.590]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+[ADNS] request info 1,ntp.aliyun.com,3
+[ CM_I2C]Error: i2c_wait_status time out,0x9,0x0!
+
+[ CM_I2C]i2c_init TWSI_ICR=0x60
+
+[ CM_I2C]Error:Write start+slaveaddress
+
+cm_i2c_write():[201], wrtie err:-2
+
+[ cmlog ][OPENCPU]:[PET][W][+14s] pedometer read fail
 
 
-
-[11:35:19.631]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033520.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4C
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033520.679,V,,N,,E,0.000,,040926,,,N,V*0A
+[ cmlog ][OPENCPU]:[PET][I][+14s] lp: gnss on, waiting fix (timeout 90000ms)
 
 
-[ cmlog ]getaddrinfo ret:0, pres:7e0c5f20 1
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][+14s] gps: first uart line: #CFGLPMODE,2*43
+
+
+[ cmlog ]getaddrinfo ret:0, pres:7e0c2ab0 1
 [ cmlog ]host ip: 203.107.6.88
 
 [ cmlog ][OPENCPU]:[NTP]__on_ntp_async_dns_event(1, 1, ntp.aliyun.com)
@@ -589,8 +754,7 @@ asocket open ok 1 4
 [ cmlog ][OPENCPU]:[NTP]ip 203.107.6.88 port 123
 
 
-
-[11:35:19.793]收←◆asocket_cb 4 0
+asocket_cb 4 0
 [ELOOP] post event=0x7e044c30
 [ELOOP] rdy_list eloop=0x7e263c6c
 asocket_on_eloop 0x7e044c30,0x7e2956fc
@@ -599,33 +763,25 @@ asocket_cb 4 1
 [ cmlog ][OPENCPU]:[NTP]sock(4) recv_ind: recv_avail=48, recv_len=48
 
 
-
-[11:35:19.920]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-[11:35:20.221]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-
-[11:35:20.521]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-[11:35:20.640]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033521.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4D
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033521.679,V,,N,,E,0.000,,040926,,,N,V*0B
+[ cmlog ][OPENCPU]:[NTP]__cm_api_ntp_notify() event[1] sockfd[4]
 
 
-
-[11:35:20.935]收←◆[ cmlog ][OPENCPU]:[NTP]__cm_api_ntp_notify() event[1] sockfd[4]
-
-
-[ELOOP] register_event eloop 0x7e263c6c,0x802d7b44,0x00000004
-[ELOOP] eloop_event_init 0x7e044c78,0x7e263c6c,0x802d7b44,0x00000004
+[ELOOP] register_event eloop 0x7e263c6c,0x802d7b38,0x00000004
+[ELOOP] eloop_event_init 0x7e044c78,0x7e263c6c,0x802d7b38,0x00000004
 [ELOOP] post event=0x7e044c78
-[ cmlog ][OPENCPU]:[PET][I] ntp sync ok
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:10:48] ntp sync ok
 
 
 [ELOOP] unregister event=0x7e044c78
@@ -649,797 +805,124 @@ asocket not found
 [ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[11:35:21.216]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:35:21.635]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033522.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4E
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033522.679,V,,N,,E,0.000,,040926,,,N,V*08
-
-
-
-[11:35:22.647]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea
-[11:35:22.667]收←◆ GGA: $GNGGA,033523.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4F
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033523.679,V,,N,,E,0.000,,040926,,,N,V*09
-
-
-
-[11:35:23.640]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033524.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*48
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033524.679,V,,N,,E,0.000,,040926,,,N,V*0E
-
-
-
-[11:35:24.315]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:35:24.631]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033525.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*49
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033525.679,V,,N,,E,0.000,,040926,,,N,V*0F
-
-
-
-[11:35:25.460]收←◆[ cmlog ][OPENCPU]:[PET][I] alive mode=supervise rssi=-68 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.00000 lbs=none
-
-
-
-[11:35:25.645]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033526.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4A
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033526.679,V,,N,,E,0.000,,040926,,,N,V*0C
-
-
-
-[11:35:26.635]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033527.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4B
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033527.679,V,,N,,E,0.000,,040926,,,N,V*0D
-
-
-
-[11:35:27.415]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:35:27.646]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033528.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*44
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033528.679,V,,N,,E,0.000,,040926,,,N,V*02
-
-
-
-[11:35:28.635]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033529.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*45
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033529.679,V,,N,,E,0.000,,040926,,,N,V*03
-
-
-
-[11:35:29.647]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033530.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4D
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033530.679,V,,N,,E,0.000,,040926,,,N,V*0B
-
-
-
-[11:35:30.515]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:35:30.634]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033531.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4C
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033531.679,V,,N,,E,0.000,,040926,,,N,V*0A
-
-
-
-[11:35:31.645]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033532.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4F
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033532.679,V,,N,,E,0.000,,040926,,,N,V*09
-
-
-
-[11:35:32.635]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033533.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4E
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033533.679,V,,N,,E,0.000,,040926,,,N,V*08
-
-
-
-[11:35:33.614]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033534.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*49
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033534.679,V,,N,,E,0.000,,040926,,,N,V*0F
-
-
-
-[11:35:34.635]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033535.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*48
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033535.679,V,,N,,E,0.000,,040926,,,N,V*0E
-
-
-
-[11:35:35.344]收←◆[ cmlog ][OPENCPU]:[PET][I] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.00000 lbs=none
-
-
-
-[11:35:35.640]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033536.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4B
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033536.679,V,,N,,E,0.000,,040926,,,N,V*0D
-
-
-
-[11:35:36.629]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033537.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4A
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033537.679,V,,N,,E,0.000,,040926,,,N,V*0C
-
-
-
-[11:35:36.714]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:35:37.640]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033538.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*45
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033538.679,V,,N,,E,0.000,,040926,,,N,V*03
-
-
-
-[11:35:38.632]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033539.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*44
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033539.679,V,,N,,E,0.000,,040926,,,N,V*02
-
-
-
-[11:35:39.639]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033540.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4A
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033540.679,V,,N,,E,0.000,,040926,,,N,V*0C
-
-
-
-[11:35:39.814]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:35:42.029]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033541.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4B
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033541.679,V,,N,,E,0.000,,040926,,,N,V*0D
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033542.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*48
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033542.679,V,,N,,E,0.000,,040926,,,N,V*0E
-
-
-
-[11:35:42.639]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033543.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*49
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033543.679,V,,N,,E,0.000,,040926,,,N,V*0F
-
-
-
-[11:35:42.914]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:35:43.631]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033544.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4E
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033544.679,V,,N,,E,0.000,,040926,,,N,V*08
-
-
-
-[11:35:44.639]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033545.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4F
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033545.679,V,,N,,E,0.000,,040926,,,N,V*09
-
-
-
-[11:35:45.354]收←◆[ cmlog ][OPENCPU]:[PET][I] alive mode=supervise rssi=-72 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.00000 lbs=none
-
-
-
-[11:35:46.010]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033546.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4C
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033546.679,V,,N,,E,0.000,,040926,,,N,V*0A
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
 [ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:10:56] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[11:35:46.639]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033547.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4D
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033547.679,V,,N,,E,0.000,,040926,,,N,V*0B
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-[11:35:47.630]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033548.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*42
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:11:06] alive mode=supervise rssi=-70 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033548.679,V,,N,,E,0.000,,040926,,,N,V*04
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[11:35:48.639]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033549.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*43
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033549.679,V,,N,,E,0.000,,040926,,,N,V*05
 
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:11:16] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-[11:35:49.128]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[11:35:49.630]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033550.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4B
 
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:11:27] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033550.679,V,,N,,E,0.000,,040926,,,N,V*0D
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-[11:35:51.169]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033551.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4A
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033551.679,V,,N,,E,0.000,,040926,,,N,V*0C
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:11:36] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[11:35:51.639]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033552.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*49
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033552.679,V,,N,,E,0.000,,040926,,,N,V*0F
 
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:11:46] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-[11:35:52.227]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[11:35:52.630]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033553.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*48
 
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:11:56] alive mode=supervise rssi=-69 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033553.679,V,,N,,E,0.000,,040926,,,N,V*0E
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-[11:35:53.638]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033554.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4F
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033554.679,V,,N,,E,0.000,,040926,,,N,V*09
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:12:06] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[11:35:54.630]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033555.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4E
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033555.679,V,,N,,E,0.000,,040926,,,N,V*08
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
 
-[11:35:55.328]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:12:16] alive mode=supervise rssi=-72 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][W][2026-09-04 17:12:17] lp: gnss fix timeout 90000ms
 
 
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:12:17] lp: gnss invalid, report lbs only
 
-[11:35:55.357]收←◆[ cmlog ][OPENCPU]:[PET][I] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.00000 lbs=none
 
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:12:17] lbs: task start (force_wifi=0 report=1)
 
 
-[11:35:56.243]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033556.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4D
+[ cmlog ][OPENCPU]:[CMMQTT] send len:419
 
 
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033556.679,V,,N,,E,0.000,,040926,,,N,V*0B
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:419
 
 
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:12:18] telemetry lbs_865229081435439_boot_19700101204148_3138_1 publish ok
 
-[11:35:56.634]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033557.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4C
 
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:12:18] lbs: report seq=1 bts=1 macs=0
 
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033557.679,V,,N,,E,0.000,,040926,,,N,V*0A
 
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:12:18] lbs: task done
 
 
-[11:35:57.643]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033558.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*43
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033558.679,V,,N,,E,0.000,,040926,,,N,V*05
-
-
-
-[11:35:58.427]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:35:58.633]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033559.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*42
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033559.679,V,,N,,E,0.000,,040926,,,N,V*04
-
-
-
-[11:35:59.643]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033600.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4D
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033600.679,V,,N,,E,0.000,,040926,,,N,V*0B
-
-
-
-[11:36:01.414]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033601.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4C
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033601.679,V,,N,,E,0.000,,040926,,,N,V*0A
-
-
-
-[11:36:01.527]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:01.643]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033602.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4F
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033602.679,V,,N,,E,0.000,,040926,,,N,V*09
-
-
-
-[11:36:02.633]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033603.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4E
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033603.679,V,,N,,E,0.000,,040926,,,N,V*08
-
-
-
-[11:36:03.643]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033604.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*49
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033604.679,V,,N,,E,0.000,,040926,,,N,V*0F
-
-
-
-[11:36:04.628]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033605.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*48
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033605.679,V,,N,,E,0.000,,040926,,,N,V*0E
-
-
-
-[11:36:05.367]收←◆[ cmlog ][OPENCPU]:[PET][I] alive mode=supervise rssi=-68 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.00000 lbs=none
-
-
-
-[11:36:06.522]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033606.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4B
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033606.679,V,,N,,E,0.000,,040926,,,N,V*0D
-
-
-
-[11:36:06.632]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033607.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4A
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033607.679,V,,N,,E,0.000,,040926,,,N,V*0C
-
-
-
-[11:36:07.642]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033608.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*45
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033608.679,V,,N,,E,0.000,,040926,,,N,V*03
-
-
-
-[11:36:07.726]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:08.632]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033609.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*44
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033609.679,V,,N,,E,0.000,,040926,,,N,V*02
-
-
-
-[11:36:09.642]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033610.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4C
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033610.679,V,,N,,E,0.000,,040926,,,N,V*0A
-
-
-
-[11:36:10.826]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:11.603]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033611.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4D
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033611.679,V,,N,,E,0.000,,040926,,,N,V*0B
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033612.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4E
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033612.679,V,,N,,E,0.000,,040926,,,N,V*08
-
-
-
-[11:36:12.642]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033613.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4F
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033613.679,V,,N,,E,0.000,,040926,,,N,V*09
-
-
-
-[11:36:13.632]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033614.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*48
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033614.679,V,,N,,E,0.000,,040926,,,N,V*0E
-
-
-
-[11:36:13.926]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:14.643]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033615.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*49
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033615.679,V,,N,,E,0.000,,040926,,,N,V*0F
-
-
-
-[11:36:15.372]收←◆[ cmlog ][OPENCPU]:[PET][I] alive mode=supervise rssi=-67 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.00000 lbs=none
-
-
-
-[11:36:16.728]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033616.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4A
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033616.679,V,,N,,E,0.000,,040926,,,N,V*0C
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033617.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4B
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033617.679,V,,N,,E,0.000,,040926,,,N,V*0D
-
-
-
-[11:36:17.026]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:17.637]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033618.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*44
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033618.679,V,,N,,E,0.000,,040926,,,N,V*02
-
-
-
-[11:36:18.630]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033619.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*45
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033619.679,V,,N,,E,0.000,,040926,,,N,V*03
-
-
-
-[11:36:19.636]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033620.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4F
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033620.679,V,,N,,E,0.000,,040926,,,N,V*09
-
-
-
-[11:36:20.126]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:20.637]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033621.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4E
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033621.679,V,,N,,E,0.000,,040926,,,N,V*08
-
-
-
-[11:36:21.628]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033622.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4D
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033622.679,V,,N,,E,0.000,,040926,,,N,V*0B
-
-
-
-[11:36:22.636]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033623.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4C
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033623.679,V,,N,,E,0.000,,040926,,,N,V*0A
-
-
-
-[11:36:23.226]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:23.627]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033624.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4B
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033624.679,V,,N,,E,0.000,,040926,,,N,V*0D
-
-
-
-[11:36:24.636]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033625.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4A
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033625.679,V,,N,,E,0.000,,040926,,,N,V*0C
-
-
-
-[11:36:25.386]收←◆[ cmlog ][OPENCPU]:[PET][I] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.00000 lbs=none
-
-
-
-[11:36:25.701]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033626.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*49
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033626.679,V,,N,,E,0.000,,040926,,,N,V*0F
-
-
-
-[11:36:26.325]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:26.631]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033627.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*48
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033627.679,V,,N,,E,0.000,,040926,,,N,V*0E
-
-
-
-[11:36:27.641]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033628.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*47
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033628.679,V,,N,,E,0.000,,040926,,,N,V*01
-
-
-
-[11:36:28.631]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033629.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*46
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033629.679,V,,N,,E,0.000,,040926,,,N,V*00
-
-
-
-[11:36:29.425]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:29.641]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033630.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4E
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033630.679,V,,N,,E,0.000,,040926,,,N,V*08
-
-
-
-[11:36:30.831]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033631.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4F
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033631.679,V,,N,,E,0.000,,040926,,,N,V*09
-
-
-
-[11:36:31.641]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033632.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4C
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033632.679,V,,N,,E,0.000,,040926,,,N,V*0A
-
-
-
-[11:36:32.525]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:32.630]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033633.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4D
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033633.679,V,,N,,E,0.000,,040926,,,N,V*0B
-
-
-
-[11:36:33.641]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033634.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4A
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033634.679,V,,N,,E,0.000,,040926,,,N,V*0C
-
-
-
-[11:36:34.631]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033635.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4B
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033635.679,V,,N,,E,0.000,,040926,,,N,V*0D
-
-
-
-[11:36:35.401]收←◆[ cmlog ][OPENCPU]:[PET][I] alive mode=supervise rssi=-72 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.00000 lbs=none
-
-
-
-[11:36:35.625]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:35.866]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033636.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*48
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033636.679,V,,N,,E,0.000,,040926,,,N,V*0E
-
-
-
-[11:36:36.636]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033637.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*49
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033637.679,V,,N,,E,0.000,,040926,,,N,V*0F
-
-
-
-[11:36:37.645]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033638.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*46
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033638.679,V,,N,,E,0.000,,040926,,,N,V*00
-
-
-
-[11:36:38.636]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033639.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*47
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033639.679,V,,N,,E,0.000,,040926,,,N,V*01
-
-
-
-[11:36:38.725]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:39.645]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033640.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*49
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033640.679,V,,N,,E,0.000,,040926,,,N,V*0F
-
-
-
-[11:36:40.984]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033641.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*48
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033641.679,V,,N,,E,0.000,,040926,,,N,V*0E
-
-
-
-[11:36:41.639]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033642.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4B
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033642.679,V,,N,,E,0.000,,040926,,,N,V*0D
-
-
-
-[11:36:41.825]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:42.627]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033643.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4A
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033643.679,V,,N,,E,0.000,,040926,,,N,V*0C
-
-
-
-[11:36:43.635]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033644.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4D
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033644.679,V,,N,,E,0.000,,040926,,,N,V*0B
-
-
-
-[11:36:44.626]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033645.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4C
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033645.679,V,,N,,E,0.000,,040926,,,N,V*0A
-
-
-
-[11:36:44.925]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:45.414]收←◆[ cmlog ][OPENCPU]:[PET][I] alive mode=supervise rssi=-72 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.00000 lbs=none
-
-
-
-[11:36:46.100]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033646.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4F
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033646.679,V,,N,,E,0.000,,040926,,,N,V*09
-
-
-
-[11:36:46.630]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033647.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*4E
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033647.679,V,,N,,E,0.000,,040926,,,N,V*08
-
-
-
-[11:36:47.639]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033648.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*41
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033648.679,V,,N,,E,0.000,,040926,,,N,V*07
-
-
-
-[11:36:48.029]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
-
-
-
-[11:36:48.635]收←◆[ cmlog ][OPENCPU]:[PET][I] nmea GGA: $GNGGA,033649.679,,N,,E,0,00,0.000,0.0,M,0.0,M,,*40
-
-
-[ cmlog ][OPENCPU]:[PET][I] nmea RMC: $GNRMC,033649.679,V,,N,,E,0.000,,040926,,,N,V*06
-
-
-
-[11:36:49.025]收←◆[ cmlog ][OPENCPU]:[PET][W] lp: gnss fix timeout 90000ms
-
-
-[ cmlog ][OPENCPU]:[PET][I] lp: gnss invalid, report lbs only
-
-
-[ cmlog ][OPENCPU]:[PET][I] lbs: task start (force_wifi=0 report=1)
-
-
-
-[11:36:50.017]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:445
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:445
-
-
-[ cmlog ][OPENCPU]:[PET][I] telemetry lbs_865229081435439_boot_20260904033515_2e47_1 publish ok
-
-
-[ cmlog ][OPENCPU]:[PET][I] lbs: report seq=1 bts=1 macs=0
-
-
-[ cmlog ][OPENCPU]:[PET][I] lbs: task done
-
-
-
-[11:36:50.182]收←◆asocket_cb 3 2
+asocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
 asocket_cb 3 0
@@ -1471,10 +954,804 @@ asocket_cb 3 1
 [ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
 
 
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
 
-[11:36:51.170]收←◆[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+[ cmlog ][OPENCPU]:cm_pwm_close pwm dev: 1 is closed.
 
 
-[ cmlog ][OPENCPU]:[PET][I] lp: enter sleep, wake in 209s (mode=supervise)
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:12:19] lp: enter sleep, wake in 209s (mode=supervise)
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:15:47] lp: wakeup
+
+
+[ CM_I2C]Error: bus error detected,0x6a,0x406!
+
+[ CM_I2C]i2c_init TWSI_ICR=0x60
+
+[ CM_I2C]Error:Write stop
+
+cm_i2c_write():[201], wrtie err:-2
+
+[ cmlog ][OPENCPU]:[PET][W][2026-09-04 17:15:48] pedometer read fail
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:15:48] lp: gnss on, waiting fix (timeout 90000ms)
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:15:48] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:15:48] gps: first uart line: #CFGLPMODE,2*43
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:15:57] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:16:07] alive mode=supervise rssi=-72 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:16:17] alive mode=supervise rssi=-69 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:16:27] alive mode=supervise rssi=-67 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:16:37] alive mode=supervise rssi=-66 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:16:47] alive mode=supervise rssi=-70 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:16:57] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:17:07] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:17:17] alive mode=supervise rssi=-70 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][W][2026-09-04 17:17:20] lp: gnss fix timeout 90000ms
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:17:20] lp: gnss invalid, report lbs only
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:17:20] lbs: task start (force_wifi=0 report=1)
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:471
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:471
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:17:22] telemetry lbs_865229081435439_boot_19700101204148_3138_2 publish ok
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:17:22] lbs: report seq=2 bts=1 macs=0
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:17:22] lbs: task done
+
+
+asocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+asocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+asocket_on_eloop 0x7e044be8,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044be8
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+
+
+[ cmlog ][OPENCPU]:cm_pwm_close pwm dev: 1 is closed.
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:17:23] lp: enter sleep, wake in 206s (mode=supervise)
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:20:48] lp: wakeup
+
+
+[ CM_I2C]Error: bus error detected,0x60,0x446!
+
+[ CM_I2C]i2c_init TWSI_ICR=0x60
+
+[ CM_I2C]Error:Write start+slaveaddress
+
+cm_i2c_write():[201], wrtie err:-2
+
+[ cmlog ][OPENCPU]:[PET][W][2026-09-04 17:20:49] pedometer read fail
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:20:49] lp: gnss on, waiting fix (timeout 90000ms)
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:20:49] alive mode=supervise rssi=-72 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:20:49] gps: first uart line: #CFGLPMODE,2*43
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:20:59] alive mode=supervise rssi=-73 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:21:09] alive mode=supervise rssi=-72 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:21:19] alive mode=supervise rssi=-72 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:21:28] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:21:38] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:21:49] alive mode=supervise rssi=-72 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:21:59] alive mode=supervise rssi=-70 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:09] alive mode=supervise rssi=-71 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:18] alive mode=supervise rssi=-70 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:[PET][W][2026-09-04 17:22:19] lp: gnss fix timeout 90000ms
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:19] lp: gnss invalid, report lbs only
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:19] lbs: task start (force_wifi=1 report=1)
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:19] lbs: disconnect mqtt for wifi scan...
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:2
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:3
+
+
+[ELOOP] register_event eloop 0x7e263c6c,0x802d9dbc,0x00000003
+[ELOOP] eloop_event_init 0x7e044c60,0x7e263c6c,0x802d9dbc,0x00000003
+[ELOOP] post event=0x7e044c60
+[ cmlog ][OPENCPU]:[PET][W][2026-09-04 17:22:19] mqtt connack fail:2 (was_connected=1)
+
+
+[ cmlog ][OPENCPU]:[PET][W][2026-09-04 17:22:19] mqtt disconnected
+
+
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] unregister event=0x7e044c60
+[ELOOP] unregister event=0x7e044be8
+[ELOOP] unregister event=0x7e044c00
+[ELOOP] unregister event=0x7e044c18
+asocket_cb 3 11
+asocket not found
+asocket_cb 3 0
+asocket not found
+asocket_cb 3 2
+asocket not found
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,disconnect from server
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:5
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:1263750470,destroy client
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:20] lbs: quiet 30s for RRC idle...
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:28] alive mode=supervise rssi=-70 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:38] alive mode=supervise rssi=-70 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:48] alive mode=supervise rssi=-70 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:50] lbs: wifiscan started...
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:53] lbs: wifiscan done in 3165ms, ap=10
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:53] lbs: reconnect mqtt...
+
+
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_[ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
++CEREG: 5,1,"2697","02F00A04",7
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2697","02F00A04",7]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=31
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=11, resp_cb_flag=10, sync_flag:11.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+release
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:53] network ready, cereg=1
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:53] use hardcoded credential (debug)
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:53] mqtt connect 119.23.217.155:18883
+
+
+[ADNS] cm_async_dns_request cid = 1 
+
+[ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
+
+
+[ELOOP] register_event eloop 0x7e263c6c,0x802db0c4,0x7e0c72d8
+[ELOOP] eloop_event_init 0x7e044c18,0x7e263c6c,0x802db0c4,0x7e0c72d8
+[ELOOP] post event=0x7e044c18
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] unregister event=0x7e044c18
+[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] eloop_event_init 0x7e044c18,0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] eloop_event_init 0x7e044c00,0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x8025fe71,0x7e2956dc
+asocket open ok 0 3
+[ cmlog ]ipv4: 1 10.60.17.47 
+
+[ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
+
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+asocket_cb 3 2
+asocket_cb 3 4
+[ELOOP] post event=0x7e044c00
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
+
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:53
+
+
+asocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294asocket_cb 3 0
+[ELOOP] post event=0x7e044c18
+967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c18,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c18
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:53] mqtt connected
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:34
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:354
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:354
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:53] state ONLINE published
+
+
+asocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+asocket_cb 3 0
+[ELOOP] post event=0x7e044c18
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+asocket_on_eloop 0x7e044c18,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c18
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:5
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:9,len:5
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:54] rpc subscribed
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:54] mqtt subscribed
+
+
+asocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+asocket_cb 3 0
+[ELOOP] post event=0x7e044c18
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+asocket_on_eloop 0x7e044c18,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c18
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:54] lbs: mqtt reconnected
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:666
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:666
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:54] telemetry lbs_865229081435439_boot_19700101204148_3138_3 publish ok
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:54] lbs: report seq=3 bts=1 macs=1
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:54] lbs: task done
+
+
+asocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+asocket_cb 3 0
+[ELOOP] post event=0x7e044c18
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+asocket_on_eloop 0x7e044c18,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c18
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+
+
+[ cmlog ][OPENCPU]:cm_pwm_close pwm dev: 1 is closed.
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-04 17:22:55] lp: enter sleep, wake in 175s (mode=supervise)
 
 

@@ -12,7 +12,6 @@
 #include "app_config.h"
 
 #define FILE_MQTT_CRED      "mqttcred.bin"
-#define FILE_BOOT_INFO      "bootinfo.bin"
 #define FILE_WORK_MODE      "workmode.bin"
 #define FILE_OFFLINE_IDX    "off_idx.bin"
 #define FILE_OFFLINE_DAT    "off_dat.bin"
@@ -51,36 +50,6 @@ int app_storage_save_credential(const app_mqtt_credential_t *cred)
 {
     if (!cred) return -1;
     return storage_write_file(FILE_MQTT_CRED, cred, sizeof(*cred));
-}
-
-/* ========== 启动信息 ========== */
-typedef struct {
-    char    boot_id[32];
-    uint32_t seq;
-} boot_info_t;
-
-int app_storage_load_boot_info(char *boot_id, size_t bid_len, uint32_t *seq)
-{
-    boot_info_t info = {0};
-    int ret = storage_read_file(FILE_BOOT_INFO, &info, sizeof(info));
-    if (ret == 0) {
-        if (boot_id) {
-            strncpy(boot_id, info.boot_id, bid_len - 1);
-            boot_id[bid_len - 1] = '\0';
-        }
-        if (seq) *seq = info.seq;
-    }
-    return ret;
-}
-
-int app_storage_save_boot_info(const char *boot_id, uint32_t seq)
-{
-    boot_info_t info = {0};
-    if (boot_id) {
-        strncpy(info.boot_id, boot_id, sizeof(info.boot_id) - 1);
-    }
-    info.seq = seq;
-    return storage_write_file(FILE_BOOT_INFO, &info, sizeof(info));
 }
 
 /* ========== 工作模式掉电保存（需求 9）==========

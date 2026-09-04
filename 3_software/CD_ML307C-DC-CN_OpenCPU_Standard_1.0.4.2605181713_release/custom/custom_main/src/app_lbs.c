@@ -194,9 +194,18 @@ static int collect_cell_info(char *bts, size_t bts_size,
 
 #if APP_LBS_WIFI_ENABLE
 /* ===== WiFi 扫描：断 MQTT → 静默等 RRC IDLE → 扫描 → 重连 MQTT =====
- * 实测结论（2026-08-21）：保持 TCP 连接时 RRC 永不 IDLE，扫描 0 AP；
- * 断开 MQTT 后静默 10s 再扫描，100% 成功（平均 6 AP）。
- * 离线时长约 28s（8s 静默 + ~17s 扫描 + ~3s 重连），远优于 CFUN=5 的 40~90s。
+ * 方案原理：ML307C 单路 RF，WiFi 与 LTE 时分共用天线。断开 MQTT（仅应用层
+ * TCP，网络注册与 PDP 保持）后无数据活动，协议栈 RRC 回落 IDLE，天线让给
+ * WiFi 接收机，扫描可正常执行。
+ * 实测记录（同位置同板子，小区 RRC inactivity timer 为运营商可调参数）：
+ *   2026-08-21 静默 10s：成功（平均 6 AP，当时 timer ≤10s）
+ *   2026-09-04 静默 8s/10s：连续 0 AP（该小区 timer 已调长至 >10s，
+ *     RRC 未回落，扫描 17s 空转无结果）
+ *   2026-09-04 静默 30s：2/2 成功（3 AP / 2 AP，扫描 3~4s 正常完成）
+ *   对照实验 CFUN=5（关闭射频掉网扫描）：成功 7 AP，本小区恢复仅 ~9s，
+ *     但掉网期间不可寻呼、注网时长不可控（最差 40~90s），未采纳。
+ * 静默时长定稿 30s：覆盖实测回落区间并留余量；代价是离线窗口 ~37s
+ * （30s 静默 + ~4s 扫描 + ~3s 重连），期间保持网络注册、仍可收寻呼。
  * 返回扫描到的 AP 数量（0 = 无有效结果） */
 static int do_wifi_scan(void)
 {
@@ -255,6 +264,12 @@ static int do_wifi_scan(void)
     }
     APP_LOGI("lbs: wifiscan done in %lums, ap=%d",
              (unsigned long)elapsed_ms, (int)s_wifi_result.bssid_number);
+    if (s_wifi_result.bssid_number == 0) {
+        /* 0 AP 且扫描流程完整执行（非超时非失败），最常见原因为
+         * RRC 未回落 IDLE、LTE 仍持有天线（静默时长不足该小区的
+         * inactivity timer），其次为环境确无 AP */
+        APP_LOGW("lbs: wifiscan 0 ap, RRC may not be idle (check quiet time)");
+    }
 
 restore:
     /* 4. 重连 MQTT（如果之前是连接状态） */

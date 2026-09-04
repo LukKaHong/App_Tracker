@@ -121,9 +121,9 @@ extern "C" {
 #define APP_GPS_UART_PIN_RX_FUNC    CM_IOMUX_FUNC_FUNCTION1
 #define APP_GPS_RX_BUF_SIZE         (512)
 /* GPS NMEA 原始语句调试打印（0=关，1=打印 GGA/RMC 原文）
- * [调试期临时开启 2026-09-04]：GNSS 定位链路首次联调，用于区分
- * "室内无定位"与"芯片无输出/接线异常"；拿到首个户外 fix 后改回 0 */
-#define APP_GPS_NMEA_DEBUG          1
+ * [2026-09-04 改回 0]：定位链路已联调通过（室内 sat=0 属正常、
+ * 芯片输出/波特率对齐已验证），关闭以减少 DBG 口日志量 */
+#define APP_GPS_NMEA_DEBUG          0
 
 /* GPS_PWR_EN（需求 10：Pin22，GNSS 电路电源控制，高电平开/低电平关）
  * Pin22 主功能 UART0_CTS，复用功能1 = GPIO12（资源综述 Table 4） */
@@ -216,7 +216,17 @@ extern "C" {
 #define APP_LBS_WIFI_SCAN_MAX_COUNT         30               /* 期望上报 AP 数量（高德上限 30） */
 #define APP_LBS_WIFI_SCAN_ROUND             2                /* 扫描轮次（平衡耗时与成功率） */
 #define APP_LBS_WIFI_SCAN_TIMEOUT_S         20               /* 单次扫描超时（秒） */
-#define APP_LBS_WIFI_RRC_IDLE_WAIT_S        8                /* 断 MQTT 后静默等待 RRC 回落 IDLE（秒） */
+#define APP_LBS_WIFI_RRC_IDLE_WAIT_S        30               /* 断 MQTT 后静默等待 RRC 回落 IDLE（秒）。
+                                                                 * 实测定稿（同位置同板子）：
+                                                                 * 08-21 静默 10s 成功（当时小区 timer≤10s）；
+                                                                 * 09-04 该小区 timer 被调长，8s/10s 均连续
+                                                                 * 0 AP（RRC 未回落，扫描 17s 空转）；
+                                                                 * 09-04 静默 30s 两次均成功（3/2 AP，扫描
+                                                                 * 3~4s 正常完成）。RRC inactivity timer 为
+                                                                 * 运营商可调参数（典型 5~20s，本小区实测
+                                                                 * 10~30s 区间），30s 为带余量的定稿值。
+                                                                 * 若个别小区 timer 更长导致 0 AP，现场按
+                                                                 * "wifiscan 0 ap" 告警日志识别。 */
 #define APP_LBS_PDP_WAIT_TIMEOUT_S          30               /* 扫描后等待 PDP 激活超时（秒，保留兼容） */
 #define APP_LBS_URL_BUF_SIZE                1024             /* bts/nearbts/macs 字符串缓冲 */
 #define APP_LBS_JSON_BUF_SIZE               (APP_LBS_URL_BUF_SIZE + 512)
@@ -227,14 +237,21 @@ extern "C" {
 #define APP_LBS_WIFI_TRIGGER_INVALID_CYCLES 2
 
 /* ===================================================================
- * WiFi 扫描方案说明（2026-08-21 实测定论，需求 V1.12 采纳）
+ * WiFi 扫描方案说明（2026-09-04 实测定稿，需求 V1.12/V1.16）
  * -------------------------------------------------------------------
- * 结论：保持 MQTT TCP 连接时 RRC 永不 IDLE，WiFi 扫描 0 AP；
- *       断开 MQTT 后静默 8s 再扫描，100% 成功（平均 6 AP）。
- * 方案：断 MQTT（仅断应用层 TCP，保持网络注册与 PDP）
- *       → 静默等 RRC IDLE → 扫描 → 重连 MQTT
- * 离线时长：约 28s（8s 静默 + ~17s 扫描 + ~3s 重连）
- * CFUN=5 方案弃用：40~90s 离线且需重新注册，功耗更高
+ * 原理：ML307C 单路 RF，WiFi 与 LTE 时分共用天线。保持 MQTT TCP 连接时
+ *       RRC 永不 IDLE（天线被 LTE 占用），扫描 0 AP；断开 MQTT（仅断
+ *       应用层 TCP，保持网络注册与 PDP）后静默等待 RRC 回落 IDLE，
+ *       天线释放给 WiFi，扫描正常执行。
+ * 方案：断 MQTT → 静默 30s 等 RRC IDLE → 扫描（RRC 已回落时 ~4s）→ 重连
+ * 离线窗口：约 37s（30s 静默 + ~4s 扫描 + ~3s 重连），期间保持网络注册，
+ *       设备仍可收寻呼，MQTT 重连后补收平台下行。
+ * 静默 30s 依据：RRC inactivity timer 为运营商可调参数，本设备实测小区
+ *       2026-08-21 时 ≤10s、2026-09-04 已调长至 10~30s 区间，30s 带余量。
+ *       风险：若部署小区 timer 更长（>30s）则扫描 0 AP（有告警日志可识别）。
+ * CFUN=5 对照实验（2026-09-04，未采纳）：扫描成功 7 AP、本小区恢复 ~9s，
+ *       但掉网期间不可寻呼、注网时长不可控（最差 40~90s），且扫描结果
+ *       依赖掉网程度；静默方案在网络侧行为变化时表现更稳定可预测。
  * =================================================================== */
 
 /* ===================================================================
