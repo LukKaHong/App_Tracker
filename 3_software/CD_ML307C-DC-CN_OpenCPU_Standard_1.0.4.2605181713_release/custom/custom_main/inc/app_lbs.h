@@ -32,7 +32,8 @@ void app_lbs_set_imei(const char *imei);
 void app_lbs_set_boot_id(const char *boot_id);
 
 /* 触发一次 LBS&WiFi 采集（独立任务异步执行，不阻塞主循环）
- * force_wifi = true 时忽略 WiFi 扫描最小间隔限制
+ * force_wifi = true 表示主控层判定 WiFi 扫描触发条件满足（GNSS 连续 N 周期
+ *               无效且非寻宠/遛宠模式）；实际扫描仍受 5 分钟最小间隔限频约束
  * report      = true 采集后上报平台；false 仅采集不上报
  * 返回 0=已触发，<0=失败（任务正忙等） */
 int app_lbs_trigger(bool force_wifi, bool report);

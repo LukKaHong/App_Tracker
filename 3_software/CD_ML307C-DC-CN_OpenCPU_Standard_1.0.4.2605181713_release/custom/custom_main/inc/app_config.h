@@ -68,8 +68,11 @@ extern "C" {
 /* 看护/省电模式连续重连失败次数上限：达到后停止重连，等待下一定位周期 */
 #define APP_RECONN_MAX_FAIL_LP      5
 
-/* 电池检测（需求 7：硬件已具备 ADC Pin9 电量检测，2026-09-03 确认启用） */
-#define APP_BATTERY_ENABLE          1
+/* 电池检测（需求 7：外部分压 200k/68k → Pin96/ADC1）
+ * ★★★ 当前=0 仅限无电池的 USB 调试阶段：未接电池时 Pin96 悬空读到假超低电，
+ * 60s 后设备被强制切休眠模式，无法调试其余功能。
+ * ★★★ 量产烧录前必须恢复为 1（=0 时低电/超低电保护全部失效） */
+#define APP_BATTERY_ENABLE          0
 
 #define APP_LOW_BATTERY_THRESHOLD   20      /* SOC < 20% : 低电量 */
 #define APP_SUPER_LOW_BATTERY        5      /* SOC < 5%  : 超低电量，上报后强制休眠模式 */
@@ -98,20 +101,29 @@ extern "C" {
 /* GNSS 单次定位超时（需求 2.1 / LP step5，看护/省电模式，建议值需实测调整） */
 #define APP_GNSS_FIX_TIMEOUT_MS     (90 * 1000)
 
+/* LP 唤醒调度保护（2026-09-03 实测教训：早于闹钟的外部唤醒差 1s 未到期回睡，
+ * 1s 后的 RTC 闹钟因慢时钟域同步延迟未触发，设备睡死到下一个外部事件） */
+#define APP_LP_DUE_GRACE_S          10   /* 唤醒时距定位到期 ≤10s 直接视为到期执行 */
+#define APP_LP_ALARM_MIN_S          3    /* RTC 闹钟最小间隔，过近时刻推迟设置 */
+
 /* ===================================================================
  * 5. GPS 定位芯片 (CC1161W) - UART 通讯
  *    UART1：Pin28=RX, Pin29=TX（GNSS 版本该引脚仅支持 UART1，见资源综述备注）
+ *    波特率 115200：CC1161W 默认波特率由 PIO10/LNA_EN strap 电阻决定
+ *    （硬件已接 100K 下拉 → 默认 115200），与主控串口天然对齐，
+ *    无需 CFGPRT 配置（需求 V1.16 定稿，2026-09-04）
  * =================================================================== */
 #define APP_GPS_UART_DEV            CM_UART_DEV_1
 #define APP_GPS_UART_BAUDRATE       CM_UART_BAUDRATE_115200
-#define APP_GPS_UART_BAUDRATE_RATE  115200    /* 数值，用于 CFGPRT 命令 */
 #define APP_GPS_UART_PIN_RX         CM_IOMUX_PIN_28
 #define APP_GPS_UART_PIN_TX         CM_IOMUX_PIN_29
 #define APP_GPS_UART_PIN_TX_FUNC    CM_IOMUX_FUNC_FUNCTION1
 #define APP_GPS_UART_PIN_RX_FUNC    CM_IOMUX_FUNC_FUNCTION1
 #define APP_GPS_RX_BUF_SIZE         (512)
-/* [DEBUG] NMEA 原始语句调试：打印 GGA/RMC 原始行。正式运行关闭，需要时改回 1 */
-#define APP_GPS_NMEA_DEBUG          0
+/* GPS NMEA 原始语句调试打印（0=关，1=打印 GGA/RMC 原文）
+ * [调试期临时开启 2026-09-04]：GNSS 定位链路首次联调，用于区分
+ * "室内无定位"与"芯片无输出/接线异常"；拿到首个户外 fix 后改回 0 */
+#define APP_GPS_NMEA_DEBUG          1
 
 /* GPS_PWR_EN（需求 10：Pin22，GNSS 电路电源控制，高电平开/低电平关）
  * Pin22 主功能 UART0_CTS，复用功能1 = GPIO12（资源综述 Table 4） */
@@ -151,15 +163,20 @@ extern "C" {
 #define APP_LED_LOWBAT_DBL_MS       1000    /* 低电量：每秒双闪 */
 
 /* ===================================================================
- * 9. 电池电量 ADC（需求 7 / 10：Pin9 / ADC0）
- *    分压比 4：4.2V ÷ 4 = 1.05V < 1.2V 量程
+ * 9. 电池电量 ADC（需求 7 / 引脚表，2026-09-03 定版）
+ *    方案：外部分压 200kΩ(上臂,接电池正极) + 68kΩ(下臂,接GND) → Pin96/ADC1
+ *    分压比 = (200+68)/68 ≈ 3.941，满电 4.2V → Pin96 = 1.066V < 1.2V 量程
+ *    不使用模组内部 VBAT 测量（硬件方案定版）
  * =================================================================== */
-#define APP_BATTERY_ADC_DEV         CM_ADC_0
-#define APP_BATTERY_ADC_IOMUX_PIN   CM_IOMUX_PIN_9
-#define APP_BATTERY_DIV_RATIO       4                   /* 4:1 分压，4.2V→1.05V < ADC 1.2V 量程 */
+#define APP_BATTERY_ADC_DEV         CM_ADC_1            /* Pin96（专用 ADC1 引脚） */
+#define APP_BATTERY_DIV_UP_KOHM     200                 /* 分压上臂 kΩ（电池正极侧） */
+#define APP_BATTERY_DIV_DOWN_KOHM   68                  /* 分压下臂 kΩ（GND 侧） */
 #define APP_BATTERY_FULL_MV         4200                /* 满电电压 mV */
 #define APP_BATTERY_EMPTY_MV        3300                /* 空电电压 mV（线性近似，放电曲线需实测标定） */
 #define APP_BATTERY_SAMPLE_MS       (30 * 1000)         /* 30 秒采样一次 */
+/* 超低电连续确认次数（每 30s 采样一次，2 次=60s 确认窗口）：
+ * 防单次 ADC 误读直接强制休眠（无 VBAT 交叉校验，软件确认替代） */
+#define APP_BATTERY_ULTRA_LOW_CONFIRM 2
 
 /* ===================================================================
  * 10. 充电状态检测（需求 7 / 10，V1.10 定版：CHRG_State Pin87，高电平=充电中）

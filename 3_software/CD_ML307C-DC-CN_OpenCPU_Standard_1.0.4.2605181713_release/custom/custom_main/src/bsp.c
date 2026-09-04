@@ -401,23 +401,19 @@ bool bsp_charge_is_charging(void)
 }
 
 /* ====================================================================
- * 电池电量（ADC0 @ Pin9，4:1 分压）
+ * 电池电量（需求 7 定版：外部分压 200k/68k → ADC1 @ Pin96，
+ * 不使用模组内部 VBAT 测量）
  * ==================================================================== */
 int bsp_battery_read(int *voltage_mv, int *soc)
 {
     int32_t raw = 0;
-    bool from_vbat = false;
     if (cm_adc_read(APP_BATTERY_ADC_DEV, &raw) != 0) {
-        /* 回退到 vbat（模组 VBAT 即电池绝对电压 mV，未经分压，不可再乘分压比） */
-        uint32_t vbat = 0;
-        if (cm_adc_vbat_read(&vbat) == 0) {
-            raw = (int32_t)vbat;
-            from_vbat = true;
-        } else {
-            return -1;
-        }
+        return -1;
     }
-    int mv = from_vbat ? (int)raw : (int)raw * APP_BATTERY_DIV_RATIO;
+    /* 分压还原（四舍五入）：电池电压 = 引脚电压 × (200+68)/68
+     * raw ≤ 1066mV，× 268 无符号溢出风险（< 2^31） */
+    int mv = (int)((raw * (APP_BATTERY_DIV_UP_KOHM + APP_BATTERY_DIV_DOWN_KOHM)
+                    + APP_BATTERY_DIV_DOWN_KOHM / 2) / APP_BATTERY_DIV_DOWN_KOHM);
     if (voltage_mv) *voltage_mv = mv;
 
     if (soc) {
@@ -602,6 +598,7 @@ static cm_uart_dev_e   s_gps_dev = APP_GPS_UART_DEV;
 static bsp_gps_rx_cb_t s_gps_cb = NULL;
 static char            s_gps_line[APP_GPS_RX_BUF_SIZE];
 static int             s_gps_line_pos = 0;
+static bool            s_gps_first_line_logged = false;  /* 会话首行诊断日志 */
 
 /* ===== GPS 数据轮询（主循环任务上下文调用，替代 UART 中断回调）=====
  * [FIX] 原 RX_ARRIVED 事件回调在中断上下文执行 NMEA 解析 + APP_LOGI +
@@ -623,6 +620,13 @@ void bsp_gps_poll(void)
             if (c == '\n') {
                 if (s_gps_line_pos > 0) {
                     s_gps_line[s_gps_line_pos] = '\0';
+                    /* 会话首行诊断（每次 GPS 上电后第一条完整行，无论是否合法
+                     * NMEA）：区分"芯片无输出"（无此日志）与"波特率不匹配乱码"
+                     * （此日志为乱码）与"正常 NMEA 室内无定位"（$G.. 开头） */
+                    if (!s_gps_first_line_logged) {
+                        s_gps_first_line_logged = true;
+                        APP_LOGI("gps: first uart line: %.48s", s_gps_line);
+                    }
                     s_gps_cb(s_gps_line);
                     s_gps_line_pos = 0;
                 }
@@ -659,6 +663,7 @@ int bsp_gps_open(bsp_gps_rx_cb_t cb)
     }
     s_gps_cb = cb;
     s_gps_line_pos = 0;
+    s_gps_first_line_logged = false;
     return 0;
 }
 
@@ -688,16 +693,6 @@ int bsp_gps_set_power_mode(bsp_gps_lpmode_e mode)
 {
     char body[24];
     snprintf(body, sizeof(body), "CFGLPMODE,%d", (int)mode);
-    return bsp_gps_send_nmea(body);
-}
-
-/* 设置 GPS 芯片 UART 波特率（CFGPRT 指令，ICOE 协议 1.4.2.1）
- * portID=1 (UART0), addr=0, inPro=1 (ICOE), outPro=3 (ICOE+NMEA)
- * 修改后芯片以新波特率输出，主控侧需保持一致 */
-int bsp_gps_set_uart_baudrate(uint32_t baud)
-{
-    char body[40];
-    snprintf(body, sizeof(body), "CFGPRT,1,0,%u,1,3", (unsigned)baud);
     return bsp_gps_send_nmea(body);
 }
 

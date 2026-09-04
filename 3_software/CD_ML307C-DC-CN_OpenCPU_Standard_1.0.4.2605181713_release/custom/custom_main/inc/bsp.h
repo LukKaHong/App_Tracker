@@ -84,9 +84,6 @@ int  bsp_gps_close(void);
  * 复杂解析（SDK 约定），曾导致 OSA tx 重入引发模组静默复位 */
 void bsp_gps_poll(void);
 
-/* 设置 GPS 芯片 UART 波特率（CFGPRT 指令），与主控 UART 波特率对齐 */
-int  bsp_gps_set_uart_baudrate(uint32_t baud);
-
 /* 解析单行 NMEA 语句，写入 out_loc；非定位语句返回 0 */
 int  bsp_gps_parse_nmea(const char *line, app_location_t *out_loc);
 

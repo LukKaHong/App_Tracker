@@ -116,6 +116,8 @@ static uint64_t g_loc_updated_utc = 0;
 /* ===== LP 调度状态 ===== */
 static osEventFlagsId_t g_wake_evt = NULL;
 static lp_state_e s_lp_state = LP_ST_IDLE;
+static bool s_lp_slept_once = false;         /* 已经历过至少一次 LP 睡眠（区分
+                                              * 开机首轮 WOKE 与真实唤醒） */
 static uint64_t s_next_loc_due_utc = 0;    /* 下次定位到期（UTC 秒） */
 static uint64_t s_next_hb_due_utc  = 0;    /* 下次心跳到期（UTC 秒，0=不需要） */
 static uint32_t s_gnss_wait_start_tick = 0;/* LP_ST_GNSS_WAIT 进入时刻 */
@@ -149,7 +151,11 @@ static bool g_device_info_reported = false;
 static char g_modem_ver[CM_VER_LEN] = {0};
 static char g_iccid[24] = {0};
 
-/* ===== 工具：取序号 ===== */
+/* ===== 工具：取序号 =====
+ * 序号不落 flash：boot_id 每次开机重新生成（时间戳+随机数），
+ * message_id 唯一性由 boot_id 保证，持久化 seq 纯写不读（开机即清零）。
+ * 历史教训 2026-09-03：每条报文写 flash 不仅磨损，且复位撞上写入窗口
+ * 曾致 PTN0 littlefs 根目录损坏（Corrupted dir pair），工作模式丢失 */
 static uint32_t next_seq(void)
 {
     uint32_t s = 0;
@@ -157,7 +163,6 @@ static uint32_t next_seq(void)
     g_seq++;
     s = g_seq;
     if (g_seq_mutex) osMutexRelease(g_seq_mutex);
-    app_storage_save_boot_info(g_boot_id, g_seq);
     return s;
 }
 
@@ -531,7 +536,12 @@ static bool pedometer_cycle_update(void)
     uint32_t cnt = 0;
     if (bsp_pedometer_read(&cnt) != 0) {
         APP_LOGW("pedometer read fail");
-        return g_still_active;   /* 读取失败保持原判定 */
+        /* 传感器缺失/故障：保守复位静止判定——静止省电必须以真实步数为依据，
+         * 宁可多耗电定位，不可因读数缺失误判静止而漏定位（丢宠物风险）。
+         * （未焊接传感器时每周期走此分支，恒 false，定位正常） */
+        g_still_cycles = 0;
+        g_still_active = false;
+        return false;
     }
     g_steps = cnt;
 
@@ -620,8 +630,6 @@ static bsp_gps_lpmode_e gps_lpmode_for_app_mode(app_mode_e mode)
 /* ===== GPS 接收回调：解析并保存最新定位（bsp_gps_poll 主循环上下文调用） ===== */
 static void gps_rx_cb(const char *line)
 {
-    /* 收到任何 NMEA 数据说明波特率已对齐，停止 CFGPRT 重试 */
-    g_gps_baudrate_set = true;
     app_location_t loc;
     memset(&loc, 0, sizeof(loc));
     if (bsp_gps_parse_nmea(line, &loc) == 1) {
@@ -716,7 +724,12 @@ static void lp_enter_sleep(app_mode_e mode)
         wake_utc = s_next_hb_due_utc;
     }
     if (wake_utc == 0) wake_utc = now_utc + 60;   /* 防御：无调度项时 60s 兜底 */
-    if (wake_utc <= now_utc) wake_utc = now_utc + 5;   /* 防御：至少 5 秒 */
+    /* 最小闹钟间隔保护：过近时刻（<3s）的 RTC 闹钟因慢时钟域同步延迟
+     * 存在错过永不触发的风险（2026-09-03 实测 wake in 1s 闹钟失效睡死），
+     * 推迟到至少 3s 后 */
+    if (wake_utc < (now_utc + APP_LP_ALARM_MIN_S)) {
+        wake_utc = now_utc + APP_LP_ALARM_MIN_S;
+    }
 
     cm_tm_t alarm;
     utc_to_cm_tm(wake_utc, &alarm);
@@ -741,6 +754,7 @@ static void lp_enter_sleep(app_mode_e mode)
     osEventFlagsWait(g_wake_evt, WAKE_EVT_ALL, osFlagsWaitAny, osWaitForever);
     cm_pm_work_lock();
     cm_rtc_enable_alarm(false);
+    s_lp_slept_once = true;
 
     APP_LOGI("lp: wakeup");
 }
@@ -765,8 +779,10 @@ static void lp_wakeup_handle(app_mode_e mode)
     }
 
     /* 唤醒后若断网（弱信号/掉线）：踢醒重连（需求 6.1 退避由
-     * app_mqtt_client 管理；LP 下达失败上限后由本唤醒周期触发重试） */
-    if (!app_mqtt_is_connected()) {
+     * app_mqtt_client 管理；LP 下达失败上限后由本唤醒周期触发重试）。
+     * 仅真实 LP 唤醒后才检查：开机首轮 WOKE 时 MQTT 首连尚未完成，
+     * 首连由 mqtt_task 自身负责，此处 kick 只会产生误报日志 */
+    if (s_lp_slept_once && !app_mqtt_is_connected()) {
         APP_LOGW("lp: mqtt disconnected after wakeup, kick reconnect");
         app_mqtt_kick_reconnect();
     }
@@ -775,11 +791,15 @@ static void lp_wakeup_handle(app_mode_e mode)
      * 在短唤醒窗口内不一定到期；变化即时上报，休眠充电自动恢复看护） */
     charge_poll();
 
-    /* 定位未到期（寻呼/心跳唤醒）：回 LP 睡眠 */
+    /* 定位未到期（寻呼/心跳唤醒）：回 LP 睡眠。
+     * 到期判定加 APP_LP_DUE_GRACE_S 宽限：网络寻呼等外部唤醒常早于闹钟
+     * 1~2s（RTC 整秒截断+唤醒延迟），若严格比较会因差 1s 回睡"过近闹钟"，
+     * 2026-09-03 实测该场景 RTC 闹钟（1s 后）未触发导致睡死；
+     * 差值在宽限内直接视为到期执行定位，同时省一次睡眠循环 */
     if (mode == APP_MODE_SLEEP) {
         return;   /* 休眠模式不主动定位（one-shot 由 RPC 触发） */
     }
-    if (now_utc < s_next_loc_due_utc) {
+    if ((now_utc + APP_LP_DUE_GRACE_S) < s_next_loc_due_utc) {
         return;
     }
 
@@ -1087,14 +1107,18 @@ static void main_task(void *arg)
             ? APP_MQTT_KEEPALIVE_HIGHFREQ_SEC : APP_MQTT_KEEPALIVE_LP_SEC);
     provisioning_and_connect();
 
-    uint32_t last_battery_tick = 0;
     uint32_t last_rssi_tick = 0;
     uint32_t last_replay_tick = 0;
-    uint32_t last_cfgprt_tick = 0;
     uint32_t last_charge_tick = 0;
     uint32_t last_led_tick = 0;
+#if APP_BATTERY_ENABLE
+    /* 电量相关局部状态：随 APP_BATTERY_ENABLE 一起裁剪，避免调试期
+     * （无电池，宏=0）出现 unused variable 告警 */
+    uint32_t last_battery_tick = 0;
     bool low_battery_announced = false;
     bool ultra_low_battery_announced = false;
+    uint8_t s_ultra_low_confirm = 0;    /* 超低电连续确认计数 */
+#endif
     app_mode_e last_mode = APP_MODE_NUM;
     app_mode_e last_state_mode = APP_MODE_NUM;
 
@@ -1200,15 +1224,6 @@ static void main_task(void *arg)
             continue;
         }
 
-        /* 需求 2.1：GPS 芯片波特率反复尝试设置（2 秒间隔直到收到首条 NMEA） */
-        if (g_gps_opened && !g_gps_baudrate_set) {
-            if ((now - last_cfgprt_tick) >= APP_MS_TO_TICK(2000)) {
-                last_cfgprt_tick = now;
-                bsp_gps_set_uart_baudrate(APP_GPS_UART_BAUDRATE_RATE);
-                APP_LOGI("gps baudrate retry CFGPRT %u", APP_GPS_UART_BAUDRATE_RATE);
-            }
-        }
-
         /* 电量周期采样 + 阈值跨越状态事件 + 超低电强制休眠（需求 7）
          * [FIX] 采样节流：cm_adc_read 经由 modem OSA tx 路径，不可高频调用 */
 #if APP_BATTERY_ENABLE
@@ -1222,20 +1237,32 @@ static void main_task(void *arg)
                 }
                 if (soc >= 0) {
                     if (soc < APP_SUPER_LOW_BATTERY) {
-                        /* 超低电量：上报一次状态事件后强制切换到休眠模式 */
-                        if (!ultra_low_battery_announced) {
-                            ultra_low_battery_announced = true;
-                            low_battery_announced = true;
-                            APP_LOGW("ultra low battery soc=%d, report state + force sleep", soc);
-                            if (app_mqtt_is_connected()) {
-                                publish_state(APP_STATUS_ONLINE);
-                                osDelay(APP_MS_TO_TICK(200));
+                        /* 超低电连续确认（硬件定版：仅外部分压 ADC，无 VBAT
+                         * 交叉校验；连续 APP_BATTERY_ULTRA_LOW_CONFIRM 次采样
+                         * 低于阈值才动作，防单次误读强制休眠——2026-09-03
+                         * 曾因引脚误配读到假 2408mV 被误切休眠） */
+                        if (s_ultra_low_confirm < APP_BATTERY_ULTRA_LOW_CONFIRM) {
+                            s_ultra_low_confirm++;
+                            APP_LOGW("ultra low battery pending (soc=%d, %d/%d)",
+                                     soc, s_ultra_low_confirm, APP_BATTERY_ULTRA_LOW_CONFIRM);
+                        }
+                        if (s_ultra_low_confirm >= APP_BATTERY_ULTRA_LOW_CONFIRM) {
+                            /* 超低电量：上报一次状态事件后强制切换到休眠模式 */
+                            if (!ultra_low_battery_announced) {
+                                ultra_low_battery_announced = true;
+                                low_battery_announced = true;
+                                APP_LOGW("ultra low battery soc=%d confirmed, report state + force sleep", soc);
+                                if (app_mqtt_is_connected()) {
+                                    publish_state(APP_STATUS_ONLINE);
+                                    osDelay(APP_MS_TO_TICK(200));
+                                }
+                            }
+                            if (mode != APP_MODE_SLEEP) {
+                                app_mode_set(APP_MODE_SLEEP);
                             }
                         }
-                        if (mode != APP_MODE_SLEEP) {
-                            app_mode_set(APP_MODE_SLEEP);
-                        }
                     } else if (soc < APP_LOW_BATTERY_THRESHOLD) {
+                        s_ultra_low_confirm = 0;
                         if (!low_battery_announced) {
                             low_battery_announced = true;
                             APP_LOGW("low battery soc=%d, report state", soc);

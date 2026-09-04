@@ -333,13 +333,17 @@ static void lbs_report(bool force_wifi, bool report)
     bool has_bts = (collect_cell_info(bts, sizeof(bts),
                                       nearbts, sizeof(nearbts), &cellid) == 0);
 
-    /* 2. WiFi 扫描（限频：默认最小间隔 5 分钟，force_wifi 可跳过限制）。
+    /* 2. WiFi 扫描：触发 && 限频双条件同时满足（需求 2.2）。
+     * 触发由主控层 wifi_scan_should_trigger 传入 force_wifi（GNSS 连续 N 周期
+     * 无效且非寻宠/遛宠模式）；限频为硬性 5 分钟最小间隔，不可跳过。
+     * 原逻辑误用 ||（触发或限频任一满足即扫描），导致开机首个 LBS 任务在
+     * 触发条件不满足时仍执行 28s 断连扫描窗口（2026-09-03 实测发现），改 &&
      * 限频计时用 RTC UTC 秒：LP 睡眠期间 OS tick 冻结，tick 计时会使限频失真 */
     bool has_macs = false;
 #if APP_LBS_WIFI_ENABLE
     uint64_t now_utc = cm_rtc_get_current_time();
-    bool wifi_allowed = force_wifi || (s_last_wifi_scan_utc == 0) ||
-        ((now_utc - s_last_wifi_scan_utc) >= (APP_LBS_WIFI_SCAN_MIN_INTERVAL_MS / 1000u));
+    bool wifi_allowed = force_wifi && ((s_last_wifi_scan_utc == 0) ||
+        ((now_utc - s_last_wifi_scan_utc) >= (APP_LBS_WIFI_SCAN_MIN_INTERVAL_MS / 1000u)));
     if (wifi_allowed) {
         s_last_wifi_scan_utc = now_utc;
         int ap_cnt = do_wifi_scan();
