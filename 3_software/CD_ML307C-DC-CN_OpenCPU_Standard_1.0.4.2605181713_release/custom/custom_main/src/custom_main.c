@@ -58,8 +58,11 @@
 /* ===== 唤醒事件标志（LP 睡眠等待）===== */
 #define WAKE_EVT_RTC        (1u << 0)   /* RTC 闹钟（定位/心跳到期） */
 #define WAKE_EVT_NET        (1u << 1)   /* 网络下行（平台指令寻呼唤醒） */
-#define WAKE_EVT_PM         (1u << 2)   /* PM 退出回调（含 CHRG 边沿等 GPIO 唤醒） */
-#define WAKE_EVT_ALL        (WAKE_EVT_RTC | WAKE_EVT_NET | WAKE_EVT_PM)
+#define WAKE_EVT_PM         (1u << 2)   /* PM 退出回调（任何 LP 退出统一置位） */
+#define WAKE_EVT_KEY        (1u << 3)   /* KEY Pin86 边沿（GPIO 中断） */
+#define WAKE_EVT_GSINT      (1u << 4)   /* Gsensor_INT Pin76 边沿（GPIO 中断） */
+#define WAKE_EVT_ALL        (WAKE_EVT_RTC | WAKE_EVT_NET | WAKE_EVT_PM | \
+                             WAKE_EVT_KEY | WAKE_EVT_GSINT)
 
 /* ===== LP 状态机（看护/省电/休眠模式）=====
  * 关键设计：唤醒后必须先回主循环处理唤醒事务（RPC 指令/充电检测等），
@@ -121,6 +124,9 @@ static bool s_lp_slept_once = false;         /* 已经历过至少一次 LP 睡�
 static uint64_t s_next_loc_due_utc = 0;    /* 下次定位到期（UTC 秒） */
 static uint64_t s_next_hb_due_utc  = 0;    /* 下次心跳到期（UTC 秒，0=不需要） */
 static uint32_t s_gnss_wait_start_tick = 0;/* LP_ST_GNSS_WAIT 进入时刻 */
+/* PM 退出回调携带的 reason（LP 唤醒测试观察用；数值含义 SDK 未公开文档化，
+ * 回调中仅赋值，日志由任务上下文唤醒后打印，遵守回调不耗时约束） */
+static volatile uint32_t g_pm_exit_reason = 0;
 
 /* ===== 计步与静止判定（需求 8）===== */
 static uint32_t g_steps = 0;               /* 当日累计步数（0 点清零后由 STEP_CNT 直接读出） */
@@ -485,6 +491,23 @@ static void rtc_alarm_cb(void)
     if (g_wake_evt) osEventFlagsSet(g_wake_evt, WAKE_EVT_RTC);
 }
 
+/* ===== LP GPIO 边沿唤醒中断回调（KEY/GS_INT/CHRG；中断上下文仅置事件）=====
+ * 2026-09-04 实测定论：PINCMD1_LPMEDEG pad 边沿检测路径在本项目不可靠
+ * （同条件时醒时不醒），GPIO 中断机制（官方 lowpower 例程同款）连续
+ * 15+ 次唤醒全部成功，产品定版 GPIO 中断。osEventFlagsSet 中断上下文
+ * 安全性与 rtc_alarm_cb 同源（CMSIS-RTOS2 ISR-safe API，长期稳定运行）。
+ * 事件位置位即唤醒源指认（比唤醒后读电平可靠：线可能已释放回弹）；
+ * 唤醒后的业务处理由主循环按电平/周期项检查（charge_poll 等） */
+static void key_wake_irq_cb(void)
+{
+    if (g_wake_evt) osEventFlagsSet(g_wake_evt, WAKE_EVT_KEY);
+}
+
+static void gsint_wake_irq_cb(void)
+{
+    if (g_wake_evt) osEventFlagsSet(g_wake_evt, WAKE_EVT_GSINT);
+}
+
 /* ===== PM 低功耗回调（不可做耗时操作） ===== */
 static void pm_enter_cb(void)
 {
@@ -495,7 +518,7 @@ static void pm_exit_cb(uint32_t reason)
 {
     /* 任何 LP 唤醒（含 CHRG 边沿等 GPIO 唤醒）统一置事件，
      * 唤醒后的具体处理由主循环按周期项检查（不依赖 reason 数值） */
-    (void)reason;
+    g_pm_exit_reason = reason;   /* 唤醒测试观察用，任务上下文打印 */
     if (g_wake_evt) osEventFlagsSet(g_wake_evt, WAKE_EVT_PM);
 }
 
@@ -713,6 +736,17 @@ static void do_periodic_location_report(app_mode_e mode)
  * step1: 按定位频率（或心跳到期，取更近者）设置 RTC 闹钟
  * step2: GNSS 断电、LED 熄灭（引脚睡眠态 pad 级已配置，进 LP 自动生效）
  * step3: 解锁睡眠锁，阻塞等待唤醒事件（RTC 闹钟 / 网络寻呼 / GPIO 边沿） */
+
+/* LP GPIO 唤醒源电平读取（-1 = 读取失败；唤醒日志辅助判读） */
+static int lp_wake_gpio_level(cm_gpio_num_e num)
+{
+    cm_gpio_level_e level = CM_GPIO_LEVEL_LOW;
+    if (cm_gpio_get_level(num, &level) != 0) {
+        return -1;
+    }
+    return (level == CM_GPIO_LEVEL_HIGH) ? 1 : 0;
+}
+
 static void lp_enter_sleep(app_mode_e mode)
 {
     uint64_t now_utc = cm_rtc_get_current_time();
@@ -751,12 +785,32 @@ static void lp_enter_sleep(app_mode_e mode)
      * （默认行为会清除取走的事件位；无事件时返回 Timeout，无副作用） */
     (void)osEventFlagsWait(g_wake_evt, WAKE_EVT_ALL, osFlagsWaitAny, 0);
     cm_pm_work_unlock();
-    osEventFlagsWait(g_wake_evt, WAKE_EVT_ALL, osFlagsWaitAny, osWaitForever);
+    uint32_t evt = osEventFlagsWait(g_wake_evt, WAKE_EVT_ALL, osFlagsWaitAny, osWaitForever);
     cm_pm_work_lock();
     cm_rtc_enable_alarm(false);
     s_lp_slept_once = true;
 
-    APP_LOGI("lp: wakeup");
+    if (evt & 0x80000000u) {
+        /* 返回值为 osFlagsErrorXXX 错误码（理论上 osWaitForever 不超时，
+         * 防御性记录，事件位无效） */
+        APP_LOGW("lp: wakeup flags error 0x%x", evt);
+        evt = 0;
+    }
+    APP_LOGI("lp: wakeup evt=0x%x [%s%s%s%s%s] pm_reason=%u",
+             evt,
+             (evt & WAKE_EVT_RTC) ? "RTC " : "",
+             (evt & WAKE_EVT_NET) ? "NET " : "",
+             (evt & WAKE_EVT_PM) ? "PM " : "",
+             (evt & WAKE_EVT_KEY) ? "KEY " : "",
+             (evt & WAKE_EVT_GSINT) ? "GSINT" : "",
+             (unsigned)g_pm_exit_reason);
+    if (evt & (WAKE_EVT_KEY | WAKE_EVT_GSINT)) {
+        /* GPIO 边沿唤醒：事件位即唤醒源（中断回调置位，可靠指认）；
+         * 电平仅辅助判读（唤醒时线可能已释放回弹，回基线属正常） */
+        APP_LOGI("lp: gpio wake level key=%d gs_int=%d",
+                 lp_wake_gpio_level(APP_KEY_GPIO),
+                 lp_wake_gpio_level(APP_GSENSOR_INT_GPIO));
+    }
 }
 
 /* ===== LP 流程 step4~6：唤醒后定位与上报 =====
@@ -902,7 +956,8 @@ static void lp_state_machine(app_mode_e mode)
 
     case LP_ST_IDLE:
     default:
-        /* 进入 LP 模式首轮：看护/省电立即安排一次定位；休眠仅心跳唤醒 */
+        /* 进入 LP 模式首轮：看护/省电立即安排一次定位；休眠仅心跳唤醒
+         * （实际排程在主循环模式变化分支完成，此处为防御性兜底） */
         if (mode != APP_MODE_SLEEP && s_next_loc_due_utc == 0) {
             s_next_loc_due_utc = cm_rtc_get_current_time();
         }
@@ -1299,11 +1354,6 @@ static void main_task(void *arg)
                         low_battery_announced = false;
                         ultra_low_battery_announced = false;
                     }
-                    /* 休眠模式 SOC 回升至阈值以上自动恢复看护（需求 7） */
-                    if (mode == APP_MODE_SLEEP && soc >= APP_BATTERY_RECOVER_SOC) {
-                        APP_LOGI("battery recovered soc=%d, resume supervise", soc);
-                        app_mode_set(APP_MODE_SUPERVISE);
-                    }
                 }
             }
         }
@@ -1441,11 +1491,37 @@ static void system_init(void)
     bsp_init();
     app_lbs_init();
 
-    /* 充电检测脚 LP 边沿唤醒（需求 7：LP 睡眠期间插入充电即时唤醒处理）。
-     * PINCMD1 边沿检测提供唤醒事件（唤醒后由 pm_exit_cb 置事件标志，
-     * 主循环 charge_poll 读取最新电平上报）；双边沿覆盖插入/拔出。 */
-    cm_iomux_set_pin_cmd(APP_CHRG_IOMUX_PIN, CM_IOMUX_PINCMD1_LPMEDEG,
-                         CM_IOMUX_PINCMD1_FUNC3_EDGE_BOTH);
+    /* LP GPIO 边沿唤醒（需求 3/10，2026-09-04 实测定版）：
+     * KEY(Pin86/GPIO2)、Gsensor_INT(Pin76/GPIO0)。
+     * 机制：GPIO 中断（EDGE_BOTH）而非 PINCMD1_LPMEDEG pad 检测——
+     * 后者在本项目实测不可靠（同条件时醒时不醒），GPIO 中断连续
+     * 15+ 次唤醒全部成功（官方 lowpower 例程同款机制）。
+     * - 两脚均默认 GPIO 功能（资源综述），无需 iomux 复用切换
+     * - 上拉（cm_gpio_init pull + PINCMD3 pad 级双保险，实测前者在
+     *   这两脚拉不高、后者有效；上拉使未焊传感器/未按键时电平稳定，
+     *   防悬空毛刺误唤醒）
+     * - CHRG(Pin87) 不作为 LP 唤醒源（需求 7 V1.22：LP 期间插入充电
+     *   不即时唤醒，充电事件由主循环 charge_poll 在唤醒后轮询检测） */
+    {
+        cm_gpio_cfg_t cfg = {0};
+        cfg.direction = CM_GPIO_DIRECTION_INPUT;
+        cfg.pull = CM_GPIO_PULL_UP;
+        if (cm_gpio_init(APP_KEY_GPIO, &cfg) != 0 ||
+            cm_gpio_init(APP_GSENSOR_INT_GPIO, &cfg) != 0) {
+            APP_LOGE("lp wake gpio init fail");
+        }
+        (void)cm_iomux_set_pin_cmd(APP_KEY_IOMUX_PIN, CM_IOMUX_PINCMD3_PULL,
+                                   CM_IOMUX_PINCMD3_FUNC2_PULL_HIGH);
+        (void)cm_iomux_set_pin_cmd(APP_GSENSOR_INT_IOMUX_PIN, CM_IOMUX_PINCMD3_PULL,
+                                   CM_IOMUX_PINCMD3_FUNC2_PULL_HIGH);
+
+        int32_t r1 = cm_gpio_interrupt_register(APP_KEY_GPIO, key_wake_irq_cb);
+        int32_t r2 = cm_gpio_interrupt_enable(APP_KEY_GPIO, CM_GPIO_IT_EDGE_BOTH);
+        int32_t r3 = cm_gpio_interrupt_register(APP_GSENSOR_INT_GPIO, gsint_wake_irq_cb);
+        int32_t r4 = cm_gpio_interrupt_enable(APP_GSENSOR_INT_GPIO, CM_GPIO_IT_EDGE_BOTH);
+        APP_LOGI("lp wake irq init: key %d/%d gs_int %d/%d",
+                 (int)r1, (int)r2, (int)r3, (int)r4);
+    }
 }
 
 /* ====================================================================
@@ -1457,8 +1533,11 @@ int cm_opencpu_entry(void *param)
 
     system_init();
 
-    /* 需求 V1.8：上电即工作（无软件关机模式；开关机由 PWR_ON/OFF 硬件控制） */
-    APP_LOGI("pet tracker boot, mode=%s", app_mode_to_string(app_mode_get()));
+    /* 需求 V1.8：上电即工作（无软件关机模式；开关机由 PWR_ON/OFF 硬件控制）。
+     * build 时间戳随每次编译更新：用于核对设备实际运行的固件版本
+     * （2026-09-04 烧录争议排查：bin 为新但设备行为旧，靠此日志判别） */
+    APP_LOGI("pet tracker boot, mode=%s, build " __DATE__ " " __TIME__,
+             app_mode_to_string(app_mode_get()));
 
     osThreadAttr_t task_attr = {0};
     task_attr.name = "pet_main";

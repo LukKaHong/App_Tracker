@@ -76,7 +76,6 @@ extern "C" {
 
 #define APP_LOW_BATTERY_THRESHOLD   20      /* SOC < 20% : 低电量 */
 #define APP_SUPER_LOW_BATTERY        5      /* SOC < 5%  : 超低电量，上报后强制休眠模式 */
-#define APP_BATTERY_RECOVER_SOC     10      /* 休眠模式 SOC 回升至此值以上自动恢复看护模式 */
 
 /* ===================================================================
  * 4.1 各模式定位周期（需求 1）
@@ -136,7 +135,7 @@ extern "C" {
  *    Pin86 默认 GPIO2（复用功能1 = 32K_OUT，本产品不使用）
  *    电源键接 PWR_ON/OFF（Pin7）硬件开关机，软件不注册 powerkey 回调
  * =================================================================== */
-#define APP_KEY_ENABLE              0       /* 0 = 按键功能不实现（硬件预留） */
+#define APP_KEY_ENABLE              0       /* 0 = 按键功能不实现（硬件预留；LP 唤醒能力独立于此宏） */
 #define APP_KEY_GPIO                CM_GPIO_NUM_2
 #define APP_KEY_IOMUX_PIN           CM_IOMUX_PIN_86
 #define APP_KEY_ACTIVE_LEVEL        CM_GPIO_LEVEL_LOW
