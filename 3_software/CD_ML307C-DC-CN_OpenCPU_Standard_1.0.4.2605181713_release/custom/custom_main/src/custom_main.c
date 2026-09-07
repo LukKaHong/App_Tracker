@@ -758,9 +758,27 @@ static void lp_enter_sleep(app_mode_e mode)
         wake_utc = s_next_hb_due_utc;
     }
     if (wake_utc == 0) wake_utc = now_utc + 60;   /* 防御：无调度项时 60s 兜底 */
-    /* 最小闹钟间隔保护：过近时刻（<3s）的 RTC 闹钟因慢时钟域同步延迟
-     * 存在错过永不触发的风险（2026-09-03 实测 wake in 1s 闹钟失效睡死），
-     * 推迟到至少 3s 后 */
+
+    /* [FIX 2026-09-07] 短剩余不入睡：RTC 闹钟在 LP 睡眠中存在 ±10~15s 精度
+     * 偏差（实测 300s 闹钟 ~290s 触发）。RTC 提前触发 → grace 判定未到期回睡
+     * → 重设的近期闹钟（实测 11s，大于原 3s 下限）不触发 → 睡死 4.5h。
+     * 距到期 < APP_LP_STAY_AWAKE_S 时保持清醒空转（主循环照常响应寻呼/
+     * 充电/alive），剩余 ≤10s 由 lp_wakeup_handle 的 grace 路径衔接执行。
+     * 空转代价最多 ~50s 清醒，彻底消灭近期闹钟场景 */
+    if (wake_utc < (now_utc + APP_LP_STAY_AWAKE_S)) {
+        static uint32_t s_stay_log_tick = 0;
+        uint32_t now_tick = (uint32_t)osKernelGetTickCount();
+        if ((now_tick - s_stay_log_tick) >= APP_MS_TO_TICK(5000)) {
+            s_stay_log_tick = now_tick;
+            APP_LOGI("lp: due in %lus, stay awake (short alarm risk)",
+                     (unsigned long)(wake_utc - now_utc));
+        }
+        return;   /* 不设闹钟不睡；状态机回 WOKE 继续轮询直至 grace 到期 */
+    }
+
+    /* 最小闹钟间隔保护：过近时刻（<30s）的 RTC 闹钟存在不触发风险
+     * （2026-09-03 实测 1s、2026-09-07 实测 11s 均失效），推迟设置；
+     * 闹钟偏晚仅延迟唤醒（唤醒后到期判定自然通过），不会失败 */
     if (wake_utc < (now_utc + APP_LP_ALARM_MIN_S)) {
         wake_utc = now_utc + APP_LP_ALARM_MIN_S;
     }
@@ -1027,56 +1045,68 @@ void app_reconnect_mqtt(void)
     provisioning_and_connect();
 }
 
-/* ===== 休眠模式单次定位任务（独立线程，避免阻塞主任务） ===== */
+/* ===== 休眠模式单次定位任务（常驻工作线程，事件驱动，避免阻塞主任务）=====
+ * 2026-09-05：与 lbs_task 同因改为常驻——SDK rti 线程数组不回收退出
+ * 线程表项，反复 osThreadNew 累积溢出触发 Silent Reset（详见 app_lbs.c） */
+#define ONE_SHOT_EVT_RUN    (1u << 0)
+static osEventFlagsId_t g_one_shot_evt = NULL;
+
 static void one_shot_loc_task(void *arg)
 {
     (void)arg;
-    APP_LOGI("one-shot: open gps");
-    g_one_shot_running = true;
-
-    uint64_t utc_before_open = g_loc_updated_utc;
-
-    if (gps_power_open() != 0) {
-        APP_LOGE("one-shot: gps open fail, fallback to LBS");
-        app_lbs_trigger(false, true);
-        g_one_shot_running = false;
-        return;
-    }
-    bsp_gps_set_power_mode(BSP_GPS_LPMODE_HIGH);
-    g_gps_lpmode_applied = (int)BSP_GPS_LPMODE_HIGH;
-
-    /* 等待 GPS 获取有效定位（带超时） */
-    uint32_t start = (uint32_t)osKernelGetTickCount();
-    osDelay(APP_MS_TO_TICK(3000));   /* GNSS 上电稳定 */
     while (1) {
-        uint32_t elapsed = (uint32_t)osKernelGetTickCount() - start;
-        if (elapsed >= APP_MS_TO_TICK(APP_GNSS_FIX_TIMEOUT_MS)) {
-            APP_LOGW("one-shot: timeout %lums", (unsigned long)(elapsed * APP_TICK_MS));
-            break;
+        uint32_t flags = osEventFlagsWait(g_one_shot_evt, ONE_SHOT_EVT_RUN,
+                                          osFlagsWaitAny, osWaitForever);
+        if (flags & osFlagsError) {
+            continue;
         }
-        if (g_loc_updated_utc != utc_before_open) {
-            APP_LOGI("one-shot: location fixed after %lums",
-                     (unsigned long)(elapsed * APP_TICK_MS));
-            break;
+        APP_LOGI("one-shot: open gps");
+        g_one_shot_running = true;
+
+        uint64_t utc_before_open = g_loc_updated_utc;
+
+        if (gps_power_open() != 0) {
+            APP_LOGE("one-shot: gps open fail, fallback to LBS");
+            app_lbs_trigger(false, true);
+            g_one_shot_running = false;
+            continue;
         }
-        osDelay(APP_MS_TO_TICK(500));
+        bsp_gps_set_power_mode(BSP_GPS_LPMODE_HIGH);
+        g_gps_lpmode_applied = (int)BSP_GPS_LPMODE_HIGH;
+
+        /* 等待 GPS 获取有效定位（带超时） */
+        uint32_t start = (uint32_t)osKernelGetTickCount();
+        osDelay(APP_MS_TO_TICK(3000));   /* GNSS 上电稳定 */
+        while (1) {
+            uint32_t elapsed = (uint32_t)osKernelGetTickCount() - start;
+            if (elapsed >= APP_MS_TO_TICK(APP_GNSS_FIX_TIMEOUT_MS)) {
+                APP_LOGW("one-shot: timeout %lums", (unsigned long)(elapsed * APP_TICK_MS));
+                break;
+            }
+            if (g_loc_updated_utc != utc_before_open) {
+                APP_LOGI("one-shot: location fixed after %lums",
+                         (unsigned long)(elapsed * APP_TICK_MS));
+                break;
+            }
+            osDelay(APP_MS_TO_TICK(500));
+        }
+
+        /* 需求 1（休眠模式注 3）：定位完成之后关闭定位功能 */
+        gps_power_close();
+
+        /* 上报一次数据：GPS 有效定位 → 上报定位；
+         * 定位失败 → LBS 原始参数兜底（平台调高德解算） */
+        bool fixed = (g_loc_updated_utc != utc_before_open);
+        pedometer_cycle_update();
+        app_lbs_set_steps(g_steps);
+        app_lbs_trigger(false, true);
+        if (fixed) {
+            publish_location(false);
+        }
+
+        g_one_shot_running = false;
+        APP_LOGI("one-shot: task done");
     }
-
-    /* 需求 1（休眠模式注 3）：定位完成之后关闭定位功能 */
-    gps_power_close();
-
-    /* 上报一次数据：GPS 有效定位 → 上报定位；
-     * 定位失败 → LBS 原始参数兜底（平台调高德解算） */
-    bool fixed = (g_loc_updated_utc != utc_before_open);
-    pedometer_cycle_update();
-    app_lbs_set_steps(g_steps);
-    app_lbs_trigger(false, true);
-    if (fixed) {
-        publish_location(false);
-    }
-
-    g_one_shot_running = false;
-    APP_LOGI("one-shot: task done");
 }
 
 /* ===== 应用层日志输出（通过 DBG 口） ===== */
@@ -1397,17 +1427,13 @@ static void main_task(void *arg)
             }
         }
 
-        /* 休眠模式下单次定位触发（收到平台状态读取/定位指令后） */
+        /* 休眠模式下单次定位触发（收到平台状态读取/定位指令后）：
+         * 常驻任务置事件（勿 osThreadNew，rti 线程数组泄漏教训） */
         if (g_one_shot_loc) {
             g_one_shot_loc = false;
             APP_LOGI("one-shot location triggered");
-            osThreadAttr_t attr = {0};
-            attr.name = "one_shot";
-            attr.stack_size = 4096;
-            attr.priority = osPriorityBelowNormal1;
-            osThreadId_t tid = osThreadNew(one_shot_loc_task, NULL, &attr);
-            if (tid == NULL) {
-                APP_LOGE("one-shot task create fail, fallback direct publish");
+            if (osEventFlagsSet(g_one_shot_evt, ONE_SHOT_EVT_RUN) & osFlagsError) {
+                APP_LOGE("one-shot trigger fail, fallback direct publish");
                 publish_location(false);
             }
         }
@@ -1447,6 +1473,17 @@ static void system_init(void)
 
     /* 唤醒事件（LP 睡眠等待） */
     g_wake_evt = osEventFlagsNew(NULL);
+
+    /* one-shot 常驻定位任务（事件驱动；勿每触发 osThreadNew——
+     * rti 线程数组泄漏 Silent Reset 教训，见 one_shot_loc_task 注释） */
+    g_one_shot_evt = osEventFlagsNew(NULL);
+    osThreadAttr_t os_attr = {0};
+    os_attr.name = "one_shot";
+    os_attr.stack_size = 4096;
+    os_attr.priority = osPriorityBelowNormal1;
+    if (osThreadNew(one_shot_loc_task, NULL, &os_attr) == NULL) {
+        APP_LOGE("one-shot task create fail");
+    }
 
     app_mode_init();          /* 需求 9：从 flash 恢复掉电前模式，首次默认看护 */
     app_offline_cache_init();
@@ -1492,17 +1529,21 @@ static void system_init(void)
     app_lbs_init();
 
     /* LP GPIO 边沿唤醒（需求 3/10，2026-09-04 实测定版）：
-     * KEY(Pin86/GPIO2)、Gsensor_INT(Pin76/GPIO0)。
+     * KEY(Pin86/GPIO2)、Gsensor_INT(Pin19/GPIO9，V1.23 引脚更新)。
      * 机制：GPIO 中断（EDGE_BOTH）而非 PINCMD1_LPMEDEG pad 检测——
      * 后者在本项目实测不可靠（同条件时醒时不醒），GPIO 中断连续
      * 15+ 次唤醒全部成功（官方 lowpower 例程同款机制）。
-     * - 两脚均默认 GPIO 功能（资源综述），无需 iomux 复用切换
+     * - KEY 默认 GPIO 功能；Gsensor_INT 所在 Pin19 主功能非 GPIO，
+     *   需显式切 FUNC2 = GPIO9（官方例程同款 cm_iomux_set_pin_func）
      * - 上拉（cm_gpio_init pull + PINCMD3 pad 级双保险，实测前者在
      *   这两脚拉不高、后者有效；上拉使未焊传感器/未按键时电平稳定，
      *   防悬空毛刺误唤醒）
      * - CHRG(Pin87) 不作为 LP 唤醒源（需求 7 V1.22：LP 期间插入充电
      *   不即时唤醒，充电事件由主循环 charge_poll 在唤醒后轮询检测） */
     {
+        /* 先切 iomux 功能（官方例程顺序：set_pin_func → gpio_init） */
+        (void)cm_iomux_set_pin_func(APP_GSENSOR_INT_IOMUX_PIN,
+                                    APP_GSENSOR_INT_IOMUX_FUNC);
         cm_gpio_cfg_t cfg = {0};
         cfg.direction = CM_GPIO_DIRECTION_INPUT;
         cfg.pull = CM_GPIO_PULL_UP;

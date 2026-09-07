@@ -3,9 +3,9 @@
  * @brief   板级驱动实现（需求文档 V1.12 / 引脚分配 V1.10 定版）
  *          - 蜂鸣器：PWM0 @ Pin74，满占空比输出高电平 = 响，cm_pwm_close = 停
  *          - RUN_LED：PWM1 @ Pin75，闪烁由异步任务控制 PWM 通断，呼吸由占空比渐变
- *          - GPS_PWR_EN：GPIO12 @ Pin22，高电平开
+ *          - GPS_PWR_EN：GPIO0 @ Pin76，高电平开（V1.23，原 Pin22/GPIO12）
  *          - 充电检测：GPIO3 @ Pin87，高电平 = 充电中
- *          - 电池：ADC0 @ Pin9，4:1 分压
+ *          - 电池：ADC1 @ Pin96，外部分压 200k/68k（比 3.941，V1.14 定版）
  *          - 计步器：QMA6100P，I2C0 @ Pin57/58，7bit 地址 0x12/0x13（AD0 电平决定）
  *          - GPS：UART1 @ Pin28/29 + NMEA 0183 解析（GGA / RMC / GSV）
  *          LP 睡眠态：GPS UART 与 I2C 引脚配置 SLEEP_FLOAT（pad 级配置一次，
@@ -342,11 +342,11 @@ void bsp_led_stop(void)
 }
 
 /* ====================================================================
- * GPS_PWR_EN（Pin22 / GPIO12，高电平开）
+ * GPS_PWR_EN（Pin76 / GPIO0，高电平开；V1.23 引脚更新，原 Pin22/GPIO12）
  * ==================================================================== */
 static int bsp_gps_power_init(void)
 {
-    /* Pin22 主功能 UART0_CTS，FUNCTION1 = GPIO12（资源综述 Table 4） */
+    /* Pin76 复用功能1 = GPIO0（2026-09-05 例程实测） */
     cm_iomux_set_pin_func(APP_GPS_PWR_EN_IOMUX_PIN, APP_GPS_PWR_EN_IOMUX_FUNC);
     cm_gpio_cfg_t cfg = {0};
     cfg.direction = CM_GPIO_DIRECTION_OUTPUT;

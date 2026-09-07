@@ -23,7 +23,7 @@ static cm_mqtt_client_t    *s_client = NULL;
 static osEventFlagsId_t     s_evt = NULL;
 static osThreadId_t         s_task = NULL;
 static app_mqtt_event_cb_t  s_user_cb = NULL;
-static bool                 s_running = false;
+/* s_running 已删除：mqtt_task 常驻（生命周期见 app_mqtt_disconnect 注释） */
 static bool                 s_connected = false;
 /* 保存最近一次连接凭证，用于 app_mqtt_disconnect 后重新连接 */
 static app_mqtt_credential_t s_saved_cred;
@@ -136,9 +136,12 @@ static int cb_timeout(cm_mqtt_client_t *client, unsigned short msgid)
 static void mqtt_task(void *arg)
 {
     (void)arg;
-    while (s_running) {
+    /* 常驻任务（勿 terminate/recreate——rti 线程数组泄漏 Silent Reset
+     * 教训，见 2026-09-05 两晚复现记录）：WiFi 扫描窗口 s_client 为
+     * NULL 时本任务 1s 空转轮询，不影响 LP 睡眠（osDelay 挂起不持锁） */
+    while (1) {
         osDelay(APP_MS_TO_TICK(1000));
-        if (!s_running || !s_client) continue;
+        if (!s_client) continue;
 
         int st = cm_mqtt_client_get_state(s_client);
         if (st != CM_MQTT_STATE_DISCONNECTED) continue;
@@ -259,9 +262,9 @@ int app_mqtt_connect(const app_mqtt_credential_t *cred)
         APP_LOGE("mqtt connect ret=%d", ret);
     }
 
-    /* 启动状态监控任务 */
-    if (!s_running) {
-        s_running = true;
+    /* 启动状态监控任务（常驻，仅创建一次；WiFi 扫描断开/重连不
+     * terminate/recreate——rti 线程数组泄漏 Silent Reset 教训） */
+    if (s_task == NULL) {
         osThreadAttr_t tattr = {0};
         tattr.name = "mqtt_task";
         tattr.stack_size = 4 * 1024;
@@ -273,11 +276,9 @@ int app_mqtt_connect(const app_mqtt_credential_t *cred)
 
 int app_mqtt_disconnect(void)
 {
-    s_running = false;
-    if (s_task) {
-        osThreadTerminate(s_task);
-        s_task = NULL;
-    }
+    /* 仅销毁客户端，监控任务常驻（勿 osThreadTerminate——被终止线程
+     * 的 SDK rti 表项不回收，WiFi 扫描每周期 terminate+recreate 累积
+     * 92 项溢出 → Silent Reset，2026-09-05 两晚复现定案） */
     if (s_client) {
         cm_mqtt_client_disconnect(s_client);
         osDelay(APP_MS_TO_TICK(200));

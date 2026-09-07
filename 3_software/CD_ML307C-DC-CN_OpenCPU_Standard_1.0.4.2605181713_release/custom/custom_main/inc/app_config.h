@@ -101,9 +101,12 @@ extern "C" {
 #define APP_GNSS_FIX_TIMEOUT_MS     (90 * 1000)
 
 /* LP 唤醒调度保护（2026-09-03 实测教训：早于闹钟的外部唤醒差 1s 未到期回睡，
- * 1s 后的 RTC 闹钟因慢时钟域同步延迟未触发，设备睡死到下一个外部事件） */
+ * 1s 后的 RTC 闹钟因慢时钟域同步延迟未触发，设备睡死到下一个外部事件；
+ * 2026-09-07 复发变体：RTC 睡眠精度偏差 ±10~15s（300s 闹钟 ~290s 触发），
+ * 提前唤醒回睡后 11s 近期闹钟仍未触发 → 3s 下限保护不足，睡死 4.5h） */
 #define APP_LP_DUE_GRACE_S          10   /* 唤醒时距定位到期 ≤10s 直接视为到期执行 */
-#define APP_LP_ALARM_MIN_S          3    /* RTC 闹钟最小间隔，过近时刻推迟设置 */
+#define APP_LP_STAY_AWAKE_S         60   /* 距到期 <60s 不入睡：保持清醒空转由 grace 衔接，彻底避免近期闹钟 */
+#define APP_LP_ALARM_MIN_S          30   /* RTC 闹钟最小间隔（防御兜底，闹钟晚触发仅延迟不会失败） */
 
 /* ===================================================================
  * 5. GPS 定位芯片 (CC1161W) - UART 通讯
@@ -124,10 +127,10 @@ extern "C" {
  * 芯片输出/波特率对齐已验证），关闭以减少 DBG 口日志量 */
 #define APP_GPS_NMEA_DEBUG          0
 
-/* GPS_PWR_EN（需求 10：Pin22，GNSS 电路电源控制，高电平开/低电平关）
- * Pin22 主功能 UART0_CTS，复用功能1 = GPIO12（资源综述 Table 4） */
-#define APP_GPS_PWR_EN_GPIO         CM_GPIO_NUM_12
-#define APP_GPS_PWR_EN_IOMUX_PIN    CM_IOMUX_PIN_22
+/* GPS_PWR_EN（需求 10 V1.23：Pin76，GNSS 电路电源控制，高电平开/低电平关）
+ * Pin76 复用功能1 = GPIO0（2026-09-05 例程实测）；原 Pin22/GPIO12 已弃用 */
+#define APP_GPS_PWR_EN_GPIO         CM_GPIO_NUM_0
+#define APP_GPS_PWR_EN_IOMUX_PIN    CM_IOMUX_PIN_76
 #define APP_GPS_PWR_EN_IOMUX_FUNC   CM_IOMUX_FUNC_FUNCTION1
 
 /* ===================================================================
@@ -186,16 +189,19 @@ extern "C" {
 #define APP_CHRG_ACTIVE_LEVEL       CM_GPIO_LEVEL_HIGH  /* 高电平 = 充电中 */
 
 /* ===================================================================
- * 11. Gsensor QMA6100P（需求 8 / 10）
+ * 11. Gsensor QMA6100P（需求 8 / 10 V1.23：INT=Pin19）
  *     IIC0：SCL=Pin57 / SDA=Pin58（专用功能，无 GPIO 复用）
- *     中断脚 INT=Pin76 / GPIO0（默认 GPIO 功能；复用功能1=SMART_BAT，不可启用）
+ *     中断脚 INT=Pin19 / GPIO9：Pin19 主功能非 GPIO，复用功能2 = GPIO9
+ *     （官方 lowpower 例程同款配置 cm_iomux_set_pin_func(PIN_19, FUNC2)）；
+ *     原 Pin76/GPIO0 已让渡给 GPS_PWR_EN
  * =================================================================== */
 #define APP_PEDOMETER_ENABLE        1       /* 计步功能总开关（需求 8） */
 #define APP_GSENSOR_I2C_DEV         CM_I2C_DEV_0
 #define APP_GSENSOR_I2C_SCL_PIN     CM_IOMUX_PIN_57
 #define APP_GSENSOR_I2C_SDA_PIN     CM_IOMUX_PIN_58
-#define APP_GSENSOR_INT_GPIO        CM_GPIO_NUM_0
-#define APP_GSENSOR_INT_IOMUX_PIN   CM_IOMUX_PIN_76
+#define APP_GSENSOR_INT_GPIO        CM_GPIO_NUM_9
+#define APP_GSENSOR_INT_IOMUX_PIN   CM_IOMUX_PIN_19
+#define APP_GSENSOR_INT_IOMUX_FUNC  CM_IOMUX_FUNC_FUNCTION2
 
 /* 静止省电判定（需求 8 必做功能：计步增量法，默认启用；仅调试场景关闭） */
 #define APP_STILL_DETECT_ENABLE     1       /* 静止省电总开关 */

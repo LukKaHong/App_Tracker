@@ -56,6 +56,9 @@ extern int app_main_publish_telemetry(const char *json, int len,
 static char     g_imei[16] = "000000000000000";
 static char     g_boot_id[32] = "boot_0000";
 static volatile bool s_running = false;          /* 采集任务运行中 */
+/* 常驻工作线程与事件（定义见 lbs_task 段；init 需前向可见） */
+static osEventFlagsId_t s_lbs_work_evt;
+static void lbs_task(void *arg);
 static uint32_t s_lbs_seq = 0;                   /* LBS 上报序号（message_id） */
 
 static uint32_t s_steps = 0;                     /* 当日累计步数（custom_main 注入，随报文上报） */
@@ -101,11 +104,23 @@ int app_lbs_init(void)
 #endif
     s_running = false;
     s_lbs_seq = 0;
-#if LBS_WIFI_COMMON_ENABLE
-    return s_scan_evt ? 0 : -1;
-#else
+    /* 常驻工作线程：init 创建一次（勿每周期 osThreadNew，见 lbs_task
+     * 注释——SDK rti 线程数组泄漏导致 Silent Reset 的教训） */
+    if (s_lbs_work_evt == NULL) {
+        s_lbs_work_evt = osEventFlagsNew(NULL);
+    }
+    static osThreadId_t s_lbs_thread = NULL;
+    if (s_lbs_thread == NULL) {
+        osThreadAttr_t attr = {0};
+        attr.name = "lbs_task";
+        attr.stack_size = 8 * 1024;
+        attr.priority = osPriorityBelowNormal1;   /* SDK 1.0.4 应用层优先级体系 */
+        s_lbs_thread = osThreadNew(lbs_task, NULL, &attr);
+    }
+    if (s_lbs_work_evt == NULL || s_lbs_thread == NULL) {
+        return -1;
+    }
     return 0;
-#endif
 }
 
 bool app_lbs_is_running(void)
@@ -396,8 +411,8 @@ static void lbs_report(bool force_wifi, bool report)
     }
 
     /* 3. 组装上报 JSON（协议 5.1 location 事件 + 需求 2.2 原始参数扩展字段）
-     * LBS 模式设备无坐标，longitude/latitude 填 0，
-     * 由平台根据 bts/nearbts/macs 调高德解算坐标 */
+     * LBS 报文仅携带基站/WiFi 原始参数，不上报 longitude/latitude 字段，
+     * 坐标由平台根据 bts/nearbts/macs 调高德解算 */
     s_lbs_seq++;
     snprintf(msgid, sizeof(msgid), "lbs_%s_%s_%lu",
              g_imei, g_boot_id, (unsigned long)s_lbs_seq);
@@ -410,8 +425,6 @@ static void lbs_report(bool force_wifi, bool report)
         ",\"imei\":\"%s\""
         ",\"device_sn\":\"%s\""
         ",\"event_time\":\"%s\""
-        ",\"longitude\":0"
-        ",\"latitude\":0"
         ",\"source\":\"%s\""
         ",\"bts\":\"%s\""
         ",\"nearbts\":\"%s\""
@@ -447,17 +460,33 @@ static void lbs_report(bool force_wifi, bool report)
              (unsigned long)s_lbs_seq, (int)has_bts, (int)has_macs);
 }
 
-/* ===== 采集上报任务（独立线程；含 WiFi 扫描时单次约 30s：
- * 8s RRC 静默 + ~17s 扫描 + ~3s MQTT 重连）===== */
+/* ===== 采集上报任务（常驻工作线程，事件驱动；含 WiFi 扫描时单次约 30s：
+ * 30s RRC 静默 + ~4s 扫描 + ~3s MQTT 重连）=====
+ * 2026-09-05 整夜测试教训：原先每定位周期 osThreadNew 创建 lbs_task
+ * （运行完退出），SDK 内部 rti 线程信息数组不回收已退出线程的表项，
+ * 累积 92 项（0x5c）溢出 → Silent Reset（utilities.c:694，两次整夜
+ * 复现，均发生在 gnss fix timeout 后触发 lbs 的时刻，间隔约 3.5h）。
+ * 修复：线程改为 init 时创建一次、常驻事件等待，trigger 仅置参数
+ * + 置事件标志，全生命周期零周期性线程创建 */
+#define LBS_EVT_RUN         (1u << 0)
+static volatile bool s_force_wifi = false;
+static volatile bool s_report = false;
+
 static void lbs_task(void *arg)
 {
-    /* arg 位编码：bit0 = force_wifi，bit1 = report */
-    bool force_wifi = (((uintptr_t)arg) & 0x1u) != 0;
-    bool report = (((uintptr_t)arg) & 0x2u) != 0;
-    APP_LOGI("lbs: task start (force_wifi=%d report=%d)", (int)force_wifi, (int)report);
-    lbs_report(force_wifi, report);
-    s_running = false;
-    APP_LOGI("lbs: task done");
+    (void)arg;
+    while (1) {
+        uint32_t flags = osEventFlagsWait(s_lbs_work_evt, LBS_EVT_RUN,
+                                          osFlagsWaitAny, osWaitForever);
+        if (flags & osFlagsError) {
+            continue;   /* 等待异常（非法参数等），重新等待 */
+        }
+        APP_LOGI("lbs: task start (force_wifi=%d report=%d)",
+                 (int)s_force_wifi, (int)s_report);
+        lbs_report(s_force_wifi, s_report);
+        s_running = false;
+        APP_LOGI("lbs: task done");
+    }
 }
 
 int app_lbs_trigger(bool force_wifi, bool report)
@@ -467,14 +496,10 @@ int app_lbs_trigger(bool force_wifi, bool report)
         return -1;
     }
     s_running = true;
-
-    uintptr_t arg = (force_wifi ? 0x1u : 0x0u) | (report ? 0x2u : 0x0u);
-    osThreadAttr_t attr = {0};
-    attr.name = "lbs_task";
-    attr.stack_size = 8 * 1024;
-    attr.priority = osPriorityBelowNormal1;   /* SDK 1.0.4 应用层优先级体系 */
-    if (osThreadNew(lbs_task, (void *)arg, &attr) == NULL) {
-        APP_LOGE("lbs: task create fail");
+    s_force_wifi = force_wifi;
+    s_report = report;
+    if (osEventFlagsSet(s_lbs_work_evt, LBS_EVT_RUN) & osFlagsError) {
+        APP_LOGE("lbs: trigger event set fail");
         s_running = false;
         return -2;
     }
