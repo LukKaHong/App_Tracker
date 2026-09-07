@@ -145,7 +145,7 @@ int app_protocol_parse_rpc(const char *payload, int payload_len,
 
     memset(out, 0, sizeof(*out));
     out->duration_seconds = -1;
-    out->interval_seconds = -1;
+    out->duration_seconds_present = false;
     out->mode[0] = '\0';
     out->url[0] = '\0';
 
@@ -162,9 +162,7 @@ int app_protocol_parse_rpc(const char *payload, int payload_len,
     int tmp;
     if (json_get_int(buf, "duration_seconds", &tmp)) {
         out->duration_seconds = tmp;
-    }
-    if (json_get_int(buf, "interval_seconds", &tmp)) {
-        out->interval_seconds = tmp;
+        out->duration_seconds_present = true;
     }
     json_get_string(buf, "mode", out->mode, sizeof(out->mode));
     json_get_string(buf, "url", out->url, sizeof(out->url));

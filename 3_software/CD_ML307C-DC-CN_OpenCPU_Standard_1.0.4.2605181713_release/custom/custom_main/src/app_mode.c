@@ -18,7 +18,6 @@
 static app_mode_e s_cur_mode = APP_MODE_SUPERVISE;
 static osMutexId_t s_mode_mutex = NULL;
 static uint32_t    s_switch_start_tick = 0;    /* 模式进入时刻（超时切回计时） */
-static int         s_platform_interval_s = -1; /* LOCATION_FREQUENCY 覆盖值（秒），-1 未设置 */
 
 static void mode_lock(void)
 {
@@ -60,7 +59,6 @@ void app_mode_init(void)
     s_cur_mode = m;
     /* 异常复位后寻宠/遛宠超时计时重新起算（简化处理，偏安全侧） */
     s_switch_start_tick = (uint32_t)osKernelGetTickCount();
-    s_platform_interval_s = -1;
 }
 
 app_mode_e app_mode_get(void)
@@ -154,35 +152,9 @@ bool app_mode_auto_switch_expired(void)
     return expired;
 }
 
-void app_mode_set_platform_interval(int seconds)
-{
-    mode_lock();
-    s_platform_interval_s = (seconds > 0) ? seconds : -1;
-    mode_unlock();
-    if (seconds > 0) {
-        APP_LOGI("platform location interval=%ds", seconds);
-    } else {
-        APP_LOGI("platform location interval cleared");
-    }
-}
-
-bool app_mode_has_platform_interval(void)
-{
-    bool has;
-    mode_lock();
-    has = (s_platform_interval_s > 0);
-    mode_unlock();
-    return has;
-}
-
 uint32_t app_mode_get_loc_interval_ms(void)
 {
     app_mode_e m = app_mode_get();
-
-    /* 平台 LOCATION_FREQUENCY 覆盖值优先（休眠模式仍不主动上报） */
-    if (m != APP_MODE_SLEEP && s_platform_interval_s > 0) {
-        return (uint32_t)s_platform_interval_s * 1000u;
-    }
 
     switch (m) {
         case APP_MODE_SEARCHING:  return APP_INTERVAL_SEARCHING_MS;

@@ -151,8 +151,7 @@ static void gps_rx_cb(const char *line);
 static bool     g_ntp_synced = false;      /* 对时成功前计步不做 0 点清零 */
 static uint64_t g_last_ntp_utc = 0;
 
-/* ===== 复位原因与设备信息（需求 9 / 6.7，首次 ONLINE 上报）===== */
-static int  g_reset_reason = CM_PM_UNKNOWN;
+/* ===== 设备信息（需求 6.7，首次 ONLINE 上报；协议 3.2 state 无 reset_reason 字段）===== */
 static bool g_device_info_reported = false;
 static char g_modem_ver[CM_VER_LEN] = {0};
 static char g_iccid[24] = {0};
@@ -227,6 +226,21 @@ static void mark_offline_upload(char *json)
     }
 }
 
+/* ===== JSON 分段追加（协议 3.1 可选字段条件拼接用）=====
+ * 向 buf 的 pos 偏移处追加格式化内容，返回新长度；
+ * pos<0（前序已失败）或溢出时返回 -1，失败沿调用链传播，末尾统一检查。
+ * 失败判定与 snprintf 一致：返回值<=0 或 >= 剩余空间均视为溢出 */
+static int json_append(int pos, char *buf, size_t buf_size, const char *fmt, ...)
+{
+    if (pos < 0 || (size_t)pos >= buf_size) return -1;
+    va_list ap;
+    va_start(ap, fmt);
+    int n = vsnprintf(buf + pos, buf_size - (size_t)pos, fmt, ap);
+    va_end(ap);
+    if (n <= 0 || n >= (int)(buf_size - (size_t)pos)) return -1;
+    return pos + n;
+}
+
 /* ===== 上报一条定位（GPS 有效坐标 + 计步）===== */
 /* 用静态缓冲区手工拼 JSON，避免 cJSON malloc/free 与 cmmqtt-m 任务并发堆操作
  * 导致堆元数据损坏 DataAbort 崩溃（newlib malloc 非线程安全） */
@@ -237,7 +251,9 @@ static void publish_location(bool is_offline_replay)
     loc = g_last_loc;
     if (g_loc_mutex) osMutexRelease(g_loc_mutex);
 
-    if (loc.latitude == 0.0 && loc.longitude == 0.0) {
+    /* 协议 3.1：GNSS 无效（(0,0) 无 fix 哨兵）时省略经纬度相关字段 */
+    bool has_fix = !(loc.latitude == 0.0 && loc.longitude == 0.0);
+    if (!has_fix) {
         APP_LOGW("LOC report without gps fix (lat=0,lon=0)");
     }
 
@@ -250,21 +266,42 @@ static void publish_location(bool is_offline_replay)
     app_util_gen_loc_message_id(g_imei, g_boot_id, seq, msgid, sizeof(msgid));
     app_util_format_rfc3339(cm_rtc_get_current_time(), event_time, sizeof(event_time));
 
-    int len = snprintf(s_json, sizeof(s_json),
+    /* 分段拼接：可选字段按协议 3.1 携带条件省略——
+     * 无 fix 省略 longitude/latitude/coordinate_system/satellite_count；
+     * SOC 未采集（g_last_soc<0）省略 battery_level；
+     * 无有效信号（g_last_rssi==0）省略 signal_strength */
+    int len = json_append(0, s_json, sizeof(s_json),
         "{\"event_type\":\"location\""
         ",\"message_id\":\"%s\""
         ",\"imei\":\"%s\""
         ",\"device_sn\":\"%s\""
-        ",\"event_time\":\"%s\""
-        ",\"longitude\":%.6f"
-        ",\"latitude\":%.6f"
-        ",\"coordinate_system\":\"%s\""
-        ",\"accuracy\":%d"
-        ",\"satellite_count\":%d"
-        ",\"source\":\"%s\""
-        ",\"battery_level\":%d"
-        ",\"network_type\":\"LTE\""
-        ",\"signal_strength\":%d"
+        ",\"event_time\":\"%s\"",
+        msgid, g_imei, g_imei, event_time);
+    if (has_fix) {
+        len = json_append(len, s_json, sizeof(s_json),
+            ",\"longitude\":%.6f"
+            ",\"latitude\":%.6f"
+            ",\"coordinate_system\":\"%s\""
+            ",\"accuracy\":%d"
+            ",\"satellite_count\":%d",
+            loc.longitude, loc.latitude,
+            loc.coord_sys[0] ? loc.coord_sys : "WGS84",
+            loc.accuracy, loc.satellite_cnt);
+    }
+    len = json_append(len, s_json, sizeof(s_json),
+        ",\"source\":\"%s\"",
+        loc.source[0] ? loc.source : "GPS");
+    if (g_last_soc >= 0) {
+        len = json_append(len, s_json, sizeof(s_json),
+            ",\"battery_level\":%d", g_last_soc);
+    }
+    len = json_append(len, s_json, sizeof(s_json),
+        ",\"network_type\":\"LTE\"");
+    if (g_last_rssi != 0) {
+        len = json_append(len, s_json, sizeof(s_json),
+            ",\"signal_strength\":%d", g_last_rssi);
+    }
+    len = json_append(len, s_json, sizeof(s_json),
         ",\"speed\":%.1f"
         ",\"heading\":%.1f"
         ",\"altitude\":%.1f"
@@ -272,19 +309,12 @@ static void publish_location(bool is_offline_replay)
         ",\"boot_id\":\"%s\""
         ",\"sequence_no\":%lu"
         ",\"is_offline_upload\":%s}",
-        msgid, g_imei, g_imei, event_time,
-        loc.longitude, loc.latitude,
-        loc.coord_sys[0] ? loc.coord_sys : "WGS84",
-        loc.accuracy,
-        loc.satellite_cnt,
-        loc.source[0] ? loc.source : "GPS",
-        g_last_soc, g_last_rssi,
         loc.speed, loc.heading, loc.altitude,
         (unsigned long)g_steps,
         g_boot_id, (unsigned long)seq,
         is_offline_replay ? "true" : "false");
 
-    if (len <= 0 || len >= (int)sizeof(s_json)) {
+    if (len <= 0) {
         APP_LOGE("LOC #%lu json build fail/overflow", (unsigned long)seq);
         return;
     }
@@ -341,9 +371,8 @@ int app_main_publish_telemetry(const char *json, int len,
 }
 
 /* ===== 上报状态 =====
- * 首次 ONLINE 附加设备信息（需求 6.7：app_ver/hw_ver/modem_ver/iccid）
- * 与复位原因（需求 9：异常复位事件上报平台）；
- * force_devinfo=true 时强制携带设备信息（GET_VERSION 平台查询应答） */
+ * 首次 ONLINE 附加设备信息（需求 6.7：app_ver/hw_ver/modem_ver/iccid）；
+ * force_devinfo=true 时强制携带设备信息（GET_STATE 平台查询应答，协议 4.1） */
 static void publish_state_ex(const char *online_status, bool force_devinfo)
 {
     static char s_json[640];
@@ -351,58 +380,51 @@ static void publish_state_ex(const char *online_status, bool force_devinfo)
     app_util_format_rfc3339(cm_rtc_get_current_time(), ts, sizeof(ts));
 
     const char *mode_str = app_mode_to_string(app_mode_get());
+    bool with_devinfo = (force_devinfo || !g_device_info_reported);
 
-    int len;
-    if (force_devinfo || !g_device_info_reported) {
-        /* 首次上报：携带设备信息与复位原因（JSON 扩展字段，向后兼容） */
-        len = snprintf(s_json, sizeof(s_json),
-            "{\"event_type\":\"state\""
-            ",\"message_id\":\"state_%s_%s\""
-            ",\"imei\":\"%s\""
-            ",\"device_sn\":\"%s\""
-            ",\"online_status\":\"%s\""
-            ",\"event_time\":\"%s\""
-            ",\"mode\":\"%s\""
-            ",\"battery_level\":%d"
-            ",\"firmware_version\":\"%s\""
+    /* 分段拼接：可选字段按协议 3.1 携带条件省略——
+     * SOC 未采集（g_last_soc<0）省略 battery_level；
+     * 无有效信号（g_last_rssi==0）省略 signal_strength；
+     * 首次/强制时附加设备信息与复位原因（JSON 扩展字段，向后兼容） */
+    int len = json_append(0, s_json, sizeof(s_json),
+        "{\"event_type\":\"state\""
+        ",\"message_id\":\"state_%s_%s\""
+        ",\"imei\":\"%s\""
+        ",\"device_sn\":\"%s\""
+        ",\"online_status\":\"%s\""
+        ",\"event_time\":\"%s\""
+        ",\"mode\":\"%s\"",
+        g_imei, ts, g_imei, g_imei, online_status, ts,
+        mode_str ? mode_str : "supervise");
+    if (g_last_soc >= 0) {
+        len = json_append(len, s_json, sizeof(s_json),
+            ",\"battery_level\":%d", g_last_soc);
+    }
+    len = json_append(len, s_json, sizeof(s_json),
+        ",\"firmware_version\":\"%s\"", APP_FIRMWARE_VERSION);
+    if (with_devinfo) {
+        len = json_append(len, s_json, sizeof(s_json),
             ",\"hw_version\":\"%s\""
             ",\"modem_version\":\"%s\""
-            ",\"iccid\":\"%s\""
-            ",\"reset_reason\":%d"
-            ",\"network_type\":\"LTE\""
-            ",\"signal_strength\":%d"
-            ",\"charging_status\":%d}",
-            g_imei, ts, g_imei, g_imei, online_status, ts,
-            mode_str ? mode_str : "supervise",
-            g_last_soc, APP_FIRMWARE_VERSION, APP_HW_VERSION,
-            g_modem_ver, g_iccid, g_reset_reason,
-            g_last_rssi, g_charging_status);
-        if (strcmp(online_status, APP_STATUS_ONLINE) == 0) {
-            g_device_info_reported = true;
-        }
-    } else {
-        len = snprintf(s_json, sizeof(s_json),
-            "{\"event_type\":\"state\""
-            ",\"message_id\":\"state_%s_%s\""
-            ",\"imei\":\"%s\""
-            ",\"device_sn\":\"%s\""
-            ",\"online_status\":\"%s\""
-            ",\"event_time\":\"%s\""
-            ",\"mode\":\"%s\""
-            ",\"battery_level\":%d"
-            ",\"firmware_version\":\"%s\""
-            ",\"network_type\":\"LTE\""
-            ",\"signal_strength\":%d"
-            ",\"charging_status\":%d}",
-            g_imei, ts, g_imei, g_imei, online_status, ts,
-            mode_str ? mode_str : "supervise",
-            g_last_soc, APP_FIRMWARE_VERSION,
-            g_last_rssi, g_charging_status);
+            ",\"iccid\":\"%s\"",
+            APP_HW_VERSION, g_modem_ver, g_iccid);
+    }
+    len = json_append(len, s_json, sizeof(s_json),
+        ",\"network_type\":\"LTE\"");
+    if (g_last_rssi != 0) {
+        len = json_append(len, s_json, sizeof(s_json),
+            ",\"signal_strength\":%d", g_last_rssi);
+    }
+    len = json_append(len, s_json, sizeof(s_json),
+        ",\"charging_status\":%d}", g_charging_status);
+
+    if (len <= 0) {
+        APP_LOGE("state json build fail/overflow");
+        return;
     }
 
-    if (len <= 0 || len >= (int)sizeof(s_json)) {
-        APP_LOGE("state json build fail/overflow len=%d", len);
-        return;
+    if (with_devinfo && strcmp(online_status, APP_STATUS_ONLINE) == 0) {
+        g_device_info_reported = true;
     }
 
     if (app_mqtt_is_connected()) {
@@ -416,26 +438,10 @@ static void publish_state(const char *online_status)
     publish_state_ex(online_status, false);
 }
 
-/* ===== 平台 GET_VERSION 指令应答（需求 6.7：上报 app/hw/modem 版本等）===== */
+/* ===== 平台 GET_STATE 指令应答（协议 4.1：上报完整设备状态事件）===== */
 void app_main_report_device_info(void)
 {
     publish_state_ex(APP_STATUS_ONLINE, true);
-}
-
-/* ===== 平台 SHUTDOWN 指令（需求 V1.8）：OFFLINE 上报 → 断 MQTT → 断电关机 =====
- * 软件关机模式已删除：平台关机指令与长按 PWR_ON/OFF 硬件关机殊途同归 */
-void app_main_execute_poweroff(void)
-{
-    APP_LOGW("execute poweroff (platform SHUTDOWN)");
-    if (app_mqtt_is_connected()) {
-        publish_state(APP_STATUS_OFFLINE);
-        osDelay(APP_MS_TO_TICK(500));   /* 等 OFFLINE 报文发出 */
-    }
-    gps_power_close();
-    app_mqtt_disconnect();
-    cm_pm_poweroff();
-    /* 正常不应返回；异常返回时记录日志（模组仍保持当前模式运行） */
-    APP_LOGE("cm_pm_poweroff unexpected return");
 }
 
 /* ===== 离线补传回调 ===== */
@@ -1026,11 +1032,20 @@ static void provisioning_and_connect(void)
     if (app_storage_load_credential(&cred) == 0 && cred.mqtt_host[0]) {
         APP_LOGI("use saved credential");
     } else {
-        APP_LOGI("no credential, provisioning...");
-        app_prov_result_e r = app_provisioning_request(&cred);
-        if (r != APP_PROV_OK) {
-            APP_LOGE("provisioning fail:%d", r);
-            return;
+        /* 协议 3：provisioning 失败设备应重试（指数退避 30s→1min→2min→5min 封顶），
+         * 避免信号差/服务器抖动导致设备永久离线直至重启 */
+        uint32_t backoff_s = APP_PROV_RETRY_BACKOFF_MIN_S;
+        for (;;) {
+            APP_LOGI("no credential, provisioning...");
+            app_prov_result_e r = app_provisioning_request(&cred);
+            if (r == APP_PROV_OK) {
+                break;
+            }
+            APP_LOGE("provisioning fail:%d, retry in %us", r, backoff_s);
+            osDelay(APP_MS_TO_TICK(backoff_s * 1000u));
+            if (backoff_s < APP_PROV_RETRY_BACKOFF_MAX_S) {
+                backoff_s *= 2u;
+            }
         }
         app_storage_save_credential(&cred);
     }
@@ -1230,6 +1245,7 @@ static void main_task(void *arg)
     bool low_battery_announced = false;
     bool ultra_low_battery_announced = false;
     uint8_t s_ultra_low_confirm = 0;    /* 超低电连续确认计数 */
+    bool s_chg_end_reset_pending = false; /* 充电结束沿：非充电首次采样重置 SOC 锁存 */
 #endif
     app_mode_e last_mode = APP_MODE_NUM;
     app_mode_e last_state_mode = APP_MODE_NUM;
@@ -1343,46 +1359,65 @@ static void main_task(void *arg)
             last_battery_tick = now;
             int mv = 0, soc = -1;
             if (bsp_battery_read(&mv, &soc) == 0) {
-                if (soc != g_last_soc) {
-                    APP_LOGI("battery mv=%d soc=%d", mv, soc);
-                    g_last_soc = soc;
-                }
-                if (soc >= 0) {
-                    if (soc < APP_SUPER_LOW_BATTERY) {
-                        /* 超低电连续确认（硬件定版：仅外部分压 ADC，无 VBAT
-                         * 交叉校验；连续 APP_BATTERY_ULTRA_LOW_CONFIRM 次采样
-                         * 低于阈值才动作，防单次误读强制休眠——2026-09-03
-                         * 曾因引脚误配读到假 2408mV 被误切休眠） */
-                        if (s_ultra_low_confirm < APP_BATTERY_ULTRA_LOW_CONFIRM) {
-                            s_ultra_low_confirm++;
-                            APP_LOGW("ultra low battery pending (soc=%d, %d/%d)",
-                                     soc, s_ultra_low_confirm, APP_BATTERY_ULTRA_LOW_CONFIRM);
-                        }
-                        if (s_ultra_low_confirm >= APP_BATTERY_ULTRA_LOW_CONFIRM) {
-                            /* 超低电量：上报一次状态事件后强制切换到休眠模式 */
-                            if (!ultra_low_battery_announced) {
-                                ultra_low_battery_announced = true;
-                                low_battery_announced = true;
-                                APP_LOGW("ultra low battery soc=%d confirmed, report state + force sleep", soc);
-                                if (app_mqtt_is_connected()) {
-                                    publish_state(APP_STATUS_ONLINE);
-                                    osDelay(APP_MS_TO_TICK(200));
+                /* 需求 7 SOC 单调性约束：
+                 * - 充电中：查表值仅作参考，SOC 锁存不更新（以 CHRG_State 为准）；
+                 * - 非充电：min(查表值, 锁存值) 单调不增，防负载突变抖动；
+                 * - 充电结束沿后首次采样以查表值重置锁存（充电电量经此生效）。
+                 * 充电中不执行超低电强制休眠（与充电恢复看护互斥，防模式拉扯） */
+                if (bsp_chrg_is_charging()) {
+                    s_chg_end_reset_pending = true;
+                    APP_LOGI("battery mv=%d soc=%d (charging, latch=%d)",
+                             mv, soc, g_last_soc);
+                } else {
+                    bool reset_latch = s_chg_end_reset_pending;
+                    s_chg_end_reset_pending = false;
+                    int prev_soc = g_last_soc;
+                    if (reset_latch || prev_soc < 0 || soc < prev_soc) {
+                        g_last_soc = soc;
+                    }
+                    if (g_last_soc != prev_soc) {
+                        APP_LOGI("battery mv=%d soc=%d (latch %d->%d)",
+                                 mv, soc, prev_soc, g_last_soc);
+                    }
+                    /* 低电/超低电判定使用锁存值：超低电强制休眠后锁存不回升，
+                     * 不设 SOC 恢复路径（需求 7 V1.21） */
+                    if (g_last_soc >= 0) {
+                        if (g_last_soc < APP_SUPER_LOW_BATTERY) {
+                            /* 超低电连续确认（硬件定版：仅外部分压 ADC，无 VBAT
+                             * 交叉校验；连续 APP_BATTERY_ULTRA_LOW_CONFIRM 次采样
+                             * 低于阈值才动作，防单次误读强制休眠——2026-09-03
+                             * 曾因引脚误配读到假 2408mV 被误切休眠） */
+                            if (s_ultra_low_confirm < APP_BATTERY_ULTRA_LOW_CONFIRM) {
+                                s_ultra_low_confirm++;
+                                APP_LOGW("ultra low battery pending (soc=%d, %d/%d)",
+                                         g_last_soc, s_ultra_low_confirm, APP_BATTERY_ULTRA_LOW_CONFIRM);
+                            }
+                            if (s_ultra_low_confirm >= APP_BATTERY_ULTRA_LOW_CONFIRM) {
+                                /* 超低电量：上报一次状态事件后强制切换到休眠模式 */
+                                if (!ultra_low_battery_announced) {
+                                    ultra_low_battery_announced = true;
+                                    low_battery_announced = true;
+                                    APP_LOGW("ultra low battery soc=%d confirmed, report state + force sleep", g_last_soc);
+                                    if (app_mqtt_is_connected()) {
+                                        publish_state(APP_STATUS_ONLINE);
+                                        osDelay(APP_MS_TO_TICK(200));
+                                    }
+                                }
+                                if (mode != APP_MODE_SLEEP) {
+                                    app_mode_set(APP_MODE_SLEEP);
                                 }
                             }
-                            if (mode != APP_MODE_SLEEP) {
-                                app_mode_set(APP_MODE_SLEEP);
+                        } else if (g_last_soc < APP_LOW_BATTERY_THRESHOLD) {
+                            s_ultra_low_confirm = 0;
+                            if (!low_battery_announced) {
+                                low_battery_announced = true;
+                                APP_LOGW("low battery soc=%d, report state", g_last_soc);
+                                publish_state(APP_STATUS_ONLINE);
                             }
+                        } else {
+                            low_battery_announced = false;
+                            ultra_low_battery_announced = false;
                         }
-                    } else if (soc < APP_LOW_BATTERY_THRESHOLD) {
-                        s_ultra_low_confirm = 0;
-                        if (!low_battery_announced) {
-                            low_battery_announced = true;
-                            APP_LOGW("low battery soc=%d, report state", soc);
-                            publish_state(APP_STATUS_ONLINE);
-                        }
-                    } else {
-                        low_battery_announced = false;
-                        ultra_low_battery_announced = false;
                     }
                 }
             }
@@ -1499,9 +1534,8 @@ static void system_init(void)
     cm_rtc_register_alarm_cb(rtc_alarm_cb);
     cm_rtc_set_timezone(APP_TIMEZONE);
 
-    /* 需求 9：读取复位原因，随首次 ONLINE 状态上报平台 */
-    g_reset_reason = cm_pm_get_power_on_reason();
-    APP_LOGI("power on reason=%d", g_reset_reason);
+    /* 复位原因仅记录启动日志（协议 3.2 state 字段表无 reset_reason，不上报平台） */
+    APP_LOGI("power on reason=%d", cm_pm_get_power_on_reason());
 
     if (cm_sys_get_imei(g_imei) != 0) {
         strcpy(g_imei, "000000000000000");

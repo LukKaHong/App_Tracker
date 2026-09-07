@@ -41,6 +41,10 @@ extern "C" {
  * 0 = 正式流程：缓存凭证优先，无凭证走 SaaS provisioning */
 #define APP_USE_HARDCODED_CREDENTIAL 1
 
+/* Provisioning 失败重试退避（协议 3：获取凭证失败设备应重试） */
+#define APP_PROV_RETRY_BACKOFF_MIN_S  30u   /* 首次退避 30 秒 */
+#define APP_PROV_RETRY_BACKOFF_MAX_S  300u  /* 指数退避封顶 5 分钟 */
+
 /* ===================================================================
  * 3. 平台 MQTT Topic
  * =================================================================== */
@@ -173,8 +177,8 @@ extern "C" {
 #define APP_BATTERY_ADC_DEV         CM_ADC_1            /* Pin96（专用 ADC1 引脚） */
 #define APP_BATTERY_DIV_UP_KOHM     200                 /* 分压上臂 kΩ（电池正极侧） */
 #define APP_BATTERY_DIV_DOWN_KOHM   68                  /* 分压下臂 kΩ（GND 侧） */
-#define APP_BATTERY_FULL_MV         4200                /* 满电电压 mV */
-#define APP_BATTERY_EMPTY_MV        3300                /* 空电电压 mV（线性近似，放电曲线需实测标定） */
+/* SOC 估算：查表法（V1.23 实测放电曲线 21 档 + 线性插值，表在 bsp.c）；
+ * 单调不增锁存与充电边沿重置见 custom_main.c 电量采样段（需求 7） */
 #define APP_BATTERY_SAMPLE_MS       (30 * 1000)         /* 30 秒采样一次 */
 /* 超低电连续确认次数（每 30s 采样一次，2 次=60s 确认窗口）：
  * 防单次 ADC 误读直接强制休眠（无 VBAT 交叉校验，软件确认替代） */

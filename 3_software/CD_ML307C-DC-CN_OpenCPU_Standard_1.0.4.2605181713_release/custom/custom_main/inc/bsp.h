@@ -61,7 +61,7 @@ int  bsp_gps_power_off(void);
 bool bsp_charge_is_charging(void);
 
 /* ========== 电池电量 ========== */
-/* 读取电池电压 (mV) 并换算 SOC (0~100) */
+/* 读取电池电压 (mV) 并按实测放电表换算 SOC (0~100)（查表+线性插值，V1.23） */
 int  bsp_battery_read(int *voltage_mv, int *soc);
 
 /* ========== QMA6100P 内置计步器（需求 8）========== */

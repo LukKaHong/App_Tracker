@@ -246,6 +246,12 @@ int app_mqtt_connect(const app_mqtt_credential_t *cred)
      * 函数返回后才读取 opt 中的指针），因此 opt 本身及 hostname/clientid/
      * username/password 必须指向长期有效的静态存储（s_saved_cred），
      * 不能使用调用者传入的栈上凭证，否则首连 CONNECT 包凭证字段为悬空数据 */
+    /* 【协议偏差待办】协议 V1.1 第 88 行要求"生产连接必须使用 TLS"（示例端口 8883）。
+     * 当前联调阶段暂缓 TLS（明文）：正式流程 provisioning 返回 8883 端口时，
+     * 此明文连接将握手失败。正式部署前必须启用 TLS：
+     *   1) cm_ssl_setopt() 配置验证方式（单向验证）与 CA 证书（参考 include/cmiot/cm_ssl.h）
+     *   2) cm_mqtt_client_set_opt(CM_MQTT_OPT_SSL_ENABLE=1) + CM_MQTT_OPT_SSL_ID
+     *      （参考 include/cmiot/cm_mqtt.h） */
     static cm_mqtt_connect_options_t opt;
     memset(&opt, 0, sizeof(opt));
     opt.hostport = s_saved_cred.mqtt_port;

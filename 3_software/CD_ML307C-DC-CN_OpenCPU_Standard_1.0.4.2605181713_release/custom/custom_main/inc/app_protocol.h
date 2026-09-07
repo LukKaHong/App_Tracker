@@ -28,18 +28,6 @@ extern "C" {
 #define APP_CMD_ACK             "ACKNOWLEDGED"
 #define APP_CMD_FAILED          "FAILED"
 
-/* ===== 云端指令 method ===== */
-typedef enum {
-    APP_CMD_NONE = 0,
-    APP_CMD_HIGH_FREQ_START,
-    APP_CMD_HIGH_FREQ_STOP,
-    APP_CMD_SOUND,
-    APP_CMD_LIGHT,
-    APP_CMD_LOCATION_FREQ,
-    APP_CMD_SHUTDOWN,
-    APP_CMD_UNKNOWN,
-} app_command_type_e;
-
 /* ===== 定位数据 ===== */
 typedef struct {
     double longitude;
@@ -79,8 +67,8 @@ typedef struct {
 typedef struct {
     char method[32];
     char command_id[64];
-    int  duration_seconds;   /* SOUND/LIGHT 持续时长，默认 -1 表示未提供 */
-    int  interval_seconds;   /* LOCATION_FREQUENCY 间隔，默认 -1 表示未提供 */
+    int  duration_seconds;   /* SOUND/LIGHT 持续时长，-1 表示未提供 */
+    bool duration_seconds_present; /* true = params 中显式提供了 duration_seconds */
     char mode[16];           /* DEVICE_MODE 模式串：searching/walking/supervise/lowpower/sleep，空表示未提供 */
     char url[256];           /* OTA 升级 URL，空字符串表示未提供 */
 } app_rpc_parsed_t;

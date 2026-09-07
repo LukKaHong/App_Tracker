@@ -403,7 +403,59 @@ bool bsp_charge_is_charging(void)
 /* ====================================================================
  * 电池电量（需求 7 定版：外部分压 200k/68k → ADC1 @ Pin96，
  * 不使用模组内部 VBAT 测量）
+ * SOC 估算：查表法（需求 7 / V1.23：902030-500 电芯实测 1C 放电曲线，
+ * 5% 步进 21 档，相邻档间线性插值；数据来源《电池测试曲线.xlsx》）
  * ==================================================================== */
+/* SOC-电压查找表：索引 i 对应 SOC = 100 - i*5（i=0 → 100%），单位 mV */
+static const uint16_t s_battery_soc_mv[] = {
+    4122, /* 100% */
+    3960, /*  95% */
+    3934, /*  90% */
+    3919, /*  85% */
+    3901, /*  80% */
+    3875, /*  75% */
+    3842, /*  70% */
+    3811, /*  65% */
+    3787, /*  60% */
+    3768, /*  55% */
+    3749, /*  50% */
+    3730, /*  45% */
+    3708, /*  40% */
+    3682, /*  35% */
+    3650, /*  30% */
+    3604, /*  25% */
+    3532, /*  20% */
+    3452, /*  15% */
+    3370, /*  10% */
+    3245, /*   5% */
+    2750, /*   0% */
+};
+#define APP_BATTERY_SOC_TABLE_N  (sizeof(s_battery_soc_mv) / sizeof(s_battery_soc_mv[0]))
+
+/* 查表 + 相邻档线性插值换算 SOC (0~100)，mv 为电池端电压 mV（整数运算） */
+static int battery_mv_to_soc(int mv)
+{
+    int n = (int)APP_BATTERY_SOC_TABLE_N;
+    int i;
+    if (mv >= s_battery_soc_mv[0]) {
+        return 100;
+    }
+    if (mv <= s_battery_soc_mv[n - 1]) {
+        return 0;
+    }
+    /* 定位区间：s_battery_soc_mv[i] > mv >= s_battery_soc_mv[i+1] */
+    for (i = 0; i < (n - 1); i++) {
+        if (mv >= s_battery_soc_mv[i + 1]) {
+            int v_hi = s_battery_soc_mv[i];
+            int v_lo = s_battery_soc_mv[i + 1];
+            int soc_lo = 100 - (i + 1) * 5;
+            /* soc = soc_lo + 5*(mv-v_lo)/(v_hi-v_lo)，四舍五入 */
+            return soc_lo + (((mv - v_lo) * 5) + (v_hi - v_lo) / 2) / (v_hi - v_lo);
+        }
+    }
+    return 0; /* 防御性返回（mv 已在表范围内时不可达） */
+}
+
 int bsp_battery_read(int *voltage_mv, int *soc)
 {
     int32_t raw = 0;
@@ -417,14 +469,7 @@ int bsp_battery_read(int *voltage_mv, int *soc)
     if (voltage_mv) *voltage_mv = mv;
 
     if (soc) {
-        if (mv >= APP_BATTERY_FULL_MV) {
-            *soc = 100;
-        } else if (mv <= APP_BATTERY_EMPTY_MV) {
-            *soc = 0;
-        } else {
-            *soc = (mv - APP_BATTERY_EMPTY_MV) * 100 /
-                   (APP_BATTERY_FULL_MV - APP_BATTERY_EMPTY_MV);
-        }
+        *soc = battery_mv_to_soc(mv);
     }
     return 0;
 }

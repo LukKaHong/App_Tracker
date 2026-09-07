@@ -47,14 +47,7 @@ void app_mode_reset_switch_timer(void);
 /* 当前模式超时到期则自动切回看护并返回 true */
 bool app_mode_auto_switch_expired(void);
 
-/* ===== 平台常规定位频率覆盖（LOCATION_FREQUENCY 指令）===== */
-/* 设置平台指定的定位周期（秒）；seconds<=0 表示清除恢复模式默认值 */
-void app_mode_set_platform_interval(int seconds);
-/* 平台是否设置了覆盖值 */
-bool app_mode_has_platform_interval(void);
-
-/* 当前模式下定位周期 (ms)，休眠模式返回 0（不主动上报）；
- * 若平台通过 LOCATION_FREQUENCY 设置了覆盖值则优先返回覆盖值 */
+/* 当前模式下定位周期 (ms)，休眠模式返回 0（不主动上报） */
 uint32_t app_mode_get_loc_interval_ms(void);
 
 #ifdef __cplusplus
