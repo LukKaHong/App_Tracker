@@ -78,7 +78,6 @@ extern "C" {
  * ★★★ 量产烧录前必须恢复为 1（=0 时低电/超低电保护全部失效） */
 #define APP_BATTERY_ENABLE          0
 
-#define APP_LOW_BATTERY_THRESHOLD   20      /* SOC < 20% : 低电量 */
 #define APP_SUPER_LOW_BATTERY        5      /* SOC < 5%  : 超低电量，上报后强制休眠模式 */
 
 /* ===================================================================
@@ -166,7 +165,6 @@ extern "C" {
 #define APP_LED_IOMUX_PIN           CM_IOMUX_PIN_75
 #define APP_LED_BLINK_FAST_HZ       5       /* 未联网/平台指令：快闪 5Hz（需求 5） */
 #define APP_LED_BLINK_SLOW_MS       3000    /* 已联网正常：每 3 秒闪一次 */
-#define APP_LED_LOWBAT_DBL_MS       1000    /* 低电量：每秒双闪 */
 
 /* ===================================================================
  * 9. 电池电量 ADC（需求 7 / 引脚表，2026-09-03 定版）

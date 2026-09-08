@@ -40,7 +40,6 @@ typedef enum {
     BSP_LED_PATTERN_OFF = 0,      /* 熄灭（休眠/LP 睡眠） */
     BSP_LED_PATTERN_ONLINE,       /* 已联网正常：慢闪（每 3 秒闪一次） */
     BSP_LED_PATTERN_OFFLINE,      /* 未联网：快闪（5Hz） */
-    BSP_LED_PATTERN_LOW_BATTERY,  /* 低电量 SOC<20%：每秒双闪 */
     BSP_LED_PATTERN_BREATH,       /* 呼吸灯（硬件能力预留，常态行为未使用） */
 } bsp_led_pattern_e;
 

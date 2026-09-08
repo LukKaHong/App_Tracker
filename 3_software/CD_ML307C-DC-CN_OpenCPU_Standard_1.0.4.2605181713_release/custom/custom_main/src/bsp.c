@@ -203,8 +203,6 @@ typedef struct {
 static const led_phase_t s_phase_flash[]  = { {100, 100} };
 /* 慢闪：每 3 秒闪一次（已联网正常） */
 static const led_phase_t s_phase_online[] = { {100, 2900} };
-/* 低电量：每秒双闪 */
-static const led_phase_t s_phase_lowbat[] = { {100, 150}, {100, 650} };
 
 /* 呼吸参数：20ms 步进，10 步升 + 10 步降，完整周期约 400ms（SDK breathled 同参数） */
 #define LED_BREATH_STEP_MS      20
@@ -274,9 +272,6 @@ static void led_task(void *arg)
             break;
         case BSP_LED_PATTERN_OFFLINE:
             led_blink_run(s_phase_flash, 1, duration_ms, start_tick);
-            break;
-        case BSP_LED_PATTERN_LOW_BATTERY:
-            led_blink_run(s_phase_lowbat, 2, duration_ms, start_tick);
             break;
         case BSP_LED_PATTERN_BREATH:
             led_breath_run(duration_ms, start_tick);

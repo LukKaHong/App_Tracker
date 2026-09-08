@@ -1197,7 +1197,8 @@ static void charge_poll(void)
 }
 
 /* ===== LED 常态指示维护（需求 5）=====
- * 低电量双闪 > 未联网快闪 > 已联网慢闪；LP 睡眠前熄灭（lp_enter_sleep 处理） */
+ * 未联网快闪 > 已联网慢闪；LP 睡眠前熄灭（lp_enter_sleep 处理）。
+ * 低电量指示已随需求 V1.26 删除（超低电上报+强制休眠逻辑不受影响） */
 static void led_status_poll(app_mode_e mode)
 {
     static bsp_led_pattern_e s_cur = BSP_LED_PATTERN_OFF;
@@ -1205,8 +1206,6 @@ static void led_status_poll(app_mode_e mode)
 
     if (mode == APP_MODE_SLEEP) {
         want = BSP_LED_PATTERN_OFF;            /* 休眠：熄灭 */
-    } else if (g_last_soc >= 0 && g_last_soc < APP_LOW_BATTERY_THRESHOLD) {
-        want = BSP_LED_PATTERN_LOW_BATTERY;    /* 低电量：每秒双闪 */
     } else if (!app_mqtt_is_connected()) {
         want = BSP_LED_PATTERN_OFFLINE;        /* 未联网：快闪 5Hz */
     } else {
@@ -1242,7 +1241,6 @@ static void main_task(void *arg)
     /* 电量相关局部状态：随 APP_BATTERY_ENABLE 一起裁剪，避免调试期
      * （无电池，宏=0）出现 unused variable 告警 */
     uint32_t last_battery_tick = 0;
-    bool low_battery_announced = false;
     bool ultra_low_battery_announced = false;
     uint8_t s_ultra_low_confirm = 0;    /* 超低电连续确认计数 */
     bool s_chg_end_reset_pending = false; /* 充电结束沿：非充电首次采样重置 SOC 锁存 */
@@ -1396,7 +1394,6 @@ static void main_task(void *arg)
                                 /* 超低电量：上报一次状态事件后强制切换到休眠模式 */
                                 if (!ultra_low_battery_announced) {
                                     ultra_low_battery_announced = true;
-                                    low_battery_announced = true;
                                     APP_LOGW("ultra low battery soc=%d confirmed, report state + force sleep", g_last_soc);
                                     if (app_mqtt_is_connected()) {
                                         publish_state(APP_STATUS_ONLINE);
@@ -1407,15 +1404,8 @@ static void main_task(void *arg)
                                     app_mode_set(APP_MODE_SLEEP);
                                 }
                             }
-                        } else if (g_last_soc < APP_LOW_BATTERY_THRESHOLD) {
-                            s_ultra_low_confirm = 0;
-                            if (!low_battery_announced) {
-                                low_battery_announced = true;
-                                APP_LOGW("low battery soc=%d, report state", g_last_soc);
-                                publish_state(APP_STATUS_ONLINE);
-                            }
                         } else {
-                            low_battery_announced = false;
+                            s_ultra_low_confirm = 0;
                             ultra_low_battery_announced = false;
                         }
                     }
