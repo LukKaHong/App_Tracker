@@ -29,6 +29,18 @@ static bool                 s_connected = false;
 static app_mqtt_credential_t s_saved_cred;
 static bool                 s_has_cred = false;
 
+/* API 互斥锁（2026-09-08 竞态修复）：app_mqtt_connect /
+ * app_mqtt_disconnect / mqtt_task 重连判定原先无锁。WiFi 扫描断开
+ * 流程（lbs_task 调 app_mqtt_disconnect）在 osDelay(200) 销毁窗口内，
+ * mqtt_task 可观测到 s_client!=NULL + DISCONNECTED + s_has_cred=true
+ * 的中间态而抢跑重连 → (1) 与 lbs_task 双重 destroy 同一 client
+ * （堆损坏隐患）；(2) 结构体自拷贝发生在 lbs_task 清零凭证之后，
+ * 得到全零凭证（"mqtt connect :0" 空主机名，5.3h 日志 17 个扫描
+ * 周期命中 7 次）。锁覆盖连接/断开全函数体及 mqtt_task 轮询判定段；
+ * SDK 回调（cb_connack 等）仅置标志，不持锁。锁内最长持有时长为
+ * 断开的 200ms delay，mqtt_task 最多阻塞同时长，可接受 */
+static osMutexId_t          s_api_mutex = NULL;
+
 /* keepalive 秒数（需求 6.3 分模式；连接建立时生效） */
 static uint16_t             s_keepalive_sec = APP_MQTT_KEEPALIVE_LP_SEC;
 
@@ -46,6 +58,9 @@ static osMutexId_t  s_pub_mutex = NULL;
 
 #define EVT_CONNECTED    (1u << 0)
 #define EVT_DISCONNECTED (1u << 1)
+
+/* 前置声明：mqtt_task 重连路径调用（定义在公开 API 区） */
+static int mqtt_connect_locked(const app_mqtt_credential_t *cred);
 
 /* 退避阶梯：第 1/2/3 次失败后分别等 5/10/30s，其后 60s 封顶 */
 static uint32_t backoff_sec(uint32_t fail_count)
@@ -65,8 +80,10 @@ void app_mqtt_set_keepalive_sec(uint16_t sec)
 
 void app_mqtt_kick_reconnect(void)
 {
+    if (s_api_mutex) osMutexAcquire(s_api_mutex, osWaitForever);
     s_lp_stop = false;
     s_next_retry_utc = 0;   /* 立即允许一次重试（mqtt_task 1s 周期内执行） */
+    if (s_api_mutex) osMutexRelease(s_api_mutex);
 }
 
 /* ====== 回调 ====== */
@@ -138,43 +155,51 @@ static void mqtt_task(void *arg)
     (void)arg;
     /* 常驻任务（勿 terminate/recreate——rti 线程数组泄漏 Silent Reset
      * 教训，见 2026-09-05 两晚复现记录）：WiFi 扫描窗口 s_client 为
-     * NULL 时本任务 1s 空转轮询，不影响 LP 睡眠（osDelay 挂起不持锁） */
+     * NULL 时本任务 1s 空转轮询，不影响 LP 睡眠（osDelay 挂起不持锁）。
+     * 轮询判定段整体持 s_api_mutex（见其注释）：断开流程的 200ms
+     * 销毁窗口内不再观测中间态，消除与 lbs_task 的重连竞态 */
     while (1) {
         osDelay(APP_MS_TO_TICK(1000));
-        if (!s_client) continue;
+        if (s_api_mutex == NULL) continue;
+        osMutexAcquire(s_api_mutex, osWaitForever);
 
-        int st = cm_mqtt_client_get_state(s_client);
-        if (st != CM_MQTT_STATE_DISCONNECTED) continue;
-
-        if (s_connected) {
-            /* 之前连着，刚断开 */
-            s_connected = false;
-            APP_LOGW("mqtt state poll detected disconnect");
-            if (s_user_cb) s_user_cb(APP_MQTT_EVT_DISCONNECTED, NULL);
+        if (s_client) {
+            int st = cm_mqtt_client_get_state(s_client);
+            if (st == CM_MQTT_STATE_DISCONNECTED) {
+                if (s_connected) {
+                    /* 之前连着，刚断开 */
+                    s_connected = false;
+                    APP_LOGW("mqtt state poll detected disconnect");
+                    if (s_user_cb) s_user_cb(APP_MQTT_EVT_DISCONNECTED, NULL);
+                }
+                if (s_has_cred && !s_lp_stop) {
+                    /* LP 模式失败次数达上限：停止自动重连，等下一定位周期 kick */
+                    app_mode_e m = app_mode_get();
+                    bool lp_mode = (m == APP_MODE_SUPERVISE || m == APP_MODE_LOWPOWER ||
+                                    m == APP_MODE_SLEEP);
+                    if (lp_mode && s_fail_count >= APP_RECONN_MAX_FAIL_LP) {
+                        s_lp_stop = true;
+                        APP_LOGW("mqtt reconnect fail %lu times in lp mode, wait next cycle kick",
+                                 (unsigned long)s_fail_count);
+                    }
+                    if (!s_lp_stop) {
+                        /* 退避计时用 RTC UTC 秒：LP 睡眠期间 OS tick 冻结，tick 计时会失真 */
+                        uint64_t now_utc = cm_rtc_get_current_time();
+                        if (now_utc >= s_next_retry_utc) {
+                            s_fail_count++;
+                            s_next_retry_utc = now_utc + backoff_sec(s_fail_count);
+                            APP_LOGI("mqtt app-level reconnect #%lu (next in %lus)",
+                                     (unsigned long)s_fail_count,
+                                     (unsigned long)backoff_sec(s_fail_count));
+                            /* 已持锁，调内部版本（公共封装会重复加锁死锁） */
+                            mqtt_connect_locked(&s_saved_cred);
+                        }
+                    }
+                }
+            }
         }
-        if (!s_has_cred) continue;
 
-        /* LP 模式失败次数达上限：停止自动重连，等下一定位周期 kick */
-        app_mode_e m = app_mode_get();
-        bool lp_mode = (m == APP_MODE_SUPERVISE || m == APP_MODE_LOWPOWER ||
-                        m == APP_MODE_SLEEP);
-        if (lp_mode && s_fail_count >= APP_RECONN_MAX_FAIL_LP && !s_lp_stop) {
-            s_lp_stop = true;
-            APP_LOGW("mqtt reconnect fail %lu times in lp mode, wait next cycle kick",
-                     (unsigned long)s_fail_count);
-        }
-        if (s_lp_stop) continue;
-
-        /* 退避计时用 RTC UTC 秒：LP 睡眠期间 OS tick 冻结，tick 计时会失真 */
-        uint64_t now_utc = cm_rtc_get_current_time();
-        if (now_utc < s_next_retry_utc) continue;
-
-        s_fail_count++;
-        s_next_retry_utc = now_utc + backoff_sec(s_fail_count);
-        APP_LOGI("mqtt app-level reconnect #%lu (next in %lus)",
-                 (unsigned long)s_fail_count,
-                 (unsigned long)backoff_sec(s_fail_count));
-        app_mqtt_connect(&s_saved_cred);
+        osMutexRelease(s_api_mutex);
     }
 }
 
@@ -187,6 +212,11 @@ int app_mqtt_init(app_mqtt_event_cb_t cb)
         attr.name = "mqtt_evt";
         s_evt = osEventFlagsNew(&attr);
     }
+    if (s_api_mutex == NULL) {
+        osMutexAttr_t aattr = {0};
+        aattr.name = "mqtt_api";
+        s_api_mutex = osMutexNew(&aattr);
+    }
     if (s_pub_mutex == NULL) {
         osMutexAttr_t mattr = {0};
         mattr.name = "mqtt_pub";
@@ -195,9 +225,17 @@ int app_mqtt_init(app_mqtt_event_cb_t cb)
     return 0;
 }
 
-int app_mqtt_connect(const app_mqtt_credential_t *cred)
+/* ====== 内部连接实现（调用方必须已持有 s_api_mutex；mqtt_task 重连
+ * 路径复用，避免非递归锁重复加锁死锁）====== */
+static int mqtt_connect_locked(const app_mqtt_credential_t *cred)
 {
     if (!cred) return -1;
+    /* 边界校验：空主机名/零端口直接拒绝，防止竞态残留或存储异常时
+     * 发起无效连接（日志曾出现 "mqtt connect :0"） */
+    if (cred->mqtt_host[0] == '\0' || cred->mqtt_port == 0) {
+        APP_LOGE("mqtt connect invalid cred (host empty or port 0)");
+        return -1;
+    }
     if (s_client) {
         cm_mqtt_client_disconnect(s_client);
         osDelay(APP_MS_TO_TICK(200));
@@ -280,7 +318,18 @@ int app_mqtt_connect(const app_mqtt_credential_t *cred)
     return ret;
 }
 
-int app_mqtt_disconnect(void)
+/* 公共连接入口：持 s_api_mutex 串行化（竞态修复见 s_api_mutex 注释） */
+int app_mqtt_connect(const app_mqtt_credential_t *cred)
+{
+    if (s_api_mutex == NULL) return mqtt_connect_locked(cred);
+    osMutexAcquire(s_api_mutex, osWaitForever);
+    int ret = mqtt_connect_locked(cred);
+    osMutexRelease(s_api_mutex);
+    return ret;
+}
+
+/* ====== 内部断开实现（调用方必须已持有 s_api_mutex）====== */
+static void mqtt_disconnect_locked(void)
 {
     /* 仅销毁客户端，监控任务常驻（勿 osThreadTerminate——被终止线程
      * 的 SDK rti 表项不回收，WiFi 扫描每周期 terminate+recreate 累积
@@ -294,6 +343,19 @@ int app_mqtt_disconnect(void)
     s_connected = false;
     s_has_cred = false;
     memset(&s_saved_cred, 0, sizeof(s_saved_cred));
+}
+
+/* 公共断开入口：持 s_api_mutex 串行化（WiFi 扫描断开期间 mqtt_task
+ * 在锁上等待，销毁完成后看到的已是 s_client==NULL，不再抢跑重连） */
+int app_mqtt_disconnect(void)
+{
+    if (s_api_mutex == NULL) {
+        mqtt_disconnect_locked();
+        return 0;
+    }
+    osMutexAcquire(s_api_mutex, osWaitForever);
+    mqtt_disconnect_locked();
+    osMutexRelease(s_api_mutex);
     return 0;
 }
 

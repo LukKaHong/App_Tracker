@@ -125,9 +125,10 @@ extern "C" {
 #define APP_GPS_UART_PIN_TX_FUNC    CM_IOMUX_FUNC_FUNCTION1
 #define APP_GPS_UART_PIN_RX_FUNC    CM_IOMUX_FUNC_FUNCTION1
 #define APP_GPS_RX_BUF_SIZE         (512)
-/* GPS NMEA 原始语句调试打印（0=关，1=打印 GGA/RMC 原文）
- * [2026-09-04 改回 0]：定位链路已联调通过（室内 sat=0 属正常、
- * 芯片输出/波特率对齐已验证），关闭以减少 DBG 口日志量 */
+/* GPS NMEA 原始语句调试打印（0=关，1=在 bsp_gps_poll 收行处逐行打印原始
+ * 语句：含 GSV/GSA 等全部语句类型、校验失败行、配置应答、乱码行）
+ * [2026-09-08 改回 0]：GNSS 无定位根因已定位（硬件射频链路），关闭以减少
+ * DBG 口日志量；下次排查 GNSS 时再置 1 */
 #define APP_GPS_NMEA_DEBUG          0
 
 /* GPS_PWR_EN（需求 10 V1.23：Pin76，GNSS 电路电源控制，高电平开/低电平关）

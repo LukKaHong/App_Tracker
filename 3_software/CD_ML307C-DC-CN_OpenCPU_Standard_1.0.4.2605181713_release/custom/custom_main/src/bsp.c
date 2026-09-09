@@ -667,6 +667,20 @@ void bsp_gps_poll(void)
                         s_gps_first_line_logged = true;
                         APP_LOGI("gps: first uart line: %.48s", s_gps_line);
                     }
+#if APP_GPS_NMEA_DEBUG
+                    /* 原始 NMEA 逐行打印：含校验失败行、配置应答、乱码行，
+                     * 覆盖 GSV/GSA 等所有语句类型（解析级打印只看 GGA/RMC）。
+                     * APP_LOGI 单条上限 108B（含时间戳前缀约 32B），故分段：
+                     * 段1 ≤71B + 段2 ≤69B = 140B，覆盖 NMEA 0183 标准最长
+                     * 82B 语句；超过 140B 的行（非 NMEA 乱码）尾部丢弃。 */
+                    {
+                        int total = (int)strlen(s_gps_line);
+                        APP_LOGI("nmea: %.71s", s_gps_line);
+                        if (total > 71) {
+                            APP_LOGI("nmea+: %.69s", &s_gps_line[71]);
+                        }
+                    }
+#endif
                     s_gps_cb(s_gps_line);
                     s_gps_line_pos = 0;
                 }
@@ -829,9 +843,6 @@ int bsp_gps_parse_nmea(const char *line, app_location_t *out_loc)
          * Valid(field2): A=有效 V=无效
          * Speed(field7): 速度，单位 knot（1 knot = 1.852 km/h = 0.5144 m/s）
          * Course(field8): 航向，0~359.9 度 */
-#if APP_GPS_NMEA_DEBUG
-        APP_LOGI("nmea RMC: %s", line);
-#endif
         const char *status = nmea_field(line, 2);
         if (*status != 'A') return 0; /* V = 无效 */
         const char *lat = nmea_field(line, 3);
