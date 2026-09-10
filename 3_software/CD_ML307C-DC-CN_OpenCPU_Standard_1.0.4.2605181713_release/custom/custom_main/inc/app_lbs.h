@@ -31,12 +31,21 @@ int app_lbs_init(void);
 void app_lbs_set_imei(const char *imei);
 void app_lbs_set_boot_id(const char *boot_id);
 
+/* WiFi 采集策略（需求 2.2 触发与限频策略） */
+typedef enum {
+    APP_LBS_WIFI_OFF = 0,   /* 不扫描不复用（GNSS 有效 / 无效周期数不足 / 一次性定位） */
+    APP_LBS_WIFI_SCAN,      /* 触发条件满足（GNSS 连续 N 周期无效且非寻宠/遛宠/静止）：
+                             * 执行扫描；限频期内复用有效期内的缓存 macs 上报 */
+    APP_LBS_WIFI_REUSE,     /* 静止期（需求 2.2/第 8 章）：不扫描，
+                             * 复用有效期内的缓存 macs 上报 */
+} app_lbs_wifi_policy_e;
+
 /* 触发一次 LBS&WiFi 采集（独立任务异步执行，不阻塞主循环）
- * force_wifi = true 表示主控层判定 WiFi 扫描触发条件满足（GNSS 连续 N 周期
- *               无效且非寻宠/遛宠模式）；实际扫描仍受 5 分钟最小间隔限频约束
+ * wifi_policy = WiFi 采集策略（见枚举；扫描仍受 5 分钟最小间隔限频约束，
+ *               缓存复用受 APP_LBS_WIFI_CACHE_VALID_S 有效期约束）
  * report      = true 采集后上报平台；false 仅采集不上报
  * 返回 0=已触发，<0=失败（任务正忙等） */
-int app_lbs_trigger(bool force_wifi, bool report);
+int app_lbs_trigger(app_lbs_wifi_policy_e wifi_policy, bool report);
 
 /* 采集上报任务是否正在运行 */
 bool app_lbs_is_running(void);

@@ -21,9 +21,6 @@ extern "C" {
 /* ===================================================================
  * 1. 固件与设备标识（需求 6.7 软件版本管理）
  * =================================================================== */
-#define APP_VERSION_MAJOR           1
-#define APP_VERSION_MINOR           1
-#define APP_VERSION_PATCH           0
 #define APP_FIRMWARE_VERSION        "1.1.0"     /* APP 语义化版本：主.次.修 */
 #define APP_HW_VERSION              "HW_V1.0"   /* 硬件版本：跟随 PCB，引脚变更必须升版 */
 #define APP_PROTOCOL_VERSION        "v1"
@@ -148,12 +145,15 @@ extern "C" {
 #define APP_KEY_ACTIVE_LEVEL        CM_GPIO_LEVEL_LOW
 
 /* ===================================================================
- * 7. 蜂鸣器（需求 4 / 10：Pin74，有源蜂鸣器，高电平触发）
+ * 7. 蜂鸣器（需求 4 / 10：Pin74，无源蜂鸣器，V1.28 改版）
  *    Pin74 主功能 PWM0（SDK breathled 示例验证 FUNCTION1 = PWM0）。
- *    实现方式：满占空比输出高电平 = 响，关闭 PWM = 停。
+ *    实现方式：PWM 音频方波驱动（50% 占空比）= 响，关闭 PWM = 停。
+ *    频率默认 4kHz：32K 时钟源 8 分频整数，无量化误差；若蜂鸣器
+ *    型号谐振频率不同（常见 2731Hz / 2kHz），按规格书调整此宏。
  * =================================================================== */
 #define APP_BUZZER_PWM_DEV          CM_PWM_DEV_0
 #define APP_BUZZER_IOMUX_PIN        CM_IOMUX_PIN_74
+#define APP_BUZZER_FREQ_HZ          4000    /* 无源蜂鸣器驱动频率 Hz（V1.28） */
 #define APP_BUZZER_BEEP_ON_MS       200     /* 单次鸣响 200ms（需求 4） */
 #define APP_BUZZER_BEEP_OFF_MS      800     /* 每秒响一次：间隔 800ms */
 
@@ -168,14 +168,14 @@ extern "C" {
 #define APP_LED_BLINK_SLOW_MS       3000    /* 已联网正常：每 3 秒闪一次 */
 
 /* ===================================================================
- * 9. 电池电量 ADC（需求 7 / 引脚表，2026-09-03 定版）
- *    方案：外部分压 200kΩ(上臂,接电池正极) + 68kΩ(下臂,接GND) → Pin96/ADC1
- *    分压比 = (200+68)/68 ≈ 3.941，满电 4.2V → Pin96 = 1.066V < 1.2V 量程
+ * 9. 电池电量 ADC（需求 7 / 引脚表，2026-09-03 定版；分压改版 2026-09-09 需求 V1.27）
+ *    方案：外部分压 200kΩ(上臂,接电池正极) + 20kΩ(下臂,接GND) → Pin96/ADC1
+ *    分压比 = (200+20)/20 = 11.0，满电 4.2V → Pin96 ≈ 0.382V < 1.2V 量程（余量充足）
  *    不使用模组内部 VBAT 测量（硬件方案定版）
  * =================================================================== */
 #define APP_BATTERY_ADC_DEV         CM_ADC_1            /* Pin96（专用 ADC1 引脚） */
 #define APP_BATTERY_DIV_UP_KOHM     200                 /* 分压上臂 kΩ（电池正极侧） */
-#define APP_BATTERY_DIV_DOWN_KOHM   68                  /* 分压下臂 kΩ（GND 侧） */
+#define APP_BATTERY_DIV_DOWN_KOHM   20                  /* 分压下臂 kΩ（GND 侧，V1.27 改版） */
 /* SOC 估算：查表法（V1.23 实测放电曲线 21 档 + 线性插值，表在 bsp.c）；
  * 单调不增锁存与充电边沿重置见 custom_main.c 电量采样段（需求 7） */
 #define APP_BATTERY_SAMPLE_MS       (30 * 1000)         /* 30 秒采样一次 */
@@ -221,6 +221,14 @@ extern "C" {
 #define APP_LBS_WIFI_ENABLE                 1
 
 #define APP_LBS_WIFI_SCAN_MIN_INTERVAL_MS   (5 * 60 * 1000)  /* WiFi 扫描最小间隔 5 分钟 */
+#define APP_LBS_WIFI_CACHE_VALID_S          (60 * 60)        /* macs 缓存复用有效期（秒）。限频期/
+                                                                 * 静止期复用缓存 macs 上报（需求 2.2），
+                                                                 * 超期后 macs 置空退化为纯基站解算。
+                                                                 * 60min：覆盖看护模式静止判定窗口
+                                                                 * （5min 周期 × 2 周期 = 10min）并留余量；
+                                                                 * 省电模式（1h 周期）长时间静止后不复用
+                                                                 * 陈旧 AP 列表（高德对失效 AP 自动忽略，
+                                                                 * 但陈旧列表解算成功率低） */
 #define APP_LBS_WIFI_SCAN_MAX_COUNT         30               /* 期望上报 AP 数量（高德上限 30） */
 #define APP_LBS_WIFI_SCAN_ROUND             2                /* 扫描轮次（平衡耗时与成功率） */
 #define APP_LBS_WIFI_SCAN_TIMEOUT_S         20               /* 单次扫描超时（秒） */
@@ -293,6 +301,27 @@ extern "C" {
  * =================================================================== */
 #define APP_TICK_MS                 5u
 #define APP_MS_TO_TICK(ms)          ((uint32_t)((ms) / APP_TICK_MS))
+
+/* ===================================================================
+ * 16. 调试实验（临时脚手架，测完即删，勿带量产）
+ * =================================================================== */
+/* 【实验 A】MQTT 断开/重连 rti 泄漏隔离测试（2026-09-10）
+ * 背景：rti 线程数组溢出 Silent Reset 复发（室内连续 WiFi 扫描 ~92
+ * 周期崩，1 项/周期，2026-09-10 02:53 定案）。应用层线程已全部常驻化，
+ * 泄漏源锁定 SDK 内部二选一：cm_mqtt_client_create/destroy（lbs 重连
+ * 路径）或 cm_wifiscan_start/stop。
+ * 方法：开机首次 MQTT 连接成功后自动循环 120 次
+ *   app_mqtt_disconnect() -> app_reconnect_mqtt()
+ * （与 WiFi 扫描断开/重连完全同款代码路径），全程不做 WiFi 扫描；
+ * 期间门控 LP 状态机保持唤醒（排除睡眠干扰）。
+ * 判定：120 次内崩（EE LOG rti overflow）→ 泄漏在 MQTT create/destroy
+ *   路径，改造方向：断开只 disconnect 不 destroy，复用 client 对象；
+ *   120 次跑完不崩 → MQTT 路径干净（120+基线线程必超 92 容量），
+ *   泄漏在 cm_wifiscan → 需实验 B 或走降频/受控重启方案。
+ * 注意：若确认泄漏，设备会在第 N 次崩 → 重启 → 测试自动重来 → 再崩，
+ * 属预期（每次崩点计数相同即强确认）；台架 USB 供电测试用。
+ * 0 = 关闭（默认）；1 = 启用 */
+#define APP_MQTT_LEAK_TEST          1
 
 #ifdef __cplusplus
 }

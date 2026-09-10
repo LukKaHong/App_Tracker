@@ -1,0 +1,921 @@
+================================================================================
+ ML307C OpenCPU MQTT rti 线程表项泄漏 - 关键日志摘录
+ 完整日志见同目录 附件2_完整串口日志.txt（149620 行，本摘例行号与其一致）
+ 固件 build Sep 10 2026 16:36:10；测试期间 WiFi 扫描全程未运行
+================================================================================
+
+【崩溃总览】6 次复现，全部第 73 轮 disconnect，全部同签名：
+  附件2 行 21456 ：EE LOG: LR: 0x80173d47, PC: 0x8016d58c, SP: 0x7e0bac98 / EE LOG: DESC: rti thread array overflow, cnt 0x5c, FILE: utilities.c, LINE: 694 / EE LOG: Task: pet_main
+  附件2 行 42851 ：EE LOG: LR: 0x80173d47, PC: 0x8016d58c, SP: 0x7e0b2c78 / EE LOG: DESC: rti thread array overflow, cnt 0x5c, FILE: utilities.c, LINE: 694 / EE LOG: Task: pet_main
+  附件2 行 64482 ：EE LOG: LR: 0x80173d47, PC: 0x8016d58c, SP: 0x7e0b3278 / EE LOG: DESC: rti thread array overflow, cnt 0x5c, FILE: utilities.c, LINE: 694 / EE LOG: Task: pet_main
+  附件2 行 85975 ：EE LOG: LR: 0x80173d47, PC: 0x8016d58c, SP: 0x7e0b2c78 / EE LOG: DESC: rti thread array overflow, cnt 0x5c, FILE: utilities.c, LINE: 694 / EE LOG: Task: pet_main
+  附件2 行 107417 ：EE LOG: LR: 0x80173d47, PC: 0x8016d58c, SP: 0x7e0b2c88 / EE LOG: DESC: rti thread array overflow, cnt 0x5c, FILE: utilities.c, LINE: 694 / EE LOG: Task: pet_main
+  附件2 行 128904 ：EE LOG: LR: 0x80173d47, PC: 0x8016d58c, SP: 0x7e0b2c78 / EE LOG: DESC: rti thread array overflow, cnt 0x5c, FILE: utilities.c, LINE: 694 / EE LOG: Task: pet_main
+
+================================================================================
+【摘录 1】开机 + 首次 MQTT 连接 + 实验启动 + 第 1 轮（行 150-640）
+================================================================================
+cm_i2c_open():[109],set pin:58, fun:1
+
+cm_i2c_open():[112],set pin:57,read fun:1
+
+cm_i2c_open():[124],ML307R set I2C dev :0
+
+[ CM_I2C]i2c_init TWSI_ICR=0x60
+
+[ CM_I2C]Error: bus error detected,0x60,0x446!
+
+[ CM_I2C]i2c_init TWSI_ICR=0x60
+
+[ CM_I2C]Error:Write start+slaveaddress
+
+cm_i2c_write():[201], wrtie err:-2
+
+[ CM_I2C]Error: bus error detected,0x6a,0x406!
+
+[ CM_I2C]i2c_init TWSI_ICR=0x60
+
+[ CM_I2C]Error:Write stop
+
+cm_i2c_write():[201], wrtie err:-2
+
+[ cmlog ][OPENCPU]:[PET][E][+3s] QMA6100P probe fail
+
+
+[ cmlog ][OPENCPU]:[PET][W][+3s] bsp_init partial fail:-1
+
+
+[ cmlog ][OPENCPU]:[PET][I][+3s] lp wake irq init: key 0/0 gs_int 0/0
+
+
+[ cmlog ][OPENCPU]:[PET][I][+3s] pet tracker boot, mode=supervise, build Sep 10 2026 16:36:10
+
+
+[ cmlog ][OPENCPU]:[PET][I][+3s] boot -> mode=supervise, connecting
+
+
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
++CEREG: 5,0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=11
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=2, resp_cb_flag=1, sync_flag:2.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+[ cmlog ]cm_virt_at_mutex_release
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[CM-OC] func:cm_opencpu_start line:211,ret:0
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_release
+[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
++CEREG: 5,0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=11
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=3, resp_cb_flag=2, sync_flag:3.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
++CEREG: 1,"2670","0AA9FE06",7
+]
+[ cmlog ]vir_at_wait_get_flag:0
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 29, data:[+CEREG: 1,"2670","0AA9FE06",7]
+
+[ cmlog ][URC]__cm_urc_consult
+[ cmlog ]urc_head is null
+
+[ cmlog ]urc_head_internal is null
+
+[ cmlog ]__cm_daemon_thread 3 1
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_release
+[ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
++CEREG: 5,1,"2670","0AA9FE06",7
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2670","0AA9FE06",7]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=31
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=4, resp_cb_flag=3, sync_flag:4.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[ cmlog ][OPENCPU]:[PET][I][+7s] network ready, cereg=1
+
+
+[ cmlog ][OPENCPU]:[PET][I][+7s] use hardcoded credential (debug)
+
+
+[ cmlog ][OPENCPU]:[PET][I][+7s] mqtt connect 119.23.217.155:18883
+
+
+[ADNS] cm_async_dns_request cid = 1 
+
+[ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] client tsk start
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
+
+
+[ELOOP] register_event eloop 0x7e263c6c,0x802db1ac,0x7e07a120
+[ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x802db1ac,0x7e07a120
+[ELOOP] post event=0x7e044be8
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] unregister event=0x7e044be8
+[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] eloop_event_init 0x7e044c00,0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] eloop_event_init 0x7e044c18,0x7e263c6c,0x8025fe71,0x7e2956dc
+asocket open ok 0 3
+[ cmlog ]ipv4: 1 10.108.49.54 
+
+[ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
+
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
+
+
+asocket_cb 3 2
+asocket_cb 3 4
+[ELOOP] post event=0x7e044c00
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
+
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:53
+
+
+asocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,429496729asocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+5
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044be8,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044be8
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
+
+
+[ cmlog ][OPENCPU]:[PET][I][+7s] mqtt connected
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:34
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:462
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:462
+
+
+[ cmlog ][OPENCPU]:[PET][I][+7s] state ONLINE published
+
+
+[ cmlog ][OPENCPU]:[NTP]cm_ntp_set_cfg() server ntp.aliyun.com
+
+
+[ cmlog ][OPENCPU]:[NTP]cm_ntp_set_cfg() timeout 5000
+
+
+[ cmlog ][OPENCPU]:[NTP]cm_ntp_sync host_name=ntp.aliyun.com
+
+
+[ELOOP] register_event eloop 0x7e263c6c,0x802d7720,0x7e1e1bf1
+[ELOOP] eloop_event_init 0x7e044c30,0x7e263c6c,0x802d7720,0x7e1e1bf1
+[ELOOP] post event=0x7e044c30
+[ELOOP] rdy_list eloop=0xasocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+asocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+7e263c6c
+[ELOOP] unregister event=0x7e044c30
+[ cmlog ][OPENCPU]:[NTP]__on_eloop_ntp_DNS_recv_event host_name=ntp.aliyun.com
+
+
+[ cmlog ][OPENCPU]:__on_eloop_ntp_DNS_recv_event: dns_addrtype 3
+
+
+[ADNS] cm_async_dns_request cid = 1 
+
+[ADNS] request id:1
+
+[ cmlog ][OPENCPU]:[NTP]dns req(1) pending...
+
+
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+asocket_on_eloop 0x7e044be8,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044be8
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recasocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+asocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+v_len:5
+
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+asocket_on_eloop 0x7e044be8,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044be8
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:9
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:9,len:5
+
+
+[ cmlog ][OPENCPU]:[PET][I][+7s] rpc subscribed
+
+
+[ cmlog ][OPENCPU]:[PET][I][+7s] mqtt subscribed
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] tcp ret:-1
+
+[ADNS] request info 1,ntp.aliyun.com,3
+[ CM_I2C]Error: i2c_wait_status time out,0x9,0x0!
+
+[ CM_I2C]i2c_init TWSI_ICR=0x60
+
+[ CM_I2C]Error:Write start+slaveaddress
+
+cm_i2c_write():[201], wrtie err:-2
+
+[ cmlog ][OPENCPU]:[PET][W][+7s] pedometer read fail
+
+
+[ cmlog ][OPENCPU]:[PET][I][+7s] lp: gnss on, waiting fix (timeout 90000ms)
+
+
+[ cmlog ][OPENCPU]:[PET][I][+7s] gps: first uart line: #CFGLPMODE,2*43
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ]getaddrinfo ret:0, pres:7e0c5210 1
+[ cmlog ]host ip: 203.107.6.88
+
+[ cmlog ][OPENCPU]:[NTP]__on_ntp_async_dns_event(1, 1, ntp.aliyun.com)
+
+
+[ cmlog ][OPENCPU]:[NTP]dns req(1) ok: ntp.aliyun.com->203.107.6.88 dns_addrtype 0
+
+
+[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956fc
+[ELOOP] eloop_event_init 0x7e044c30,0x7e263c6c,0x8025fe71,0x7e2956fc
+[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956fc
+[ELOOP] eloop_event_init 0x7e044c48,0x7e263c6c,0x8025fe71,0x7e2956fc
+[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956fc
+[ELOOP] eloop_event_init 0x7e044c60,0x7e263c6c,0x8025fe71,0x7e2956fc
+asocket open ok 1 4
+[ cmlog ][OPENCPU]:[NTP]sock(4) open dns_addrtype 0
+
+
+[ cmlog ][OPENCPU]:[NTP]ip 203.107.6.88 port 123
+
+
+asocket_cb 4 0
+[ELOOP] post event=0x7e044c30
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c30,0x7e2956fc
+asocket_event 0x7e2956fc,0x7e044c30
+asocket_cb 4 1
+[ cmlog ][OPENCPU]:[NTP]sock(4) recv_ind: recv_avail=48, recv_len=48
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[NTP]__cm_api_ntp_notify() event[1] sockfd[4]
+
+
+[ELOOP] register_event eloop 0x7e263c6c,0x802d7c5c,0x00000004
+[ELOOP] eloop_event_init 0x7e044c78,0x7e263c6c,0x802d7c5c,0x00000004
+[ELOOP] post event=0x7e044c78
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:37:12] ntp sync ok
+
+
+[ELOOP] unregister event=0x7e044c78
+[ cmlog ][OPENCPU]:__on_eloop_ntp_close_recv_event sock=4
+
+
+[ELOOP] unregister event=0x7e044c30
+[ELOOP] unregister event=0x7e044c48
+[ELOOP] unregister event=0x7e044c60
+asocket_cb 4 0
+asocket not found
+asocket_cb 4 2
+asocket not found
+[ cmlog ][OPENCPU]:sock(4) close success
+
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:37:12] alive mode=supervise rssi=-64 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:37:16] MQTT-LEAK-TEST: start 120 cycles
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:37:16] MQTT-LEAK-TEST [1/120] disconnect
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:2
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:3
+
+
+[ELOOP] register_event eloop 0x7e263c6c,0x802d9ea4,0x00000003
+[ELOOP] eloop_event_init 0x7e044c60,0x7e263c6c,0x802d9ea4,0x00000003
+[ELOOP] post event=0x7e044c60
+[ cmlog ][OPENCPU]:[PET][W][2026-09-10 16:37:16] mqtt connack fail:2 (was_connected=1)
+
+
+[ cmlog ][OPENCPU]:[PET][W][2026-09-10 16:37:16] mqtt disconnected
+
+
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] unregister event=0x7e044c60
+[ELOOP] unregister event=0x7e044be8
+[ELOOP] unregister event=0x7e044c00
+[ELOOP] unregister event=0x7e044c18
+asocket_cb 3 11
+asocket not found
+asocket_cb 3 0
+asocket not found
+asocket_cb 3 2
+asocket not found
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,disconnect from server
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+================================================================================
+【摘录 2】稳定期连续 3 轮完整周期：disconnect → 3s → reconnect（行 2050-2300）
+ 注意每轮 reconnect 均出现 [ADNS] cm_async_dns_request（主机名为 IP 直连仍进入该路径）
+================================================================================
+[ cmlog ][OPENCPU]:[CMMQTT] tcp ret:-1
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:37:49] MQTT-LEAK-TEST [6/120] disconnect
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:2
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:3
+
+
+[ELOOP] register_event eloop 0x7e263c6c,0x802d9ea4,0x00000003
+[ELOOP] eloop_event_init 0x7e044c60,0x7e263c6c,0x802d9ea4,0x00000003
+[ELOOP] post event=0x7e044c60
+[ cmlog ][OPENCPU]:[PET][W][2026-09-10 16:37:49] mqtt connack fail:2 (was_connected=1)
+
+
+[ cmlog ][OPENCPU]:[PET][W][2026-09-10 16:37:49] mqtt disconnected
+
+
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] unregister event=0x7e044c60
+[ELOOP] unregister event=0x7e044c18
+[ELOOP] unregister event=0x7e044c00
+[ELOOP] unregister event=0x7e044be8
+asocket_cb 3 11
+asocket not found
+asocket_cb 3 0
+asocket not found
+asocket_cb 3 2
+asocket not found
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,disconnect from server
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:37:52] MQTT-LEAK-TEST [6/120] reconnect
+
+
+[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_release
+[ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
++CEREG: 5,1,"2670","0AA9FE06",7
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2670","0AA9FE06",7]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=31
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=10, resp_cb_flag=9, sync_flag:10.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:37:52] network ready, cereg=1
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:37:52] use hardcoded credential (debug)
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:37:52] mqtt connect 119.23.217.155:18883
+
+
+[ADNS] cm_async_dns_request cid = 1 
+
+[ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
+
+
+[ELOOP] register_event eloop 0x7e263c6c,0x802db1ac,0x7e07a120
+[ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x802db1ac,0x7e07a120
+[ELOOP] post event=0x7e044be8
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] unregister event=0x7e044be8
+[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] eloop_event_init 0x7e044c00,0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
+[ELOOP] eloop_event_init 0x7e044c18,0x7e263c6c,0x8025fe71,0x7e2956dc
+asocket open ok 0 3
+[ cmlog ]ipv4: 1 10.108.49.54 
+
+[ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
+
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
+
+
+asocket_cb 3 2
+asocket_cb 3 4
+[ELOOP] post event=0x7e044c00
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
+
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:53
+
+
+asocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+asocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044be8,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044be8
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:37:52] mqtt connected
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:34
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:1,len:0
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:335
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:335
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:37:52] state ONLINE published
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+asocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+asocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+asocket_on_eloop 0x7e044be8,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044be8
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:5
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:9,len:5
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09asocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+asocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+-10 16:37:52] rpc subscribed
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:37:52] mqtt subscribed
+
+
+[ELOOP] rdy_list eloop=0x7e263c6c
+
+================================================================================
+【摘录 3】第 73 轮崩溃现场：disconnect → EE LOG → Silent Reset → 重启（行 21330-21480）
+ 注意：本固件全程未调用 cm_mqtt_client_destroy（日志无 destroy client 打印）；
+ 崩溃点在 SDK 打印 disconnect from server 之后瞬间发生
+================================================================================
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+asocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+asocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+asocket_on_eloop 0x7e044be8,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044be8
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:5
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:9,len:5
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:45:04] rpc subscribed
+
+
+[ cmlog ][OPENCPU]:[PET][I][202asocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
+asocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+6-09-10 16:45:04] mqtt subscribed
+
+
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+asocket_on_eloop 0x7e044be8,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044be8
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
+
+
+asocket_cb 3 1
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:L:165, port0/1not  close clk_en_bit and set reset
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-10 16:45:07] MQTT-LEAK-TEST [73/120] disconnect
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] send len:2
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:3
+
+
+[ELOOP] register_event eloop 0x7e263c6c,0x802d9ea4,0x00000003
+[ELOOP] eloop_event_init 0x7e044c60,0x7e263c6c,0x802d9ea4,0x00000003
+[ELOOP] post event=0x7e044c60
+[ cmlog ][OPENCPU]:[PET][W][2026-09-10 16:45:07] mqtt connack fail:2 (was_connected=1)
+
+
+[ cmlog ][OPENCPU]:[PET][W][2026-09-10 16:45:07] mqtt disconnected
+
+
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] unregister event=0x7e044c60
+[ELOOP] unregister event=0x7e044be8
+[ELOOP] unregister event=0x7e044c00
+[ELOOP] unregister event=0x7e044c18
+asocket_cb 3 11
+asocket not found
+asocket_cb 3 0
+asocket not found
+asocket_cb 3 2
+asocket not found
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,disconnect from server
+
+
+EE LOG: LR: 0x80173d47, PC: 0x8016d58c, SP: 0x7e0bac98
+EE LOG: DESC: rti thread array overflow, cnt 0x5c, FILE: utilities.c, LINE: 694
+EE LOG: Task: pet_main
+EE LOG: Send Plp Mem Dump CMD
+EE LOG: Silent Reset
+FlushPsramCache start
+FlushPsramCache done
+
+
+[INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
+[INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
+[INFO: Main      ] 
+[INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
+[INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
+[INFO: QspiFlash ] Detecting QSPI flash devices...
+[INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
+[INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
+[INFO: BootCtrl  ] Loading bootloader from QSPI flash...
+[INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
+[INFO: Crypto    ] Initializing crypto library...
+[INFO: Main      ] Running in normal booting mode.
+[INFO: Main      ] Loading...
+[INFO: Bl1Main   ] Welcome to boot rom.
+[INFO: Bl1Main   ] ### Non-trusted boot mode. ###
+[INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
+[INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...

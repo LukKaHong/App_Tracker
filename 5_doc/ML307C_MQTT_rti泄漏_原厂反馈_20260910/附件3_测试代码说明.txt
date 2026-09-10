@@ -1,0 +1,105 @@
+================================================================================
+ 附件 3：泄漏隔离测试代码说明
+ 配套：问题报告.md / 附件2_完整串口日志.txt（固件 build Sep 10 2026 16:36:10）
+================================================================================
+
+一、测试目的与方法
+--------------------------------------------------------------------------------
+隔离验证 MQTT 断开/重连路径是否泄漏 rti 线程表项：开机首次 MQTT 连接成功后，
+自动循环执行 120 次"断开 → 3 秒 → 重连"，全程不运行 WiFi 扫描、不进睡眠
+（门控 LP 状态机），排除其他干扰源。测试与产品 WiFi 扫描静默窗口使用的
+断开/重连是同一份代码路径（app_mqtt_disconnect / app_reconnect_mqtt）。
+
+结果：第 73 次 disconnect 必现 EE LOG "rti thread array overflow, cnt 0x5c"
+并 Silent Reset；重启后测试自动从头执行，再次在第 73 轮崩——6 个完整循环
+复现，崩点计数零偏差。
+
+二、测试任务源码（custom_main.c 摘录，原样）
+--------------------------------------------------------------------------------
+/* 【实验 A】MQTT 断开/重连 rti 泄漏隔离测试任务（等首连后自动循环） */
+#if APP_MQTT_LEAK_TEST
+static void mqtt_leak_test_task(void *arg)
+{
+    (void)arg;
+
+    /* 等首次 MQTT 连接成功（最多 5 分钟，失败则放弃实验） */
+    for (int i = 0; i < 300 && !app_mqtt_is_connected(); i++) {
+        osDelay(APP_MS_TO_TICK(1000));
+    }
+    if (!app_mqtt_is_connected()) {
+        APP_LOGE("MQTT-LEAK-TEST: no mqtt conn in 5min, abort");
+        for (;;) osDelay(APP_MS_TO_TICK(60000));
+    }
+    osDelay(APP_MS_TO_TICK(5000));      /* 等 subscribe / NTP 稳定 */
+
+    g_leak_test_running = true;         /* 门控 LP：全程保持唤醒 */
+    APP_LOGI("MQTT-LEAK-TEST: start %d cycles", MQTT_LEAK_TEST_CYCLES);
+
+    for (int i = 1; i <= MQTT_LEAK_TEST_CYCLES; i++) {
+        APP_LOGI("MQTT-LEAK-TEST [%d/%d] disconnect",
+                 i, MQTT_LEAK_TEST_CYCLES);
+        app_mqtt_disconnect();          /* 与 WiFi 扫描同款断开路径 */
+        osDelay(APP_MS_TO_TICK(3000));
+
+        APP_LOGI("MQTT-LEAK-TEST [%d/%d] reconnect",
+                 i, MQTT_LEAK_TEST_CYCLES);
+        app_reconnect_mqtt();           /* 与 WiFi 扫描同款重连路径 */
+        for (int w = 0; w < 20 && !app_mqtt_is_connected(); w++) {
+            osDelay(APP_MS_TO_TICK(1000));
+        }
+        if (!app_mqtt_is_connected()) {
+            APP_LOGW("MQTT-LEAK-TEST [%d] conn timeout after 20s, continue", i);
+        }
+        osDelay(APP_MS_TO_TICK(2000));
+    }
+
+    APP_LOGI("MQTT-LEAK-TEST: DONE %d cycles NO crash -> mqtt path clean",
+             MQTT_LEAK_TEST_CYCLES);
+    g_leak_test_running = false;
+
+    for (;;) osDelay(APP_MS_TO_TICK(60000));   /* 常驻挂起，不退出 */
+}
+#endif /* APP_MQTT_LEAK_TEST */
+
+/* 任务创建（main_task 内，开机一次）：
+    osThreadAttr_t lt_attr = {0};
+    lt_attr.name = "mqtt_leak";
+    lt_attr.stack_size = 4 * 1024;
+    lt_attr.priority = osPriorityBelowNormal1;
+    osThreadNew(mqtt_leak_test_task, NULL, &lt_attr);
+*/
+
+三、每周期实际调用的 SDK 接口序列
+--------------------------------------------------------------------------------
+断开侧（app_mqtt_disconnect，见附件 4 mqtt_disconnect_locked）：
+    cm_mqtt_client_disconnect(s_client);
+    osDelay(200ms);                      /* 等 DISCONNECT 包 + socket 异步关闭 */
+    /* 本固件不调用 cm_mqtt_client_destroy —— client 全程复用 */
+
+重连侧（app_reconnect_mqtt，见附件 4 mqtt_connect_locked）：
+    cm_mqtt_client_get_state(s_client)   /* 已断开则跳过 disconnect */
+    cm_mqtt_client_set_opt(...)          /* 回调 + 参数幂等重设（见附件4） */
+    cm_mqtt_client_connect(s_client, &opt)
+
+连接参数（与日志一致）：
+    MQTT 3.1.1（version=4），keepalive 120s，clean_session=1，QoS1
+    DNS 优先级 IPv4，SDK 内部自动重连 3 次/间隔 20s（本测试未触发）
+    服务器：119.23.217.155:18883（IP 直连，无 TLS——联调阶段配置）
+    每轮连接成功后应用层重新订阅 1 个 topic
+
+四、对照实验说明（排除 cm_mqtt_client_destroy）
+--------------------------------------------------------------------------------
+前一日固件（build Sep 10 2026 14:10:58）每周期执行：
+    cm_mqtt_client_disconnect → cm_mqtt_client_destroy → 重新 create → connect
+同样在第 73 轮 disconnect 崩溃，EE LOG 签名完全相同（cnt=0x5c）。
+两版对照说明：destroy 调用与否不改变崩点与泄漏速率（1 条/周期），
+泄漏点在 connect/disconnect 周期内部的 SDK 路径。
+
+五、日志关键字索引（对应附件2_完整串口日志.txt）
+--------------------------------------------------------------------------------
+  "MQTT-LEAK-TEST [N/120] disconnect/reconnect"   测试轮次标记
+  "[ADNS] cm_async_dns_request cid = 1"           每轮重连出现（IP 直连仍进入）
+  "asocket open ok 0 3"                           每轮 fd=3 复用
+  "disconnect from server"                         崩溃前最后一条 SDK 打印
+  "EE LOG: DESC: rti thread array overflow"       崩溃（6 处，行号见附件1）
+  全文检索 "destroy client" 零命中                证明本固件零 destroy 调用

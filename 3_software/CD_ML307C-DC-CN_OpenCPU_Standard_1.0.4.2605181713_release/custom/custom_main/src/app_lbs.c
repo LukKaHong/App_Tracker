@@ -19,8 +19,10 @@
  *          （无扫描窗口、MQTT 保持连接），报文不含 macs 字段。
  *
  *          WiFi 扫描受限频控制（默认 5 分钟最小间隔）以降低 MQTT 断连与功耗
- *          影响；离线时 LBS 原始参数不上缓存（无线环境随时间变化，过期原始参数
- *          解算出的坐标无意义，且报文大于离线缓存单条容量）。
+ *          影响；限频期内与静止期间复用缓存的 macs 上报（需求 2.2：静止期间
+ *          无线环境不变），缓存超 APP_LBS_WIFI_CACHE_VALID_S 后不复用、macs
+ *          置空退化为纯基站解算。离线时 LBS 原始参数不上缓存（移动场景下
+ *          过期原始参数解算出的坐标无意义，且报文大于离线缓存单条容量）。
  */
 #include <string.h>
 #include <stdio.h>
@@ -73,6 +75,12 @@ static cm_wifi_scan_info_t s_wifi_result;
 static volatile bool s_scan_done = false;
 #endif
 
+#if APP_LBS_WIFI_ENABLE
+/* 最近一次成功扫描的 macs 缓存（需求 2.2：限频期/静止期复用上报） */
+static char     s_cached_macs[APP_LBS_URL_BUF_SIZE];
+static uint64_t s_cached_macs_utc = 0;           /* 缓存时刻（UTC 秒），0 = 无有效缓存 */
+#endif
+
 void app_lbs_set_steps(uint32_t steps)
 {
     s_steps = steps;
@@ -101,6 +109,10 @@ int app_lbs_init(void)
         s_scan_evt = osEventFlagsNew(NULL);
     }
     s_last_wifi_scan_utc = 0;
+#endif
+#if APP_LBS_WIFI_ENABLE
+    s_cached_macs[0] = '\0';
+    s_cached_macs_utc = 0;
 #endif
     s_running = false;
     s_lbs_seq = 0;
@@ -324,6 +336,13 @@ static void build_macs_string(char *macs, size_t size)
         strncat(macs, one, size - strlen(macs) - 1);
     }
 }
+
+/* macs 缓存是否可复用（需求 2.2：限频期/静止期；超有效期不复用） */
+static bool macs_cache_valid(uint64_t now_utc)
+{
+    return (s_cached_macs_utc != 0) &&
+           ((now_utc - s_cached_macs_utc) <= (uint64_t)APP_LBS_WIFI_CACHE_VALID_S);
+}
 #endif /* APP_LBS_WIFI_ENABLE */
 
 /* ===== 最近一次采集的基站参数缓存（按定位周期持续刷新）===== */
@@ -347,13 +366,10 @@ int app_lbs_get_cached_cellid(uint32_t *cellid)
 }
 
 /* ===== 采集 + 上报一次 LBS&WiFi 原始参数 ===== */
-static void lbs_report(bool force_wifi, bool report)
+static void lbs_report(app_lbs_wifi_policy_e wifi_policy, bool report)
 {
     static char bts[64];
     static char nearbts[512];
-#if APP_LBS_WIFI_ENABLE
-    static char macs[APP_LBS_URL_BUF_SIZE];
-#endif
     static char json[APP_LBS_JSON_BUF_SIZE];
     char msgid[APP_MSG_ID_MAX_LEN];
     char event_time[24];
@@ -363,29 +379,52 @@ static void lbs_report(bool force_wifi, bool report)
     bool has_bts = (collect_cell_info(bts, sizeof(bts),
                                       nearbts, sizeof(nearbts), &cellid) == 0);
 
-    /* 2. WiFi 扫描：触发 && 限频双条件同时满足（需求 2.2）。
-     * 触发由主控层 wifi_scan_should_trigger 传入 force_wifi（GNSS 连续 N 周期
-     * 无效且非寻宠/遛宠模式）；限频为硬性 5 分钟最小间隔，不可跳过。
-     * 原逻辑误用 ||（触发或限频任一满足即扫描），导致开机首个 LBS 任务在
-     * 触发条件不满足时仍执行 28s 断连扫描窗口（2026-09-03 实测发现），改 &&
+    /* 2. WiFi 采集：按主控层传入的策略执行（需求 2.2 触发与限频策略）。
+     * SCAN   = 触发条件满足（GNSS 连续 N 周期无效且非寻宠/遛宠/静止），
+     *          限频为硬性 5 分钟最小间隔不可跳过；限频期内复用缓存 macs。
+     * REUSE  = 静止期，不扫描复用缓存 macs（静止期间无线环境不变）。
      * 限频计时用 RTC UTC 秒：LP 睡眠期间 OS tick 冻结，tick 计时会使限频失真 */
     bool has_macs = false;
 #if APP_LBS_WIFI_ENABLE
     uint64_t now_utc = cm_rtc_get_current_time();
-    bool wifi_allowed = force_wifi && ((s_last_wifi_scan_utc == 0) ||
-        ((now_utc - s_last_wifi_scan_utc) >= (APP_LBS_WIFI_SCAN_MIN_INTERVAL_MS / 1000u)));
-    if (wifi_allowed) {
-        s_last_wifi_scan_utc = now_utc;
-        int ap_cnt = do_wifi_scan();
-        if (ap_cnt > 0) {
-            build_macs_string(macs, sizeof(macs));
+    if (wifi_policy == APP_LBS_WIFI_SCAN) {
+        bool wifi_allowed = (s_last_wifi_scan_utc == 0) ||
+            ((now_utc - s_last_wifi_scan_utc) >= (APP_LBS_WIFI_SCAN_MIN_INTERVAL_MS / 1000u));
+        if (wifi_allowed) {
+            s_last_wifi_scan_utc = now_utc;
+            int ap_cnt = do_wifi_scan();
+            if (ap_cnt > 0) {
+                /* 刷新缓存：时间戳取扫描起点，实际完成晚 ~37s，算出的
+                 * 缓存年龄偏大，不会高估新鲜度 */
+                build_macs_string(s_cached_macs, sizeof(s_cached_macs));
+                s_cached_macs_utc = now_utc;
+                has_macs = true;
+            } else {
+                /* 扫描失败（0 AP/超时）：能走到真扫描说明已超限频间隔，
+                 * 旧缓存同样过期，一并作废（需求 2.2：macs 如实上报） */
+                s_cached_macs_utc = 0;
+            }
+        } else if (macs_cache_valid(now_utc)) {
+            /* 限频期内：复用缓存 macs 上报（需求 2.2 限频策略） */
+            APP_LOGI("lbs: interval-limited, reuse cached macs (age=%lus)",
+                     (unsigned long)(now_utc - s_cached_macs_utc));
             has_macs = true;
+        } else {
+            APP_LOGD("lbs: wifi scan skipped (interval limit, no valid cache)");
         }
-    } else {
-        APP_LOGD("lbs: wifi scan skipped (interval limit)");
+    } else if (wifi_policy == APP_LBS_WIFI_REUSE) {
+        /* 静止期（需求 2.2/第 8 章）：无线环境不变，不扫描复用缓存；
+         * 超有效期退化为纯基站上报（平台按 bts/nearbts 解算） */
+        if (macs_cache_valid(now_utc)) {
+            APP_LOGI("lbs: still, reuse cached macs (age=%lus)",
+                     (unsigned long)(now_utc - s_cached_macs_utc));
+            has_macs = true;
+        } else {
+            APP_LOGD("lbs: still, macs cache expired");
+        }
     }
 #else
-    (void)force_wifi;   /* WiFi 屏蔽期间参数不使用 */
+    (void)wifi_policy;   /* WiFi 屏蔽期间参数不使用 */
     APP_LOGD("lbs: wifi scan disabled (APP_LBS_WIFI_ENABLE=0)");
 #endif
 
@@ -439,7 +478,7 @@ static void lbs_report(bool force_wifi, bool report)
         has_bts ? bts : "",
         (has_bts && nearbts[0]) ? nearbts : "",
 #if APP_LBS_WIFI_ENABLE
-        has_macs ? macs : "",
+        has_macs ? s_cached_macs : "",
 #endif
         (unsigned long)s_steps,
         g_boot_id, (unsigned long)s_lbs_seq);
@@ -469,7 +508,7 @@ static void lbs_report(bool force_wifi, bool report)
  * 修复：线程改为 init 时创建一次、常驻事件等待，trigger 仅置参数
  * + 置事件标志，全生命周期零周期性线程创建 */
 #define LBS_EVT_RUN         (1u << 0)
-static volatile bool s_force_wifi = false;
+static volatile app_lbs_wifi_policy_e s_wifi_policy = APP_LBS_WIFI_OFF;
 static volatile bool s_report = false;
 
 static void lbs_task(void *arg)
@@ -481,22 +520,22 @@ static void lbs_task(void *arg)
         if (flags & osFlagsError) {
             continue;   /* 等待异常（非法参数等），重新等待 */
         }
-        APP_LOGI("lbs: task start (force_wifi=%d report=%d)",
-                 (int)s_force_wifi, (int)s_report);
-        lbs_report(s_force_wifi, s_report);
+        APP_LOGI("lbs: task start (wifi=%d report=%d)",
+                 (int)s_wifi_policy, (int)s_report);
+        lbs_report(s_wifi_policy, s_report);
         s_running = false;
         APP_LOGI("lbs: task done");
     }
 }
 
-int app_lbs_trigger(bool force_wifi, bool report)
+int app_lbs_trigger(app_lbs_wifi_policy_e wifi_policy, bool report)
 {
     if (s_running) {
         APP_LOGW("lbs: task busy, skip");
         return -1;
     }
     s_running = true;
-    s_force_wifi = force_wifi;
+    s_wifi_policy = wifi_policy;
     s_report = report;
     if (osEventFlagsSet(s_lbs_work_evt, LBS_EVT_RUN) & osFlagsError) {
         APP_LOGE("lbs: trigger event set fail");

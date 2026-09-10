@@ -5,7 +5,7 @@
  *          - RUN_LED：PWM1 @ Pin75，闪烁由异步任务控制 PWM 通断，呼吸由占空比渐变
  *          - GPS_PWR_EN：GPIO0 @ Pin76，高电平开（V1.23，原 Pin22/GPIO12）
  *          - 充电检测：GPIO3 @ Pin87，高电平 = 充电中
- *          - 电池：ADC1 @ Pin96，外部分压 200k/68k（比 3.941，V1.14 定版）
+ *          - 电池：ADC1 @ Pin96，外部分压 200k/20k（比 11.0，V1.27 改版）
  *          - 计步器：QMA6100P，I2C0 @ Pin57/58，7bit 地址 0x12/0x13（AD0 电平决定）
  *          - GPS：UART1 @ Pin28/29 + NMEA 0183 解析（GGA / RMC / GSV）
  *          LP 睡眠态：GPS UART 与 I2C 引脚配置 SLEEP_FLOAT（pad 级配置一次，
@@ -28,14 +28,19 @@
 #include "bsp.h"
 
 /* PWM 周期（ns）：1ms @ 1KHz，32K 时钟源（低功耗下唯一可用时钟，cm_pwm.h 注意事项）。
- * 满占空比 period_h == period 输出持续高电平（有源蜂鸣器响 / LED 最亮）。 */
+ * 满占空比 period_h == period 输出持续高电平（LED 最亮）。 */
 #define BSP_PWM_PERIOD_NS       1000000u
 #define BSP_PWM_DUTY_FULL       BSP_PWM_PERIOD_NS
 #define BSP_PWM_DUTY_HALF       (BSP_PWM_PERIOD_NS / 2u)
 
 /* ====================================================================
- * 蜂鸣器（Pin74 / PWM0，有源高电平触发）
+ * 蜂鸣器（Pin74 / PWM0，无源蜂鸣器，V1.28 改版）
+ * 无源蜂鸣器须方波驱动：50% 占空比 @ APP_BUZZER_FREQ_HZ（默认 4kHz，
+ * 32K 时钟 8 分频整数无量化误差；型号谐振频率不同时调整宏）。
  * ==================================================================== */
+#define BSP_BUZZER_PERIOD_NS    (1000000000u / APP_BUZZER_FREQ_HZ)
+#define BSP_BUZZER_DUTY_NS      (BSP_BUZZER_PERIOD_NS / 2u)
+
 static bool s_buzzer_clk_set = false;
 
 static int bsp_buzzer_init(void)
@@ -54,8 +59,8 @@ static int bsp_buzzer_init(void)
 int bsp_buzzer_on(void)
 {
     if (!s_buzzer_clk_set) return -1;
-    /* 满占空比 = 持续高电平，有源蜂鸣器响 */
-    return (cm_pwm_open_ns(APP_BUZZER_PWM_DEV, BSP_PWM_PERIOD_NS, BSP_PWM_DUTY_FULL) == 0) ? 0 : -1;
+    /* 音频方波（50% 占空比）驱动无源蜂鸣器 */
+    return (cm_pwm_open_ns(APP_BUZZER_PWM_DEV, BSP_BUZZER_PERIOD_NS, BSP_BUZZER_DUTY_NS) == 0) ? 0 : -1;
 }
 
 int bsp_buzzer_off(void)
@@ -457,8 +462,8 @@ int bsp_battery_read(int *voltage_mv, int *soc)
     if (cm_adc_read(APP_BATTERY_ADC_DEV, &raw) != 0) {
         return -1;
     }
-    /* 分压还原（四舍五入）：电池电压 = 引脚电压 × (200+68)/68
-     * raw ≤ 1066mV，× 268 无符号溢出风险（< 2^31） */
+    /* 分压还原（四舍五入）：电池电压 = 引脚电压 × (200+20)/20 = 引脚电压 × 11
+     * raw ≤ 382mV，× 220 无符号溢出风险（< 2^31） */
     int mv = (int)((raw * (APP_BATTERY_DIV_UP_KOHM + APP_BATTERY_DIV_DOWN_KOHM)
                     + APP_BATTERY_DIV_DOWN_KOHM / 2) / APP_BATTERY_DIV_DOWN_KOHM);
     if (voltage_mv) *voltage_mv = mv;
