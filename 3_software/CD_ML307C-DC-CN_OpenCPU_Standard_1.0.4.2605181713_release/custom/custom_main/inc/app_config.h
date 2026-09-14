@@ -302,27 +302,6 @@ extern "C" {
 #define APP_TICK_MS                 5u
 #define APP_MS_TO_TICK(ms)          ((uint32_t)((ms) / APP_TICK_MS))
 
-/* ===================================================================
- * 16. 调试实验（临时脚手架，测完即删，勿带量产）
- * =================================================================== */
-/* 【实验 A】MQTT 断开/重连 rti 泄漏隔离测试（2026-09-10）
- * 背景：rti 线程数组溢出 Silent Reset 复发（室内连续 WiFi 扫描 ~92
- * 周期崩，1 项/周期，2026-09-10 02:53 定案）。应用层线程已全部常驻化，
- * 泄漏源锁定 SDK 内部二选一：cm_mqtt_client_create/destroy（lbs 重连
- * 路径）或 cm_wifiscan_start/stop。
- * 方法：开机首次 MQTT 连接成功后自动循环 120 次
- *   app_mqtt_disconnect() -> app_reconnect_mqtt()
- * （与 WiFi 扫描断开/重连完全同款代码路径），全程不做 WiFi 扫描；
- * 期间门控 LP 状态机保持唤醒（排除睡眠干扰）。
- * 判定：120 次内崩（EE LOG rti overflow）→ 泄漏在 MQTT create/destroy
- *   路径，改造方向：断开只 disconnect 不 destroy，复用 client 对象；
- *   120 次跑完不崩 → MQTT 路径干净（120+基线线程必超 92 容量），
- *   泄漏在 cm_wifiscan → 需实验 B 或走降频/受控重启方案。
- * 注意：若确认泄漏，设备会在第 N 次崩 → 重启 → 测试自动重来 → 再崩，
- * 属预期（每次崩点计数相同即强确认）；台架 USB 供电测试用。
- * 0 = 关闭（默认）；1 = 启用 */
-#define APP_MQTT_LEAK_TEST          1
-
 #ifdef __cplusplus
 }
 #endif

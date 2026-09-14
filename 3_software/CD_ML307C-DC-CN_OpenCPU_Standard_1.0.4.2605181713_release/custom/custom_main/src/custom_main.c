@@ -1061,62 +1061,6 @@ void app_reconnect_mqtt(void)
     provisioning_and_connect();
 }
 
-#if APP_MQTT_LEAK_TEST
-/* ===== 【实验 A】MQTT 断开/重连 rti 泄漏隔离测试（临时脚手架）=====
- * 目的：隔离 rti 泄漏源（cm_mqtt create/destroy vs cm_wifiscan），
- * 详见 app_config.h APP_MQTT_LEAK_TEST 注释。
- * 任务常驻（测完后挂起不退出——单次创建的 rti 表项不回收，但仅 1 项）；
- * LP 门控：g_leak_test_running 置位期间主循环不推进 lp_state_machine，
- * 设备全程保持唤醒，排除睡眠与定位周期的干扰变量。
- * 判定看 "MQTT-LEAK-TEST" 打点行数与是否出现 EE LOG rti overflow */
-#define MQTT_LEAK_TEST_CYCLES       120
-static volatile bool g_leak_test_running = false;
-
-static void mqtt_leak_test_task(void *arg)
-{
-    (void)arg;
-
-    /* 等首次 MQTT 连接成功（最多 5 分钟，失败则放弃实验） */
-    for (int i = 0; i < 300 && !app_mqtt_is_connected(); i++) {
-        osDelay(APP_MS_TO_TICK(1000));
-    }
-    if (!app_mqtt_is_connected()) {
-        APP_LOGE("MQTT-LEAK-TEST: no mqtt conn in 5min, abort");
-        for (;;) osDelay(APP_MS_TO_TICK(60000));
-    }
-    osDelay(APP_MS_TO_TICK(5000));      /* 等 subscribe / NTP 稳定 */
-
-    g_leak_test_running = true;         /* 门控 LP：全程保持唤醒 */
-    APP_LOGI("MQTT-LEAK-TEST: start %d cycles", MQTT_LEAK_TEST_CYCLES);
-
-    for (int i = 1; i <= MQTT_LEAK_TEST_CYCLES; i++) {
-        APP_LOGI("MQTT-LEAK-TEST [%d/%d] disconnect",
-                 i, MQTT_LEAK_TEST_CYCLES);
-        app_mqtt_disconnect();          /* 与 WiFi 扫描同款断开路径 */
-        osDelay(APP_MS_TO_TICK(3000));
-
-        APP_LOGI("MQTT-LEAK-TEST [%d/%d] reconnect",
-                 i, MQTT_LEAK_TEST_CYCLES);
-        app_reconnect_mqtt();           /* 与 WiFi 扫描同款重连路径 */
-        for (int w = 0; w < 20 && !app_mqtt_is_connected(); w++) {
-            osDelay(APP_MS_TO_TICK(1000));
-        }
-        if (!app_mqtt_is_connected()) {
-            APP_LOGW("MQTT-LEAK-TEST [%d] conn timeout after 20s, continue", i);
-        }
-        osDelay(APP_MS_TO_TICK(2000));
-    }
-
-    /* 跑满 120 周期未崩：120 次泄漏 + 基线线程必超 92 容量，
-     * 数学上排除 MQTT 路径泄漏 → 嫌疑收敛到 cm_wifiscan */
-    APP_LOGI("MQTT-LEAK-TEST: DONE %d cycles NO crash -> mqtt path clean",
-             MQTT_LEAK_TEST_CYCLES);
-    g_leak_test_running = false;
-
-    for (;;) osDelay(APP_MS_TO_TICK(60000));   /* 常驻挂起，不退出 */
-}
-#endif /* APP_MQTT_LEAK_TEST */
-
 /* ===== 休眠模式单次定位任务（常驻工作线程，事件驱动，避免阻塞主任务）=====
  * 2026-09-05：与 lbs_task 同因改为常驻——SDK rti 线程数组不回收退出
  * 线程表项，反复 osThreadNew 累积溢出触发 Silent Reset（详见 app_lbs.c） */
@@ -1289,19 +1233,6 @@ static void main_task(void *arg)
         (boot_mode == APP_MODE_SEARCHING || boot_mode == APP_MODE_WALKING)
             ? APP_MQTT_KEEPALIVE_HIGHFREQ_SEC : APP_MQTT_KEEPALIVE_LP_SEC);
     provisioning_and_connect();
-
-#if APP_MQTT_LEAK_TEST
-    /* 【实验 A】泄漏隔离测试任务：等首连后自动循环断开/重连（临时脚手架） */
-    {
-        osThreadAttr_t lt_attr = {0};
-        lt_attr.name = "mqtt_leak";
-        lt_attr.stack_size = 4 * 1024;
-        lt_attr.priority = osPriorityBelowNormal1;
-        if (osThreadNew(mqtt_leak_test_task, NULL, &lt_attr) == NULL) {
-            APP_LOGE("MQTT-LEAK-TEST task create fail");
-        }
-    }
-#endif
 
     uint32_t last_rssi_tick = 0;
     uint32_t last_replay_tick = 0;
@@ -1510,13 +1441,7 @@ static void main_task(void *arg)
             /* 看护/省电：LP 完整流程（定位+心跳）；
              * 休眠：LP 心跳调度（GNSS 常关，one-shot 由 RPC 触发）。
              * one-shot / LBS-WiFi 任务运行期间暂停 LP 推进保持唤醒 */
-#if APP_MQTT_LEAK_TEST
-            /* 【实验 A】测试期间同样冻结 LP 状态机：排除睡眠/定位周期
-             * 对断开-重连节奏的干扰（g_leak_test_running 见任务注释） */
-            if (!g_one_shot_running && !app_lbs_is_running() && !g_leak_test_running) {
-#else
             if (!g_one_shot_running && !app_lbs_is_running()) {
-#endif
                 lp_state_machine(mode);
             }
         } else if (mode == APP_MODE_SEARCHING || mode == APP_MODE_WALKING) {

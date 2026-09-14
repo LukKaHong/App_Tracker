@@ -31,15 +31,14 @@ static bool                 s_has_cred = false;
 
 /* API 互斥锁（2026-09-08 竞态修复）：app_mqtt_connect /
  * app_mqtt_disconnect / mqtt_task 重连判定原先无锁。WiFi 扫描断开
- * 流程（lbs_task 调 app_mqtt_disconnect）在 osDelay(200) 窗口内，
- * mqtt_task 可观测到中间态而抢跑重连：(1) 与 lbs_task 交叉操作同一
- * client（当时为双重 destroy，堆损坏隐患；2026-09-10 起已移除
- * destroy，见 mqtt_disconnect_locked）；(2) 结构体自拷贝发生在
- * lbs_task 清零凭证之后，得到全零凭证（"mqtt connect :0" 空主机名，
- * 5.3h 日志 17 个扫描周期命中 7 次）。锁覆盖连接/断开全函数体及
- * mqtt_task 轮询判定段；SDK 回调（cb_connack 等）仅置标志，不持锁。
- * 锁内最长持有时长：断开 200ms / 复用重连的断开等待轮询上限 2s
- * （2026-09-10 改造后），mqtt_task 最多阻塞同时长，可接受 */
+ * 流程（lbs_task 调 app_mqtt_disconnect）在 osDelay(200) 销毁窗口内，
+ * mqtt_task 可观测到 s_client!=NULL + DISCONNECTED + s_has_cred=true
+ * 的中间态而抢跑重连 → (1) 与 lbs_task 双重 destroy 同一 client
+ * （堆损坏隐患）；(2) 结构体自拷贝发生在 lbs_task 清零凭证之后，
+ * 得到全零凭证（"mqtt connect :0" 空主机名，5.3h 日志 17 个扫描
+ * 周期命中 7 次）。锁覆盖连接/断开全函数体及 mqtt_task 轮询判定段；
+ * SDK 回调（cb_connack 等）仅置标志，不持锁。锁内最长持有时长为
+ * 断开的 200ms delay，mqtt_task 最多阻塞同时长，可接受 */
 static osMutexId_t          s_api_mutex = NULL;
 
 /* keepalive 秒数（需求 6.3 分模式；连接建立时生效） */
@@ -237,37 +236,21 @@ static int mqtt_connect_locked(const app_mqtt_credential_t *cred)
         APP_LOGE("mqtt connect invalid cred (host empty or port 0)");
         return -1;
     }
-    /* 【rti 泄漏 2026-09-10 两轮实验定案】SDK MQTT 模块每执行一次
-     * connect/disconnect 周期泄漏 1 个 rti 线程表项（19 项基线 + 73
-     * 周期 = 92 容量溢出 → EE LOG "rti thread array overflow
-     * cnt=0x5c" Silent Reset，13 次复现零偏差）。对照实验已排除
-     * cm_mqtt_client_destroy（每周期 destroy 与全程复用 client 两版
-     * 固件同在第 73 轮崩），泄漏在 SDK 闭源 connect/disconnect 内部
-     * 路径（ADNS/asocket/状态机），已报原厂。应用层策略：client 一次
-     * 创建终身复用（避免 destroy 路径的额外不确定性），回调/参数
-     * set_opt 每次连接前幂等重设，防复用时状态残留。 */
-    if (s_client == NULL) {
-        s_client = cm_mqtt_client_create();
-        if (!s_client) {
-            APP_LOGE("mqtt client create fail");
-            return -2;
-        }
-    } else {
-        /* 复用已有 client：若仍处连接态先断开，轮询等 SDK 状态机回落
-         * DISCONNECTED 再 connect（实验日志实测断开 <200ms；轮询上限
-         * 2s，持锁等待可接受——调用方本就同步等连接结果） */
-        if (cm_mqtt_client_get_state(s_client) != CM_MQTT_STATE_DISCONNECTED) {
-            cm_mqtt_client_disconnect(s_client);
-        }
-        for (int i = 0; i < 40 &&
-             cm_mqtt_client_get_state(s_client) != CM_MQTT_STATE_DISCONNECTED;
-             i++) {
-            osDelay(APP_MS_TO_TICK(50));
-        }
+    if (s_client) {
+        cm_mqtt_client_disconnect(s_client);
+        osDelay(APP_MS_TO_TICK(200));
+        cm_mqtt_client_destroy(s_client);
+        s_client = NULL;
     }
     /* 保存凭证用于主动重连兜底 */
     s_saved_cred = *cred;
     s_has_cred = true;
+
+    s_client = cm_mqtt_client_create();
+    if (!s_client) {
+        APP_LOGE("mqtt client create fail");
+        return -2;
+    }
 
     /* 设置回调 */
     cm_mqtt_client_cb_t cbs = {0};
@@ -348,16 +331,14 @@ int app_mqtt_connect(const app_mqtt_credential_t *cred)
 /* ====== 内部断开实现（调用方必须已持有 s_api_mutex）====== */
 static void mqtt_disconnect_locked(void)
 {
-    /* 【rti 泄漏 2026-09-10 两轮实验定案】SDK MQTT 模块每 connect/
-     * disconnect 周期泄漏 1 个 rti 线程表项（73 周期 + 19 基线 = 92
-     * 容量溢出 Silent Reset）。对照实验已排除 cm_mqtt_client_destroy，
-     * 泄漏在 SDK 闭源断开/重连内部路径，已报原厂。client 保留复用；
-     * 监控任务常驻（勿 osThreadTerminate——被终止线程的 SDK rti 表项
-     * 同样不回收，2026-09-05 两晚复现定案） */
+    /* 仅销毁客户端，监控任务常驻（勿 osThreadTerminate——被终止线程
+     * 的 SDK rti 表项不回收，WiFi 扫描每周期 terminate+recreate 累积
+     * 92 项溢出 → Silent Reset，2026-09-05 两晚复现定案） */
     if (s_client) {
         cm_mqtt_client_disconnect(s_client);
-        osDelay(APP_MS_TO_TICK(200));   /* 等 DISCONNECT 包发出 + socket 异步关闭 */
-        /* 不 destroy —— s_client 保留，下次连接复用 */
+        osDelay(APP_MS_TO_TICK(200));
+        cm_mqtt_client_destroy(s_client);
+        s_client = NULL;
     }
     s_connected = false;
     s_has_cred = false;
@@ -365,7 +346,7 @@ static void mqtt_disconnect_locked(void)
 }
 
 /* 公共断开入口：持 s_api_mutex 串行化（WiFi 扫描断开期间 mqtt_task
- * 在锁上等待，凭证清零后其判定段不满足重连条件，不再抢跑重连） */
+ * 在锁上等待，销毁完成后看到的已是 s_client==NULL，不再抢跑重连） */
 int app_mqtt_disconnect(void)
 {
     if (s_api_mutex == NULL) {
