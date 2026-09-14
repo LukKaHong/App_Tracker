@@ -79,78 +79,99 @@ void bsp_buzzer_beep(int times, uint32_t on_ms, uint32_t off_ms)
     }
 }
 
-/* 异步持续响铃：独立任务实现，避免在 osTimer 回调中操作 PWM（SDK 上下文约束） */
+/* 异步持续响铃：常驻任务实现，避免在 osTimer 回调中操作 PWM（SDK 上下文约束）
+ * 【rti 泄漏修复 2026-09-14】原实现每次指令 terminate+osThreadNew 重建任务，
+ * SDK rti 线程表项不回收已销毁线程，反复重建累积溢出（92 容量 → Silent
+ * Reset，A/B 实验定案，见 led_task 同因改造与 5_doc 问题报告勘误）。
+ * 现改为 gen 计数 + 事件标志：任务 bsp_init 创建一次终身常驻，请求只覆写
+ * ctx 并置事件，运行中每个相位节拍比对 gen 发现新请求即中止接管。 */
 typedef struct {
     uint32_t    on_ms;
     uint32_t    off_ms;
     uint32_t    duration_ms;   /* 0 = 持续 */
-    volatile bool running;
+    volatile uint32_t gen;     /* 请求代数：每次新请求 ++，任务侧比对中止旧请求 */
 } buzzer_async_ctx_t;
 
 static buzzer_async_ctx_t s_buzz_ctx = {0};
 static osThreadId_t       s_buzz_thread = NULL;
+static osEventFlagsId_t   s_buzz_evt = NULL;
 
-static void buzzer_async_task(void *arg)
+#define BUZZ_EVT_REQ    0x00000001u
+
+static void buzz_task(void *arg)
 {
     (void)arg;
-    uint32_t duration_ms = s_buzz_ctx.duration_ms;
-    uint32_t start_tick  = (uint32_t)osKernelGetTickCount();
+    for (;;) {
+        (void)osEventFlagsWait(s_buzz_evt, BUZZ_EVT_REQ, osFlagsWaitAny, osWaitForever);
 
-    while (s_buzz_ctx.running) {
-        bsp_buzzer_on();
-        osDelay(APP_MS_TO_TICK(s_buzz_ctx.on_ms));
+        uint32_t my_gen       = s_buzz_ctx.gen;
+        uint32_t duration_ms  = s_buzz_ctx.duration_ms;
+        uint32_t start_tick   = (uint32_t)osKernelGetTickCount();
 
-        if (duration_ms > 0 &&
-            ((uint32_t)osKernelGetTickCount() - start_tick) >= APP_MS_TO_TICK(duration_ms)) {
-            break;
+        while (s_buzz_ctx.gen == my_gen) {
+            bsp_buzzer_on();
+            osDelay(APP_MS_TO_TICK(s_buzz_ctx.on_ms));
+
+            if (duration_ms > 0 &&
+                ((uint32_t)osKernelGetTickCount() - start_tick) >= APP_MS_TO_TICK(duration_ms)) {
+                break;
+            }
+            if (s_buzz_ctx.gen != my_gen) break;
+
+            bsp_buzzer_off();
+            osDelay(APP_MS_TO_TICK(s_buzz_ctx.off_ms));
+
+            if (duration_ms > 0 &&
+                ((uint32_t)osKernelGetTickCount() - start_tick) >= APP_MS_TO_TICK(duration_ms)) {
+                break;
+            }
         }
 
+        /* 自然结束 / 被新请求接管 / stop 请求：统一熄声再回等。
+         * 被接管时新请求事件位已置，外层 Wait 立即返回无缝衔接 */
         bsp_buzzer_off();
-        osDelay(APP_MS_TO_TICK(s_buzz_ctx.off_ms));
-
-        if (duration_ms > 0 &&
-            ((uint32_t)osKernelGetTickCount() - start_tick) >= APP_MS_TO_TICK(duration_ms)) {
-            break;
-        }
     }
-
-    bsp_buzzer_off();
-    s_buzz_ctx.running = false;
-    s_buzz_thread = NULL;
-    /* 任务函数 return 即自动退出 */
 }
 
 void bsp_buzzer_beep_async(uint32_t duration_sec)
 {
-    /* 停止之前的响铃任务 */
-    s_buzz_ctx.running = false;
-    if (s_buzz_thread) {
-        osThreadTerminate(s_buzz_thread);
-        s_buzz_thread = NULL;
+    if (s_buzz_evt == NULL) {
+        osEventFlagsAttr_t eattr = {0};
+        eattr.name = "buzz_evt";
+        s_buzz_evt = osEventFlagsNew(&eattr);
+    }
+    if (s_buzz_evt == NULL) {
+        APP_LOGE("buzzer evt create fail");
+        return;
+    }
+    /* bsp_init 已创建常驻任务；容错：极端时序下首请求先于 init 到达则现建 */
+    if (s_buzz_thread == NULL) {
+        osThreadAttr_t attr = {0};
+        attr.name = "buzz_task";
+        attr.stack_size = 2 * 1024;
+        attr.priority = osPriorityBelowNormal1;
+        s_buzz_thread = osThreadNew(buzz_task, NULL, &attr);
+        if (s_buzz_thread == NULL) {
+            APP_LOGE("buzzer task create fail");
+            return;
+        }
     }
 
     s_buzz_ctx.on_ms       = APP_BUZZER_BEEP_ON_MS;    /* 需求 4：单次鸣响 200ms */
     s_buzz_ctx.off_ms      = APP_BUZZER_BEEP_OFF_MS;   /* 每秒响一次：间隔 800ms */
     s_buzz_ctx.duration_ms = duration_sec * 1000u;
-    s_buzz_ctx.running     = true;
+    s_buzz_ctx.gen++;
 
-    osThreadAttr_t attr = {0};
-    attr.name = "buz_async";
-    attr.stack_size = 2 * 1024;
-    attr.priority = osPriorityBelowNormal1;
-    s_buzz_thread = osThreadNew(buzzer_async_task, NULL, &attr);
-    if (s_buzz_thread == NULL) {
-        s_buzz_ctx.running = false;
-        APP_LOGE("buzzer async task create fail");
-    }
+    (void)osEventFlagsSet(s_buzz_evt, BUZZ_EVT_REQ);
 }
 
 void bsp_buzzer_stop(void)
 {
-    s_buzz_ctx.running = false;
-    if (s_buzz_thread) {
-        osThreadTerminate(s_buzz_thread);
-        s_buzz_thread = NULL;
+    /* gen++ 使常驻任务运行循环尽快退出；PWM 在调用方上下文立即关闭，
+     * 熄声即时性与原 terminate 实现一致 */
+    if (s_buzz_evt != NULL) {
+        s_buzz_ctx.gen++;
+        (void)osEventFlagsSet(s_buzz_evt, BUZZ_EVT_REQ);
     }
     bsp_buzzer_off();
 }
@@ -216,25 +237,36 @@ static const led_phase_t s_phase_online[] = { {100, 2900} };
 typedef struct {
     bsp_led_pattern_e pattern;
     uint32_t    duration_ms;   /* 0 = 持续（常态指示） */
-    volatile bool running;
+    volatile uint32_t gen;     /* 请求代数：每次新请求 ++，任务侧比对中止旧请求 */
 } led_ctx_t;
 
 static led_ctx_t    s_led_ctx = {0};
 static osThreadId_t s_led_thread = NULL;
+static osEventFlagsId_t s_led_evt = NULL;
+
+#define LED_EVT_REQ    0x00000001u
+
+/* 相位运行内每个节拍返回后调用：true = 有新请求/stop，须中止当前灯效 */
+static bool led_req_changed(uint32_t my_gen)
+{
+    return (s_led_ctx.gen != my_gen);
+}
 
 static void led_blink_run(const led_phase_t *phases, int phase_cnt,
-                          uint32_t duration_ms, uint32_t start_tick)
+                          uint32_t duration_ms, uint32_t start_tick, uint32_t my_gen)
 {
     int idx = 0;
-    while (s_led_ctx.running) {
+    while (!led_req_changed(my_gen)) {
         led_pwm_output(BSP_PWM_DUTY_FULL);
         osDelay(APP_MS_TO_TICK(phases[idx].on_ms));
+        if (led_req_changed(my_gen)) break;
         if (duration_ms > 0 &&
             ((uint32_t)osKernelGetTickCount() - start_tick) >= APP_MS_TO_TICK(duration_ms)) {
             break;
         }
         led_pwm_output(0);
         osDelay(APP_MS_TO_TICK(phases[idx].off_ms));
+        if (led_req_changed(my_gen)) break;
         if (duration_ms > 0 &&
             ((uint32_t)osKernelGetTickCount() - start_tick) >= APP_MS_TO_TICK(duration_ms)) {
             break;
@@ -243,11 +275,11 @@ static void led_blink_run(const led_phase_t *phases, int phase_cnt,
     }
 }
 
-static void led_breath_run(uint32_t duration_ms, uint32_t start_tick)
+static void led_breath_run(uint32_t duration_ms, uint32_t start_tick, uint32_t my_gen)
 {
     int duty = 0;
     bool rising = true;
-    while (s_led_ctx.running) {
+    while (!led_req_changed(my_gen)) {
         led_pwm_output((uint32_t)duty);
         if (duration_ms > 0 &&
             ((uint32_t)osKernelGetTickCount() - start_tick) >= APP_MS_TO_TICK(duration_ms)) {
@@ -264,80 +296,102 @@ static void led_breath_run(uint32_t duration_ms, uint32_t start_tick)
     }
 }
 
+/* 【rti 泄漏修复 2026-09-14】常驻任务：原实现每次切 pattern 都
+ * terminate+osThreadNew 重建，SDK rti 线程表项不回收已销毁线程，
+ * 跟随 MQTT 断连每周期泄漏 2 项，73 周期打满 92 容量 Silent Reset
+ * （A/B 实验定案：冻结 LED 后同款断连 107+ 轮零崩溃）。现任务终身
+ * 常驻，请求经 s_led_ctx + gen 计数 + 事件标志传递，运行循环每相位
+ * 节拍比对 gen，新请求最迟一个相位内接管。 */
 static void led_task(void *arg)
 {
     (void)arg;
-    bsp_led_pattern_e pattern = s_led_ctx.pattern;
-    uint32_t duration_ms = s_led_ctx.duration_ms;
-    uint32_t start_tick  = (uint32_t)osKernelGetTickCount();
+    for (;;) {
+        (void)osEventFlagsWait(s_led_evt, LED_EVT_REQ, osFlagsWaitAny, osWaitForever);
 
-    switch (pattern) {
-        case BSP_LED_PATTERN_ONLINE:
-            led_blink_run(s_phase_online, 1, duration_ms, start_tick);
-            break;
-        case BSP_LED_PATTERN_OFFLINE:
-            led_blink_run(s_phase_flash, 1, duration_ms, start_tick);
-            break;
-        case BSP_LED_PATTERN_BREATH:
-            led_breath_run(duration_ms, start_tick);
-            break;
-        default:
-            break;
+        uint32_t my_gen      = s_led_ctx.gen;
+        bsp_led_pattern_e pattern = s_led_ctx.pattern;
+        uint32_t duration_ms = s_led_ctx.duration_ms;
+        uint32_t start_tick  = (uint32_t)osKernelGetTickCount();
+
+        switch (pattern) {
+            case BSP_LED_PATTERN_ONLINE:
+                led_blink_run(s_phase_online, 1, duration_ms, start_tick, my_gen);
+                break;
+            case BSP_LED_PATTERN_OFFLINE:
+                led_blink_run(s_phase_flash, 1, duration_ms, start_tick, my_gen);
+                break;
+            case BSP_LED_PATTERN_BREATH:
+                led_breath_run(duration_ms, start_tick, my_gen);
+                break;
+            default:
+                break;
+        }
+
+        /* 自然结束 / 被新请求接管 / stop 请求：统一熄灯再回等。
+         * 被接管时新请求事件位已置，外层 Wait 立即返回无缝衔接 */
+        led_pwm_output(0);
     }
-
-    led_pwm_output(0);
-    s_led_ctx.running = false;
-    s_led_thread = NULL;
-    /* 任务函数 return 即自动退出 */
 }
 
-static void led_task_start(bsp_led_pattern_e pattern, uint32_t duration_ms)
+/* 请求提交（内部）：确保任务与事件标志存在，覆写请求并通知 */
+static void led_request(bsp_led_pattern_e pattern, uint32_t duration_ms)
 {
+    if (s_led_evt == NULL) {
+        osEventFlagsAttr_t eattr = {0};
+        eattr.name = "led_evt";
+        s_led_evt = osEventFlagsNew(&eattr);
+    }
+    if (s_led_evt == NULL) {
+        APP_LOGE("led evt create fail");
+        return;
+    }
+    /* bsp_init 已创建常驻任务；容错：极端时序下首请求先于 init 到达则现建 */
+    if (s_led_thread == NULL) {
+        osThreadAttr_t attr = {0};
+        attr.name = "led_task";
+        attr.stack_size = 2 * 1024;
+        attr.priority = osPriorityBelowNormal1;
+        s_led_thread = osThreadNew(led_task, NULL, &attr);
+        if (s_led_thread == NULL) {
+            APP_LOGE("led task create fail");
+            return;
+        }
+    }
+
     s_led_ctx.pattern     = pattern;
     s_led_ctx.duration_ms = duration_ms;
-    s_led_ctx.running     = true;
+    s_led_ctx.gen++;
 
-    osThreadAttr_t attr = {0};
-    attr.name = "led_task";
-    attr.stack_size = 2 * 1024;
-    attr.priority = osPriorityBelowNormal1;
-    s_led_thread = osThreadNew(led_task, NULL, &attr);
-    if (s_led_thread == NULL) {
-        s_led_ctx.running = false;
-        led_pwm_output(0);
-        APP_LOGE("led task create fail");
-    }
-}
-
-static void led_task_stop(void)
-{
-    s_led_ctx.running = false;
-    if (s_led_thread) {
-        osThreadTerminate(s_led_thread);
-        s_led_thread = NULL;
-    }
+    (void)osEventFlagsSet(s_led_evt, LED_EVT_REQ);
 }
 
 void bsp_led_set_pattern(bsp_led_pattern_e pattern)
 {
-    led_task_stop();
     if (pattern == BSP_LED_PATTERN_OFF) {
+        /* 熄灭：调用方上下文立即关 PWM，gen++ 令常驻任务收敛退出 */
+        if (s_led_evt != NULL) {
+            s_led_ctx.gen++;
+            (void)osEventFlagsSet(s_led_evt, LED_EVT_REQ);
+        }
         led_pwm_output(0);
         return;
     }
-    led_task_start(pattern, 0);   /* 常态指示：持续运行至下次切换 */
+    led_request(pattern, 0);   /* 常态指示：持续运行至下次切换 */
 }
 
 void bsp_led_flash_async(uint32_t duration_sec)
 {
-    led_task_stop();
     /* 平台指示灯指令：5Hz 快闪（需求 5），duration_sec = 0 持续至 bsp_led_stop */
-    led_task_start(BSP_LED_PATTERN_OFFLINE, duration_sec * 1000u);
+    led_request(BSP_LED_PATTERN_OFFLINE, duration_sec * 1000u);
 }
 
 void bsp_led_stop(void)
 {
-    led_task_stop();
+    /* 熄灯立即性：调用方上下文直接关 PWM（原 terminate 实现等价语义） */
+    if (s_led_evt != NULL) {
+        s_led_ctx.gen++;
+        (void)osEventFlagsSet(s_led_evt, LED_EVT_REQ);
+    }
     led_pwm_output(0);
 }
 

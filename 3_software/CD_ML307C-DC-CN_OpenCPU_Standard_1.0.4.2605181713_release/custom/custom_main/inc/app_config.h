@@ -302,6 +302,21 @@ extern "C" {
 #define APP_TICK_MS                 5u
 #define APP_MS_TO_TICK(ms)          ((uint32_t)((ms) / APP_TICK_MS))
 
+/* ===================================================================
+ * 16. 调试实验（临时脚手架，测完即删，勿带量产）
+ * =================================================================== */
+/* 【回归验证】rti 泄漏修复后 MQTT 断开/重连 120 轮回归（2026-09-14）
+ * 背景：A/B 实验已定案泄漏源为 led_task/buzzer 的 terminate+recreate
+ * 模式（SDK rti 线程表项不回收已销毁线程），bsp.c 已改常驻任务。
+ * 本验证与定位阶段的关键差异：LED 维护【不冻结】——led_status_poll
+ * 正常跟随 MQTT 断连切 OFFLINE/ONLINE，复刻故障场景下每周期 2 次的
+ * 高频 pattern 切换，验证常驻化后同样节奏不再累积 rti 表项。
+ * 判定：120 轮跑满无 EE LOG "rti thread array overflow" 即修复闭环
+ * （原故障固件同场景第 73 轮必崩，7/7 零偏差）。
+ * 结果：2026-09-14 23:14 已通过（DONE 120 cycles NO crash）。
+ * 0 = 关闭（默认）；1 = 启用 */
+#define APP_MQTT_LEAK_TEST          0
+
 #ifdef __cplusplus
 }
 #endif
