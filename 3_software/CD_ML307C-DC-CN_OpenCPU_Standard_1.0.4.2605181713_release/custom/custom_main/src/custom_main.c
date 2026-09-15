@@ -1435,7 +1435,7 @@ static void main_task(void *arg)
                  * - 非充电：min(查表值, 锁存值) 单调不增，防负载突变抖动；
                  * - 充电结束沿后首次采样以查表值重置锁存（充电电量经此生效）。
                  * 充电中不执行超低电强制休眠（与充电恢复看护互斥，防模式拉扯） */
-                if (bsp_chrg_is_charging()) {
+                if (bsp_charge_is_charging()) {
                     s_chg_end_reset_pending = true;
                     APP_LOGI("battery mv=%d soc=%d (charging, latch=%d)",
                              mv, soc, g_last_soc);
@@ -1508,7 +1508,12 @@ static void main_task(void *arg)
         }
 
         /* ===== 分模式定位调度 ===== */
-        if (mode == APP_MODE_SUPERVISE || mode == APP_MODE_LOWPOWER ||
+        /* OTA 升级期间（需求 6.4 V1.30）：冻结 LP 睡眠与全部定位周期——
+         * 升级中断电不可恢复（模组硬约束），须全程保持唤醒；LBS 扫描
+         * 会断开 MQTT 与下载通道冲突，一并冻结 */
+        if (app_ota_is_running()) {
+            /* 仅维持 MQTT 保活与基础轮询，跳过定位调度 */
+        } else if (mode == APP_MODE_SUPERVISE || mode == APP_MODE_LOWPOWER ||
             mode == APP_MODE_SLEEP) {
             /* 看护/省电：LP 完整流程（定位+心跳）；
              * 休眠：LP 心跳调度（GNSS 常关，one-shot 由 RPC 触发）。
@@ -1532,13 +1537,18 @@ static void main_task(void *arg)
         }
 
         /* 休眠模式下单次定位触发（收到平台状态读取/定位指令后）：
-         * 常驻任务置事件（勿 osThreadNew，rti 线程数组泄漏教训） */
+         * 常驻任务置事件（勿 osThreadNew，rti 线程数组泄漏教训）。
+         * OTA 升级期间跳过（需求 6.4 V1.30：LBS 扫描断 MQTT 冲突） */
         if (g_one_shot_loc) {
             g_one_shot_loc = false;
-            APP_LOGI("one-shot location triggered");
-            if (osEventFlagsSet(g_one_shot_evt, ONE_SHOT_EVT_RUN) & osFlagsError) {
-                APP_LOGE("one-shot trigger fail, fallback direct publish");
-                publish_location(false);
+            if (app_ota_is_running()) {
+                APP_LOGW("one-shot location skipped: ota running");
+            } else {
+                APP_LOGI("one-shot location triggered");
+                if (osEventFlagsSet(g_one_shot_evt, ONE_SHOT_EVT_RUN) & osFlagsError) {
+                    APP_LOGE("one-shot trigger fail, fallback direct publish");
+                    publish_location(false);
+                }
             }
         }
 

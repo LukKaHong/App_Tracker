@@ -228,10 +228,16 @@ static void dispatch(const app_rpc_parsed_t *rpc, const char *command_id)
             APP_LOGI("ota started: %s", url);
             app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
             dedup_record(command_id, true, NULL);
+        } else if (r == -3) {
+            /* 低电拒绝（需求 6.4 V1.30）：SOC 低于超低电阈值且非充电 */
+            APP_LOGE("ota rejected: low battery");
+            app_command_send_result(command_id, APP_CMD_FAILED,
+                                     "LOW_BATTERY", "battery below ota threshold");
+            dedup_record(command_id, false, "LOW_BATTERY");
         } else {
             APP_LOGE("ota start fail:%d", r);
             app_command_send_result(command_id, APP_CMD_FAILED,
-                                     "INTERNAL_ERROR", "ota task create fail");
+                                     "INTERNAL_ERROR", "ota start fail");
             dedup_record(command_id, false, "INTERNAL_ERROR");
         }
     } else {
