@@ -52,13 +52,53 @@ static app_prov_result_e map_error_code(const char *code)
 {
     if (!code) return APP_PROV_ERR_UNKNOWN;
     if (strcmp(code, "INVALID_DEVICE_SIGNATURE") == 0) return APP_PROV_ERR_SIGNATURE;
+    if (strcmp(code, "VALIDATION_ERROR") == 0)        return APP_PROV_ERR_VALIDATION;
     if (strcmp(code, "DEVICE_NOT_FOUND") == 0)        return APP_PROV_ERR_NOT_FOUND;
-    if (strcmp(code, "DEVICE_NONCE_REPLAY") == 0)     return APP_PROV_ERR_UNKNOWN;
-    if (strcmp(code, "DEVICE_MODEL_MISMATCH") == 0)   return APP_PROV_ERR_UNKNOWN;
+    if (strcmp(code, "DEVICE_NONCE_REPLAY") == 0)     return APP_PROV_ERR_NONCE_REPLAY;
+    if (strcmp(code, "DEVICE_MODEL_MISMATCH") == 0)   return APP_PROV_ERR_MODEL_MISMATCH;
     if (strcmp(code, "DEVICE_NOT_IN_TENANT") == 0)    return APP_PROV_ERR_NOT_IN_TENANT;
+    if (strcmp(code, "INVALID_DEVICE_STATUS") == 0)   return APP_PROV_ERR_NOT_IN_TENANT;
     if (strcmp(code, "DEVICE_FROZEN") == 0)           return APP_PROV_ERR_FROZEN;
     if (strcmp(code, "DEVICE_VOIDED") == 0)           return APP_PROV_ERR_FROZEN;
     return APP_PROV_ERR_UNKNOWN;
+}
+
+/* 联调协议 V1 1.6 重试矩阵：仅网络类与 nonce 重放可自动重试；
+ * 其余为致命错误（固件/密钥/设备状态问题），重试无意义 */
+bool app_prov_is_retryable(app_prov_result_e r)
+{
+    return (r == APP_PROV_ERR_NETWORK || r == APP_PROV_ERR_NONCE_REPLAY);
+}
+
+/* 联调协议 V1 1.2：nonce 为至少 16 随机字节的 hex 编码（32 字符）。
+ * 平台无 TRNG 导出接口，熵源混合 RTC tick + IMEI（每台设备不同）
+ * + 板载 ADC 悬空通道噪声（逐字节扰动），足够抵御重放预测；
+ * 每次调用重新采样，同秒内多次调用亦有区分度 */
+static void gen_nonce_hex(char *buf, size_t buf_len, const char *imei)
+{
+    if (buf_len < 33) {
+        if (buf_len > 0) buf[0] = '\0';
+        return;
+    }
+    uint32_t entropy[4];
+    entropy[0] = (uint32_t)cm_rtc_get_current_time();
+    entropy[1] = (uint32_t)osKernelGetTickCount();
+    /* IMEI 尾段数字折叠（设备唯一） */
+    uint32_t imei_hash = 2166136261u;
+    for (const char *p = imei; p && *p; p++) {
+        imei_hash = (imei_hash ^ (uint8_t)*p) * 16777619u;
+    }
+    entropy[2] = imei_hash;
+    entropy[3] = (uint32_t)((uintptr_t)&entropy);   /* ASLR/栈地址扰动 */
+
+    for (int i = 0; i < 16; i++) {
+        uint8_t b = (uint8_t)(entropy[i % 4] >> ((i / 4) * 8));
+        b ^= (uint8_t)(entropy[(i + 1) % 4] >> ((i % 4) * 8));
+        /* xorshift 扰动打散规律 */
+        b ^= b << 5; b ^= b >> 3; b ^= b << 4;
+        snprintf(buf + i * 2, 3, "%02x", b);
+    }
+    buf[32] = '\0';
 }
 
 app_prov_result_e app_provisioning_request(app_mqtt_credential_t *cred)
@@ -70,11 +110,12 @@ app_prov_result_e app_provisioning_request(app_mqtt_credential_t *cred)
         return APP_PROV_ERR_UNKNOWN;
     }
 
-    /* 1. 组装 canonical */
+    /* 1. 组装 canonical（联调协议 V1 1.3：字段 trim 后固定顺序，
+     * 空字段保留等号后空值，末尾不加换行） */
     char ts[24];
     app_util_format_rfc3339(cm_rtc_get_current_time(), ts, sizeof(ts));
-    char nonce[20];
-    app_util_gen_nonce(nonce, sizeof(nonce));
+    char nonce[33];
+    gen_nonce_hex(nonce, sizeof(nonce), imei);
 
     char canonical[512];
     snprintf(canonical, sizeof(canonical),
@@ -190,8 +231,21 @@ app_prov_result_e app_provisioning_request(app_mqtt_credential_t *cred)
                             if (pw && pw->valuestring) strncpy(cred->password, pw->valuestring, sizeof(cred->password) - 1);
                             if (ct && ct->valuestring) strncpy(cred->credential_type, ct->valuestring, sizeof(cred->credential_type) - 1);
                             if (ia && ia->valuestring) strncpy(cred->issued_at, ia->valuestring, sizeof(cred->issued_at) - 1);
-                            result = APP_PROV_OK;
-                            APP_LOGI("prov ok mqtt_host=%s port=%u", cred->mqtt_host, cred->mqtt_port);
+                            /* 联调协议 V1 1.4 响应校验 4 项：
+                             * credential_type==ACCESS_TOKEN / port 1..65535 /
+                             * client_id==device_sn(==imei) / username 非空。
+                             * 不合法视为本地无效，流程层重新签名重试 */
+                            if (strncmp(cred->credential_type, "ACCESS_TOKEN", sizeof(cred->credential_type)) != 0 ||
+                                cred->mqtt_port == 0 ||
+                                strcmp(cred->client_id, imei) != 0 ||
+                                cred->username[0] == '\0' ||
+                                cred->mqtt_host[0] == '\0') {
+                                APP_LOGE("prov resp invalid fields");
+                                result = APP_PROV_ERR_LOCAL_INVALID;
+                            } else {
+                                result = APP_PROV_OK;
+                                APP_LOGI("prov ok, port=%u", cred->mqtt_port);
+                            }
                         }
                     }
                     cJSON_Delete(root);

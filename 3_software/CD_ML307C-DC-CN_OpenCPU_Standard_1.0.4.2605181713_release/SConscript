@@ -63,6 +63,31 @@ lds = env.GenLds(os.path.join(env['IMAGE_DIR'], 'linker'), env['LDS_SRC'])
 lst = env.GenLst(elf)
 pkg = env.GenPkg(bin)
 
+# ===== 项目定制：编译后自动生成 APP 整包 OTA 升级包 =====
+# ML307C_APP.bin → FBFMake 封装 → out/image/system_patch_V{版本}.bin
+# 版本自动取自 app_config.h 的 APP_FIRMWARE_VERSION（升版本宏即自动改名），
+# 平台属性取值（fw_size/fw_checksum）同步写入 out/image/ota_pkg_info.txt
+import re as _re
+_app_cfg = os.path.join(root_dir, 'custom', 'custom_main', 'inc', 'app_config.h')
+# 文件为 UTF-8（含中文注释）；显式指定编码，避免 Windows 默认 GBK 解码报错；
+# errors='ignore' 保证即使该文件被另存为 GBK 也不影响提取纯 ASCII 的版本行
+with open(_app_cfg, encoding='utf-8', errors='ignore') as _fp:
+    _m = _re.search(r'#define\s+APP_FIRMWARE_VERSION\s+"([^"]+)"', _fp.read())
+_fw_ver = _m.group(1) if _m else 'unknown'
+ota_pkg_name = 'system_patch_V%s.bin' % _fw_ver
+
+def _make_ota_pkg(target, source, env):
+    import subprocess
+    script = os.path.join(root_dir, 'tools', 'scripts', 'make_ota_pkg.py')
+    return subprocess.call([sys.executable, script,
+                            '--image-dir', env['IMAGE_DIR']])
+
+ota_pkg = env.Command(
+    os.path.join(env['IMAGE_DIR'], ota_pkg_name),
+    pkg,
+    env.Action(_make_ota_pkg, 'Generating OTA package $TARGET'))
+env.AlwaysBuild(ota_pkg)
+
 env.AlwaysBuild(pkg)
 env.Clean(elf, map)  # 执行scons -c时删除与elf相关的附加文件
 env.Clean(elf, env['IMAGE_DIR'])

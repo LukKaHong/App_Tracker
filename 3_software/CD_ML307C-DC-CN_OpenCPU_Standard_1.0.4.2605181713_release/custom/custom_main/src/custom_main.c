@@ -109,9 +109,29 @@ static volatile bool g_mqtt_just_connected = false;
 static bool g_offline_replay_active = false;
 /* RPC 消息暂存：回调中仅拷贝 payload + 置标志，由主循环处理（避免回调中 publish 重入） */
 static volatile bool g_rpc_pending = false;
-static char g_rpc_topic[64] = {0};
+static char g_rpc_topic[80] = {0};
 static char g_rpc_payload[1024] = {0};
 static int  g_rpc_payload_len = 0;
+/* 属性/OTA 文本消息暂存（attributes 通知 / attributes/response 快照）：
+ * 与 RPC 分槽，避免 RPC 处理慢时挤占 OTA 快照 */
+static volatile bool g_attr_pending = false;
+static char g_attr_topic[80] = {0};
+static char g_attr_payload[1024] = {0};
+static int  g_attr_payload_len = 0;
+/* 【联调协议 V1 2.4】OTA 分片接收暂存：v2/fw/response 与 v2/fw/error。
+ * 分片为任意二进制（可含 0x00），专用 4KB 缓冲（协议推荐分片 4096B，
+ * 上限 65536——V1 按推荐值设计，收包超 4KB+64 直接丢弃记错）。
+ * 回调上下文只做 memcpy + 置事件，ota_task（app_ota.c）经
+ * app_main_ota_chunk_take 取走数据并清 pending */
+#define FW_CHUNK_BUF_SIZE   (4096 + 64)
+static volatile bool g_fw_chunk_pending = false;
+static char g_fw_chunk_topic[80] = {0};
+static uint8_t g_fw_chunk_buf[FW_CHUNK_BUF_SIZE] = {0};
+static volatile int g_fw_chunk_len = 0;
+/* 分片/error 事件组：回调置位 APP_FW_EVT_CHUNK/APP_FW_EVT_ERROR
+ *（app_ota.h 定义），ota_task 等待消费 */
+osEventFlagsId_t g_fw_evt = NULL;
+static volatile bool g_fw_error_pending = false;
 /* 最后一次有效 GPS 定位更新的系统 tick（唤醒态有效性判断）与 UTC 秒（跨 LP 判断） */
 static volatile uint32_t g_loc_updated_tick = 0;
 static uint64_t g_loc_updated_utc = 0;
@@ -458,6 +478,27 @@ static void offline_replay_cb(const app_offline_record_t *rec)
     }
 }
 
+/* ===== OTA 分片槽取数（app_ota.h 声明，ota_task 调用）=====
+ * take 即清 pending：数据拷入调用方私有缓冲，槽立即可被回调复用。
+ * buf 拷贝上限为 buf_size（ota 侧缓冲与槽等大，不会截断） */
+bool app_main_ota_chunk_take(char *topic_out, int topic_size,
+                             uint8_t *buf_out, int buf_size, int *len_out)
+{
+    if (!g_fw_chunk_pending) return false;
+    if (topic_out != NULL && topic_size > 0) {
+        strncpy(topic_out, g_fw_chunk_topic, (size_t)topic_size - 1);
+        topic_out[topic_size - 1] = '\0';
+    }
+    if (buf_out != NULL && len_out != NULL && buf_size > 0) {
+        int n = g_fw_chunk_len;
+        if (n > buf_size) n = buf_size;
+        if (n > 0) memcpy(buf_out, g_fw_chunk_buf, (size_t)n);
+        *len_out = n;
+    }
+    g_fw_chunk_pending = false;
+    return true;
+}
+
 /* ===== MQTT 事件回调（cmmqtt-m 任务上下文，禁止调用 MQTT API / 阻塞） ===== */
 static void mqtt_event_cb(app_mqtt_event_e evt, void *data)
 {
@@ -469,15 +510,56 @@ static void mqtt_event_cb(app_mqtt_event_e evt, void *data)
         APP_LOGI("rpc subscribed");
         break;
     case APP_MQTT_EVT_DATA_RX: {
-        /* 仅拷贝 payload 到静态缓冲区并置标志，由主循环处理 */
+        /* 仅拷贝 payload 到静态缓冲区并置标志，由主循环/ota_task 处理。
+         * 按 topic 前缀三路分拣（联调协议 V1 2.1 订阅面）：
+         *   rpc/request/   -> RPC 单槽（原链路）
+         *   v2/fw/         -> OTA 分片/错误双槽（二进制安全）
+         *   attributes*    -> 属性通知/快照单槽 */
         app_mqtt_msg_t *msg = (app_mqtt_msg_t *)data;
-        if (msg && msg->payload_len > 0 &&
-            msg->payload_len < (int)sizeof(g_rpc_payload) && !g_rpc_pending) {
-            strncpy(g_rpc_topic, msg->topic, sizeof(g_rpc_topic) - 1);
-            g_rpc_topic[sizeof(g_rpc_topic) - 1] = '\0';
-            memcpy(g_rpc_payload, msg->payload, msg->payload_len);
-            g_rpc_payload_len = msg->payload_len;
-            g_rpc_pending = true;
+        if (msg && msg->payload_len > 0) {
+            if (strncmp(msg->topic, "v1/devices/me/rpc/request/", 26) == 0) {
+                if (msg->payload_len < (int)sizeof(g_rpc_payload) && !g_rpc_pending) {
+                    strncpy(g_rpc_topic, msg->topic, sizeof(g_rpc_topic) - 1);
+                    g_rpc_topic[sizeof(g_rpc_topic) - 1] = '\0';
+                    memcpy(g_rpc_payload, msg->payload, msg->payload_len);
+                    g_rpc_payload_len = msg->payload_len;
+                    g_rpc_pending = true;
+                }
+            } else if (strncmp(msg->topic, "v2/fw/error", 11) == 0) {
+                if (!g_fw_error_pending &&
+                    msg->payload_len < (int)sizeof(g_attr_payload)) {
+                    g_fw_error_pending = true;
+                    if (g_fw_evt) (void)osEventFlagsSet(g_fw_evt, APP_FW_EVT_ERROR);
+                }
+            } else if (strncmp(msg->topic, "v2/fw/response/", 15) == 0) {
+                /* 分片：可含 0x00 的二进制；payload_len==0（EOF）单独处理 */
+                if (msg->payload_len <= (int)FW_CHUNK_BUF_SIZE && !g_fw_chunk_pending) {
+                    strncpy(g_fw_chunk_topic, msg->topic, sizeof(g_fw_chunk_topic) - 1);
+                    g_fw_chunk_topic[sizeof(g_fw_chunk_topic) - 1] = '\0';
+                    memcpy(g_fw_chunk_buf, msg->payload, msg->payload_len);
+                    g_fw_chunk_len = msg->payload_len;
+                    g_fw_chunk_pending = true;
+                    if (g_fw_evt) (void)osEventFlagsSet(g_fw_evt, APP_FW_EVT_CHUNK);
+                }
+            } else if (strncmp(msg->topic, "v1/devices/me/attributes", 25) == 0) {
+                if (msg->payload_len < (int)sizeof(g_attr_payload) && !g_attr_pending) {
+                    strncpy(g_attr_topic, msg->topic, sizeof(g_attr_topic) - 1);
+                    g_attr_topic[sizeof(g_attr_topic) - 1] = '\0';
+                    memcpy(g_attr_payload, msg->payload, msg->payload_len);
+                    g_attr_payload_len = msg->payload_len;
+                    g_attr_pending = true;
+                }
+            }
+        }
+        /* 分片响应可能为 0 字节（EOF，联调协议 2.4 第 5 条）：单独按 topic 置位 */
+        if (msg && msg->payload_len == 0 &&
+            strncmp(msg->topic, "v2/fw/response/", 15) == 0 && !g_fw_chunk_pending) {
+            g_fw_chunk_topic[0] = '\0';
+            strncpy(g_fw_chunk_topic, msg->topic, sizeof(g_fw_chunk_topic) - 1);
+            g_fw_chunk_topic[sizeof(g_fw_chunk_topic) - 1] = '\0';
+            g_fw_chunk_len = 0;
+            g_fw_chunk_pending = true;
+            if (g_fw_evt) (void)osEventFlagsSet(g_fw_evt, APP_FW_EVT_CHUNK);
         }
         /* LP 睡眠期间网络下行（寻呼）即时唤醒主循环（需求 6.3） */
         if (g_wake_evt) osEventFlagsSet(g_wake_evt, WAKE_EVT_NET);
@@ -1010,7 +1092,33 @@ static void wait_network_ready(void)
     APP_LOGW("network wait timeout, try mqtt anyway");
 }
 
-/* ===== Provisioning 流程（协议 3：HTTP Provisioning 获取 MQTT 凭证）===== */
+/* ===== Provisioning 流程（协议 3：HTTP Provisioning 获取 MQTT 凭证）=====
+ * 【联调协议 V1 1.2/1.6】无凭证时：NTP 可信时间为硬前置（误差≤5min），
+ * provisioning 错误按重试矩阵分类处理 */
+#if !APP_USE_HARDCODED_CREDENTIAL
+static bool wait_ntp_ready(void)
+{
+    if (g_ntp_synced) return true;
+
+    /* 首次同步前短暂等注网稳定，再启动 NTP */
+    uint32_t backoff_s = 5u;
+    for (int round = 1;; round++) {
+        APP_LOGI("prov pre: ntp sync #%d (backoff=%us)", round, backoff_s);
+        ntp_sync_start();
+        /* 轮询等待本轮结果：APP_NTP_TIMEOUT_MS 超时 + 2s 余量 */
+        for (int w = 0; w < (APP_NTP_TIMEOUT_MS + 2000) / 1000 * (1000 / 20) &&
+                        !g_ntp_synced; w++) {
+            osDelay(APP_MS_TO_TICK(20));
+        }
+        if (g_ntp_synced) return true;
+        /* 持续退避重试（5s→60s 封顶）：拿不到可信时间绝不发起
+         * provisioning（协议 1.2 硬前置），保持注网待机 */
+        osDelay(APP_MS_TO_TICK(backoff_s * 1000u));
+        if (backoff_s < 60u) backoff_s *= 2u;
+    }
+}
+#endif /* !APP_USE_HARDCODED_CREDENTIAL */
+
 static void provisioning_and_connect(void)
 {
     app_mqtt_credential_t cred;
@@ -1033,8 +1141,12 @@ static void provisioning_and_connect(void)
     if (app_storage_load_credential(&cred) == 0 && cred.mqtt_host[0]) {
         APP_LOGI("use saved credential");
     } else {
-        /* 协议 3：provisioning 失败设备应重试（指数退避 30s→1min→2min→5min 封顶），
-         * 避免信号差/服务器抖动导致设备永久离线直至重启 */
+        /* 联调协议 V1 1.2：发起 provisioning 前必须取得可信时间（NTP 硬前置） */
+        wait_ntp_ready();
+
+        /* 协议 1.6 重试矩阵：网络类指数退避重试；nonce 重放立即重试；
+         * 致命错误（签名/设备状态/型号）停止重试防死循环空转；
+         * 本地无效（响应校验失败/保存失败）重新签名后再试 */
         uint32_t backoff_s = APP_PROV_RETRY_BACKOFF_MIN_S;
         for (;;) {
             APP_LOGI("no credential, provisioning...");
@@ -1042,13 +1154,45 @@ static void provisioning_and_connect(void)
             if (r == APP_PROV_OK) {
                 break;
             }
-            APP_LOGE("provisioning fail:%d, retry in %us", r, backoff_s);
-            osDelay(APP_MS_TO_TICK(backoff_s * 1000u));
-            if (backoff_s < APP_PROV_RETRY_BACKOFF_MAX_S) {
-                backoff_s *= 2u;
+
+            if (!app_prov_is_retryable(r)) {
+                /* 致命错误：不再重试。挂起等待人工处置（长周期唤醒重查，
+                 * FROZEN/VOIDED 类永不重试；其余 1 小时重查一次，
+                 * 兼顾"设备业务状态修复后自动恢复"） */
+                uint32_t recheck_s = (r == APP_PROV_ERR_FROZEN) ? 0u : 3600u;
+                if (recheck_s == 0u) {
+                    APP_LOGE("prov fatal:%d (frozen/voided), stop forever", r);
+                    for (;;) osDelay(APP_MS_TO_TICK(60000));
+                }
+                APP_LOGE("prov fatal:%d, recheck in 1h", r);
+                osDelay(APP_MS_TO_TICK(recheck_s * 1000u));
+                backoff_s = APP_PROV_RETRY_BACKOFF_MIN_S;
+                continue;
+            }
+
+            /* 可重试：nonce 重放不退避立即重试（新 nonce 在请求内重新生成）；
+             * 网络类指数退避 30s→5min 封顶 */
+            if (r != APP_PROV_ERR_NONCE_REPLAY) {
+                APP_LOGE("provisioning fail:%d, retry in %us", r, backoff_s);
+                osDelay(APP_MS_TO_TICK(backoff_s * 1000u));
+                if (backoff_s < APP_PROV_RETRY_BACKOFF_MAX_S) {
+                    backoff_s *= 2u;
+                }
+            } else {
+                APP_LOGW("prov nonce replay, retry immediately");
             }
         }
-        app_storage_save_credential(&cred);
+        /* 联调协议 V1 1.4：凭证原子写入；保存失败不得视为激活成功，
+         * 循环重新签名再请求（每次请求全新 nonce/timestamp） */
+        while (app_storage_save_credential(&cred) != 0) {
+            APP_LOGE("cred save fail, re-provisioning with new nonce");
+            osDelay(APP_MS_TO_TICK(1000));
+            app_prov_result_e r = app_provisioning_request(&cred);
+            if (r != APP_PROV_OK) {
+                /* 保存后重请求失败：回到外层逻辑等价处理——简化为退避后重试 */
+                osDelay(APP_MS_TO_TICK(APP_PROV_RETRY_BACKOFF_MIN_S * 1000u));
+            }
+        }
     }
     app_mqtt_connect(&cred);
 #endif
@@ -1334,8 +1478,13 @@ static void main_task(void *arg)
         /* MQTT 连接成功后执行 subscribe + ONLINE + 设备信息 + NTP 对时 */
         if (g_mqtt_just_connected) {
             g_mqtt_just_connected = false;
-            app_mqtt_subscribe_rpc();
+            app_mqtt_subscribe_all();   /* 联调协议 V1 2.1：5 topic 同会话订阅 */
             publish_state(APP_STATUS_ONLINE);
+            /* 联调协议 V1 2.2：上报当前版本客户端属性 + 同名遥测 */
+            app_ota_report_current_fw();
+            /* 联调协议 V1 2.5：升级后首次启动自检（消费恢复标志，
+             * 上报 UPDATED / INSTALL_FAILED） */
+            app_ota_boot_resume_check();
             /* 需求 6.5：MQTT 连接成功后对时（此后每天一次，见下方周期检查） */
             if (!g_ntp_synced) {
                 ntp_sync_start();
@@ -1373,6 +1522,13 @@ static void main_task(void *arg)
         if (g_rpc_pending) {
             app_command_handle(g_rpc_topic, g_rpc_payload, g_rpc_payload_len);
             g_rpc_pending = false;
+        }
+
+        /* 属性消息消费（联调协议 V1 2.2：attributes 通知 = 刷新信号，
+         * attributes/response 快照 = OTA 元数据来源）→ 投递 ota_task 处理 */
+        if (g_attr_pending) {
+            app_ota_on_attr(g_attr_topic, g_attr_payload, g_attr_payload_len);
+            g_attr_pending = false;
         }
 
         /* 模式变化上报状态事件（协议 5.2：mode 必填字段） */
@@ -1598,6 +1754,11 @@ static void system_init(void)
     if (osThreadNew(one_shot_loc_task, NULL, &os_attr) == NULL) {
         APP_LOGE("one-shot task create fail");
     }
+
+    /* OTA 分片/error 事件组：MQTT 回调置位，ota_task（app_ota_init 内创建）等待。
+     * 事件组必须先于 app_ota_init 创建 */
+    g_fw_evt = osEventFlagsNew(NULL);
+    app_ota_init();           /* 联调协议 V1 2：常驻 ota_task（快照+分片状态机） */
 
     app_mode_init();          /* 需求 9：从 flash 恢复掉电前模式，首次默认看护 */
     app_offline_cache_init();

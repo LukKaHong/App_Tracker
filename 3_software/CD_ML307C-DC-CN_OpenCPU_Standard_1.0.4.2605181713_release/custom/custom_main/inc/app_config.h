@@ -48,6 +48,23 @@ extern "C" {
 #define APP_MQTT_TOPIC_TELEMETRY    "v1/devices/me/telemetry"
 #define APP_MQTT_TOPIC_RPC_REQ      "v1/devices/me/rpc/request/+"
 #define APP_MQTT_TOPIC_RPC_RESP     "v1/devices/me/rpc/response/"
+/* 【联调协议 V1 2.1】OTA 相关 topic：每次连接/重连后同会话订阅 QoS1，
+ * 禁止为 OTA 单独创建第二个 MQTT 连接 */
+#define APP_MQTT_TOPIC_ATTR_SUB     "v1/devices/me/attributes"
+#define APP_MQTT_TOPIC_ATTR_RESP    "v1/devices/me/attributes/response/+"
+#define APP_MQTT_TOPIC_FW_RESP      "v2/fw/response/+/chunk/+"
+#define APP_MQTT_TOPIC_FW_ERROR     "v2/fw/error"
+#define APP_MQTT_TOPIC_ATTR_REQ     "v1/devices/me/attributes/request/"   /* +requestId */
+#define APP_MQTT_TOPIC_FW_REQ       "v2/fw/request/"                      /* +requestId/chunk/N */
+
+/* 【联调协议 V1 2.2/2.4】OTA 快照请求与分片下载参数 */
+#define APP_OTA_SHARED_KEYS         "fw_title,fw_version,fw_checksum,fw_checksum_algorithm,fw_size,fw_url"
+#define APP_OTA_SNAPSHOT_TIMEOUT_MS (10 * 1000u)  /* 快照响应超时 */
+#define APP_OTA_SNAPSHOT_RETRY_MAX  3u            /* 快照请求最多重试次数 */
+#define APP_OTA_CHUNK_SIZE          4096u         /* 协议推荐分片大小（允许 1..65536） */
+#define APP_OTA_CHUNK_TIMEOUT_MS    (5 * 1000u)   /* 单块响应超时（协议建议 5s） */
+#define APP_OTA_CHUNK_RETRY_MAX     3u            /* 单块最多重试次数（协议建议 3） */
+#define APP_OTA_FW_SIZE_MAX         (16u * 1024u * 1024u)   /* V1 固件包上限 16MiB */
 
 /* ===================================================================
  * 4. 业务参数

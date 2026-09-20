@@ -118,7 +118,8 @@ static int cb_publish(cm_mqtt_client_t *client, unsigned short msgid, char *topi
                        int total_len, int payload_len, char *payload)
 {
     (void)client; (void)msgid; (void)total_len;
-    APP_LOGI("rx topic=%s len=%d", topic, payload_len);
+    /* OTA 分片 payload 为二进制（可含 0x00），本层不做 strlen/打印内容 */
+    APP_LOGD("rx topic=%s len=%d", topic, payload_len);
     if (s_user_cb) {
         app_mqtt_msg_t msg;
         strncpy(msg.topic, topic, sizeof(msg.topic) - 1);
@@ -412,11 +413,33 @@ int app_mqtt_publish_rpc_response(const char *request_id, const char *payload, i
     return ret;
 }
 
-/* 订阅：连接成功后由调用方触发 */
-int app_mqtt_subscribe_rpc(void)
+/* 通用 topic 发布（QoS1）：OTA 属性上报 / attributes/request / fw 分片请求。
+ * payload 二进制安全（长度由 len 决定，不 strlen） */
+int app_mqtt_publish_topic(const char *topic, const char *payload, int len)
+{
+    if (!s_client || !s_connected || !topic || !payload) return -1;
+    if (len <= 0) return -2;
+    if (len > PUB_BUF_SIZE) return -3;
+    char *buf = pub_buf_acquire();
+    memcpy(buf, payload, len);
+    int ret = cm_mqtt_client_publish(s_client, topic, buf, len, CM_MQTT_QOS_1);
+    pub_buf_release();
+    return ret;
+}
+
+/* 订阅设备会话全部 topic（联调协议 V1 2.1）：
+ * RPC + 属性更新 + 属性快照响应 + OTA 分片响应 + OTA 错误。
+ * 全部 QoS1；SDK 订阅接口支持多 topic 数组一次订阅 */
+int app_mqtt_subscribe_all(void)
 {
     if (!s_client) return -1;
-    const char *topics[] = { APP_MQTT_TOPIC_RPC_REQ };
-    const char qos[] = { 1 };
-    return cm_mqtt_client_subscribe(s_client, topics, qos, 1);
+    const char *topics[] = {
+        APP_MQTT_TOPIC_RPC_REQ,       /* RPC 请求 */
+        APP_MQTT_TOPIC_ATTR_SUB,      /* 属性更新通知（OTA 刷新信号） */
+        APP_MQTT_TOPIC_ATTR_RESP,     /* 属性快照响应 */
+        APP_MQTT_TOPIC_FW_RESP,       /* OTA 分片响应 */
+        APP_MQTT_TOPIC_FW_ERROR,      /* OTA 错误通知 */
+    };
+    const char qos[] = { 1, 1, 1, 1, 1 };
+    return cm_mqtt_client_subscribe(s_client, topics, qos, 5);
 }

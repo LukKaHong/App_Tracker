@@ -115,6 +115,52 @@ int app_util_hmac_sha256_hex(const char *key, size_t key_len,
 #endif
 }
 
+/* ===== 流式 SHA-256（mbedtls 2.x _ret 系列 API）===== */
+void app_util_sha256_init(app_util_sha256_t *c)
+{
+    if (!c) return;
+    mbedtls_sha256_init(&c->ctx);
+    /* _ret 系列：mbedtls 2.x（third-party/mbedtls/include/mbedtls/sha256.h） */
+    (void)mbedtls_sha256_starts_ret(&c->ctx, 0);   /* 0 = SHA-256 */
+}
+
+void app_util_sha256_free(app_util_sha256_t *c)
+{
+    if (!c) return;
+    mbedtls_sha256_free(&c->ctx);
+}
+
+int app_util_sha256_update(app_util_sha256_t *c, const void *data, size_t len)
+{
+    if (!c || !data || len == 0) return -1;
+    return mbedtls_sha256_update_ret(&c->ctx, (const unsigned char *)data, len);
+}
+
+int app_util_sha256_finish_hex(app_util_sha256_t *c, char *out_hex)
+{
+    if (!c || !out_hex) return -1;
+    unsigned char digest[32];
+    int ret = mbedtls_sha256_finish_ret(&c->ctx, digest);
+    if (ret != 0) return ret;
+    for (int i = 0; i < 32; i++) {
+        snprintf(out_hex + i * 2, 3, "%02x", digest[i]);
+    }
+    out_hex[64] = '\0';
+    return 0;
+}
+
+/* OTA requestId：1..2147483647 进程内递增回绕（联调协议 V1 2.2，
+ * 禁止纳秒时间戳）。仅 ota_task 单线程调用 */
+int32_t app_util_next_request_id(void)
+{
+    static int32_t s_req_id = 0;
+    s_req_id++;
+    if (s_req_id > 2147483647 || s_req_id <= 0) {
+        s_req_id = 1;
+    }
+    return s_req_id;
+}
+
 int app_util_json_find_string(const char *json, const char *key,
                               char *out, size_t out_len)
 {

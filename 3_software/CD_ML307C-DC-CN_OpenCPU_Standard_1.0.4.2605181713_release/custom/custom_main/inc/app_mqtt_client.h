@@ -22,7 +22,7 @@ typedef enum {
 } app_mqtt_event_e;
 
 typedef struct {
-    char    topic[64];
+    char    topic[80];      /* 联调协议 v2/fw/response/{reqId}/chunk/{N} 最长约 45 字符 */
     char   *payload;
     int     payload_len;
 } app_mqtt_msg_t;
@@ -55,8 +55,12 @@ int  app_mqtt_publish_telemetry(const char *payload, int len);
 /* 回复 ThingsBoard RPC：v1/devices/me/rpc/response/{requestId} */
 int  app_mqtt_publish_rpc_response(const char *request_id, const char *payload, int len);
 
-/* 订阅 RPC topic：v1/devices/me/rpc/request/+ */
-int  app_mqtt_subscribe_rpc(void);
+/* 通用 topic 发布（QoS1，OTA 属性上报/分片请求用；payload 二进制安全） */
+int  app_mqtt_publish_topic(const char *topic, const char *payload, int len);
+
+/* 订阅设备会话全部 topic（联调协议 V1 2.1：RPC + 属性 + OTA，
+ * 5 topic 一次订阅 QoS1；连接成功后调用，重连后必须重新订阅） */
+int  app_mqtt_subscribe_all(void);
 
 #ifdef __cplusplus
 }

@@ -33,6 +33,27 @@ int  app_storage_save_work_mode(int mode);
 /* 读取保存的工作模式；返回 <0 表示无有效保存（首次上电） */
 int  app_storage_load_work_mode(int *mode);
 
+/* ========== OTA 升级状态（联调协议 V1 2.3/2.5）==========
+ * resume：UPDATING 前持久化的升级恢复信息；新固件启动自检后消费并清除。
+ *   自检（MQTT 连接+订阅成功）后本机版本 == resume_version → 上报 UPDATED；
+ *   不匹配（刷写失败/回滚）→ 上报 FAILED/INSTALL_FAILED，当前版本不变。
+ * last_done：最后成功安装的任务（title+version+checksum 唯一标识），
+ *   同一任务不得重复安装（协议 2.3）。 */
+typedef struct {
+    uint8_t  resume_pending;             /* 1 = 存在待自检恢复信息 */
+    char     resume_title[48];
+    char     resume_version[64];
+    char     resume_checksum[65];        /* 64 hex + '\0' */
+    uint32_t resume_size;
+    uint8_t  last_done_valid;
+    char     done_title[48];
+    char     done_version[64];
+    char     done_checksum[65];
+} app_ota_persist_t;
+
+int  app_storage_load_ota_state(app_ota_persist_t *st);
+int  app_storage_save_ota_state(const app_ota_persist_t *st);
+
 /* ========== 离线定位缓存（环形）==========
  * 单文件存储，写满则覆盖最旧条目；最多 APP_OFFLINE_CACHE_MAX 条 */
 int  app_storage_offline_push(const app_offline_record_t *rec);

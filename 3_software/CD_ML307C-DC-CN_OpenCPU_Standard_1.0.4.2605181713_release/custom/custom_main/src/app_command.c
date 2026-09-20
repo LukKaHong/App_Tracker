@@ -1,12 +1,14 @@
 /**
  * @file    app_command.c
- * @brief   云端指令处理（协议 4.1：SOUND/LIGHT/DEVICE_MODE/GET_STATE/OTA）
+ * @brief   云端指令处理（协议 4.1：SOUND/LIGHT/DEVICE_MODE/GET_STATE）
  *          - DEVICE_MODE：平台模式切换（需求 1 / 硬件协议 DEVICE_MODE）
  *          - SOUND/LIGHT 异步持续 duration_seconds，默认 30 秒（硬件协议）
  *          - GET_STATE：应答完整设备状态 state 事件（协议 4.1）；休眠模式
  *            下额外触发单次定位上报（协议 4.2）
  *          - 按 command_id 幂等去重（硬件协议 4：重复指令仅重发缓存结果）
  *          - 失败码符合硬件协议 5：INVALID_PARAMETER/DEVICE_BUSY/INTERNAL_ERROR
+ *          - RPC method=OTA 已废弃（联调协议 V1 2.2：OTA 由属性快照驱动），
+ *            收到该指令统一回 UNSUPPORTED_COMMAND
  *          - 全部使用静态缓冲区，不使用 cJSON malloc/free（避免与 cmmqtt-m 堆冲突）
  */
 #include <string.h>
@@ -19,7 +21,6 @@
 #include "app_command.h"
 #include "app_mode.h"
 #include "app_mqtt_client.h"
-#include "app_ota.h"
 #include "bsp.h"
 
 /* 由 custom_main.c 提供的实现声明 */
@@ -96,27 +97,6 @@ void app_command_send_result(const char *command_id, const char *status,
         if (app_mqtt_is_connected()) {
             app_mqtt_publish_telemetry(s_json, len);
         }
-    }
-}
-
-/* OTA 进度回调 */
-static void ota_progress_cb(app_ota_state_e state, int percent)
-{
-    switch (state) {
-    case APP_OTA_STATE_DOWNLOADING:
-        APP_LOGI("ota downloading %d%%", percent);
-        break;
-    case APP_OTA_STATE_WRITING:
-        APP_LOGI("ota writing %d%%", percent);
-        break;
-    case APP_OTA_STATE_DONE:
-        APP_LOGI("ota done, system will reboot");
-        break;
-    case APP_OTA_STATE_FAILED:
-        APP_LOGE("ota failed");
-        break;
-    default:
-        break;
     }
 }
 
@@ -208,38 +188,13 @@ static void dispatch(const app_rpc_parsed_t *rpc, const char *command_id)
         app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
         dedup_record(command_id, true, NULL);
     } else if (strcmp(method, "OTA") == 0) {
-        const char *url = rpc->url;
-        if (!url || url[0] == '\0') {
-            APP_LOGE("ota cmd missing url");
-            app_command_send_result(command_id, APP_CMD_FAILED,
-                                     "INVALID_PARAMETER", "ota url missing");
-            dedup_record(command_id, false, "INVALID_PARAMETER");
-            return;
-        }
-        if (app_ota_is_running()) {
-            APP_LOGW("ota already running");
-            app_command_send_result(command_id, APP_CMD_FAILED,
-                                     "DEVICE_BUSY", "ota already running");
-            dedup_record(command_id, false, "DEVICE_BUSY");
-            return;
-        }
-        int r = app_ota_start(url, ota_progress_cb);
-        if (r == 0) {
-            APP_LOGI("ota started: %s", url);
-            app_command_send_result(command_id, APP_CMD_ACK, NULL, NULL);
-            dedup_record(command_id, true, NULL);
-        } else if (r == -3) {
-            /* 低电拒绝（需求 6.4 V1.30）：SOC 低于超低电阈值且非充电 */
-            APP_LOGE("ota rejected: low battery");
-            app_command_send_result(command_id, APP_CMD_FAILED,
-                                     "LOW_BATTERY", "battery below ota threshold");
-            dedup_record(command_id, false, "LOW_BATTERY");
-        } else {
-            APP_LOGE("ota start fail:%d", r);
-            app_command_send_result(command_id, APP_CMD_FAILED,
-                                     "INTERNAL_ERROR", "ota start fail");
-            dedup_record(command_id, false, "INTERNAL_ERROR");
-        }
+        /* 联调协议 V1 2.2：OTA 由属性快照（fw_* 共享属性）驱动，
+         * RPC method=OTA 废弃，统一拒绝 */
+        APP_LOGW("rpc OTA deprecated, use fw_* shared attributes");
+        app_command_send_result(command_id, APP_CMD_FAILED,
+                                 "UNSUPPORTED_COMMAND",
+                                 "ota via fw_* shared attributes");
+        dedup_record(command_id, false, "UNSUPPORTED_COMMAND");
     } else {
         APP_LOGW("unknown method: %s", method);
         app_command_send_result(command_id, APP_CMD_FAILED,

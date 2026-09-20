@@ -13,6 +13,7 @@
 
 #define FILE_MQTT_CRED      "mqttcred.bin"
 #define FILE_WORK_MODE      "workmode.bin"
+#define FILE_OTA_STATE      "otastate.bin"
 #define FILE_OFFLINE_IDX    "off_idx.bin"
 #define FILE_OFFLINE_DAT    "off_dat.bin"
 
@@ -38,18 +39,89 @@ static int storage_read_file(const char *name, void *data, uint32_t expect_len)
     return (r == (int32_t)expect_len) ? 0 : -1;
 }
 
-/* ========== MQTT 凭证 ========== */
+/* ========== MQTT 凭证 ==========
+ * 【联调协议 V1 1.4】凭证持久化必须防损坏、写失败不得标记激活成功。
+ * 文件格式：header{magic, ver, len, crc32} + credential struct。
+ * load 时校验 magic/长度/CRC，任一不符（凭证区损坏/旧格式残留）视为无凭证，
+ * 走重新 provisioning 路径；save 采用"写-关-回读比对"三步确认，
+ * 任一步失败返回 -1，调用方不得视为激活成功。 */
+#define CRED_FILE_MAGIC     0x50525631u   /* "PRV1" */
+#define CRED_FILE_VER       1u
+
+typedef struct {
+    uint32_t magic;
+    uint32_t ver;
+    uint32_t len;                        /* 后随 credential 数据长度 */
+    uint32_t crc32;                      /* credential 数据 CRC32 */
+} cred_file_hdr_t;
+
+/* CRC32（IEEE 802.3 多项式，查表法省 flash 故用逐位计算——凭证仅 ~240B，
+ * 每次激活流程调用一次，性能不敏感） */
+static uint32_t cred_crc32(const uint8_t *data, uint32_t len)
+{
+    uint32_t crc = 0xFFFFFFFFu;
+    for (uint32_t i = 0; i < len; i++) {
+        crc ^= data[i];
+        for (int b = 0; b < 8; b++) {
+            crc = (crc >> 1) ^ (0xEDB88320u & (0u - (crc & 1u)));
+        }
+    }
+    return ~crc;
+}
+
 int app_storage_load_credential(app_mqtt_credential_t *cred)
 {
     if (!cred) return -1;
     memset(cred, 0, sizeof(*cred));
-    return storage_read_file(FILE_MQTT_CRED, cred, sizeof(*cred));
+
+    /* 一次读入 hdr+data 再拆（storage_read_file 每次从文件头读，无偏移语义） */
+    uint8_t buf[sizeof(cred_file_hdr_t) + sizeof(app_mqtt_credential_t)];
+    if (storage_read_file(FILE_MQTT_CRED, buf, sizeof(buf)) != 0) {
+        return -1;
+    }
+    cred_file_hdr_t hdr;
+    memcpy(&hdr, buf, sizeof(hdr));
+    if (hdr.magic != CRED_FILE_MAGIC || hdr.ver != CRED_FILE_VER ||
+        hdr.len != sizeof(*cred)) {
+        APP_LOGW("cred file hdr invalid, treat as no credential");
+        return -1;
+    }
+    memcpy(cred, buf + sizeof(hdr), sizeof(*cred));
+    if (cred_crc32((const uint8_t *)cred, sizeof(*cred)) != hdr.crc32) {
+        APP_LOGW("cred crc mismatch, treat as no credential");
+        return -1;
+    }
+    return 0;
 }
 
 int app_storage_save_credential(const app_mqtt_credential_t *cred)
 {
     if (!cred) return -1;
-    return storage_write_file(FILE_MQTT_CRED, cred, sizeof(*cred));
+
+    cred_file_hdr_t hdr;
+    hdr.magic = CRED_FILE_MAGIC;
+    hdr.ver   = CRED_FILE_VER;
+    hdr.len   = sizeof(*cred);
+    hdr.crc32 = cred_crc32((const uint8_t *)cred, sizeof(*cred));
+
+    /* 先写数据文件再写头部会引入中间态；单文件两段写无法真正原子，
+     * LittleFS 的 cm_fs_open(WB) 截断重建 + 写全量：先组到 RAM 再一次写。
+     * 缓冲区取上限：hdr + struct，静态断言防结构膨胀 */
+    uint8_t buf[sizeof(cred_file_hdr_t) + sizeof(app_mqtt_credential_t)];
+    memcpy(buf, &hdr, sizeof(hdr));
+    memcpy(buf + sizeof(hdr), cred, sizeof(*cred));
+    if (storage_write_file(FILE_MQTT_CRED, buf, sizeof(buf)) != 0) {
+        return -1;
+    }
+
+    /* 回读校验：字节级比对，覆盖 flash 写入异常 */
+    uint8_t rdbuf[sizeof(buf)];
+    if (storage_read_file(FILE_MQTT_CRED, rdbuf, sizeof(rdbuf)) != 0 ||
+        memcmp(buf, rdbuf, sizeof(buf)) != 0) {
+        APP_LOGE("cred save readback mismatch");
+        return -1;
+    }
+    return 0;
 }
 
 /* ========== 工作模式掉电保存（需求 9）==========
@@ -68,6 +140,64 @@ int app_storage_load_work_mode(int *mode)
         return -1;
     }
     *mode = (int)m;
+    return 0;
+}
+
+/* ========== OTA 升级状态（联调协议 V1 2.3/2.5）==========
+ * 格式与凭证文件同款：header{magic, ver, len, crc32} + struct。
+ * resume 持久化发生在 UPDATING（写入备用分区前）——该写入若损坏，
+ * 设备回到正常启动路径（旧固件继续运行），仅丢失 UPDATED 上报机会，
+ * 可由平台重新下发任务兜底；故采用与凭证相同的防损格式即可 */
+#define OTA_STATE_MAGIC     0x4F545631u   /* "OTV1" */
+#define OTA_STATE_VER       1u
+
+int app_storage_load_ota_state(app_ota_persist_t *st)
+{
+    if (!st) return -1;
+    memset(st, 0, sizeof(*st));
+
+    uint8_t buf[sizeof(cred_file_hdr_t) + sizeof(app_ota_persist_t)];
+    if (storage_read_file(FILE_OTA_STATE, buf, sizeof(buf)) != 0) {
+        return -1;
+    }
+    cred_file_hdr_t hdr;
+    memcpy(&hdr, buf, sizeof(hdr));
+    if (hdr.magic != OTA_STATE_MAGIC || hdr.ver != OTA_STATE_VER ||
+        hdr.len != sizeof(*st)) {
+        APP_LOGW("ota state hdr invalid, treat as none");
+        return -1;
+    }
+    memcpy(st, buf + sizeof(hdr), sizeof(*st));
+    if (cred_crc32((const uint8_t *)st, sizeof(*st)) != hdr.crc32) {
+        APP_LOGW("ota state crc mismatch, treat as none");
+        return -1;
+    }
+    return 0;
+}
+
+int app_storage_save_ota_state(const app_ota_persist_t *st)
+{
+    if (!st) return -1;
+
+    cred_file_hdr_t hdr;
+    hdr.magic = OTA_STATE_MAGIC;
+    hdr.ver   = OTA_STATE_VER;
+    hdr.len   = sizeof(*st);
+    hdr.crc32 = cred_crc32((const uint8_t *)st, sizeof(*st));
+
+    uint8_t buf[sizeof(cred_file_hdr_t) + sizeof(app_ota_persist_t)];
+    memcpy(buf, &hdr, sizeof(hdr));
+    memcpy(buf + sizeof(hdr), st, sizeof(*st));
+    if (storage_write_file(FILE_OTA_STATE, buf, sizeof(buf)) != 0) {
+        return -1;
+    }
+    /* 回读校验：UPDATING 前的恢复信息必须确认落盘 */
+    uint8_t rdbuf[sizeof(buf)];
+    if (storage_read_file(FILE_OTA_STATE, rdbuf, sizeof(rdbuf)) != 0 ||
+        memcmp(buf, rdbuf, sizeof(buf)) != 0) {
+        APP_LOGE("ota state save readback mismatch");
+        return -1;
+    }
     return 0;
 }
 
