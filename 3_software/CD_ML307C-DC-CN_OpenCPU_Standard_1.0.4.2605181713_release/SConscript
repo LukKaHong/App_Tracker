@@ -64,23 +64,39 @@ lst = env.GenLst(elf)
 pkg = env.GenPkg(bin)
 
 # ===== 项目定制：编译后自动生成 APP 整包 OTA 升级包 =====
-# ML307C_APP.bin → FBFMake 封装 → out/image/system_patch_V{版本}.bin
-# 版本自动取自 app_config.h 的 APP_FIRMWARE_VERSION（升版本宏即自动改名），
-# 平台属性取值（fw_size/fw_checksum）同步写入 out/image/ota_pkg_info.txt
+# ML307C_APP.bin → FBFMake 封装 → out/image/{型号}_V{版本}_{编译时间}.bin
+# 版本/型号自动取自 app_config.h 的 APP_FIRMWARE_VERSION / APP_MODEL_CODE
+# （升版本或改型号宏即自动改名），平台属性取值（fw_size/fw_checksum）
+# 同步写入 out/image/ota_pkg_info.txt
 import re as _re
+import time as _time
 _app_cfg = os.path.join(root_dir, 'custom', 'custom_main', 'inc', 'app_config.h')
 # 文件为 UTF-8（含中文注释）；显式指定编码，避免 Windows 默认 GBK 解码报错；
 # errors='ignore' 保证即使该文件被另存为 GBK 也不影响提取纯 ASCII 的版本行
 with open(_app_cfg, encoding='utf-8', errors='ignore') as _fp:
-    _m = _re.search(r'#define\s+APP_FIRMWARE_VERSION\s+"([^"]+)"', _fp.read())
-_fw_ver = _m.group(1) if _m else 'unknown'
-ota_pkg_name = 'system_patch_V%s.bin' % _fw_ver
+    _cfg_txt = _fp.read()
+_m = _re.search(r'#define\s+APP_FIRMWARE_VERSION\s+"([^"]+)"', _cfg_txt)
+_fw_ver = _m.group(1) if _m else None
+_m = _re.search(r'#define\s+APP_MODEL_CODE\s+"([^"]+)"', _cfg_txt)
+_fw_model = _m.group(1) if _m else None
+# 编译时间标签：解析期取一次并经 --build-ts 传给打包脚本，
+# 保证 scons 声明的目标名与 make_ota_pkg.py 实际产物名一致
+_build_ts = _time.strftime('%Y%m%d_%H%M')
+# 包名规则须与 make_ota_pkg.py 第 4 步保持一致：型号缺失时省略型号段
+if _fw_ver:
+    if _fw_model:
+        ota_pkg_name = '%s_V%s_%s.bin' % (_fw_model, _fw_ver, _build_ts)
+    else:
+        ota_pkg_name = 'V%s_%s.bin' % (_fw_ver, _build_ts)
+else:
+    ota_pkg_name = 'ota_pkg.bin'
 
 def _make_ota_pkg(target, source, env):
     import subprocess
     script = os.path.join(root_dir, 'tools', 'scripts', 'make_ota_pkg.py')
     return subprocess.call([sys.executable, script,
-                            '--image-dir', env['IMAGE_DIR']])
+                            '--image-dir', env['IMAGE_DIR'],
+                            '--build-ts', _build_ts])
 
 ota_pkg = env.Command(
     os.path.join(env['IMAGE_DIR'], ota_pkg_name),
