@@ -124,6 +124,21 @@ int app_storage_save_credential(const app_mqtt_credential_t *cred)
     return 0;
 }
 
+/* 删除已存凭证：cm_fs_delete 对不存在的文件也返回错误，属正常（幂等）。
+ * 删除后必须验证读不回——若文件系统异常导致删除失败，凭证仍在，
+ * 调用方需明确知道"下次开机仍会走缓存凭证分支" */
+int app_storage_clear_credential(void)
+{
+    cm_fs_delete(FILE_MQTT_CRED);
+
+    app_mqtt_credential_t cred;
+    if (app_storage_load_credential(&cred) == 0) {
+        APP_LOGE("cred clear verify fail, file still readable");
+        return -1;
+    }
+    return 0;
+}
+
 /* ========== 工作模式掉电保存（需求 9）==========
  * 模式切换不频繁（平台指令/超时回切/低电强制），每次切换写一次 flash 可接受 */
 int app_storage_save_work_mode(int mode)

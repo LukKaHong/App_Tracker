@@ -2,7 +2,8 @@
  * @file    bsp.c
  * @brief   板级驱动实现（需求文档 V1.12 / 引脚分配 V1.10 定版）
  *          - 蜂鸣器：PWM0 @ Pin74，满占空比输出高电平 = 响，cm_pwm_close = 停
- *          - RUN_LED：PWM1 @ Pin75，闪烁由异步任务控制 PWM 通断，呼吸由占空比渐变
+ *          - RUN_LED：Pin75 双模式驱动，闪烁/常亮/常灭 = GPIO 直控
+ *            （功能2 = GPIO28），呼吸 = PWM 占空比渐变（功能1 = PWM1）
  *          - GPS_PWR_EN：GPIO0 @ Pin76，高电平开（V1.23，原 Pin22/GPIO12）
  *          - 充电检测：GPIO3 @ Pin87，高电平 = 充电中
  *          - 电池：ADC1 @ Pin96，外部分压 200k/20k（比 11.0，V1.27 改版）
@@ -28,10 +29,8 @@
 #include "bsp.h"
 
 /* PWM 周期（ns）：1ms @ 1KHz，32K 时钟源（低功耗下唯一可用时钟，cm_pwm.h 注意事项）。
- * 满占空比 period_h == period 输出持续高电平（LED 最亮）。 */
+ * 仅供 LED 呼吸模式使用（闪烁已改 GPIO 直控，不占用 PWM）。 */
 #define BSP_PWM_PERIOD_NS       1000000u
-#define BSP_PWM_DUTY_FULL       BSP_PWM_PERIOD_NS
-#define BSP_PWM_DUTY_HALF       (BSP_PWM_PERIOD_NS / 2u)
 
 /* ====================================================================
  * 蜂鸣器（Pin74 / PWM0，无源蜂鸣器，V1.28 改版）
@@ -177,15 +176,54 @@ void bsp_buzzer_stop(void)
 }
 
 /* ====================================================================
- * RUN_LED（Pin75 / PWM1，单灯）
- * 闪烁 = 任务控制 PWM 通断；呼吸 = 占空比渐变（参照 SDK breathled 示例）
+ * RUN_LED（Pin75，单灯）
+ * 双模式驱动（2026-09-21 改版）：
+ * - 闪烁/常亮/常灭：GPIO 直控（Pin75 功能2 = GPIO28，资源综述 Table 4）。
+ *   原 PWM 通断方案每次灭灯调 cm_pwm_close，CP 底层固件驱动每次 close
+ *   打印 "port0/1not close clk_en_bit and set reset"（内部告警，功能无害
+ *   但刷屏；2026-09-21 A/B 实验：屏蔽 close 后日志 183→0 条，实锤）。
+ * - 呼吸：Pin75 功能1 = PWM1 占空比渐变（参照 SDK breathled 示例）。
+ *   呼吸内 duty=0 节拍用 open_ns 恒低输出代替 close，仅模式切换时 close。
  * ==================================================================== */
-static bool s_led_clk_set = false;
+static bool s_led_clk_set = false;   /* PWM 时钟已预置（呼吸模式用） */
+
+/* 引脚当前驱动模式：仅 pattern 切换时切换，闪烁节拍内不触碰 */
+typedef enum {
+    LED_PIN_GPIO = 0,   /* GPIO 直控（闪烁/常亮/常灭） */
+    LED_PIN_PWM,        /* PWM 输出（呼吸） */
+} led_pin_mode_e;
+static led_pin_mode_e s_led_mode = LED_PIN_GPIO;
+
+/* GPIO 模式初始化（每次切入 GPIO 模式执行，幂等） */
+static void led_gpio_setup(void)
+{
+    cm_iomux_set_pin_func(APP_LED_IOMUX_PIN, APP_LED_GPIO_IOMUX_FUNC);
+    cm_gpio_cfg_t cfg = {0};
+    cfg.direction = CM_GPIO_DIRECTION_OUTPUT;
+    cfg.pull      = CM_GPIO_PULL_NONE;
+    (void)cm_gpio_init(APP_LED_GPIO_NUM, &cfg);
+    (void)cm_gpio_set_level(APP_LED_GPIO_NUM, CM_GPIO_LEVEL_LOW);
+}
+
+/* 模式切换：切离 PWM 模式时 close 一次（仅此时 close，频率极低不刷屏） */
+static void led_mode_set(led_pin_mode_e mode)
+{
+    if (mode == s_led_mode) return;
+    if (s_led_mode == LED_PIN_PWM) {
+        (void)cm_pwm_close(APP_LED_PWM_DEV);
+    }
+    if (mode == LED_PIN_GPIO) {
+        led_gpio_setup();
+    } else {
+        cm_iomux_set_pin_func(APP_LED_IOMUX_PIN, CM_IOMUX_FUNC_FUNCTION1);
+    }
+    s_led_mode = mode;
+}
 
 static int bsp_led_init(void)
 {
-    /* Pin75 FUNCTION1 = PWM1（cm_common.h OPENCPU_TEST_PWM1_IOMUX 验证） */
-    cm_iomux_set_pin_func(APP_LED_IOMUX_PIN, CM_IOMUX_FUNC_FUNCTION1);
+    /* 默认 GPIO 模式（闪烁/熄灯直控），PWM 时钟预置供呼吸模式切换 */
+    led_gpio_setup();
     if (cm_pwm_set_clk(APP_LED_PWM_DEV, CM_PWM_CLK_32K) != 0) {
         APP_LOGE("led pwm set clk fail");
         return -1;
@@ -194,28 +232,36 @@ static int bsp_led_init(void)
     return 0;
 }
 
-/* 内部：按占空比输出（duty_ns = 0 时关闭 PWM） */
-static void led_pwm_output(uint32_t duty_ns)
+/* 呼吸节拍输出：duty<=0 时 open_ns 恒低，代替 close（避免底层驱动告警打印） */
+static void led_breath_output(int32_t duty)
+{
+    uint32_t period_h = (duty <= 0) ? 0u : (uint32_t)duty;
+    (void)cm_pwm_open_ns(APP_LED_PWM_DEV, BSP_PWM_PERIOD_NS, period_h);
+}
+
+/* 熄灯（按当前模式）：任务结束/被接管时统一调用 */
+static void led_quiet(void)
 {
     if (!s_led_clk_set) return;
-    if (duty_ns == 0) {
-        cm_pwm_close(APP_LED_PWM_DEV);
+    if (s_led_mode == LED_PIN_PWM) {
+        led_breath_output(0);
     } else {
-        cm_pwm_open_ns(APP_LED_PWM_DEV, BSP_PWM_PERIOD_NS, duty_ns);
+        (void)cm_gpio_set_level(APP_LED_GPIO_NUM, CM_GPIO_LEVEL_LOW);
     }
 }
 
 int bsp_led_on(void)
 {
     if (!s_led_clk_set) return -1;
-    led_pwm_output(BSP_PWM_DUTY_FULL);
+    led_mode_set(LED_PIN_GPIO);
+    (void)cm_gpio_set_level(APP_LED_GPIO_NUM, CM_GPIO_LEVEL_HIGH);
     return 0;
 }
 
 int bsp_led_off(void)
 {
     if (!s_led_clk_set) return 0;
-    led_pwm_output(0);
+    led_quiet();
     return 0;
 }
 
@@ -257,14 +303,15 @@ static void led_blink_run(const led_phase_t *phases, int phase_cnt,
 {
     int idx = 0;
     while (!led_req_changed(my_gen)) {
-        led_pwm_output(BSP_PWM_DUTY_FULL);
+        /* 亮/灭均为 GPIO 直控，节拍内不触碰 PWM（消除 close 告警打印） */
+        (void)cm_gpio_set_level(APP_LED_GPIO_NUM, CM_GPIO_LEVEL_HIGH);
         osDelay(APP_MS_TO_TICK(phases[idx].on_ms));
         if (led_req_changed(my_gen)) break;
         if (duration_ms > 0 &&
             ((uint32_t)osKernelGetTickCount() - start_tick) >= APP_MS_TO_TICK(duration_ms)) {
             break;
         }
-        led_pwm_output(0);
+        (void)cm_gpio_set_level(APP_LED_GPIO_NUM, CM_GPIO_LEVEL_LOW);
         osDelay(APP_MS_TO_TICK(phases[idx].off_ms));
         if (led_req_changed(my_gen)) break;
         if (duration_ms > 0 &&
@@ -280,7 +327,7 @@ static void led_breath_run(uint32_t duration_ms, uint32_t start_tick, uint32_t m
     int duty = 0;
     bool rising = true;
     while (!led_req_changed(my_gen)) {
-        led_pwm_output((uint32_t)duty);
+        led_breath_output(duty);
         if (duration_ms > 0 &&
             ((uint32_t)osKernelGetTickCount() - start_tick) >= APP_MS_TO_TICK(duration_ms)) {
             break;
@@ -315,13 +362,19 @@ static void led_task(void *arg)
 
         switch (pattern) {
             case BSP_LED_PATTERN_ONLINE:
-                led_blink_run(s_phase_online, 1, duration_ms, start_tick, my_gen);
-                break;
             case BSP_LED_PATTERN_OFFLINE:
-                led_blink_run(s_phase_flash, 1, duration_ms, start_tick, my_gen);
+                led_mode_set(LED_PIN_GPIO);     /* 闪烁类：GPIO 直控 */
+                if (pattern == BSP_LED_PATTERN_ONLINE) {
+                    led_blink_run(s_phase_online, 1, duration_ms, start_tick, my_gen);
+                } else {
+                    led_blink_run(s_phase_flash, 1, duration_ms, start_tick, my_gen);
+                }
                 break;
             case BSP_LED_PATTERN_BREATH:
-                led_breath_run(duration_ms, start_tick, my_gen);
+                if (s_led_clk_set) {
+                    led_mode_set(LED_PIN_PWM);  /* 呼吸：PWM 渐变 */
+                    led_breath_run(duration_ms, start_tick, my_gen);
+                }
                 break;
             default:
                 break;
@@ -329,7 +382,7 @@ static void led_task(void *arg)
 
         /* 自然结束 / 被新请求接管 / stop 请求：统一熄灯再回等。
          * 被接管时新请求事件位已置，外层 Wait 立即返回无缝衔接 */
-        led_pwm_output(0);
+        led_quiet();
     }
 }
 
@@ -373,7 +426,7 @@ void bsp_led_set_pattern(bsp_led_pattern_e pattern)
             s_led_ctx.gen++;
             (void)osEventFlagsSet(s_led_evt, LED_EVT_REQ);
         }
-        led_pwm_output(0);
+        led_quiet();
         return;
     }
     led_request(pattern, 0);   /* 常态指示：持续运行至下次切换 */
@@ -387,12 +440,12 @@ void bsp_led_flash_async(uint32_t duration_sec)
 
 void bsp_led_stop(void)
 {
-    /* 熄灯立即性：调用方上下文直接关 PWM（原 terminate 实现等价语义） */
+    /* 熄灯立即性：调用方上下文直接熄灭（原 terminate 实现等价语义） */
     if (s_led_evt != NULL) {
         s_led_ctx.gen++;
         (void)osEventFlagsSet(s_led_evt, LED_EVT_REQ);
     }
-    led_pwm_output(0);
+    led_quiet();
 }
 
 /* ====================================================================

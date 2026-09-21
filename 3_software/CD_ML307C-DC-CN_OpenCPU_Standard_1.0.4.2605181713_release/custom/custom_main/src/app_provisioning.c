@@ -13,6 +13,7 @@
 #include "cm_rtc.h"
 #include "cm_http.h"
 #include "cm_os.h"
+#include "cm_mem.h"
 #include "cJSON.h"
 #include "app_log.h"
 #include "app_config.h"
@@ -161,7 +162,7 @@ app_prov_result_e app_provisioning_request(app_mqtt_credential_t *cred)
     uint16_t port = 80;
     char host[128] = {0};
     if (parse_url(url, host, sizeof(host), &port, &use_https) != 0) {
-        free(body_str);
+        cm_free(body_str);
         return APP_PROV_ERR_UNKNOWN;
     }
     APP_LOGI("prov http %s:%u %s", host, port, use_https ? "(tls)" : "(plain)");
@@ -174,7 +175,7 @@ app_prov_result_e app_provisioning_request(app_mqtt_credential_t *cred)
     cm_httpclient_ret_code_e rc = cm_httpclient_create((const uint8_t *)url_with_port, NULL, &handle);
     if (rc != CM_HTTP_RET_CODE_OK || !handle) {
         APP_LOGE("http create fail:%d", rc);
-        free(body_str);
+        cm_free(body_str);
         return APP_PROV_ERR_NETWORK;
     }
 
@@ -201,8 +202,12 @@ app_prov_result_e app_provisioning_request(app_mqtt_credential_t *cred)
     if (rc == CM_HTTP_RET_CODE_OK) {
         APP_LOGI("http resp=%u len=%u", resp.response_code, resp.response_content_len);
         if (resp.response_content && resp.response_content_len > 0) {
-            /* 防止非 \0 结尾 */
-            char *resp_str = (char *)malloc(resp.response_content_len + 1);
+            /* 防止非 \0 结尾。cJSON_PrintUnformatted 返回的指针由
+             * cJSON 内部 cm_malloc 分配（本 SDK cJSON.c 写死钩子），
+             * 必须用 cm_free 释放，newlib free 会跨堆读伪堆头 DataAbort
+             * （cm_mem.h 官方规范：内存操作请勿使用 C 库接口）。
+             * resp_str 同理统一走 cm 堆，规避 newlib malloc 无锁风险 */
+            char *resp_str = (char *)cm_malloc(resp.response_content_len + 1);
             if (resp_str) {
                 memcpy(resp_str, resp.response_content, resp.response_content_len);
                 resp_str[resp.response_content_len] = '\0';
@@ -250,7 +255,7 @@ app_prov_result_e app_provisioning_request(app_mqtt_credential_t *cred)
                     }
                     cJSON_Delete(root);
                 }
-                free(resp_str);
+                cm_free(resp_str);
             }
         }
     } else {
@@ -259,6 +264,6 @@ app_prov_result_e app_provisioning_request(app_mqtt_credential_t *cred)
 
     cm_httpclient_sync_free_data(handle);
     cm_httpclient_delete(handle);
-    free(body_str);
+    cm_free(body_str);
     return result;
 }

@@ -27,6 +27,9 @@ typedef struct {
 
 int  app_storage_load_credential(app_mqtt_credential_t *cred);
 int  app_storage_save_credential(const app_mqtt_credential_t *cred);
+/* 删除已存凭证（幂等）。返回 0 = 已确认读不回；-1 = 文件系统异常仍可读出。
+ * 首次激活联调用：强制下次连接重走 provisioning */
+int  app_storage_clear_credential(void);
 
 /* ========== 工作模式掉电保存（需求 9：异常复位后恢复复位前工作模式）========== */
 int  app_storage_save_work_mode(int mode);

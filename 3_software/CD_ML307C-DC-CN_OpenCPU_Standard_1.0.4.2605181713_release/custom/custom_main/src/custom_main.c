@@ -1434,6 +1434,13 @@ static void main_task(void *arg)
     app_mqtt_set_keepalive_sec(
         (boot_mode == APP_MODE_SEARCHING || boot_mode == APP_MODE_WALKING)
             ? APP_MQTT_KEEPALIVE_HIGHFREQ_SEC : APP_MQTT_KEEPALIVE_LP_SEC);
+#if APP_PROV_DEBUG_CLEAR_CRED
+    /* 【首次激活联调脚手架】开机清除已存凭证，强制重走完整激活流程。
+     * 只在 main_task 开机路径执行一次：WiFi 扫描重连（app_reconnect_mqtt）
+     * 复用 provisioning_and_connect，不受影响，不会误删运行期凭证 */
+    app_storage_clear_credential();
+    APP_LOGW("prov debug: saved credential cleared, force re-provisioning");
+#endif
     provisioning_and_connect();
 
 #if APP_MQTT_LEAK_TEST

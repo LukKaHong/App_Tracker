@@ -24,19 +24,30 @@ extern "C" {
 #define APP_FIRMWARE_VERSION        "1.1.0"     /* APP 语义化版本：主.次.修 */
 #define APP_HW_VERSION              "HW_V1.0"   /* 硬件版本：跟随 PCB，引脚变更必须升版 */
 #define APP_PROTOCOL_VERSION        "v1"
-#define APP_MODEL_CODE              "PET-LTE-001"   /* TODO: 与平台导入型号保持一致 */
+#define APP_MODEL_CODE              "PET-LOCATOR-DEMO"   /* 平台导入型号（配网校验/OTA fw_title 共用，与平台一致） */
 
 /* ===================================================================
- * 2. Provisioning 配置（TODO: 联调前替换为真实参数）
+ * 2. Provisioning 配置（2026-09-20 联调参数落定）
  * =================================================================== */
-#define APP_SAAS_BASE_URL           "http://saas.example.com"   /* TODO: 替换为真实 SaaS 地址 */
+#define APP_SAAS_BASE_URL           "http://119.23.217.155"   /* SaaS 激活接口地址前缀 */
 #define APP_PROVISIONING_PATH       "/api/device/v1/provision"
-#define APP_PROVISIONING_SECRET     "device-provisioning-test-secret"   /* TODO: 替换为一型一密真实 secret */
+/* 一型一密 secret：64 位 hex 字符串，按协议 1.1 以 64 个 ASCII 字节参与
+ * HMAC-SHA256（app_util_hmac_sha256_hex 用 strlen 取 key 长度，不做 hex 解码） */
+#define APP_PROVISIONING_SECRET     "c9d08936153edc980b39e26c79b1a702c5cabfb8b0419ff8e968296af557e7ab"
 
 /* 联调开关（协议 3：HTTP Provisioning 正式流程）
  * 1 = 使用硬编码 MQTT 凭证直连（联调阶段，见 custom_main.c）
- * 0 = 正式流程：缓存凭证优先，无凭证走 SaaS provisioning */
-#define APP_USE_HARDCODED_CREDENTIAL 1
+ * 0 = 正式流程：缓存凭证优先，无凭证走 SaaS provisioning
+ * 【2026-09-21】首次激活鉴权联调：置 0 启用真实激活流程
+ * （NTP 硬前置 → HMAC 签名 POST /provision → 凭证持久化 → MQTT 首连） */
+#define APP_USE_HARDCODED_CREDENTIAL 0
+
+/* 【首次激活联调临时脚手架】1 = 每次开机删除已存凭证，强制重走完整
+ * 激活流程（custom_main.c main_task 调 app_storage_clear_credential），
+ * 用于反复验证 provisioning 请求/响应校验/nonce 重放/HTTP 丢失恢复；
+ * 激活链路验证通过后必须改回 0（否则每次上电都重新激活，浪费平台
+ * 调用且开机变慢），勿带量产。 */
+#define APP_PROV_DEBUG_CLEAR_CRED   0
 
 /* Provisioning 失败重试退避（协议 3：获取凭证失败设备应重试） */
 #define APP_PROV_RETRY_BACKOFF_MIN_S  30u   /* 首次退避 30 秒 */
@@ -175,12 +186,18 @@ extern "C" {
 #define APP_BUZZER_BEEP_OFF_MS      800     /* 每秒响一次：间隔 800ms */
 
 /* ===================================================================
- * 8. 运行指示灯 RUN_LED（需求 5 / 10：Pin75，PWM1，支持呼吸灯）
- *    Pin75 主功能 PWM1（cm_common.h：OPENCPU_TEST_PWM1_IOMUX = Pin75/FUNCTION1）。
- *    闪烁通过 PWM 通断实现；呼吸效果通过占空比渐变实现。
+ * 8. 运行指示灯 RUN_LED（需求 5 / 10：Pin75，支持闪烁与呼吸灯）
+ *    双模式驱动（2026-09-21 改版）：
+ *    - 闪烁/常亮/常灭：GPIO 直控——Pin75 功能2 = GPIO28（资源综述 Table 4）。
+ *      原经 PWM 通断实现闪烁，每次 cm_pwm_close 触发 CP 底层固件打印
+ *      "port0/1not close clk_en_bit and set reset"（A/B 实验证实为 close
+ *      触发，见 bsp.c），5Hz 快闪时 5 条/秒刷屏，故闪烁改 GPIO 直控。
+ *    - 呼吸：Pin75 功能1 = PWM1 占空比渐变（cm_common.h：OPENCPU_TEST_PWM1_IOMUX）。
  * =================================================================== */
 #define APP_LED_PWM_DEV             CM_PWM_DEV_1
 #define APP_LED_IOMUX_PIN           CM_IOMUX_PIN_75
+#define APP_LED_GPIO_NUM            CM_GPIO_NUM_28            /* Pin75 功能2 = GPIO28（资源综述 Table 4） */
+#define APP_LED_GPIO_IOMUX_FUNC     CM_IOMUX_FUNC_FUNCTION2   /* Pin75 功能2 = GPIO28 */
 #define APP_LED_BLINK_FAST_HZ       5       /* 未联网/平台指令：快闪 5Hz（需求 5） */
 #define APP_LED_BLINK_SLOW_MS       3000    /* 已联网正常：每 3 秒闪一次 */
 
