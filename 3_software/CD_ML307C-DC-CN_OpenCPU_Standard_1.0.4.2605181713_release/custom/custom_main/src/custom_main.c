@@ -541,7 +541,12 @@ static void mqtt_event_cb(app_mqtt_event_e evt, void *data)
                     g_fw_chunk_pending = true;
                     if (g_fw_evt) (void)osEventFlagsSet(g_fw_evt, APP_FW_EVT_CHUNK);
                 }
-            } else if (strncmp(msg->topic, "v1/devices/me/attributes", 25) == 0) {
+            } else if (strncmp(msg->topic, "v1/devices/me/attributes",
+                              sizeof("v1/devices/me/attributes") - 1) == 0) {
+                /* 前缀长度须为 24（串长）：曾误写 25，把常量结尾 NUL 也比进去，
+                 * 导致 response/N topic 第 25 字节 '/' != '\0' 被静默丢弃，
+                 * OTA 快照响应永远收不到（2026-09-23 两轮 wait timeout 实测定位）。
+                 * 覆盖 attributes（通知）与 attributes/response/N（快照响应） */
                 if (msg->payload_len < (int)sizeof(g_attr_payload) && !g_attr_pending) {
                     strncpy(g_attr_topic, msg->topic, sizeof(g_attr_topic) - 1);
                     g_attr_topic[sizeof(g_attr_topic) - 1] = '\0';

@@ -114,13 +114,53 @@ static int cb_connack(cm_mqtt_client_t *client, int session, cm_mqtt_conn_state_
     return 0;
 }
 
+/* 大负载分片重组：SDK publish_cb 对超过单次解析长度（512B）的 PUBLISH 分段
+ * 回调（total_len=负载总长，payload_len=本段长）。2026-09-23 OTA 4096B 分片
+ * 实测分 481+3615 两段到达，首段带 topic，须凑齐 total_len 再投递 */
+#define REASM_BUF_SIZE   (4096 + 64)   /* 覆盖 OTA 最大分片 + 余量 */
+#define REASM_TOPIC_SIZE 96
+static char s_reasm_buf[REASM_BUF_SIZE];
+static char s_reasm_topic[REASM_TOPIC_SIZE];
+static int  s_reasm_total = 0;
+static int  s_reasm_got   = 0;
+
 static int cb_publish(cm_mqtt_client_t *client, unsigned short msgid, char *topic,
                        int total_len, int payload_len, char *payload)
 {
-    (void)client; (void)msgid; (void)total_len;
+    (void)client; (void)msgid;
+
+    if (total_len > 0 && payload_len < total_len) {
+        /* 分段到达：首段记 topic/总长，后续段（topic 可能为 NULL）追加 */
+        if (s_reasm_got == 0) {
+            if (topic == NULL || payload == NULL) return 0;
+            strncpy(s_reasm_topic, topic, sizeof(s_reasm_topic) - 1);
+            s_reasm_topic[sizeof(s_reasm_topic) - 1] = '\0';
+            s_reasm_total = total_len;
+        }
+        if (payload == NULL || payload_len <= 0 ||
+            s_reasm_got + payload_len > s_reasm_total ||
+            s_reasm_total > (int)sizeof(s_reasm_buf)) {
+            /* 异常/溢出：重置丢弃整条（下一条消息重新开始） */
+            s_reasm_got = 0;
+            s_reasm_total = 0;
+            return 0;
+        }
+        memcpy(s_reasm_buf + s_reasm_got, payload, (size_t)payload_len);
+        s_reasm_got += payload_len;
+        if (s_reasm_got < s_reasm_total) {
+            return 0;   /* 等后续段 */
+        }
+        /* 凑齐：整条按完整消息投递（落入下方单段路径） */
+        payload = s_reasm_buf;
+        payload_len = s_reasm_total;
+        topic = s_reasm_topic;
+        s_reasm_got = 0;
+        s_reasm_total = 0;
+    }
+
     /* OTA 分片 payload 为二进制（可含 0x00），本层不做 strlen/打印内容 */
     APP_LOGD("rx topic=%s len=%d", topic, payload_len);
-    if (s_user_cb) {
+    if (s_user_cb && topic && payload) {
         app_mqtt_msg_t msg;
         strncpy(msg.topic, topic, sizeof(msg.topic) - 1);
         msg.topic[sizeof(msg.topic) - 1] = '\0';
@@ -396,7 +436,9 @@ int app_mqtt_publish_telemetry(const char *payload, int len)
     int ret = cm_mqtt_client_publish(s_client, APP_MQTT_TOPIC_TELEMETRY,
                                      buf, len, CM_MQTT_QOS_1);
     pub_buf_release();
-    return ret;
+    /* SDK 语义：成功返回 publish 包长度（正数），失败返回负错误码
+     * （cm_mqtt_err_code_e，-1~-99）。归一化为 0/负数，调用方按 !=0 判失败 */
+    return (ret > 0) ? 0 : ret;
 }
 
 int app_mqtt_publish_rpc_response(const char *request_id, const char *payload, int len)
@@ -410,7 +452,8 @@ int app_mqtt_publish_rpc_response(const char *request_id, const char *payload, i
     memcpy(buf, payload, len);
     int ret = cm_mqtt_client_publish(s_client, topic, buf, len, CM_MQTT_QOS_0);
     pub_buf_release();
-    return ret;
+    /* 同 app_mqtt_publish_telemetry：SDK 成功返回正长度，归一化 */
+    return (ret > 0) ? 0 : ret;
 }
 
 /* 通用 topic 发布（QoS1）：OTA 属性上报 / attributes/request / fw 分片请求。
@@ -424,7 +467,10 @@ int app_mqtt_publish_topic(const char *topic, const char *payload, int len)
     memcpy(buf, payload, len);
     int ret = cm_mqtt_client_publish(s_client, topic, buf, len, CM_MQTT_QOS_1);
     pub_buf_release();
-    return ret;
+    /* 同 app_mqtt_publish_telemetry：SDK 成功返回正长度，归一化。
+     * OTA 快照/分片请求按 !=0 判失败（2026-09-22 实测：发布实际成功、
+     * 服务器已 PUBACK，但返回 125 被误判失败导致快照重试 4 次后放弃） */
+    return (ret > 0) ? 0 : ret;
 }
 
 /* 订阅设备会话全部 topic（联调协议 V1 2.1）：

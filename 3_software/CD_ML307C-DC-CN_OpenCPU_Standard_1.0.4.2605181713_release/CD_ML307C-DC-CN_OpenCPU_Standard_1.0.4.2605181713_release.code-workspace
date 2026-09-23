@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "../../5_doc"
+		},
+		{
+			"path": "../../4_release"
 		}
 	],
 	"settings": {}

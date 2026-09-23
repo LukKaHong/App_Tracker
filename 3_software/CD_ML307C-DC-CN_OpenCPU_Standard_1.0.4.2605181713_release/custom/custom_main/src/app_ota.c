@@ -233,6 +233,12 @@ static bool ota_meta_check(ota_meta_t *meta)
     int sz = 0;
     bool have_size = (app_util_json_find_int(json, "fw_size", &sz) == 0);
 
+    /* 平台元数据留痕（拆短行打印：串口抓取工具 ~128 字符行宽会截断长行，
+     * 2026-09-23 CHECKSUM_MISMATCH 排查时 exp 值即因行宽丢失无法比对） */
+    APP_LOGI("ota meta: title=%s ver=%s size=%d algo=%s",
+             meta->title, meta->version, sz, meta->algo);
+    APP_LOGI("ota meta checksum=%s", meta->checksum);
+
     /* 算法单独判定（协议 2.3：算法错误上报独立错误码） */
     if (!ota_algo_is_sha256(meta->algo)) {
         ota_fail(meta, "UNSUPPORTED_CHECKSUM_ALGORITHM", true);
@@ -287,7 +293,19 @@ static int ota_download_chunks(const ota_meta_t *meta, char *out_hex, const char
         snprintf(req_topic, sizeof(req_topic), "%s%d/chunk/%u",
                  APP_MQTT_TOPIC_FW_REQ, (int)rid, (unsigned)chunk_idx);
         char req_pay[12];
-        int req_len = snprintf(req_pay, sizeof(req_pay), "%u", (unsigned)expect);
+        int req_len;
+        if (expect == 0u) {
+            req_len = snprintf(req_pay, sizeof(req_pay), "0");   /* EOF 探测 */
+        } else {
+            /* 固定请求 4096：实测平台分片寻址 bug——偏移按"块序号×请求长度"
+             * 计算（2026-09-23 双任务验证：末块请求 3072 被从 35×3072=107520
+             * 而非 143360 端出，重构错误字节流的 SHA-256 与设备实算逐位一致）。
+             * 统一请求 4096 使偏移 N×4096 恒为正确值；协议 2.4 第 4 条允许
+             * 响应长度为 min(chunk_size, remaining)，末块 3072B 短包合规。
+             * 接收侧仍严格校验 expect=min(4096, remaining)，错包必拒 */
+            req_len = snprintf(req_pay, sizeof(req_pay), "%u",
+                               (unsigned)APP_OTA_CHUNK_SIZE);
+        }
 
         char exp_topic[80];
         snprintf(exp_topic, sizeof(exp_topic), "v2/fw/response/%d/chunk/%u",
@@ -340,6 +358,17 @@ static int ota_download_chunks(const ota_meta_t *meta, char *out_hex, const char
                          (unsigned)meta->size);
                 goto out;
             }
+            /* EOF 确认包非空（expect==0 ⟺ 已收满 fw_size）：平台未按协议
+             * 2.4 第 5 条实现 0 字节 EOF——2026-09-23 实测 chunk/36 请求 "0"
+             * 返回最后一块 3072B。此时字节已收满，payload 丢弃视为 EOF，
+             * 完整性由后续 SHA-256 严格比对兜底（协议 2.5 第 2 条） */
+            if (expect == 0u && received == meta->size) {
+                APP_LOGW("ota eof resp non-empty %dB (platform non-strict), accept",
+                         s_chunk_len);
+                eof_done = true;
+                got = true;
+                break;
+            }
             /* 普通分片长度必须等于 min(chunk_size, fw_size - received)
              * （协议 2.4 第 4 条）：短包/超量非空包均失败 */
             if ((uint32_t)s_chunk_len != expect) {
@@ -347,6 +376,15 @@ static int ota_download_chunks(const ota_meta_t *meta, char *out_hex, const char
                          (unsigned)expect);
                 goto out;
             }
+            /* 数据级留痕：每块首 8 字节（2026-09-23 CHECKSUM_MISMATCH 定位用：
+             * 与源文件偏移 N*4096 处比对，区分"下发字节错"与"校验实现错"；
+             * 每行 ~50 字符，避开串口行宽截断。定位完成后可移除） */
+            APP_LOGI("ota c%u head=%02x%02x%02x%02x%02x%02x%02x%02x",
+                     (unsigned)chunk_idx,
+                     (unsigned)s_chunk_buf[0], (unsigned)s_chunk_buf[1],
+                     (unsigned)s_chunk_buf[2], (unsigned)s_chunk_buf[3],
+                     (unsigned)s_chunk_buf[4], (unsigned)s_chunk_buf[5],
+                     (unsigned)s_chunk_buf[6], (unsigned)s_chunk_buf[7]);
             got = true;
         }
         if (!got) {
@@ -577,6 +615,18 @@ int app_ota_init(void)
         return -2;
     }
     APP_LOGI("ota task started (snapshot+chunk mode)");
+    /* SHA-256 已知答案自检（"abc" 向量，2026-09-23 CHECKSUM_MISMATCH 排查）：
+     * 期望 ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad。
+     * 若此值不对，校验实现（mbedtls 封装）有问题；若对，则哈希不匹配
+     * 必为接收字节与源文件不同。定位完成后可移除 */
+    {
+        char kat[65] = {0};
+        app_util_sha256_t kc;
+        app_util_sha256_init(&kc);
+        (void)app_util_sha256_update(&kc, "abc", 3);
+        (void)app_util_sha256_finish_hex(&kc, kat);
+        APP_LOGI("ota sha256 kat=%s", kat);
+    }
     return 0;
 }
 

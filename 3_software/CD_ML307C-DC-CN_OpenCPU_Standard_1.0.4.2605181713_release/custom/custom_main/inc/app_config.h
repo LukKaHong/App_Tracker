@@ -21,7 +21,9 @@ extern "C" {
 /* ===================================================================
  * 1. 固件与设备标识（需求 6.7 软件版本管理）
  * =================================================================== */
-#define APP_FIRMWARE_VERSION        "1.1.0"     /* APP 语义化版本：主.次.修 */
+#define APP_FIRMWARE_VERSION        "1.1.0"     /* APP 语义化版本：主.次.修。
+                                                * 测试基线：设备经 USB 烧入"1.1.0+publish修复"，
+                                                * 平台保留 V1.1.1(1916) 包做 OTA 目标（1.1.0→1.1.1） */
 #define APP_HW_VERSION              "HW_V1.0"   /* 硬件版本：跟随 PCB，引脚变更必须升版 */
 #define APP_PROTOCOL_VERSION        "v1"
 #define APP_MODEL_CODE              "PET-LOCATOR-DEMO"   /* 平台导入型号（配网校验/OTA fw_title 共用，与平台一致） */
@@ -48,6 +50,12 @@ extern "C" {
  * 激活链路验证通过后必须改回 0（否则每次上电都重新激活，浪费平台
  * 调用且开机变慢），勿带量产。 */
 #define APP_PROV_DEBUG_CLEAR_CRED   0
+
+/* 【临时联调脚手架】平台 mqtt_host 配置错误（下发 127.0.0.1），平台修正前
+ * 在激活响应校验通过后强制覆盖 mqtt_host 为测试 broker 地址。
+ * 平台修复后 ENABLE 置 0 即恢复使用平台下发值，勿带量产。 */
+#define APP_PROV_HOST_OVERRIDE_ENABLE 1
+#define APP_PROV_HOST_OVERRIDE_ADDR   "119.23.217.155"
 
 /* Provisioning 失败重试退避（协议 3：获取凭证失败设备应重试） */
 #define APP_PROV_RETRY_BACKOFF_MIN_S  30u   /* 首次退避 30 秒 */

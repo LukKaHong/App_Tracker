@@ -248,6 +248,18 @@ app_prov_result_e app_provisioning_request(app_mqtt_credential_t *cred)
                                 APP_LOGE("prov resp invalid fields");
                                 result = APP_PROV_ERR_LOCAL_INVALID;
                             } else {
+#if APP_PROV_HOST_OVERRIDE_ENABLE
+                                /* 【临时联调脚手架】平台 mqtt_host 配置错误（127.0.0.1），
+                                 * 修正前强制覆盖；覆盖发生在 save 之前，flash 存的是修正
+                                 * 后的 host，复位/断电重连路径同样使用修正值 */
+                                if (strcmp(cred->mqtt_host, APP_PROV_HOST_OVERRIDE_ADDR) != 0) {
+                                    APP_LOGW("prov host override: %s -> %s",
+                                             cred->mqtt_host, APP_PROV_HOST_OVERRIDE_ADDR);
+                                    strncpy(cred->mqtt_host, APP_PROV_HOST_OVERRIDE_ADDR,
+                                            sizeof(cred->mqtt_host) - 1);
+                                    cred->mqtt_host[sizeof(cred->mqtt_host) - 1] = '\0';
+                                }
+#endif
                                 result = APP_PROV_OK;
                                 APP_LOGI("prov ok, port=%u", cred->mqtt_port);
                             }
