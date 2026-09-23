@@ -233,11 +233,13 @@ static bool ota_meta_check(ota_meta_t *meta)
     int sz = 0;
     bool have_size = (app_util_json_find_int(json, "fw_size", &sz) == 0);
 
+#if APP_OTA_DIAG_LOG
     /* 平台元数据留痕（拆短行打印：串口抓取工具 ~128 字符行宽会截断长行，
      * 2026-09-23 CHECKSUM_MISMATCH 排查时 exp 值即因行宽丢失无法比对） */
     APP_LOGI("ota meta: title=%s ver=%s size=%d algo=%s",
              meta->title, meta->version, sz, meta->algo);
     APP_LOGI("ota meta checksum=%s", meta->checksum);
+#endif
 
     /* 算法单独判定（协议 2.3：算法错误上报独立错误码） */
     if (!ota_algo_is_sha256(meta->algo)) {
@@ -376,15 +378,41 @@ static int ota_download_chunks(const ota_meta_t *meta, char *out_hex, const char
                          (unsigned)expect);
                 goto out;
             }
+            /* FBF 包头校验（第 0 块）：真实升级包前 8 字节为 FBF 文件头
+             * magic 0x4d617276656c6c5f（ASCII "Marvell_"，双 l 无空格——
+             * 2026-09-23 实测首版误写成 "Marvel l_"（单 l + 空格）导致正常包
+             * 被拒，当天回归发现并修正；用显式十六进制避免肉眼歧义）。
+             * 防"平台登记如实但文件本身是假固件"场景（需求 6.4 台账管理
+             * 之外的最后防线）：SHA-256 只保证收到的字节 == 平台上的文件，
+             * 不能保证该文件是本模组固件；假包若进入刷写流程，安全性完全
+             * 依赖闭源 bootloader 的头部校验，产品在客户手中无 USB 救砖
+             * 通道。故在第 0 块即拦截，报 INVALID_FIRMWARE_METADATA（fatal，
+             * 本运行内不再重试同任务）。size<8 连 FBF 头都不完整，一并拒绝 */
+            static const uint8_t FBF_MAGIC[8] =
+                {0x4d, 0x61, 0x72, 0x76, 0x65, 0x6c, 0x6c, 0x5f};
+            if (chunk_idx == 0u) {
+                if (meta->size < 8u ||
+                    memcmp(s_chunk_buf, FBF_MAGIC, 8) != 0) {
+                    APP_LOGE("ota pkg not FBF format (head=%02x%02x%02x%02x%02x%02x%02x%02x), reject",
+                             (unsigned)s_chunk_buf[0], (unsigned)s_chunk_buf[1],
+                             (unsigned)s_chunk_buf[2], (unsigned)s_chunk_buf[3],
+                             (unsigned)s_chunk_buf[4], (unsigned)s_chunk_buf[5],
+                             (unsigned)s_chunk_buf[6], (unsigned)s_chunk_buf[7]);
+                    *err = "INVALID_FIRMWARE_METADATA";
+                    goto out;
+                }
+            }
+#if APP_OTA_DIAG_LOG
             /* 数据级留痕：每块首 8 字节（2026-09-23 CHECKSUM_MISMATCH 定位用：
              * 与源文件偏移 N*4096 处比对，区分"下发字节错"与"校验实现错"；
-             * 每行 ~50 字符，避开串口行宽截断。定位完成后可移除） */
+             * 每行 ~50 字符，避开串口行宽截断） */
             APP_LOGI("ota c%u head=%02x%02x%02x%02x%02x%02x%02x%02x",
                      (unsigned)chunk_idx,
                      (unsigned)s_chunk_buf[0], (unsigned)s_chunk_buf[1],
                      (unsigned)s_chunk_buf[2], (unsigned)s_chunk_buf[3],
                      (unsigned)s_chunk_buf[4], (unsigned)s_chunk_buf[5],
                      (unsigned)s_chunk_buf[6], (unsigned)s_chunk_buf[7]);
+#endif
             got = true;
         }
         if (!got) {
@@ -615,10 +643,11 @@ int app_ota_init(void)
         return -2;
     }
     APP_LOGI("ota task started (snapshot+chunk mode)");
+#if APP_OTA_DIAG_LOG
     /* SHA-256 已知答案自检（"abc" 向量，2026-09-23 CHECKSUM_MISMATCH 排查）：
      * 期望 ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad。
      * 若此值不对，校验实现（mbedtls 封装）有问题；若对，则哈希不匹配
-     * 必为接收字节与源文件不同。定位完成后可移除 */
+     * 必为接收字节与源文件不同 */
     {
         char kat[65] = {0};
         app_util_sha256_t kc;
@@ -627,6 +656,7 @@ int app_ota_init(void)
         (void)app_util_sha256_finish_hex(&kc, kat);
         APP_LOGI("ota sha256 kat=%s", kat);
     }
+#endif
     return 0;
 }
 

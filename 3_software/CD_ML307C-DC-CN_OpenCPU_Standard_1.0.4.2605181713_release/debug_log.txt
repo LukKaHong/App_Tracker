@@ -1,5 +1,5 @@
 
-[15:41:10.794]收←◆
+[20:34:22.629]收←◆
 
 [INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
 [INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
@@ -31,7 +31,7 @@
 
 [BOOT33]VB_VERSION_DATE   :[20241210]
 
-[15:41:11.239]收←◆
+[20:34:23.075]收←◆
  ** PC      : 0x80017000
 Version: SDK_1.011.144 May 18 2026 17:16:18
 Ac 4, Board 2, DKB 1
@@ -77,13 +77,13 @@ lfs[PTN 0] init success
 sulog Disable:0x4a656515,0x55
 sulog Enable:0x45555515,0x55
 
-[15:41:11.527]收←◆OnKeyPoweroff_Task
+[20:34:23.363]收←◆OnKeyPoweroff_Task
 eeHandlerPhase2Init
 
-[15:41:12.286]收←◆[ cmlog ]60,__cm_nv_def_fota_load read open failed, maybe not inital
+[20:34:24.109]收←◆[ cmlog ]60,__cm_nv_def_fota_load read open failed, maybe not inital
 [ cmlog ]123,__cm_nv_def_fota_cfg_init entry, init all
 
-[15:41:12.386]收←◆[ cmlog ]netcard type = 16 cfg = 0
+[20:34:24.211]收←◆[ cmlog ]netcard type = 16 cfg = 0
 Usb mode 0, descriptor 70
 [ cmlog ]usb2com queue send err(status)
 USIMPhase2Init 0
@@ -92,31 +92,31 @@ copy rf size[0x00014000] to [0x7e000000]
 ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
 ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
 
-[15:41:12.619]收←◆ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
+[20:34:24.433]收←◆ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
 ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
 power_up_reason: 0x40, power_down_reason: 0x4
 
-[15:41:12.766]收←◆InitIPCControl: data:0x0
+[20:34:24.597]收←◆InitIPCControl: data:0x0
 
-[15:41:13.844]收←◆AT command server ready!
+[20:34:25.653]收←◆AT command server ready!
 Booting done
 [ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME" 0
 [ cmlog ]atp10 cmiot AT+COPS=3,0 0
 [ cmlog ]atp10 cmiot AT+MEDCR=0,176,8 0
 [ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
 
-[15:41:14.031]收←◆SW restart reason: Charging in powering off
+[20:34:25.842]收←◆SW restart reason: Charging in powering off
 [ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
 
-[15:41:14.682]收←◆[CM-OC] func:cm_opencpu_start line:203,core_stub=0x801a625d
+[20:34:26.496]收←◆[CM-OC] func:cm_opencpu_start line:203,core_stub=0x801a625d
 [CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
 [CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x80000
-[CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x21cd0
-[CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0xd520
-[CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0xd598,vma:0x802e4598,lma:0x802e4598,sz:0x386c
-[CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x211f0,vma:0x7e1e23e0,lma:0x802f81f0,sz:0xae0
+[CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x21da0
+[CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0xd5a0
+[CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0xd618,vma:0x802e4618,lma:0x802e4618,sz:0x38bc
+[CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x212c0,vma:0x7e1e23e0,lma:0x802f82c0,sz:0xae0
 [CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf0bec0,vma:0x7e1e2ec0,lma:0x7e1e2ec0,sz:0xbaa4
-[CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x10e10,vma:0x7e1d2000,lma:0x802e7e10,sz:0x103e0
+[CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x10ee0,vma:0x7e1d2000,lma:0x802e7ee0,sz:0x103e0
 [ cmlog ][OPENCPU]:[PET][I][+3s] ota task started (snapshot+chunk mode)
 
 
@@ -181,16 +181,16 @@ cm_i2c_open():[124],ML307R set I2C dev :0
 
 [ CM_I2C]i2c_init TWSI_ICR=0x60
 
-[ CM_I2C]Error:Wri
-[15:41:15.184]收←◆te stop
+[ CM_I2C]Err
+[20:34:26.831]收←◆or:Write stop
 
 cm_i2c_write():[201], wrtie err:-2
 
-[ CM_I2C]Error: bus error detected,0x60,0x446!
+[ CM_I2C]Error: bus error detected,0x6a,0x406!
 
 [ CM_I2C]i2c_init TWSI_ICR=0x60
 
-[ CM_I2C]Error:Write start+slaveaddress
+[ CM_I2C]Error:Write stop
 
 cm_i2c_write():[201], wrtie err:-2
 
@@ -203,7 +203,7 @@ cm_i2c_write():[201], wrtie err:-2
 [ cmlog ][OPENCPU]:[PET][I][+3s] lp wake irq init: key 0/0 gs_int 0/0
 
 
-[ cmlog ][OPENCPU]:[PET][I][+3s] pet tracker boot, mode=supervise, build Sep 23 2026 15:39:48
+[ cmlog ][OPENCPU]:[PET][I][+3s] pet tracker boot, mode=supervise, build Sep 23 2026 20:28:50
 
 
 [ cmlog ][OPENCPU]:[PET][I][+3s] boot -> mode=supervise, connecting
@@ -218,7 +218,51 @@ cm_i2c_write():[201], wrtie err:-2
 [ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
 
 
-[15:41:15.413]收←◆[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
+[20:34:27.062]收←◆[ cmlog ]__cm_oc_virt_at_urc len:[13], urc:[
++CEREG: 0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 9, data:[+CEREG: 0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
++CEREG: 5,0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=24
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=2, resp_cb_flag=1, sync_flag:2.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+
+[20:34:27.271]收←◆[ cmlog ]cm_virt_at_mutex_release
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+[CM-OC] func:cm_opencpu_start line:211,ret:0
+
+[20:34:28.270]收←◆[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_release
+[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
 +CEREG: 5,0
 ]
 [ cmlog ]vir_at_wait_get_flag:1
@@ -236,15 +280,42 @@ OK
 
 [ cmlog ]Processing OK response, virt_at_buffer_len=11
 [ cmlog ]dynamic_virt_at_callback
-[ cmlog ]flag=2, resp_cb_flag=1, sync_flag:2.
+[ cmlog ]flag=3, resp_cb_flag=2, sync_flag:3.
 
 [ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
-[ cmlog ]cm_virt_at_mutex_release
 [ cmlog ]cm_virt_at_send_sync ret = 0
 
-[CM-OC] func:cm_opencpu_start line:211,ret:0
 
-[15:41:15.988]收←◆[ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
+[20:34:29.344]收←◆[ cmlog ]g_sync_at_name: sync+CEREG
+[ cmlog ]virt_at_event_queue already exist
+
+[ cmlog ]__cm_virt_at_task already exist
+
+[ cmlog ]cm_virt_at_mutex_acquire
+[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
+
+[ cmlog ]cm_virt_at_mutex_release[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
++CEREG: 5,0
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
+
+[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
+OK
+]
+[ cmlog ]vir_at_wait_get_flag:1
+
+[ cmlog ][-4]get urcdata skip head and tail
+[ cmlog ]memory_buffer len 2, data:[OK]
+
+[ cmlog ]Processing OK response, virt_at_buffer_len=11
+[ cmlog ]dynamic_virt_at_callback
+[ cmlog ]flag=4, resp_cb_flag=3, sync_flag:4.
+
+[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
+[ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
 +CEREG: 1,"2670","0AA9FE06",7
 ]
 [ cmlog ]vir_at_wait_get_flag:0
@@ -259,7 +330,11 @@ OK
 
 [ cmlog ]__cm_daemon_thread 3 1
 
-[15:41:16.465]收←◆[ cmlog ]g_sync_at_name: sync+CEREG
+[20:34:29.555]收←◆
+[ cmlog ]cm_virt_at_send_sync ret = 0
+
+
+[20:34:30.671]收←◆[ cmlog ]g_sync_at_name: sync+CEREG
 [ cmlog ]virt_at_event_queue already exist
 
 [ cmlog ]__cm_virt_at_task already exist
@@ -268,8 +343,7 @@ OK
 [ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
 
 [ cmlog ]cm_virt_at_mutex_release
-
-[15:41:17.181]收←◆[ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
+[ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
 +CEREG: 5,1,"2670","0AA9FE06",7
 ]
 [ cmlog ]vir_at_wait_get_flag:1
@@ -287,15 +361,15 @@ OK
 
 [ cmlog ]Processing OK response, virt_at_buffer_len=31
 [ cmlog ]dynamic_virt_at_callback
-[ cmlog ]flag=3, resp_cb_flag=2, sync_flag:3.
+[ cmlog ]flag=5, resp_cb_flag=4, sync_flag:5.
 
 [ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
 [ cmlog ]cm_virt_at_send_sync ret = 0
 
-[ cmlog ][OPENCPU]:[PET][I][+5s] network ready, cereg=1
+[ cmlog ][OPENCPU]:[PET][I][+7s] network ready, cereg=1
 
 
-[ cmlog ][OPENCPU]:[PET][I][+5s] prov pre: ntp sync #1 (backoff=5s)
+[ cmlog ][OPENCPU]:[PET][I][+7s] prov pre: ntp sync #1 (backoff=5s)
 
 
 [ cmlog ][OPENCPU]:[NTP]cm_ntp_set_cfg() server ntp.aliyun.com
@@ -329,9 +403,9 @@ OK
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[15:41:17.375]收←◆[ADNS] request info 1,ntp.aliyun.com,3
+[20:34:30.889]收←◆[ADNS] request info 1,ntp.aliyun.com,3
 
-[15:41:17.638]收←◆[ cmlog ]getaddrinfo ret:0, pres:7e0b2740 1
+[20:34:31.166]收←◆[ cmlog ]getaddrinfo ret:0, pres:7e079da8 1
 [ cmlog ]host ip: 203.107.6.88
 
 [ cmlog ][OPENCPU]:[NTP]__on_ntp_async_dns_event(1, 1, ntp.aliyun.com)
@@ -354,7 +428,7 @@ asocket open ok 0 3
 
 
 
-[15:41:17.792]收←◆asocket_cb 3 0
+[20:34:31.320]收←◆asocket_cb 3 0
 [ELOOP] post event=0x7e044be8
 [ELOOP] rdy_list eloop=0x7e263c6c
 asocket_on_eloop 0x7e044be8,0x7e2956dc
@@ -364,13 +438,13 @@ asocket_cb 3 1
 
 
 
-[15:41:18.942]收←◆[ cmlog ][OPENCPU]:[NTP]__cm_api_ntp_notify() event[1] sockfd[3]
+[20:34:32.473]收←◆[ cmlog ][OPENCPU]:[NTP]__cm_api_ntp_notify() event[1] sockfd[3]
 
 
 [ELOOP] register_event eloop 0x7e263c6c,0x802d7c74,0x00000003
 [ELOOP] eloop_event_init 0x7e044c30,0x7e263c6c,0x802d7c74,0x00000003
 [ELOOP] post event=0x7e044c30
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:19] ntp sync ok
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:33] ntp sync ok
 
 
 [ELOOP] unregister event=0x7e044c30
@@ -394,13 +468,13 @@ asocket not found
 [ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:19] no credential, provisioning...
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:33] no credential, provisioning...
 
 
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:19] prov body len=296
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:33] prov body len=296
 
 
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:19] prov http 119.23.217.155:80 (plain)
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:33] prov http 119.23.217.155:80 (plain)
 
 
 [CMHTTP] tsk_main http_messagequeue_wait......
@@ -412,8 +486,8 @@ asocket not found
 [CMHTTP] http?:0, port:80, host:119.23.217.155
 
 
-[ELOOP] register_event eloop 0x7e263c6c,0x80234acd,0x7e08f240
-[ELOOP] eloop_event_init 0x7e044c18,0x7e263c6c,0x80234acd,0x7e08f240
+[ELOOP] register_event eloop 0x7e263c6c,0x80234acd,0x7e079da8
+[ELOOP] eloop_event_init 0x7e044c18,0x7e263c6c,0x80234acd,0x7e079da8
 [ELOOP] post event=0x7e044c18
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] unregister event=0x7e044c18
@@ -429,7 +503,7 @@ asocket not found
 [ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
 [ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x8025fe71,0x7e2956dc
 asocket open ok 0 3
-[ cmlog ]ipv4: 1 10.124.202.77 
+[ cmlog ]ipv4: 1 10.103.110.82 
 
 [CMHTTP] sock(3) open request success, wait connect...
 
@@ -438,7 +512,7 @@ asocket open ok 0 3
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[15:41:19.200]收←◆asocket_cb 3 2
+[20:34:32.753]收←◆asocket_cb 3 2
 asocket_cb 3 4
 [ELOOP] post event=0x7e044c00
 [ELOOP] rdy_list eloop=0x7e263c6c
@@ -466,7 +540,8 @@ asocket_event 0x7e2956dc,0x7e044c00
 [ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
+
+[20:34:32.860]收←◆asocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
 [ELOOP] rdy_list eloop=0x7e263c6c
@@ -478,7 +553,7 @@ asocket_event 0x7e2956dc,0x7e044c00
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[15:41:19.342]收←◆asocket_cb 3 2
+[20:34:32.972]收←◆asocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
 [ELOOP] rdy_list eloop=0x7e263c6c
@@ -489,8 +564,7 @@ asocket_event 0x7e2956dc,0x7e044c00
 [ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:19.472]收←◆asocket_cb 3 0
+asocket_cb 3 0
 [ELOOP] post event=0x7e044c18
 [ELOOP] rdy_list eloop=0x7e263c6c
 asocket_on_eloop 0x7e044c18,0x7e2956dc
@@ -502,13 +576,13 @@ asocket_event 0x7e2956dc,0x7e044c18
 
 [CMHTTP] _httpclient_tsk_main event = 0x2, state = 5
 
-[CMHTTP] receive_process: 3, 546, 1460
+[CMHTTP] receive_process: 3, 547, 1460
 
 asocket_cb 3 1
-[CMHTTP] readOnce: 546 
+[CMHTTP] readOnce: 547 
 
 
-[CMHTTP] response_parse: Content-Length = 252
+[CMHTTP] response_parse: Content-Length = 253
 
 
 [CMHTTP] tsk_main http_messagequeue_wait......
@@ -517,14 +591,13 @@ asocket_cb 3 1
 [ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:19.569]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:20] http resp=200 len=252
-
-
-[ cmlog ][OPENCPU]:[PET][W][2026-09-23 15:41:20] prov host override: 127.0.0.1 -> 119.23.217.155
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:33] http resp=200 len=253
 
 
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:20] prov ok, port=18883
+[ cmlog ][OPENCPU]:[PET][W][2026-09-23 20:34:33] prov host override: 127.0.0.1 -> 119.23.217.155
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:33] prov ok, port=18883
 
 
 [CMHTTP] _httpclient_tsk_main event = 0x5, state = 0
@@ -550,7 +623,7 @@ asocket not found
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[15:41:19.762]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:20] mqtt connect 119.23.217.155:18883
+[20:34:33.263]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:33] mqtt connect 119.23.217.155:18883
 
 
 [ADNS] cm_async_dns_request cid = 1 
@@ -564,8 +637,8 @@ asocket not found
 [ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
 
 
-[ELOOP] register_event eloop 0x7e263c6c,0x802e12e8,0x7e0b07e0
-[ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x802e12e8,0x7e0b07e0
+[ELOOP] register_event eloop 0x7e263c6c,0x802e1368,0x7e0c4ad0
+[ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x802e1368,0x7e0c4ad0
 [ELOOP] post event=0x7e044be8
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] unregister event=0x7e044be8
@@ -576,7 +649,7 @@ asocket not found
 [ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
 [ELOOP] eloop_event_init 0x7e044c18,0x7e263c6c,0x8025fe71,0x7e2956dc
 asocket open ok 0 3
-[ cmlog ]ipv4: 1 10.124.202.77 
+[ cmlog ]ipv4: 1 10.103.110.82 
 
 [ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
 
@@ -588,7 +661,7 @@ asocket open ok 0 3
 
 
 
-[15:41:19.905]收←◆asocket_cb 3 2
+[20:34:33.441]收←◆asocket_cb 3 2
 asocket_cb 3 4
 [ELOOP] post event=0x7e044c00
 [ELOOP] rdy_list eloop=0x7e263c6c
@@ -607,17 +680,20 @@ asocket_event 0x7e2956dc,0x7e044c00
 
 
 
-[15:41:19.998]收←◆asocket_cb 3 2
+[20:34:33.527]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:34] alive mode=supervise rssi=-60 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
+asocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
-[ELOOPasocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-] rdy_list eloop=0x7e263c6c
+[ELOOP] rdy_list eloop=0x7e263c6c
 asocket_on_eloop 0x7e044c00,0x7e2956dc
 asocket_event 0x7e2956dc,0x7e044c00
 [ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
 
 
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloopasocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+=0x7e263c6c
 asocket_on_eloop 0x7e044be8,0x7e2956dc
 asocket_event 0x7e2956dc,0x7e044be8
 [ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
@@ -625,8 +701,6 @@ asocket_event 0x7e2956dc,0x7e044be8
 
 [ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
 
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
@@ -639,11 +713,10 @@ asocket_cb 3 1
 [ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
 
 
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:20] mqtt connected
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:34] mqtt connected
 
 
-
-[15:41:20.116]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:141
+[ cmlog ][OPENCPU]:[CMMQTT] send len:141
 
 
 [ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:5,len:0
@@ -655,7 +728,7 @@ asocket_cb 3 1
 [ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:462
 
 
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:20] state ONLINE published
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:34] state ONLINE published
 
 
 [ cmlog ][OPENCPU]:[CMMQTT] send len:98
@@ -702,7 +775,13 @@ asocket_cb 3 1
 [ cmlog ][OPENCPU]:[CMMQTT] pkt type:9,len:9
 
 
-[ cmlog ][OPENCPU]:[PET][I][2026-09-asocket_cb 3 2
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:34] rpc subscribed
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:34] mqtt subscribed
+
+
+asocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
 asocket_cb 3 0
@@ -711,12 +790,6 @@ asocket_cb 3 0
 [ELOOP] post event=0x7e044be8
 asocket_cb 3 0
 [ELOOP] post event=0x7e044be8
-23 15:41:20] rpc subscribed
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:20] mqtt subscribed
-
-
 [ELOOP] rdy_list eloop=0x7e263c6c
 asocket_on_eloop 0x7e044c00,0x7e2956dc
 asocket_event 0x7e2956dc,0x7e044c00
@@ -760,22 +833,18 @@ asocket_cb 3 1
 
 cm_i2c_write():[201], wrtie err:-2
 
-[ cmlog ][OPENCPU]:[PET][W][2026-09-23 15:41:20] pedometer read fail
+[ cmlog ][OPENCPU]:[PET][W][2026-09-23 20:34:34] pedometer read fail
 
 
 
-[15:41:20.495]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:20] lp: gnss on, waiting fix (timeout 90000ms)
+[20:34:34.021]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:34] lp: gnss on, waiting fix (timeout 90000ms)
 
 
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:20] gps: first uart line: #CFGLPMODE,2*43
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:34] gps: first uart line: #CFGLPMODE,2*43
 
 
 
-[15:41:21.365]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:21] alive mode=supervise rssi=-63 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:41:31.378]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:31] alive mode=supervise rssi=-65 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:41:34.751]收←◆asocket_cb 3 0
+[20:34:38.500]收←◆asocket_cb 3 0
 [ELOOP] post event=0x7e044be8
 asocket_cb 3 0
 [ELOOP] post event=0x7e044be8
@@ -785,7 +854,7 @@ asocket_event 0x7e2956dc,0x7e044be8
 [ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:275
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:272
 
 [ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
@@ -808,23 +877,17 @@ asocket_cb 3 1
 
 
 asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:214
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:211
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] mid:2,qos:1,pkt_len:214,payload_len:183
+[ cmlog ][OPENCPU]:[CMMQTT] mid:2,qos:1,pkt_len:211,payload_len:180
 
 
 [ cmlog ][OPENCPU]:[CMMQTT] send len:4
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] send len:125
 
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/attributes/request/1,len:125
-
-
-
-[15:41:34.919]收←◆asocket_cb 3 2
+[20:34:38.709]收←◆asocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
 [ELOOP] rdy_list eloop=0x7e263c6c
@@ -837,11 +900,29 @@ asocket_event 0x7e2956dc,0x7e044c00
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[15:41:34.980]收←◆asocket_cb 3 2
+[20:34:38.779]收←◆asocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
+[ELOOP] rdy_list eloop=0x7e263c6c
+asocket_on_eloop 0x7e044c00,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044c00
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
+
+
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
+[ELOOP] eloop millsec=4294967295 tick=4294967295
+
+[20:34:39.874]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:125
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/attributes/request/1,len:125
+
+
+
+[20:34:39.950]收←◆asocket_cb 3 2
+asocket_cb 3 10
+[ELOOP] post event=0x7e044c00
 asocket_cb 3 0
 [ELOOP] post event=0x7e044be8
 [ELOOP] rdy_list eloop=0x7e263c6c
@@ -851,11 +932,20 @@ asocket_event 0x7e2956dc,0x7e044c00
 
 
 asocket_on_eloop 0x7e044be8,0x7e2956dc
+asocket_event 0x7e2956dc,0x7e044be8asocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+
+[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
+
+
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:237
+
+asocket_on_eloop 0x7e044be8,0x7e2956dc
 asocket_event 0x7e2956dc,0x7e044be8
 [ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:240
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:237
 
 [ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
@@ -872,26 +962,31 @@ asocket_cb 3 1
 
 
 asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:236
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:233
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] mid:3,qos:1,pkt_len:236,payload_len:194
+[ cmlog ][OPENCPU]:[CMMQTT] mid:3,qos:1,pkt_len:233,payload_len:191
 
 
 [ cmlog ][OPENCPU]:[CMMQTT] send len:4
 
 
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:35] ota meta: title=PET-LOCATOR-DEMO ver=8.1.0 size=146432 algo=SHA256
+[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
 
 
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:35] ota meta checksum=ac90a173d14111cabdc370f690a9b1605d36d8a5df93b5bbeb78bae35cfd
+[ cmlog ][OPENCPU]:[CMMQTT] tcp ret:-1
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:40] ota meta: title=PET-LOCATOR-DEMO ver=8.9.9 size=232 algo=SHA256
+
+
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:40] ota meta checksum=5985c1ebb1ffdb58df80e301099d933aea397b00476cb5f723722f543f50
 [ cmlog ][OPENCPU]:[CMMQTT] send len:137
 
 
 [ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:137
 
 
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:35] ota start: PET-LOCATOR-DEMO 8.1.0 146432B (36 chunks of 4096B)
+[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:40] ota start: PET-LOCATOR-DEMO 8.9.9 232B (1 chunks of 4096B)
 
 
 [ cmlog ][OPENCPU]:[CMMQTT] send len:33
@@ -900,7 +995,8 @@ asocket_cb 3 1
 [ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/0,len:33
 
 
-asocket_cb 3 2
+
+[20:34:40.180]收←◆asocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
 [ELOOP] rdy_list eloop=0x7e263c6c
@@ -913,7 +1009,7 @@ asocket_event 0x7e2956dc,0x7e044c00
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[15:41:35.237]收←◆asocket_cb 3 2
+[20:34:40.270]收←◆asocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
 asocket_cb 3 0
@@ -929,27 +1025,21 @@ asocket_event 0x7e2956dc,0x7e044be8
 [ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
+[ cmlog ][OPENasocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+asocket_cb 3 0
+[ELOOP] post event=0x7e044be8
+CPU]:[CMMQTT] ret:0, recv_len:4
 
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_listasocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
- eloop=0x7e263c6c
 asocket_on_eloop 0x7e044be8,0x7e2956dc
 asocket_event 0x7e2956dc,0x7e044be8
 [ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4135
+[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:271
 
+[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
+[ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
@@ -970,1109 +1060,31 @@ asocket_cb 3 1
 
 
 asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
+[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:263
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] mid:4,qos:1,pkt_len:512,payload_len:4096
+[ cmlog ][OPENCPU]:[CMMQTT] mid:4,qos:1,pkt_len:263,payload_len:232
 
 
 [ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] tcp ret:-1
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:35] ota c0 head=4d617276656c6c5f
-
-
-
-[15:41:35.467]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] send len:33
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/1,len:33
-
-
-
-[15:41:35.589]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4131
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:5,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:36] ota c1 head=0000000000000000
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:33
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/2,len:33
-
-
-
-[15:41:35.786]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4131
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:6,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:36] ota c2 head=a5a55a5a001b0200
-
-
-
-[15:41:35.985]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:33
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/3,len:33
-
-
-
-[15:41:36.028]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:36.089]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4131
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:7,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:36] ota c3 head=e8209fe5c73200e3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:33
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/4,len:33
-
-
-
-[15:41:36.277]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4131
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:8,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:36] ota c4 head=0e1021e06aa1a0e1
-
-
-
-[15:41:36.481]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:33
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/5,len:33
-
-
-
-[15:41:36.526]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:36.594]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4131
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:9,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:37] ota c5 head=2334a0e10630c5e5
-
-
-
-[15:41:36.743]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:33
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/6,len:33
-
-
-
-[15:41:36.799]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:36.861]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4131
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:10,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:37] ota c6 head=000055e303005011
-
-
-
-[15:41:37.011]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:33
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/7,len:33
-
-
-
-[15:41:37.069]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:37.127]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4131
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:11,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:37] ota c7 head=5d30a0e30030c4e5
-
-
-
-[15:41:37.274]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:33
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/8,len:33
-
-
-
-[15:41:37.326]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:37.394]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4131
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:12,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:37] ota c8 head=9c409fe50020a0e3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:33
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/9,len:33
-
-
-
-[15:41:37.596]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4131
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:13,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:38] ota c9 head=f4ffff1a04309de5
-
-
-
-[15:41:37.794]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/10,len:34
-
-
-
-[15:41:37.840]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:37.901]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:14,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:38] ota c10 head=fc169fe5091400eb
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/11,len:34
-
-
-
-[15:41:38.107]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:15,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:38] ota c11 head=0a00001a0180a0e1
-
-
-
-[15:41:38.307]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/12,len:34
-
-
-
-[15:41:38.346]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:16,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:38] ota c12 head=044092e4000054e3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/13,len:34
-
-
-
-[15:41:38.598]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:38.659]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7easocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:17,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
 
 
 [ cmlog ][OPENCPU]:[CMMQTT] tcp ret:-1
 
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:39] ota c13 head=00308de540208de2
+[ cmlog ][OPENCPU]:[PET][E][2026-09-23 20:34:41] ota pkg not FBF format (head=66775f66696c6520), reject
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
+[ cmlog ][OPENCPU]:[PET][E][2026-09-23 20:34:41] ota FAILED: INVALID_FIRMWARE_METADATA
 
 
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/14,len:34
+[ cmlog ][OPENCPU]:[CMMQTT] send len:157
 
 
-
-[15:41:38.876]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:18,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:39] ota c14 head=1b30d4e5003093e2
+[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:157
 
 
 
-[15:41:39.077]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/15,len:34
-
-
-
-[15:41:39.126]收←◆asocket_cb 3 2
+[20:34:40.519]收←◆asocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
 [ELOOP] rdy_list eloop=0x7e263c6c
@@ -2085,1750 +1097,7 @@ asocket_event 0x7e2956dc,0x7e044c00
 [ELOOP] rdy_list eloop=0x7e263c6c
 [ELOOP] eloop millsec=4294967295 tick=4294967295
 
-[15:41:39.189]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:19,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:39] ota c15 head=04f01fe531261d7e
-
-
-
-[15:41:39.389]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:39.611]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:40] ota 65536/146432 (44%)
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/16,len:34
-
-
-
-[15:41:39.669]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:20,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:40] ota c16 head=6561727462656174
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/17,len:34
-
-
-
-[15:41:39.869]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:21,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:40] ota c17 head=5445520044455649
-
-
-
-[15:41:40.074]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/18,len:34
-
-
-
-[15:41:40.127]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:40.180]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:22,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:40] ota c18 head=7365743d2575006f
-
-
-
-[15:41:40.327]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/19,len:34
-
-
-
-[15:41:40.376]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:23,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:41] ota c19 head=dff800f0b7922380
-
-
-
-[15:41:40.577]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/20,len:34
-
-
-
-[15:41:40.626]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:24,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:41] ota c20 head=003088e5fc309fe5
-
-
-
-[15:41:40.826]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/21,len:34
-
-
-
-[15:41:40.876]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:25,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:41] ota c21 head=80512e80ae512e80
-
-
-
-[15:41:41.077]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/22,len:34
-
-
-
-[15:41:41.148]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:41.208]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:26,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:41] ota c22 head=38909fe50750a0e1
-
-
-
-[15:41:41.356]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/23,len:34
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:41] alive mode=supervise rssi=-63 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:41.465]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:27,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:42] ota c23 head=050000ea720052e3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/24,len:34
-
-
-
-[15:41:41.666]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:28,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:42] ota c24 head=7cc19fe50230a001
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/25,len:34
-
-
-
-[15:41:41.927]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:41.981]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:29,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:42] ota c25 head=dde90234009304f1
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/26,len:34
-
-
-
-[15:41:42.188]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:42.246]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:30,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:42] ota c26 head=203c56f81c3c47f8
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/27,len:34
-
-
-
-[15:41:42.446]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e0asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-44be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:31,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] tcp ret:-1
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:43] ota c27 head=204610b0bde8f081
-
-
-
-[15:41:42.671]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/28,len:34
-
-
-
-[15:41:42.718]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:42.781]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:32,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:43] ota c28 head=f146704674467146
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/29,len:34
-
-
-
-[15:41:42.986]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:33,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:43] ota c29 head=00431046194624aa
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/30,len:34
-
-
-
-[15:41:43.236]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:34,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:43] ota c30 head=002b40f39e853b6c
-
-
-
-[15:41:43.444]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/31,len:34
-
-
-
-[15:41:43.486]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:43.539]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e0asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-44be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:35,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] tcp ret:-1
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:44] ota c31 head=7ff4e6ace6e44546
-
-
-
-[15:41:43.760]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:43.973]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:44] ota 131072/146432 (89%)
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/32,len:34
-
-
-
-[15:41:44.038]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:36,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:44] ota c32 head=5b462046294602f0
-
-
-
-[15:41:44.188]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/33,len:34
-
-
-
-[15:41:44.235]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:37,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:44] ota c33 head=5b0800f1010005d0
-
-
-
-[15:41:44.442]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/34,len:34
-
-
-
-[15:41:44.489]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:44.546]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4132
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:38,qos:1,pkt_len:512,payload_len:4096
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:45] ota c34 head=11f0004f4fea0131
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:34
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/35,len:34
-
-
-
-[15:41:44.749]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:44.806]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:3108
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:512
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:39,qos:1,pkt_len:512,payload_len:3072
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-asocket_cb 3 1
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:45] ota c35 head=04f01fe534182e80
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:31
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v2/fw/request/2/chunk/36,len:31
-
-
-
-[15:41:45.005]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:45.059]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:35
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:3,len:31
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] mid:40,qos:1,pkt_len:31,payload_len:0
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:4
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:136
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:136
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:45] ota downloaded 146432B, sha=ac90a173d14111cabdc370f690a9b1605d36d8a5df93b5bbeb
-[ cmlog ][OPENCPU]:[CMMQTT] send len:134
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:134
-
-
-
-[15:41:45.246]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:45.306]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:8
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-
-[15:41:45.441]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:134
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:134
-
-
-
-[15:41:45.503]收←◆asocket_cb 3 2
+[20:34:40.599]收←◆asocket_cb 3 2
 asocket_cb 3 10
 [ELOOP] post event=0x7e044c00
 asocket_cb 3 0
@@ -3861,1154 +1130,4 @@ asocket_cb 3 1
 
 
 
-[15:41:46.771]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:41:47] ota upgrade triggered, rebooting
-
-
-
-[15:41:46.818]收←◆[ cmlog ]__cm_daemon_thread 5 1
-\0
-[15:41:47.093]收←◆
-
-[INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
-[INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
-[INFO: Main      ] 
-[INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
-[INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
-[INFO: QspiFlash ] Detecting QSPI flash devices...
-[INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
-[INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
-[INFO: BootCtrl  ] Loading bootloader from QSPI flash...
-[INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
-[INFO: Crypto    ] Initializing crypto library...
-[INFO: Main      ] Running in normal booting mode.
-[INFO: Main      ] Loading...
-[INFO: Bl1Main   ] Welcome to boot rom.
-[INFO: Bl1Main   ] ### Non-trusted boot mode. ###
-[INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
-[INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
-[INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
-[INFO: Bl1Main   ] BL1: OKay.
-[INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
-[INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
-[INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
-[INFO: Bl1Main   ] BL1: OKay.
-
-[15:41:48.096]收←◆[INFO: UsbArch   ] usb phy reg: 
-[15:41:48.125]收←◆0xd42070a4 = 0x189b
-
-[15:41:48.188]收←◆[INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
-
-[BOOT33]VB_VERSION_DATE   :[20241210]
-[OTA] not found fota_pkg
-[UPDATER] UART INIT DONE
-efuse_psram: 13
-wb32Mb_psram_fast_refresh
-
-[15:41:48.369]收←◆RB: MR0x1000_CS0: @[0xC0108034]=[0x00001000]
-RB: MR0x1000_CS0: @[0xC0108038]=[0x0000548F]
-psram cache : flush_idle @[0xC0104020]=[0xFF000200]
-[UPDATER]VB_VERSION_DATE   :[20241210_ver2]
-[UPDATER]VB_OEM_LCD_TYPE   :[NO_LCD]
-[UPDATER]VB_FOTA_SOLUTION  :[FOTA_ASRDM]
-sctlr_get value[00e70878]
-sctlr_get value[00e7187d]
-updater MPU config
-[MPU][RGN][      BASE][       END][      SIZE][  PERMISSION][CACHE][SHARE][N_EXE]
-[MPU][  0][0x00000000][0xffffffff][0xffffffff][   NO_ACCESS][    0][    1][    1],access_ctr[0000100c]
-[MPU][  1][0x00000000][0x0000ffff][0x0000ffff][ FULL_ACCESS][    0][    0][    0],access_ctr[00000308]
-[MPU][  2][0xb0020000][0xb002ffff][0x0000ffff][ FULL_ACCESS][    0][    0][    1],access_ctr[00001308]
-[MPU][  3][0x80000000][0x80ffffff][0x00ffffff][ FULL_ACCESS][    0][    0][    1],access_ctr[00001308]
-[MPU][  4][0xc0000000][0xffffffff][0x3fffffff][ FULL_ACCESS][    0][    0][    1],access_ctr[00001301]
-[MPU][  5][0x7e000000][0x7e3fffff][0x003fffff][ FULL_ACCESS][    1][    0][    0],access_ctr[00000303]
-[MPU][  6][0xd1000000][0xd1007fff][0x00007fff][ FULL_ACCESS][    0][    1][    1],access_ctr[0000130c]
-[MPU][  7][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][  8][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][  9][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][ 10][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][ 11][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][ 12][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][ 13][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][ 14][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][ 15][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-CPU frequence register: 0x243
-[MPU][RGN][      BASE][       END][      SIZE][  PERMISSION][CACHE][SHARE][N_EXE]
-[MPU][  0][0x00000000][0xffffffff][0xffffffff][   NO_ACCESS][    0][    1][    1],access_ctr[0000100c]
-[MPU][  1][0x00000000][0x0000ffff][0x0000ffff][ FULL_ACCESS][    0][    0][    0],access_ctr[00000308]
-[MPU][  2][0xb0020000][0xb002ffff][0x0000ffff][ FULL_ACCESS][    0][    0][    1],access_ctr[00001308]
-[MPU][  3][0x80000000][0x803fffff][0x003fffff][ FULL_ACCESS][    0][    0][    1],access_ctr[00001308]
-[MPU][  4][0xc0000000][0xffffffff][0x3fffffff][ FULL_ACCESS][    0][    0][    1],access_ctr[00001301]
-[MPU][  5][0x7e000000][0x7e3fffff][0x003fffff][ FULL_ACCESS][    1][    0][    0],access_ctr[00000303]
-[MPU][  6][0xd1000000][0xd1007fff][0x00007fff][ FULL_ACCESS][    0][    1][    1],access_ctr[0000130c]
-[MPU][  7][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][  8][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][  9][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][ 10][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][ 11][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][ 12][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][ 13][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][ 14][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[MPU][ 15][0x00000000][0x00000001][0x00000001][   NO_ACCESS][    1][    0][    0],access_ctr[00000000]
-[UPDATER]VB_FOTA_SOLUTION	:[FOTA_ASRDM]
-[UPDATER]VB_VERSION_DATE	:[20241210_ver2]
-[UPDATER]lcd_type: [NO_LCD]
-This is 4M psram
-LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16LfsGrpCnt 5lfs: lfs_io_dir_open[C:/]
-lfs: lfs_io_dir_open[]: Handle 0
-lfs: lfs_io_dir_close[PTN 0]: Handle 0
-lfs: lfs_sys_traverse C:/
-lfs: lfs_check_block_validity[PTN 0]: block 0x0, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x1, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0xd, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0xb, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0xa, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x9, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x8, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0xc, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x24, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x1d, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x1c, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x1b, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x6, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x16, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x5, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x4, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x10, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x1a, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x20, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x14, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x11, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x15, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0xe, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x48, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x47, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x46, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x45, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x44, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x43, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x42, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x41, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x40, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x3f, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x3e, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x3d, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x3c, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x3b, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x3a, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x39, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x38, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x37, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x36, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x35, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x34, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x33, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x32, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x31, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x30, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x2f, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x2e, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x2d, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x2c, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x2b, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x2a, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x29, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x28, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x27, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x26, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x25, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x1f, LfsGrpCnt 0x5
-lfs root is valid[PTN 0] free size: 278528lfs[PTN 0] init success[CM_OTA_Get_BaudRate-10077] param.buadrate=0, baudrate=115200.[CM_OTA_Get_BaudRate-10077] param.buadrate=0, baudrate=115200.[UPDATER] UART2 baudRate old=[115200], now=[115200]
-[UPDATER] UART2 INIT DONE
-LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16LfsGrpCnt 5lfs: lfs_io_dir_open[C:/]
-lfs: lfs_io_dir_open[]: Handle 0
-lfs: lfs_io_dir_close[PTN 0]: Handle 0
-lfs: lfs_sys_traverse C:/
-lfs: lfs_check_block_validity[PTN 0]: block 0x0, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x1, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0xd, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0xb, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0xa, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x9, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x8, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0xc, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x24, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x1d, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x1c, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x1b, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x6, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x16, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x5, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x4, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x10, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x1a, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x20, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x14, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x11, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x15, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0xe, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x48, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x47, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x46, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x45, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x44, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x43, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x42, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x41, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x40, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x3f, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x3e, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x3d, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x3c, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x3b, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x3a, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x39, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x38, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x37, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x36, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x35, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x34, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x33, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x32, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x31, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x30, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x2f, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x2e, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x2d, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x2c, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x2b, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x2a, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x29, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x28, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x27, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x26, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x25, LfsGrpCnt 0x5
-lfs: lfs_check_block_validity[PTN 0]: block 0x1f, LfsGrpCnt 0x5
-lfs root is valid[PTN 0] free size: 278528lfs[PTN 0] init success[FOTA] ASROTA-F detected
-FotaParamStartAddress[003d8000] read len[4096]
-mini_sys_enable[ffffffff]
-first using fotaPara_1,not copy temp flash
-DFOTA full system
-FBF_Size: 0x00023c00
-fbf_flash_address: 0x8000a1ac
-lfs: lfs_io_open: ota_package_fs.bin
-lfs: lfs_file_verify[PTN 0]: Handle 0
-lfs: lfs_io_open[ota_package_fs.bin]: Handle 0
-lfs: lfs_io_size[PTN 0]: Handle 0
-lfs: lfs_io_size: size 146432
-file_size: 0x00023c00
-lfs: lfs_io_read[PTN 0]: Handle 0
-
-[15:41:49.601]收←◆lfs: lfs_io_read: ssize 146432
-lfs: lfs_io_close[PTN 0]: Handle 0
-lfs: lfs_file_verify[PTN 0]: Handle 0
-lfs: lfs_io_close: result 0
-pDevHeader_11->nOfImages: 1
-ptable found name= 'user_app' size=00080000
-FOTA_Upgrade:Flash_Start_Address: 0x002D7000, EraseLen: 0x00021B00, length=0x00021B00
-OTA_Update_FotaImage: flash_Addr[0x002d7000], size: 0x00021b00
-
-...
-[15:41:50.335]收←◆...
-[15:41:50.385]收←◆
-OTA_Update_FotaImage end
-OTA_Update_FotaParam, flash_Addr[0x003D7000],size[0x00000020]
-OTA_Update_FotaParam end!!! **** 100 ****
-Clear upgrade flag OK
-OTA_Update_FotaParam, flash_Addr[0x003D8000],size[0x00001000]
-
-[15:41:50.445]收←◆OTA_Update_FotaParam end!!! **** 100 ****
-OTA_Update_FotaParam, flash_Addr[0x003D9000],size[0x00001000]
-
-[15:41:50.477]收←◆OTA_Update_FotaParam end!!! **** 100 ****
-Clear fota param OK
-set ota update over flag...
-SW_RESET @0x7e0406a9
-
-[15:41:50.784]收←◆
-
-[INFO: PlatInfo  ] CHIP_ID: 0x1605, REV_ID: 0xB0, AROM_VER: 2022.11.06
-[INFO: PlatInfo  ] PLATFORM: CRANELRH (SILICON)
-[INFO: Main      ] 
-[INFO: Main      ] Starting AROM-CRANE (Version: 2024.01.25)
-[INFO: ClkDrv    ] QSPI clock configured at 13 MHz, level 1
-[INFO: QspiFlash ] Detecting QSPI flash devices...
-[INFO: QspiFlash ] Found a known spi flash device "XM25LU32C"
-[INFO: QspiFlash ] SPI nor flash: Manufacturer ID: 0x20, Device ID: 0x5016
-[INFO: BootCtrl  ] Loading bootloader from QSPI flash...
-[INFO: UbiSimple ] Detected peb size is 4096, the first good peb number is 0
-[INFO: Crypto    ] Initializing crypto library...
-[INFO: Main      ] Running in normal booting mode.
-[INFO: Main      ] Loading...
-[INFO: Bl1Main   ] Welcome to boot rom.
-[INFO: Bl1Main   ] ### Non-trusted boot mode. ###
-[INFO: Bl1Main   ] Found preboot volume, size is 17616 bytes
-[INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume preboot...
-[INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[INFO: BlCommon  ] Loading image from #0xbbb8 to #0x80 with size 28160 successfully.
-[INFO: Bl1Main   ] BL1: OKay.
-[INFO: Bl1Main   ] Found bootloader volume, size is 35716 bytes
-[INFO: Bl1Main   ] BL1: Trying to load and verify BL2 image from volume bootloader...
-[INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[INFO: BlCommon  ] Loading image from #0x7e1f75a4 to #0x80 with size 17232 successfully.
-[INFO: Bl1Main   ] BL1: OKay.
-
-[15:41:51.786]收←◆[INFO: UsbArch   ] usb phy reg: 
-[15:41:51.808]收←◆0xd42070a4 = 0x189b
-
-[15:41:51.879]收←◆[INFO: AuthMod   ] ROTPK is not deployed on platform. Skipping ROTPK verification.
-[INFO: BlCommon  ] Loading image from #0x7e002e34 to #0x7e200000 with size 29986 successfully.
-
-[BOOT33]VB_VERSION_DATE   :[20241210]
-
-[15:41:52.193]收←◆
- ** PC      : 0x80017000
-Version: SDK_1.011.144 May 18 2026 17:16:18
-Ac 4, Board 2, DKB 1
-PSRAM fuse: 13
-
-Cinit 2
-Flash type: nvm 0, factory 0, fota 0
-Phase1Inits
-diag Phase1 Init
-dro_efuse = 135
-profile num = 2
-CRNLR_SVC_FP[0] = 0x29
-CRNLR_SVC_FP[1] = 0x29
-CRNLR_SVC_FP[2] = 0x29
-CRNLR_SVC_FP[3] = 0x33
-Bootup not silent
-[ELOOP] __cm_eloop_init 0x7e263c6c,128
-
-[15:41:52.283]收←◆[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-InitTask started
-Chip ID: 0xb01605
-PS_NONCACHE_DATA_ZI rf [0x7e389300]
-check unpressed rf/dsp size,rf [0x00014000],dsp [0x00040800]
-Crane mpu configure
-start file system init
-bbu_qspi_init:isMiniSys=0,reserved_start_addr=0x2d5000, reserved_end_addr=0x2d7000
-
-qspi_nor_set_flash_block_protect:update status1=0x38, status2=0x2.
-qspi_nor_set_flash_block_protect:write status register finished.
-qspi_nor_set_flash_block_protect:read after update, status1=0x38,status2=0x2.
-flash_protect_area_type=12
-
-SPI Nor/NAND flash init success
-
-FDI_Transport_Fsys_Register: 0, C:/
-LfsAddress[PTN 0]: 0x357000 ~ 0x3d6fff, block: 855 ~ 982, block cnt: 128, lookahead 16
-LfsGrpCnt 5
-lfs root is valid
-[PTN 0] free size: 278528
-lfs[PTN 0] init success
-OnKeyPoweroff_Task
-eeHandlerPhase2Init
-
-[15:41:52.561]收←◆[ cmlog ]netcard type = 16 cfg = 0
-Usb mode 0, descriptor 70
-[ cmlog ]usb2com queue send err(status)
-USIMPhase2Init 0
-
-copy rf size[0x00014000] to [0x7e000000]
-ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
-ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
-
-[15:41:52.657]收←◆ACMSetAudioConfigPara: audio_PCM_Print:1, ACMCOMM_CombinedSPK=0, audio_IsBypassPM813PA=0
-ACMSetAudioConfigPara: audio_disableHSDetect=1, audio_pm802_use_codec=0, audio_hs_normal_closed=0, audio_hs_typeC=0
-power_up_reason: 0x40, power_down_reason: 0x4
-
-[15:41:52.819]收←◆InitIPCControl: data:0x0
-
-[15:41:53.086]收←◆AT command server ready!
-Booting done
-
-[15:41:53.124]收←◆SW restart reason: Charging in powering off
-[ cmlog ]cm_fota_init() isSetTimeout [0], info->failure [0], time [0 0 0 0 0 0 0]
-
-[15:41:53.205]收←◆[ cmlog ]atp10 cmiot AT+CPMS="ME","ME","ME" 0
-[ cmlog ]atp10 cmiot AT+COPS=3,0 0
-[ cmlog ]atp10 cmiot AT+MEDCR=0,176,8 0
-[ cmlog ]cmiot setConnectMode 1(0-manual 1-auto)
-
-[15:41:53.251]收←◆[ cmlog ]ota update complete
-
-[15:41:53.691]收←◆[CM-OC] func:cm_opencpu_start line:203,core_stub=0x801a625d
-[CM-OC] func:cm_opencpu_start line:204,ram_s=0x7e1d2000, len=0x40000
-[CM-OC] func:__oc_app_load_from_flash line:94,app info:name=user_app,start addr=0x802d7000,size=0x80000,vsize=0x80000
-[CM-OC] func:__oc_app_load_from_flash line:104,magc_num:0x5a5aa5a5,vma:0x7e1d2000,lma:0x802d7000,sz:0x21b00
-[CM-OC] func:__oc_app_load_from_flash line:122,type:0,offset:0x78,vma:0x802d7078,lma:0x802d7078,sz:0xd408
-[CM-OC] func:__oc_app_load_from_flash line:122,type:1,offset:0xd480,vma:0x802e4480,lma:0x802e4480,sz:0x37b4
-[CM-OC] func:__oc_app_load_from_flash line:122,type:2,offset:0x21020,vma:0x7e1e23e0,lma:0x802f8020,sz:0xae0
-[CM-OC] func:__oc_app_load_from_flash line:122,type:3,offset:0xfdf0bec0,vma:0x7e1e2ec0,lma:0x7e1e2ec0,sz:0xbaa4
-[CM-OC] func:__oc_app_load_from_flash line:122,type:4,offset:0x10c40,vma:0x7e1d2000,lma:0x802e7c40,sz:0x103e0
-[ cmlog ][OPENCPU]:[PET][I][+1s] ota task started (snapshot+chunk mode)
-
-
-[ cmlog ][OPENCPU]:[PET][I][+1s] no saved work mode, enter default: 2
-
-
-[ cmlog ][OPENCPU]:[PET][I][+1s] offline cache init (ram-only) count=0
-
-
-[ cmlog ][OPENCPU]:[PET][I][+1s] power on reason=4
-
-
-[ cmlog ]g_sync_at_name: sync*ICCID
-[ cmlog ]virt_at_event_queue already exist
-
-[ cmlog ]cm_virt_at_mutex_acquire
-[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[ cmlog ]__cm_oc_virt_at_urc len:[34], urc:[
-*ICCID: "898604670224D0042758"
-]
-[ cmlog ]vir_at_wait_get_flag:1
-
-[ cmlog ][-4]get urcdata skip head and tail
-[ cmlog ]memory_buffer len 30, data:[*ICCID: "898604670224D0042758"]
-
-[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-OK
-]
-[ cmlog ]vir_at_wait_get_flag:1
-
-[ cmlog ][-4]get urcdata skip head and tail
-[ cmlog ]memory_buffer len 2, data:[OK]
-
-[ cmlog ]Processing OK response, virt_at_buffer_len=30
-[ cmlog ]dynamic_virt_at_callback
-[ cmlog ]flag=1, resp_cb_flag=0, sync_flag:1.
-
-[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
-[ cmlog ]cm_virt_at_mutex_release
-[ cmlog ]cm_virt_at_send_sync ret = 0
-
-[ cmlog ][OPENCPU]:[PET][I][+1s] IMEI=865229081435439 ver=8.1.0 hw=HW_V1.0 modem=ML307C-DC-CN_OpenCPU_Standard_1.0.4.2605181713
-[ cmlog ][OPENCPU]:[OC_PWM] cm_pwm_close dev1 PIN75 iomux configuration error,fun=2
-
-
-[ cmlog ][OPENCPU]:[PET][E][+1s] led pwm set clk fail
-
-
-cm_i2c_open():[109],set pin:58, fun:1
-
-cm_i2c_open():[112],set pin:57,read fun:1
-
-cm_i2c_open():[124],ML307R set I2C dev :0
-
-[ CM_I2C]i2c_init TWSI_ICR=0x60
-
-[ CM_I2C]Error: bus error detected,0x6a,0x406!
-
-[ CM_I2C]i2c_init TWSI_ICR=0x60
-
-[ CM_I2C]Error:Write stop
-
-cm_i2c_write():[201], wrtie err:-2
-
-[ CM_I2C]Error: bus error detected,0x6a,0x406!
-
-[ CM_I2C]i2c_init TWSI_ICR=0x60
-
-[ CM_I2C]Error:Write stop
-
-cm_i2c_write():[201], wrtie err:-2
-
-[ cmlog ][OPENCPU]:[PET][E][+1s] QMA6100P probe fail
-
-
-[ cmlog ][OPENCPU]:[PET][W][+1s] bsp_init partial fail:-1
-
-
-[ cmlog ][OPENCPU]:[PET][I][+1s] lp wake irq init: key 0/0 gs_int 0/0
-
-
-[ cmlog ][OPENCPU]:[PET][I][+1s] pet tracker boot, mode=supervise, build Sep 23 2026 13:42:53
-
-
-[ cmlog ][OPENCPU]:[PET][I][+1s] boot -> mode=supervise, connecting
-
-
-[ cmlog ]g_sync_at_name: sync+CEREG
-[ cmlog ]virt_at_event_queue already exist
-
-[ cmlog ]__cm_virt_at_task already exist
-
-[ cmlog ]cm_virt_at_mutex_acquire
-[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[ cmlog ]__cm_oc_virt_at_urc len:[15], urc:[
-+CEREG: 5,0
-]
-[ cmlog ]vir_at_wait_get_flag:1
-
-[ cmlog ][-4]get urcdata skip head and tail
-[ cmlog ]memory_buffer len 11, data:[+CEREG: 5,0]
-
-[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-OK
-]
-[ cmlog ]vir_at_wait_get_flag:1
-
-[ cmlog ][-4]get urcdata skip head and tail
-[ cmlog ]memory_buffer len 2, data:[OK]
-
-[ cmlog ]Processing OK response, virt_at_buffer_len=11
-[ cmlog ]dynamic_virt_at_callback
-[ cmlog ]flag=2, resp_cb_flag=1, sync_flag:2.
-
-[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
-[ cmlog ]cm_virt_at_mutex_release
-[ cmlog ]cm_virt_at_send_sync ret = 0
-
-[CM-OC] func:cm_opencpu_start line:211,ret:0
-
-[15:41:54.781]收←◆[ cmlog ]__cm_oc_virt_at_urc len:[33], urc:[
-+CEREG: 1,"2670","0AA9FE06",7
-]
-[ cmlog ]vir_at_wait_get_flag:0
-
-[ cmlog ][-4]get urcdata skip head and tail
-[ cmlog ]memory_buffer len 29, data:[+CEREG: 1,"2670","0AA9FE06",7]
-
-[ cmlog ][URC]__cm_urc_consult
-[ cmlog ]urc_head is null
-
-[ cmlog ]urc_head_internal is null
-
-[ cmlog ]__cm_daemon_thread 3 1
-
-[15:41:55.062]收←◆[ cmlog ]g_sync_at_name: sync+CEREG
-[ cmlog ]virt_at_event_queue already exist
-
-[ cmlog ]__cm_virt_at_task already exist
-
-[ cmlog ]cm_virt_at_mutex_acquire
-[ cmlog ]virt_at_send, vir_at_wait_get_flag set 1
-
-[ cmlog ]cm_virt_at_mutex_release
-
-[15:41:56.017]收←◆[ cmlog ]__cm_oc_virt_at_urc len:[35], urc:[
-+CEREG: 5,1,"2670","0AA9FE06",7
-]
-[ cmlog ]vir_at_wait_get_flag:1
-
-[ cmlog ][-4]get urcdata skip head and tail
-[ cmlog ]memory_buffer len 31, data:[+CEREG: 5,1,"2670","0AA9FE06",7]
-
-[ cmlog ]__cm_oc_virt_at_urc len:[6], urc:[
-OK
-]
-[ cmlog ]vir_at_wait_get_flag:1
-
-[ cmlog ][-4]get urcdata skip head and tail
-[ cmlog ]memory_buffer len 2, data:[OK]
-
-[ cmlog ]Processing OK response, virt_at_buffer_len=31
-[ cmlog ]dynamic_virt_at_callback
-[ cmlog ]flag=3, resp_cb_flag=2, sync_flag:3.
-
-[ cmlog ][__cm_oc_resp_cb-460] g_virt_at_sem is not NULL.
-[ cmlog ]cm_virt_at_send_sync ret = 0
-
-[ cmlog ][OPENCPU]:[PET][I][+3s] network ready, cereg=1
-
-
-[ cmlog ][OPENCPU]:[PET][I][+3s] use saved credential
-
-
-[ cmlog ][OPENCPU]:[PET][I][+3s] mqtt connect 119.23.217.155:18883
-
-
-[ADNS] cm_async_dns_request cid = 1 
-
-[ cmlog ][OPENCPU]:[CMMQTT] is_ipv4
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] client tsk start
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:1
-
-
-[ELOOP] register_event eloop 0x7e263c6c,0x802e11cc,0x7e0c1900
-[ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x802e11cc,0x7e0c1900
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] unregister event=0x7e044be8
-[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
-[ELOOP] eloop_event_init 0x7e044be8,0x7e263c6c,0x8025fe71,0x7e2956dc
-[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
-[ELOOP] eloop_event_init 0x7e044c00,0x7e263c6c,0x8025fe71,0x7e2956dc
-[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956dc
-[ELOOP] eloop_event_init 0x7e044c18,0x7e263c6c,0x8025fe71,0x7e2956dc
-asocket open ok 0 3
-[ cmlog ]ipv4: 1 10.101.117.73 
-
-[ cmlog ][OPENCPU]:[CMMQTT] conn ret:0
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,connect to server, ret:0
-
-
-
-[15:41:56.228]收←◆[ CM_I2C]Error: i2c_wait_status time out,0x9,0x0!
-
-[ CM_I2C]i2c_init TWSI_ICR=0asocket_cb 3 2
-asocket_cb 3 4
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:1
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:2
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:53
-
-
-x60
-
-[ CM_I2C]Error:Write start+slaveaddress
-
-cm_i2c_write():[201], wrtie err:-2
-
-[ cmlog ][OPENCPU]:[PET][W][+3s] pedometer read fail
-
-
-
-[15:41:56.323]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:2,len:4
-
-
-[ cmlog ][OPENCPU]:[PET][I][+4s] mqtt connected
-
-
-[ cmlog ][OPENCPU]:[PET][I][+4s] lp: gnss on, waiting fix (timeout 90000ms)
-
-
-[ cmlog ][OPENCPU]:[PET][I][+4s] gps: first uart line: #CFGLPMODE,2*43
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:141
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,subscribe topics,count:5,len:0
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:440
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:440
-
-
-[ cmlog ][OPENCPU]:[PET][I][+4s] state ONLINE published
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:98
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/attributes,len:98
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:97
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:97
-
-
-[ cmlog ][OPENCPU]:[PET][I][+4s] otasocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:9
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:9,len:9
-
-
-[ cmlog ][OPENasocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-CPU]:[PET][I][+4s] rpc subscribed
-
-
-[ cmlog ][OPENCPU]:[PET][I][+4s] mqtt subscribed
-
-
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:12
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-a resume: fw 8.1.0 == target, self-test pass
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:98
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/attributes,len:98
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:97
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:97
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] send len:133
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:133
-
-
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:8
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-
-[15:41:56.956]收←◆[ cmlog ][OPENCPU]:[NTP]cm_ntp_set_cfg() server ntp.aliyun.com
-
-
-[ cmlog ][OPENCPU]:[NTP]cm_ntp_set_cfg() timeout 5000
-
-
-[ cmlog ][OPENCPU]:[NTP]cm_ntp_sync host_name=ntp.aliyun.com
-
-
-[ELOOP] register_event eloop 0x7e263c6c,0x802d7738,0x7e1e23e9
-[ELOOP] eloop_event_init 0x7e044c30,0x7e263c6c,0x802d7738,0x7e1e23e9
-[ELOOP] post event=0x7e044c30
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] unregister event=0x7e044c30
-[ cmlog ][OPENCPU]:[NTP]__on_eloop_ntp_DNS_recv_event host_name=ntp.aliyun.com
-
-
-[ cmlog ][OPENCPU]:__on_eloop_ntp_DNS_recv_event: dns_addrtype 3
-
-
-[ADNS] cm_async_dns_request cid = 1 
-
-[ADNS] request id:1
-
-[ cmlog ][OPENCPU]:[NTP]dns req(1) pending...
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:41:57.077]收←◆[ADNS] request info 1,ntp.aliyun.com,3
-
-[15:41:57.354]收←◆[ cmlog ]getaddrinfo ret:0, pres:7e0c9b68 1
-[ cmlog ]host ip: 203.107.6.88
-
-[ cmlog ][OPENCPU]:[NTP]__on_ntp_async_dns_event(1, 1, ntp.aliyun.com)
-
-
-[ cmlog ][OPENCPU]:[NTP]dns req(1) ok: ntp.aliyun.com->203.107.6.88 dns_addrtype 0
-
-
-[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956fc
-[ELOOP] eloop_event_init 0x7e044c30,0x7e263c6c,0x8025fe71,0x7e2956fc
-[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956fc
-[ELOOP] eloop_event_init 0x7e044c48,0x7e263c6c,0x8025fe71,0x7e2956fc
-[ELOOP] register_event eloop 0x7e263c6c,0x8025fe71,0x7e2956fc
-[ELOOP] eloop_event_init 0x7e044c60,0x7e263c6c,0x8025fe71,0x7e2956fc
-asocket open ok 1 4
-[ cmlog ][OPENCPU]:[NTP]sock(4) open dns_addrtype 0
-
-
-[ cmlog ][OPENCPU]:[NTP]ip 203.107.6.88 port 123
-
-
-
-[15:41:57.500]收←◆asocket_cb 4 0
-[ELOOP] post event=0x7e044c30
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c30,0x7e2956fc
-asocket_event 0x7e2956fc,0x7e044c30
-asocket_cb 4 1
-[ cmlog ][OPENCPU]:[NTP]sock(4) recv_ind: recv_avail=48, recv_len=48
-
-
-
-[15:41:58.689]收←◆[ cmlog ][OPENCPU]:[NTP]__cm_api_ntp_notify() event[1] sockfd[4]
-
-
-[ELOOP] register_event eloop 0x7e263c6c,0x802d7c74,0x00000004
-[ELOOP] eloop_event_init 0x7e044c78,0x7e263c6c,0x802d7c74,0x00000004
-[ELOOP] post event=0x7e044c78
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:42:00] ntp sync ok
-
-
-[ELOOP] unregister event=0x7e044c78
-[ cmlog ][OPENCPU]:__on_eloop_ntp_close_recv_event sock=4
-
-
-[ELOOP] unregister event=0x7e044c30
-[ELOOP] unregister event=0x7e044c48
-[ELOOP] unregister event=0x7e044c60
-asocket_cb 4 0
-asocket not found
-asocket_cb 4 2
-asocket not found
-[ cmlog ][OPENCPU]:sock(4) close success
-
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-
-[15:42:02.617]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:42:04] alive mode=supervise rssi=-63 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:42:12.347]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:42:13] alive mode=supervise rssi=-63 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:42:22.335]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:42:23] alive mode=supervise rssi=-63 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:42:32.329]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:42:33] alive mode=supervise rssi=-63 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:42:42.346]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:42:43] alive mode=supervise rssi=-61 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:42:52.343]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:42:53] alive mode=supervise rssi=-60 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:43:02.348]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:43:03] alive mode=supervise rssi=-60 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:43:12.353]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:43:13] alive mode=supervise rssi=-62 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:43:22.362]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:43:23] alive mode=supervise rssi=-59 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:43:26.402]收←◆[ cmlog ][OPENCPU]:[PET][W][2026-09-23 15:43:28] lp: gnss fix timeout 90000ms
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:43:28] lp: gnss invalid, report lbs only
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:43:28] lbs: task start (wifi=0 report=1)
-
-
-
-[15:43:28.419]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:393
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:393
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:43:30] telemetry lbs_865229081435439_boot_20260923074153_90f5_1 publish ok
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:43:30] lbs: report seq=1 bts=1 macs=0
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:43:30] lbs: task done
-
-
-
-[15:43:28.562]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-
-[15:43:29.473]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:43:31] lp: enter sleep, wake in 206s (mode=supervise)
-
-
-
-[15:46:55.218]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:46:56] lp: wakeup evt=0x1 [RTC ] pm_reason=0
-
-
-
-[15:46:57.042]收←◆[ CM_I2C]Error: bus error detected,0x60,0x446!
-
-[ CM_I2C]i2c_init TWSI_ICR=0x60
-
-[ CM_I2C]Error:Write start+slaveaddress
-
-cm_i2c_write():[201], wrtie err:-2
-
-[ cmlog ][OPENCPU]:[PET][W][2026-09-23 15:46:58] pedometer read fail
-
-
-
-[15:46:57.158]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:46:58] lp: gnss on, waiting fix (timeout 90000ms)
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:46:58] alive mode=supervise rssi=-62 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:46:58] gps: first uart line: #CFGLPMODE,2*43
-
-
-
-[15:47:07.276]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:47:08] alive mode=supervise rssi=-63 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:47:17.519]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:47:19] alive mode=supervise rssi=-62 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:47:27.754]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:47:29] alive mode=supervise rssi=-62 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:47:36.886]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:47:38] alive mode=supervise rssi=-62 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:47:48.022]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:47:49] alive mode=supervise rssi=-61 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:47:57.188]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:47:58] alive mode=supervise rssi=-62 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:48:07.432]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:48:09] alive mode=supervise rssi=-61 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:48:17.665]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:48:19] alive mode=supervise rssi=-60 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-
-[15:48:27.905]收←◆[ cmlog ][OPENCPU]:[PET][W][2026-09-23 15:48:29] lp: gnss fix timeout 90000ms
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:48:29] lp: gnss invalid, report lbs only
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:48:29] alive mode=supervise rssi=-62 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:48:29] lbs: task start (wifi=0 report=1)
-
-
-
-[15:48:30.557]收←◆[ cmlog ][OPENCPU]:[CMMQTT] send len:445
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] id:0,publish msg,topic:v1/devices/me/telemetry,len:445
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:48:32] telemetry lbs_865229081435439_boot_20260923074153_90f5_2 publish ok
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:48:32] lbs: report seq=2 bts=1 macs=0
-
-
-[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:48:32] lbs: task done
-
-
-
-[15:48:30.699]收←◆asocket_cb 3 2
-asocket_cb 3 10
-[ELOOP] post event=0x7e044c00
-asocket_cb 3 0
-[ELOOP] post event=0x7e044be8
-[ELOOP] rdy_list eloop=0x7e263c6c
-asocket_on_eloop 0x7e044c00,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044c00
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:4
-
-
-asocket_on_eloop 0x7e044be8,0x7e2956dc
-asocket_event 0x7e2956dc,0x7e044be8
-[ cmlog ][OPENCPU]:[CMMQTT] fd:3, status:3
-
-
-[ cmlog ][OPENCPU]:[CMMQTT] ret:0, recv_len:4
-
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop_wait eloop 0x7e263c6c,4294967295
-[ELOOP] rdy_list eloop=0x7e263c6c
-[ELOOP] eloop millsec=4294967295 tick=4294967295
-[ cmlog ][OPENCPU]:[CMMQTT] id:0, msg type:4
-
-
-asocket_cb 3 1
-[ cmlog ][OPENCPU]:[CMMQTT] pkt type:4,len:4
-
-
-
-[15:48:31.622]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 15:48:33] lp: enter sleep, wake in 206s (mode=supervise)
-
-
+[20:34:43.367]收←◆[ cmlog ][OPENCPU]:[PET][I][2026-09-23 20:34:44] alive mode=supervise rssi=-62 chg=0 steps=0 gps=NOFIX sat=0 lat=0.00000 lon=0.
